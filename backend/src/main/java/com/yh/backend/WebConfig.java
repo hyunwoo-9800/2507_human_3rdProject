@@ -2,6 +2,7 @@ package com.yh.backend;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -23,6 +24,17 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")                  // 모든 요청 경로에 대해
                 .allowedOrigins("http://localhost:3000")      // 프론트 엔드 개발 서버 주소 허용
                 .allowedMethods("*");                         // 모든 HTTP 메서드 허용
+    }
+
+    // React 라우터를 위한 포워딩 설정
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/{spring:\\w+}")
+                .setViewName("forward:/");
+        registry.addViewController("/**/{spring:\\w+}")
+                .setViewName("forward:/");
+        registry.addViewController("/{spring:\\w+}/**{spring:?!(\\.js|\\.css)$}")
+                .setViewName("forward:/");
     }
     
 } // class 끝
