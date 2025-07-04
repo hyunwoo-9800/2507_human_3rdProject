@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 로그 출력 패턴 설정 -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- 로그 파일 저장 경로 및 이름 -->
+    <property name="LOG_PATH" value="C:/logs"/>
+    <property name="LOG_FILE" value="${LOG_PATH}/app.log"/>
+
+    <!-- 콘솔 로그 -->
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+<!--        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+<!--            <level>WARN</level>-->
+<!--        </filter>-->
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 파일 로그 (하루 단위로 Rolling) -->
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 하루 단위로 로그 파일 분할 -->
+            <fileNamePattern>${LOG_PATH}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory> <!-- 30일간 로그 보관 -->
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 루트 로그 설정 (콘솔 + 파일 둘 다 출력) -->
+    <root level="INFO">
+        <appender-ref ref="Console" />
+        <appender-ref ref="RollingFile" />
+    </root>
+
+    <!-- MyBatis 로그 디버깅용 설정 -->
+    <logger name="org.mybatis" level="DEBUG"/>
+    <logger name="org.apache.ibatis" level="DEBUG"/>
+    <logger name="jdbc.sqlonly" level="DEBUG"/>
+
+    <!-- MyBatis 내부 로그 출력 (SQL + 파라미터까지 포함) -->
+    <logger name="org.apache.ibatis" level="TRACE" />
+    <logger name="org.mybatis" level="TRACE" />
+    <logger name="jdbc.sqlonly" level="DEBUG" />
+    <logger name="jdbc.sqltiming" level="DEBUG" />
+    <logger name="jdbc.resultsettable" level="DEBUG" />
+    <logger name="jdbc.audit" level="DEBUG" />
+    <logger name="jdbc.connection" level="DEBUG" />
+    <logger name="jdbc.resultset" level="DEBUG" />
+    <logger name="jdbc.preparedstatement" level="DEBUG" />
+
+</configuration>

@@ -1,0 +1,95 @@
+/*
+ * 프로젝트 Gradle 설정 파일
+ * 작성자 : 조현우
+ * 작성일 : 2025-07-04
+ * 설명   : Spring Boot + MyBatis + Oracle 기반 백엔드 빌드 설정
+ */
+
+plugins {
+	id 'java'
+	id 'war'
+	id 'org.springframework.boot' version '3.3.13'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'fs.human'
+version = '0.0.1-SNAPSHOT'
+
+// Java 17 사용 설정
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+// 컴파일 전용 설정 (lombok용)
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+// 의존성 저장소
+repositories {
+	mavenCentral()
+}
+
+// 프로젝트 의존성
+dependencies {
+	// 핵심기능
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+
+	// 개발 편의
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+	// 데이터베이스 드라이버
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+
+	// WAS 설정(WAS 배포 시)
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	// 테스트 관련
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// React 빌드 task 추가
+task buildReact(type: Exec) {
+	workingDir "$projectDir/../frontend"
+	def yarnCommand = System.getProperty("os.name").toLowerCase().contains("windows") ? "yarn.cmd" : "yarn"
+	commandLine yarnCommand, "run", "build"
+}
+
+// React 이미지 자동 복사
+task copyReactImages(type: Copy) {
+	from "$rootDir/frontend/public/images"
+	into "$projectDir/src/main/resources/static/images"
+}
+
+// 프론트엔드 정적 파일 빌드 결과 복사
+task copyFrontend(type: Copy) {
+	from("$projectDir/../frontend/build") {
+		// build 폴더 내부의 static 폴더만 따로 복사
+		exclude("index.html")
+	}
+	into "$projectDir/src/main/resources/static"			// Spring static 경로로 복사
+}
+
+// 의존성 명시
+copyReactImages.mustRunAfter buildReact
+copyFrontend.mustRunAfter copyReactImages
+
+build.dependsOn buildReact
+build.dependsOn copyReactImages
+build.dependsOn copyFrontend
+
+processResources.dependsOn(copyFrontend)

@@ -1,0 +1,51 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  font-family: 'Pretendard', sans-serif;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  width: 100px;         /* 또는 적절한 크기 */
+  height: auto;
+  cursor: pointer;
+}
+
+.nav {
+  display: flex;
+  gap: 24px;
+}
+
+.nav-item {
+  text-decoration: none;
+  font-size: 1.1rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.nav-item:hover {
+  color: #3a9d23;
+}
+
+.header-right .btn {
+  margin-left: 16px;
+  padding: 8px 16px;
+  border: none;
+  background-color: #eee;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.header-right .btn.register {
+  background-color: #3a9d23;
+  color: white;
+}
