@@ -4,8 +4,8 @@
   align-items: center;
   padding: 20px 40px;
   background-color: white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  font-family: 'Pretendard', sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  font-family: "Pretendard", sans-serif;
 }
 
 .header-left {
@@ -14,7 +14,7 @@
 }
 
 .logo-img {
-  width: 100px;         /* 또는 적절한 크기 */
+  width: 100px; /* 또는 적절한 크기 */
   height: auto;
   cursor: pointer;
 }

@@ -79,7 +79,7 @@ task copyReactImages(type: Copy) {
 task copyFrontend(type: Copy) {
 	from("$projectDir/../frontend/build") {
 		// build 폴더 내부의 static 폴더만 따로 복사
-		exclude("index.html")
+		// exclude("index.html")
 	}
 	into "$projectDir/src/main/resources/static"			// Spring static 경로로 복사
 }
@@ -88,8 +88,8 @@ task copyFrontend(type: Copy) {
 copyReactImages.mustRunAfter buildReact
 copyFrontend.mustRunAfter copyReactImages
 
-build.dependsOn buildReact
-build.dependsOn copyReactImages
-build.dependsOn copyFrontend
+bootRun.dependsOn buildReact
+bootRun.dependsOn copyReactImages
+bootRun.dependsOn copyFrontend
 
 processResources.dependsOn(copyFrontend)
