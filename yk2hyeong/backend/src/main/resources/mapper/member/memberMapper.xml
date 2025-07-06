@@ -6,4 +6,52 @@
 
 <mapper namespace="fs.human.yk2hyeong.member.dao.MemberDAO">
 
+    <!-- 이메일 중복 체크 -->
+    <select id="isEmailExist" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+    </select>
+
+    <!-- 회원 등록 -->
+    <insert id="insertMember">
+        INSERT INTO TB_MEMBER (
+            MEMBER_ID,
+            MEMBER_EMAIL,
+            MEMBER_PWD,
+            MEMBER_NAME,
+            MEMBER_BNAME,
+            MEMBER_BNUM,
+            MEMBER_SHIPPER_NAME,
+            MEMBER_TEL,
+            MEMBER_ADDR,
+            MEMBER_BANKNAME,
+            MEMBER_ACCNUM,
+            MEMBER_ROLE,
+            MEMBER_STATUS,
+            CREATED_BY,
+            CREATED_AT,
+            UPDATED_BY,
+            UPDATED_AT
+        ) VALUES (
+            sys_guid(),
+            #{memberEmail},
+            #{memberPwd},
+            #{memberName},
+            #{memberBname},
+            #{memberBnum},
+            #{memberShipperName},
+            #{memberTel},
+            #{memberAddr},
+            #{memberBankname},
+            #{memberAccnum},
+            #{memberRole},
+            #{memberStatus},
+            #{createdBy},
+            SYSDATE,
+            #{updatedBy},
+            SYSDATE
+        )
+    </insert>
+
 </mapper>

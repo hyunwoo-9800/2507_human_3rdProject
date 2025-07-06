@@ -6,11 +6,11 @@ import "./common.css";
  * @author 조현우
  * @since 2025-07-01
  */
-export default function Select({ label, value, onChange, options = [] }) {
+export default function Select({ label, name, value, onChange, options = [] }) {
   return (
     <div className="common-select-wrapper">
       {label && <label className="common-select-label">{label}</label>}
-      <select value={value} onChange={onChange} className="common-select">
+      <select name={name} value={value} onChange={onChange} className="common-select">
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
             {opt.label}

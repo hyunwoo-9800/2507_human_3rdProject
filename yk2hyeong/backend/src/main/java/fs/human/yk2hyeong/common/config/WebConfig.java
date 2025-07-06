@@ -34,7 +34,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/images/");
     }
 
-    // React 라우터를 위한 포워딩 설정(이미지를 로딩이 되지 않아 주석처리)
+    // React 라우터를 위한 포워딩 설정(이미지 로딩이 되지 않아 주석처리)
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
 //        registry.addViewController("/{spring:\\w+}")

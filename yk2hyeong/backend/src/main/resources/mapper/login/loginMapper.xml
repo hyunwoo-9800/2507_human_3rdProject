@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fs.human.yk2hyeong.login.dao.LoginDAO">
+
+    <!--
+        이메일로 회원 정보 조회
+        사용 위치: LoginServiceImpl.login()
+        파라미터: memberEmail (String)
+        반환: MemberVO (회원 전체 정보)
+     -->
+    <select id="selectByEmail"
+            parameterType="string"
+            resultType="fs.human.yk2hyeong.member.vo.MemberVO">
+        SELECT
+            MEMBER_ID,
+            MEMBER_EMAIL,
+            MEMBER_PWD,
+            MEMBER_NAME,
+            MEMBER_BNAME,
+            MEMBER_BNUM,
+            MEMBER_SHIPPER_NAME,
+            MEMBER_TEL,
+            MEMBER_ADDR,
+            MEMBER_BANKNAME,
+            MEMBER_ACCNUM,
+            MEMBER_ROLE,
+            MEMBER_STATUS,
+            CREATED_BY,
+            CREATED_AT,
+            UPDATED_BY,
+            UPDATED_AT
+        FROM TB_MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+    </select>
+
+</mapper>
