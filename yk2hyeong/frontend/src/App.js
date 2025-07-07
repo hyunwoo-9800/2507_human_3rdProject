@@ -11,6 +11,8 @@ import JoinSelect from "./pages/member/JoinSelect";
 import SellerJoinForm from "./pages/member/SellerJoinForm";
 import BuyerJoinForm from "./pages/member/BuyerJoinForm";
 import Login from "./pages/login/Login";
+import NoticePage from "./pages/notice/NoticePage";
+import NoticeDetail from "./components/notice/NoticeDetail";
 
 function App() {
   const [loginMember, setLoginMember] = useState(null);
@@ -53,13 +55,26 @@ function App() {
             path="/member/join/buyer"
             element={<BuyerJoinForm></BuyerJoinForm>}
           ></Route>
-        </Routes>
+
+          <Route
+            path="/notice"
+            element={<NoticePage></NoticePage>}
+          ></Route>
+
+          <Route
+            path="/notice/:id"
+            element={<NoticeDetail></NoticeDetail>}
+          ></Route>
+
+          </Routes>
+
       </main>
 
       <footer>
         <Footer></Footer>
       </footer>
     </div>
+
   );
 }
 

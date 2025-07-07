@@ -1,5 +1,6 @@
 import React from "react";
 import "./Header.css";
+import {Link} from "react-router-dom";
 
 /**
  * 푸터 컴포넌트
@@ -12,5 +13,7 @@ export default function Footer() {
     <footer className="header">
       <p>&copy; 리액트 테스트 페이지</p>
     </footer>
+
+
   );
 }
