@@ -43,7 +43,6 @@ yarn build
   - 부팀장: 유영근  
   - 팀원: 윤서하, 조현우  
 - **사용 기술:**  
-### 🛠️ 기술 스택
   - Frontend : React
   - Backend : Spring Boot
   - Database : Oracle 18c
