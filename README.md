@@ -7,27 +7,21 @@
 yarn create react-app frontend
 
 #### 1. 프론트 디렉토리로 이동
-> 
-cd yk2hyeong/frontend
+> cd yk2hyeong/frontend
 
 #### 2. 의존성 설치 (최초 1회만)
-> 
-npm install
+> npm install
 
 또는
-> 
-yarn install
+> yarn install
 
 만약 yarn이 설치되어 있지 않다면:
-> 
-npm install -g yarn
+> npm install -g yarn
 
 #### 3. 프론트 빌드 (직접 빌드할 경우)
-> 
-npm run build
+> npm run build
 또는
-> 
-yarn build
+> yarn build
 
 #### 일반적으로는 Gradle을 통해 자동 빌드되므로 별도로 React를 빌드할 필요는 없습니다.
 
