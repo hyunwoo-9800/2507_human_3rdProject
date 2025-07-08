@@ -1,115 +1,82 @@
-# === Java ===
+# =========================
+# 🌱 Java / Spring Boot
+# =========================
 *.class
 *.jar
 *.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
 *.log
-*.ctxt
-.mtj.tmp/
+*.tmp
 hs_err_pid*
 replay_pid*
+target/
+out/
 
-# === Gradle ===
-.gradle
+# =========================
+# 🧱 Gradle
+# =========================
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-# === STS / Eclipse ===
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# =========================
+# ⚛ React (frontend + build result in Spring)
+# =========================
+node_modules/
+dist/
+build/
+.pnp*
+*.log
+*.map
+*.cache
+.env
+.env.*.local
+coverage/
+.vscode/
+.DS_Store
 
-# === IntelliJ IDEA ===
+# React build artifacts in Spring Boot static path
+**/src/main/resources/static/*.js
+**/src/main/resources/static/*.css
+**/src/main/resources/static/*.map
+**/src/main/resources/static/*.txt
+**/src/main/resources/static/asset-manifest.json
+**/src/main/resources/static/index.html
+**/src/main/resources/static/images/sample.jpg
+
+# =========================
+# 🛠️ IntelliJ IDEA
+# =========================
 .idea/
-*.iws
 *.iml
 *.ipr
-out/
-.idea_modules/
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/**/usage.statistics.xml
-.idea/**/dictionaries
-.idea/**/shelf
-.idea/**/aws.xml
-.idea/**/contentModel.xml
-.idea/**/dataSources*
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-.idea/**/dbnavigator.xml
-.idea/**/gradle.xml
-.idea/**/libraries
-.idea/**/mongoSettings.xml
-.idea/replstate.xml
-.idea/sonarlint/
-.idea/**/sonarIssues.xml
-.idea/httpRequests
-.idea/caches/build_file_checksums.ser
-.idea/codestream.xml
-.idea/**/azureSettings.xml
-.idea/**/markdown-navigator*
+*.iws
 
-# === NetBeans ===
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# =========================
+# 📑 Office 문서 편집기 임시파일
+# =========================
+~$*
+*.lock
 
-# === Visual Studio Code ===
-.vscode/
+# =========================
+# 🐍 Python (AI 기능)
+# =========================
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints
+*.sqlite3
+*.db
 
-# === React / Node ===
-node_modules/
-.pnp/
-.pnp.js
-coverage/
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-logs
-**/*.backup.*
-**/*.back.*
-
-# === Windows ===
+# =========================
+# 🪟 Windows / macOS OS 잡파일
+# =========================
 Thumbs.db
-Thumbs.db:encryptable
 ehthumbs.db
-ehthumbs_vista.db
-*.stackdump
-[Dd]esktop.ini
-$RECYCLE.BIN/
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
-*.lnk
+.DS_Store
+Desktop.ini
 
-# === Android Studio ===
-com_crashlytics_export_strings.xml
-crashlytics.properties
-crashlytics-build.properties
-fabric.properties
-
-# === 기타 ===
-HELP.md
+# =========================
+# 📄 Git 저장소 내부 도우미 파일 무시
+# =========================
+logs/
+*.backup.*
+*.back.*
