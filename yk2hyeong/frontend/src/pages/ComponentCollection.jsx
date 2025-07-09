@@ -28,10 +28,11 @@ import CustomStatistic from '../components/CustomStatistic';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'; // 통계용 아이콘
 import CustomTag from '../components/CustomTag';
 import CustomTable from '../components/CustomTable';
-import { Tag, Space } from 'antd'; //테이블용
+import { Tag, Space, Alert, Spin } from 'antd'; //테이블용
 import CustomModal from '../components/CustomModal';
 import CustomAlert from '../components/CustomAlert';
 import RollingAlert from '../components/RollingAlert';
+import CustomLoading from '../components/CustomLoading';
 
 
 
@@ -324,7 +325,7 @@ function ComponentCollection() {
                 <button onClick={() => setActiveTab('inputs')} style={{ padding: '10px' }}>입력</button>
                 <button onClick={() => setActiveTab('checkbox')} style={{ padding: '10px' }}>라디오,체크박스</button>
                 <button onClick={() => setActiveTab('breadcrumb')} style={{ padding: '10px' }}>기타-1</button>
-                <button onClick={() => setActiveTab('cards')} style={{ padding: '10px' }}>기타-2</button>
+                <button onClick={() => setActiveTab('cards')} style={{ padding: '10px' }}>카드</button>
                 <button onClick={() => setActiveTab('carousel')} style={{ padding: '10px' }}>배너</button>
                 <button onClick={() => setActiveTab('sidebar')} style={{ padding: '10px' }}>사이드바</button>
                 <button onClick={() => setActiveTab('statistic')} style={{ padding: '10px' }}>통계</button>
@@ -1584,6 +1585,98 @@ buttonLabel="삭제"/>`}
                             }}>
             {`<RollingAlert message="긴급공지: 오늘은 시스템 점검으로 일부 기능이 제한됩니다." />`}
         </pre>
+                        </div>
+                    </div>
+
+                    {/* 로딩 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>로딩</h3>
+
+                        {/* 첫 번째 줄: 기본 로딩들 + 코드 */}
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <CustomLoading size="small" />
+                                <CustomLoading />
+                                <CustomLoading size="large" />
+                                <CustomLoading tipMessage="Alert message title" />
+                            </div>
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+{`<CustomLoading size="small" />
+<CustomLoading />
+<CustomLoading size="large" />
+<CustomLoading tipMessage="Alert message title" />`}
+  </pre>
+                        </div>
+
+
+                        {/* 두 번째 줄: Spin + 코드 */}
+                        <div style={{ display: 'flex', alignItems: 'flex-start', marginTop: 20 }}>
+                            <Spin tip="로딩 중...">
+                                <Alert
+                                    message="Alert message title"
+                                    description="Further details about the context of this alert."
+                                    type="info"
+                                />
+                            </Spin>
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+{`<Spin tip="로딩 중...">
+    <Alert
+        message="Alert message title"
+        description="Further details about the context of this alert."
+        type="info"
+    />
+</Spin>`}
+    </pre>
+                        </div>
+
+                        {/* 세 번째 줄: CustomLoading + Alert + 코드 */}
+                        <div style={{ display: 'flex', alignItems: 'flex-start', marginTop: 20 }}>
+                            <CustomLoading>
+                                <Alert
+                                    message="Alert message title"
+                                    description="Further details about the context of this alert."
+                                    type="info"
+                                />
+                            </CustomLoading>
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+{`<CustomLoading>
+  <Alert
+    message="Alert message title"
+    description="Further details about the context of this alert."
+    type="info"
+  />
+</CustomLoading>`}
+    </pre>
                         </div>
                     </div>
                 </div>
