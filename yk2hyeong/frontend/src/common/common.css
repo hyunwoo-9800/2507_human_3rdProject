@@ -556,3 +556,15 @@ input + span {
 .slick-dots li button::before {
     content: '';
 }
+
+/* 선택된 메뉴 아이템 배경색, 글자색 변경 */
+.ant-menu-light .ant-menu-item-selected {
+    background-color: #d0f0c0 !important; /* 연한 초록 (연두빛) */
+    color: #3a7d44 !important; /* 어두운 초록 글자 */
+}
+
+/* 선택된 메뉴 아이템 호버 시 색상 유지 또는 약간 진하게 */
+.ant-menu-light .ant-menu-item-selected:hover {
+    background-color: #b3d89c !important;
+    color: #2e5a33 !important;
+}

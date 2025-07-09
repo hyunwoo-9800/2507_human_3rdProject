@@ -16,6 +16,14 @@ import CustomFloatButton from '../components/CustomFloatButton';
 import CustomCard from '../components/CustomCard';
 import CustomCarousel from '../components/CustomCarousel';
 import CustomSelect from '../components/CustomSelect';
+import CustomSidebarMenu from '../components/CustomSidebarMenu';
+import {
+    AppstoreOutlined,
+    ContainerOutlined,
+    DesktopOutlined,
+    MailOutlined,
+    PieChartOutlined,
+} from '@ant-design/icons';
 
 /**
  * 공통 컴포넌트 미리보기 페이지
@@ -181,6 +189,40 @@ function ComponentCollection() {
         alert(`슬라이드 ${index + 1} 클릭! 내용: ${item}`);
     };
 
+    // 사이드바
+    const menuItems = [
+        { key: '1', icon: <PieChartOutlined />, label: 'Option 1' },
+        { key: '2', icon: <DesktopOutlined />, label: 'Option 2' },
+        { key: '3', icon: <ContainerOutlined />, label: 'Option 3' },
+        {
+            key: 'sub1',
+            label: 'Navigation One',
+            icon: <MailOutlined />,
+            children: [
+                { key: '5', label: 'Option 5' },
+                { key: '6', label: 'Option 6' },
+                { key: '7', label: 'Option 7' },
+                { key: '8', label: 'Option 8' },
+            ],
+        },
+        {
+            key: 'sub2',
+            label: 'Navigation Two',
+            icon: <AppstoreOutlined />,
+            children: [
+                { key: '9', label: 'Option 9' },
+                { key: '10', label: 'Option 10' },
+                {
+                    key: 'sub3',
+                    label: 'Submenu',
+                    children: [
+                        { key: '11', label: 'Option 11' },
+                        { key: '12', label: 'Option 12' },
+                    ],
+                },
+            ],
+        },
+    ];
 
     return (
         <div style={{ padding: 20 }}>
@@ -195,6 +237,7 @@ function ComponentCollection() {
                 <button onClick={() => setActiveTab('breadcrumb')} style={{ padding: '10px' }}>기타-1</button>
                 <button onClick={() => setActiveTab('cards')} style={{ padding: '10px' }}>기타-2</button>
                 <button onClick={() => setActiveTab('carousel')} style={{ padding: '10px' }}>배너</button>
+                <button onClick={() => setActiveTab('sidebar')} style={{ padding: '10px' }}>사이드바</button>
 
             </div>
 
@@ -468,8 +511,7 @@ function ComponentCollection() {
                             overflowX: 'auto'  // 가로 스크롤 추가
                         }}>
                                 {`<CustomSelect names={['Apple', 'Banana', 'Cherry']} 
-allowClear 
-placeholder="과일을 선택하세요"/>`}
+allowClear placeholder="과일을 선택하세요"/>`}
                             </pre>
                     </div>
 
@@ -707,7 +749,7 @@ buttonText="Upload Files"/>`}
                 </div>
             )}
 
-            {/* 라디오, 체크박스 */}
+            {/* 카드 */}
             {activeTab === 'cards' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                     {/* 수직카드 */}
@@ -791,6 +833,81 @@ layout="row"/>`}
                             </pre>
                     </div>
 
+                </div>
+            )}
+
+
+            {/* 사이드바 */}
+            {activeTab === 'sidebar' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+                    {/* 사이드바 닫기 옵션 없음 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>사이드바 닫기 옵션 없음, 라이트테마</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomSidebarMenu
+                                items={menuItems}
+                                defaultSelectedKeys={['1']}
+                                defaultOpenKeys={['sub1']}
+                                initialCollapsed={false}
+                                theme="light"
+                                showToggleButton={false}
+                                onToggle={(collapsed) => console.log('Sidebar collapsed:', collapsed)}
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomSidebarMenu
+items={menuItems}
+defaultSelectedKeys={['1']}
+defaultOpenKeys={['sub1']}
+initialCollapsed={false}
+onToggle={(collapsed) => console.log('Sidebar collapsed:', collapsed)}/>`}
+        </pre>
+                        </div>
+                    </div>
+
+                    {/* 사이드바 닫기 옵션 있음 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>사이드바 닫기 옵션 있음, 다크테마</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomSidebarMenu
+                                items={menuItems}
+                                defaultSelectedKeys={['1']}
+                                defaultOpenKeys={['sub1']}
+                                theme="dark"
+                                showToggleButton={true}
+                                initialCollapsed={false}
+                                onToggle={(collapsed) => console.log('Sidebar collapsed:', collapsed)}
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomSidebarMenu
+items={menuItems}
+defaultSelectedKeys={['1']}
+defaultOpenKeys={['sub1']}
+theme="dark"
+showToggleButton={true}
+initialCollapsed={false}
+onToggle={(collapsed) => console.log('Sidebar collapsed:', collapsed)}/>`}
+        </pre>
+                        </div>
+                    </div>
                 </div>
             )}
 
