@@ -568,3 +568,14 @@ input + span {
     background-color: #b3d89c !important;
     color: #2e5a33 !important;
 }
+
+
+.custom-stat-card {
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.custom-stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}

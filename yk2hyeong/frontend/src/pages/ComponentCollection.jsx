@@ -24,6 +24,9 @@ import {
     MailOutlined,
     PieChartOutlined,
 } from '@ant-design/icons';
+import CustomStatistic from '../components/CustomStatistic';
+import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+
 
 /**
  * 공통 컴포넌트 미리보기 페이지
@@ -224,6 +227,9 @@ function ComponentCollection() {
         },
     ];
 
+    //타이머 데드라인
+    const deadline = Date.now() + 1000 * 60 * 60 * 24;
+
     return (
         <div style={{ padding: 20 }}>
             <h2>컴포넌트 미리보기</h2>
@@ -238,6 +244,7 @@ function ComponentCollection() {
                 <button onClick={() => setActiveTab('cards')} style={{ padding: '10px' }}>기타-2</button>
                 <button onClick={() => setActiveTab('carousel')} style={{ padding: '10px' }}>배너</button>
                 <button onClick={() => setActiveTab('sidebar')} style={{ padding: '10px' }}>사이드바</button>
+                <button onClick={() => setActiveTab('statistic')} style={{ padding: '10px' }}>통계</button>
 
             </div>
 
@@ -910,6 +917,116 @@ onToggle={(collapsed) => console.log('Sidebar collapsed:', collapsed)}/>`}
                     </div>
                 </div>
             )}
+
+            {/* 통계 */}
+            {activeTab === 'statistic' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+                    {/* 기본형 숫자 + 애니메이션 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>기본형 숫자 + 애니메이션</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomStatistic
+                                title="Active Users"
+                                value={112893}
+                                animated
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomStatistic
+title="Active Users"
+value={112893}
+animated/>`}
+        </pre>
+                        </div>
+                    </div>
+
+                    {/* 카드형 + 숫자 + prefix, suffix */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>카드형 + 숫자 + prefix, suffix</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomStatistic
+                                variant="card"
+                                title="Active"
+                                value={11.28}
+                                precision={2}
+                                prefix={<ArrowUpOutlined />}
+                                suffix="%"
+                                style={{ color: '#3f8600' }}
+                                cardProps={{ bordered: false }}
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomStatistic
+variant="card"
+title="Active"
+value={11.28}
+precision={2}
+prefix={<ArrowUpOutlined />}
+suffix="%"
+style={{ color: '#3f8600' }}
+cardProps={{ bordered: false }}/>`}
+        </pre>
+                        </div>
+                    </div>
+
+                    {/* 카드형 + 카운트다운 타이머 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>카드형 + 카운트다운 타이머</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomStatistic
+                                variant="card"
+                                isTimer
+                                timerType="countdown"
+                                value={deadline}
+                                title="Countdown Timer"
+                                timerFormat="HH:mm:ss"
+                                onFinish={() => console.log('finished!')}
+                                cardProps={{ bordered: false }}
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomStatistic
+variant="card"
+isTimer
+timerType="countdown"
+value={deadline}
+title="Countdown Timer"
+timerFormat="HH:mm:ss"
+onFinish={() => console.log('finished!')}
+cardProps={{ bordered: false }}/>`}
+        </pre>
+                        </div>
+                    </div>
+
+
+                </div>
+            )}
+
 
         </div>
     );
