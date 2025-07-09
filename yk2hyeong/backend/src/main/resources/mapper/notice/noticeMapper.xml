@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fs.human.yk2hyeong.notice.dao.NoticeDAO">
+
+    <select id="getAllNotices" resultType="fs.human.yk2hyeong.notice.vo.NoticeVO">
+        SELECT
+            NOTICE_ID       AS noticeId,
+            NOTICE_TITLE    AS noticeTitle,
+            NOTICE_CONTENT  AS noticeContent,
+            WRITER_ID       AS writerId,
+            CREATED_ID      AS createdId,
+            CREATED_DATE    AS createdDate,
+            UPDATED_ID      AS updatedId,
+            UPDATED_DATE    AS updatedDate
+        FROM TB_NOTICE
+        ORDER BY CREATED_DATE DESC
+    </select>
+
+    <select id="getNoticeById" parameterType="string" resultType="fs.human.yk2hyeong.notice.vo.NoticeVO">
+        SELECT
+            NOTICE_ID       AS noticeId,
+            NOTICE_TITLE    AS noticeTitle,
+            NOTICE_CONTENT  AS noticeContent,
+            WRITER_ID       AS writerId,
+            CREATED_ID      AS createdId,
+            CREATED_DATE    AS createdDate,
+            UPDATED_ID      AS updatedId,
+            UPDATED_DATE    AS updatedDate
+        FROM TB_NOTICE
+        WHERE NOTICE_ID = #{noticeId}
+    </select>
+
+    <insert id="insertNotice" parameterType="fs.human.yk2hyeong.notice.vo.NoticeVO">
+        INSERT INTO TB_NOTICE (
+            NOTICE_ID, NOTICE_TITLE, NOTICE_CONTENT,
+            WRITER_ID, CREATED_ID, CREATED_DATE
+        ) VALUES (
+                     #{noticeId}, #{notice_Title}, #{notice_Content},
+                     #{writer_Id}, #{created_Id}, SYSDATE
+                 )
+    </insert>
+
+    <update id="updateNotice" parameterType="fs.human.yk2hyeong.notice.vo.NoticeVO">
+        UPDATE TB_NOTICE
+        SET
+            NOTICE_TITLE = #{notice_Title},
+            NOTICE_CONTENT = #{notice_Content},
+            UPDATED_ID = #{updated_Id},
+            UPDATED_DATE = SYSDATE
+        WHERE NOTICE_ID = #{noticeId}
+    </update>
+
+    <delete id="deleteNotice" parameterType="string">
+        DELETE FROM TB_NOTICE
+        WHERE NOTICE_ID = #{noticeId}
+    </delete>
+
+</mapper>

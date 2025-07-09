@@ -1,34 +1,67 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Button from "../common/Button";
+import Pagination from "../common/Pagination";
 import "./NoticeList.css";
 
-
-function NoticeList({ currentUser }) {
-    const [notices, setNotices] = useState([]);
+function NoticeList() {
+    const [noticeList, setNoticeList] = useState([]);
+    const [selectedIds, setSelectedIds] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [noticesPerPage] = useState(10);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const dummy = [
-            { notice_id: 5, notice_title: "안녕하세요", empl_id: "관리자", created_at: "2025-07-07"},
-            { notice_id: 4, notice_title: "작물 상품 관련", empl_id: "관리자", created_at: "2025-07-07"},
-            { notice_id: 3, notice_title: "2025년 VIP 상품 일정", empl_id: "관리자", created_at: "2025-07-07"},
-            { notice_id: 2, notice_title: "배송지 변경 공지", empl_id: "관리자", created_at: "2025-07-07"},
-            { notice_id: 1, notice_title: "2025/07/15 VIP 채용", empl_id: "관리자", created_at: "2025-07-07"},
-
-        ];
-        setNotices(dummy);
+        fetchNotices();
     }, []);
 
+    const fetchNotices = () => {
+        axios.get("/notice/all")
+            .then(res => setNoticeList(res.data))
+            .catch(err => console.error("공지사항 불러오기 실패:", err));
+    };
+
+    const handleCheckboxChange = (noticeId) => {
+        setSelectedIds(prev =>
+            prev.includes(noticeId)
+                ? prev.filter(id => id !== noticeId)
+                : [...prev, noticeId]
+        );
+    };
+
+    const handleDeleteSelected = async () => {
+        if (selectedIds.length === 0) {
+            alert("삭제할 항목을 선택해주세요.");
+            return;
+        }
+        const confirmed = window.confirm("정말 삭제하시겠습니까?");
+        if (!confirmed) return;
+
+        try {
+            for (const id of selectedIds) {
+                await axios.delete(`/notice/${id}`);
+            }
+            alert("삭제 완료");
+            setSelectedIds([]);
+            fetchNotices(); // 목록 갱신
+        } catch (err) {
+            console.error("삭제 실패:", err);
+            alert("삭제 중 오류가 발생했습니다.");
+        }
+    };
+
+    // 페이지 계산
+    const indexOfLast = currentPage * noticesPerPage;
+    const indexOfFirst = indexOfLast - noticesPerPage;
+    const currentNotices = noticeList.slice(indexOfFirst, indexOfLast);
 
     return (
         <div className="notice-container">
-            <h2>공지사항</h2>
+            <div className="notice-header">
+                <h2>공지사항</h2>
 
-            {currentUser?.role === "ADMIN" && (
-                <button className="notice-write-button" onClick={() => navigate("/notice/write")}>
-                    공지사항 등록
-                </button>
-            )}
+            </div>
 
             <table className="notice-table">
                 <thead>
@@ -36,23 +69,49 @@ function NoticeList({ currentUser }) {
                     <th>번호</th>
                     <th>제목</th>
                     <th>작성자</th>
-                    <th>등록일</th>
+                    <th>작성일</th>
+                    <th>선택</th>
                 </tr>
                 </thead>
                 <tbody>
-                {notices.map((notice) => (
-                    <tr key={notice.notice_id} onClick={() => navigate(`/notice/${notice.notice_id}`)}>
-                        <td>{notice.notice_id}</td>
-                        <td>{notice.notice_title}</td>
-                        <td>{notice.empl_id}</td>
-                        <td>{notice.created_at}</td>
+                {currentNotices.map((notice, index) => (
+                    <tr key={notice.noticeId}>
+
+                        <td>{noticeList.length - indexOfFirst - index}</td>
+                        <td
+                            className="notice-title-link"
+                            onClick={() => navigate(`/notice/${notice.noticeId}`)}
+                        >
+                            {notice.noticeTitle}
+                        </td>
+                        <td>{notice.writerId}</td>
+                        <td>{new Date(notice.createdDate).toLocaleDateString()}</td>
+                        <td>
+                            <input
+                                type="checkbox"
+                                checked={selectedIds.includes(notice.noticeId)}
+                                onChange={() => handleCheckboxChange(notice.noticeId)}
+                            />
+                        </td>
+
                     </tr>
                 ))}
                 </tbody>
             </table>
 
             <div className="notice-pagination">
-                <button className="page-button">1</button>
+                <Pagination
+                    currentPage={currentPage}
+                    totalPages={Math.ceil(noticeList.length / noticesPerPage)}
+                    onPageChange={(page) => setCurrentPage(page)}
+                />
+            </div>
+
+            <div style={{ textAlign: "right", marginTop: "16px" }}>
+                <Button onClick={() => navigate("/notice/write")} className="write-btn">글쓰기</Button>
+                <Button variant="secondary" onClick={handleDeleteSelected}>
+                    삭제하기
+                </Button>
             </div>
         </div>
     );
