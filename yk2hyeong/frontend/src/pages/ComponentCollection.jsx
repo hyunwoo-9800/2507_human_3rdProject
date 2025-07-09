@@ -27,6 +27,8 @@ import {
 import CustomStatistic from '../components/CustomStatistic';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import CustomTag from '../components/CustomTag';
+import CustomTable from '../components/CustomTable';
+import { Tag, Space } from 'antd';
 
 
 /**
@@ -231,6 +233,87 @@ function ComponentCollection() {
     //타이머 데드라인
     const deadline = Date.now() + 1000 * 60 * 60 * 24;
 
+    // 테이블
+    // columns 정의 예시
+    const columns = [
+        {
+            title: 'Name',
+            dataIndex: 'name',
+            key: 'name',
+            render: text => <a>{text}</a>,
+        },
+        {
+            title: 'Age',
+            dataIndex: 'age',
+            key: 'age',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+        },
+        {
+            title: 'Tags',
+            key: 'tags',
+            dataIndex: 'tags',
+            render: tags => (
+                <>
+                    {tags.map(tag => {
+                        let color = tag.length > 5 ? 'geekblue' : 'green';
+                        if (tag === 'loser') {
+                            color = 'volcano';
+                        }
+                        return (
+                            <Tag color={color} key={tag}>
+                                {tag.toUpperCase()}
+                            </Tag>
+                        );
+                    })}
+                </>
+            ),
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (_, record) => (
+                <Space size="middle">
+                    <a>Invite {record.name}</a>
+                    <a>Delete</a>
+                </Space>
+            ),
+        },
+    ];
+
+    const data = [
+        {
+            key: '1',
+            name: 'John Brown',
+            age: 32,
+            address: 'New York No. 1 Lake Park',
+            tags: ['nice', 'developer'],
+        },
+        {
+            key: '2',
+            name: 'Jim Green',
+            age: 42,
+            address: 'London No. 1 Lake Park',
+            tags: ['loser'],
+        },
+        {
+            key: '3',
+            name: 'Joe Black',
+            age: 32,
+            address: 'Sydney No. 1 Lake Park',
+            tags: ['cool', 'teacher'],
+        },
+    ];
+
+    const onSelectionChange = (selectedKeys, selectedRows) => {
+        console.log('Selected keys:', selectedKeys);
+        console.log('Selected rows:', selectedRows);
+        // 삭제 등 이벤트 처리 여기에 작성 가능
+    };
+
     return (
         <div style={{ padding: 20 }}>
             <h2>컴포넌트 미리보기</h2>
@@ -247,6 +330,7 @@ function ComponentCollection() {
                 <button onClick={() => setActiveTab('sidebar')} style={{ padding: '10px' }}>사이드바</button>
                 <button onClick={() => setActiveTab('statistic')} style={{ padding: '10px' }}>통계</button>
                 <button onClick={() => setActiveTab('tag')} style={{ padding: '10px' }}>태그</button>
+                <button onClick={() => setActiveTab('table')} style={{ padding: '10px' }}>테이블</button>
 
             </div>
 
@@ -1193,7 +1277,74 @@ cardProps={{ bordered: false }}/>`}
             )}
 
 
+            {/* 테이블 */}
+            {activeTab === 'table' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
+                    {/* 체크박스 테이블 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>체크박스 테이블</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomTable
+                                columns={columns}
+                                data={data}
+                                selectionType="checkbox"
+                                onSelectionChange={onSelectionChange}
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`상단에 import { Tag, Space } from 'antd';
+<CustomTable
+columns={columns}
+data={data}
+selectionType="checkbox"
+onSelectionChange={onSelectionChange}/>`}
+        </pre>
+                        </div>
+                    </div>
+
+
+                    {/* 라디오 테이블 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>라디오 테이블</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomTable
+                                columns={columns}
+                                data={data}
+                                selectionType="radio"
+                                onSelectionChange={onSelectionChange}
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`상단에 import { Tag, Space } from 'antd';
+<CustomTable
+columns={columns}
+data={data}
+selectionType="radio"
+onSelectionChange={onSelectionChange}/>`}
+        </pre>
+                        </div>
+                    </div>
+
+
+                </div>
+            )}
 
 
         </div>
