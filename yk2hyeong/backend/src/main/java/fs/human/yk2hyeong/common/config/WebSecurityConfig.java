@@ -42,7 +42,8 @@ public class WebSecurityConfig {
                                 "/member/**",           // 회원 관련 페이지
                                 "/member/join/**",      // 회원가입 폼
                                 "/product/**",           // 상품 관련 페이지
-                                "/notice/**"            // 공지사항
+                                "/notice/**",            // 공지사항
+                                "/css/**"               // 컴포넌트
 
                         ).permitAll() // 위 경로는 인증 없이 접근 허용
 

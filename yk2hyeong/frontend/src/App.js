@@ -13,6 +13,7 @@ import BuyerJoinForm from "./pages/member/BuyerJoinForm";
 import Login from "./pages/login/Login";
 import NoticePage from "./pages/notice/NoticePage";
 import NoticeDetail from "./components/notice/NoticeDetail";
+import ComponentCollection from "./pages/ComponentCollection";
 
 function App() {
   const [loginMember, setLoginMember] = useState(null);
@@ -64,6 +65,11 @@ function App() {
           <Route
             path="/notice/:id"
             element={<NoticeDetail></NoticeDetail>}
+          ></Route>
+
+          <Route
+              path="/css"
+              element={<ComponentCollection />}
           ></Route>
 
           </Routes>
