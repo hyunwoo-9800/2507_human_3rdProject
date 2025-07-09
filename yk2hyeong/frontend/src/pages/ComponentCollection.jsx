@@ -30,6 +30,8 @@ import CustomTag from '../components/CustomTag';
 import CustomTable from '../components/CustomTable';
 import { Tag, Space } from 'antd'; //테이블용
 import CustomModal from '../components/CustomModal';
+import CustomAlert from '../components/CustomAlert';
+import RollingAlert from '../components/RollingAlert';
 
 
 
@@ -329,6 +331,7 @@ function ComponentCollection() {
                 <button onClick={() => setActiveTab('tag')} style={{ padding: '10px' }}>태그</button>
                 <button onClick={() => setActiveTab('table')} style={{ padding: '10px' }}>테이블</button>
                 <button onClick={() => setActiveTab('modal')} style={{ padding: '10px' }}>모달</button>
+                <button onClick={() => setActiveTab('alert')} style={{ padding: '10px' }}>알림</button>
 
             </div>
 
@@ -1347,20 +1350,21 @@ onSelectionChange={onSelectionChange}/>`}
             {activeTab === 'modal' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-                    {/* 확인모달 */}
+                    {/* 경고모달 */}
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <h3>확인모달</h3>
+                        <h3>경고모달 + 취소/확인</h3>
                         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                             <CustomModal
-                                type="confirm"
-                                title="확인모달"
-                                content="뭔진 모르겠지만 일단 만듦"
-                                onCancel={() => console.log('삭제 취소')}
-                                onOk={() => console.log('삭제 확인')}
+                                type="warning"
+                                title="경고모달"
+                                content="취소랑 확인"
+                                onCancel={() => console.log('취소함')}
+                                onOk={() => console.log('확인함')}
                                 cancelMessage="취소되었습니다."
                                 successMessage="확인되었습니다."
-                                buttonLabel="Confirm"
+                                buttonLabel="경고"
                             />
+
                             <pre style={{
                                 marginLeft: 20,
                                 backgroundColor: '#f4f4f4',
@@ -1372,58 +1376,22 @@ onSelectionChange={onSelectionChange}/>`}
                                 overflowX: 'auto'
                             }}>
             {`<CustomModal
-type="confirm"
-title="확인모달"
-content="뭔진 모르겠지만 일단 만듦"
-onCancel={() => console.log('삭제 취소')}
-onOk={() => console.log('삭제 확인')}
+type="warning"
+title="경고모달"
+content="취소랑 확인"
+onCancel={() => console.log('취소함')}
+onOk={() => console.log('확인함')}
 cancelMessage="취소되었습니다."
 successMessage="확인되었습니다."
-buttonLabel="Confirm"/>`}
+buttonLabel="경고"/>`}
         </pre>
                         </div>
                     </div>
 
-
-                    {/* 정보 모달 */}
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <h3>정보 모달</h3>
-                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-                            <CustomModal
-                                type="info"
-                                title="정보 알림"
-                                content="이것은 정보성 메시지입니다."
-                                onOk={() => console.log('정보 확인')}
-                                buttonLabel="Info"
-                                buttonColor="info"
-                                showCancel={false}
-                            />
-
-                            <pre style={{
-                                marginLeft: 20,
-                                backgroundColor: '#f4f4f4',
-                                padding: '10px',
-                                borderRadius: '5px',
-                                fontSize: '14px',
-                                whiteSpace: 'pre-wrap',
-                                wordWrap: 'break-word',
-                                overflowX: 'auto'
-                            }}>
-            {`<CustomModal
-type="info"
-title="정보 알림"
-content="이것은 정보성 메시지입니다."
-onOk={() => console.log('정보 확인')}
-buttonLabel="Info"
-buttonColor="info"
-showCancel={false}/>`}
-        </pre>
-                        </div>
-                    </div>
 
                     {/* 경고 모달 */}
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <h3>경고 모달</h3>
+                        <h3>경고 모달 + 확인</h3>
                         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                             <CustomModal
                                 type="warning"
@@ -1458,6 +1426,41 @@ showCancel={false}/>`}
                     </div>
 
 
+                    {/* 정보 모달 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>정보 모달</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomModal
+                                type="info"
+                                title="정보 알림"
+                                content="이것은 정보성 메시지입니다."
+                                onOk={() => console.log('정보 확인')}
+                                buttonLabel="정보"
+                                showCancel={false}
+                            />
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomModal
+type="info"
+title="정보 알림"
+content="이것은 정보성 메시지입니다."
+onOk={() => console.log('정보 확인')}
+buttonLabel="정보"
+showCancel={false}/>`}
+        </pre>
+                        </div>
+                    </div>
+
+
                     {/* 에러 모달 */}
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <h3>에러 모달</h3>
@@ -1468,7 +1471,6 @@ showCancel={false}/>`}
                                 content="문제가 발생했습니다."
                                 onOk={() => console.log('오류 확인')}
                                 buttonLabel="Error"
-                                buttonColor="error"
                                 showCancel={false}   // 취소 버튼 노출 여부 (기본 true)
                             />
 
@@ -1488,7 +1490,6 @@ title="오류 발생"
 content="문제가 발생했습니다."
 onOk={() => console.log('오류 확인')}
 buttonLabel="Error"
-buttonColor="error"
 showCancel={false}/>`}
         </pre>
                         </div>
@@ -1507,7 +1508,6 @@ showCancel={false}/>`}
                                 successMessage="삭제되었습니다."
                                 cancelMessage="삭제가 취소되었습니다."
                                 buttonLabel="삭제"
-                                buttonColor="error"
                             />
 
                             <pre style={{
@@ -1528,18 +1528,64 @@ onCancel={() => console.log('삭제 취소')}
 onOk={() => console.log('삭제 처리 로직 실행')}
 successMessage="삭제되었습니다."
 cancelMessage="삭제가 취소되었습니다."
-buttonLabel="삭제"
-buttonColor="error"/>`}
+buttonLabel="삭제"/>`}
+        </pre>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* 알람 */}
+            {activeTab === 'alert' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+                    {/* 완료알람 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>알람</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomAlert type="success" message="완료되었습니다!" />
+                            <CustomAlert type="info" message="안내사항입니다." description="추가 정보를 확인하세요." />
+                            <CustomAlert type="warning" message="주의!" description="데이터를 확인하세요." closable />
+                            <CustomAlert type="error" message="오류 발생" />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomAlert type="success" message="완료되었습니다!" />
+<CustomAlert type="info" message="안내사항입니다." description="추가 정보를 확인하세요." />
+<CustomAlert type="warning" message="주의!" description="데이터를 확인하세요." closable />
+<CustomAlert type="error" message="오류 발생" />`}
         </pre>
                         </div>
                     </div>
 
 
+                    {/* 롤링알람 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>롤링알람</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <RollingAlert message="긴급공지: 오늘은 시스템 점검으로 일부 기능이 제한됩니다." />
 
-
-
-
-
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<RollingAlert message="긴급공지: 오늘은 시스템 점검으로 일부 기능이 제한됩니다." />`}
+        </pre>
+                        </div>
+                    </div>
                 </div>
             )}
 
