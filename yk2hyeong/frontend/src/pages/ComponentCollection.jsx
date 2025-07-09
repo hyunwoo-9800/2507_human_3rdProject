@@ -23,18 +23,15 @@ import {
     DesktopOutlined,
     MailOutlined,
     PieChartOutlined,
-} from '@ant-design/icons';
+} from '@ant-design/icons'; // 슬라이드바용 아이콘
 import CustomStatistic from '../components/CustomStatistic';
-import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'; // 통계용 아이콘
 import CustomTag from '../components/CustomTag';
 import CustomTable from '../components/CustomTable';
-import { Tag, Space } from 'antd';
+import { Tag, Space } from 'antd'; //테이블용
+import CustomModal from '../components/CustomModal';
 
 
-/**
- * 공통 컴포넌트 미리보기 페이지
- * 다양한 색상과 크기 버튼 예시를 한 번에 볼 수 있도록 구성
- */
 
 function ComponentCollection() {
 
@@ -331,6 +328,7 @@ function ComponentCollection() {
                 <button onClick={() => setActiveTab('statistic')} style={{ padding: '10px' }}>통계</button>
                 <button onClick={() => setActiveTab('tag')} style={{ padding: '10px' }}>태그</button>
                 <button onClick={() => setActiveTab('table')} style={{ padding: '10px' }}>테이블</button>
+                <button onClick={() => setActiveTab('modal')} style={{ padding: '10px' }}>모달</button>
 
             </div>
 
@@ -1341,11 +1339,209 @@ onSelectionChange={onSelectionChange}/>`}
         </pre>
                         </div>
                     </div>
+                </div>
+            )}
+
+
+            {/* 모달 */}
+            {activeTab === 'modal' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+                    {/* 확인모달 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>확인모달</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomModal
+                                type="confirm"
+                                title="확인모달"
+                                content="뭔진 모르겠지만 일단 만듦"
+                                onCancel={() => console.log('삭제 취소')}
+                                onOk={() => console.log('삭제 확인')}
+                                cancelMessage="취소되었습니다."
+                                successMessage="확인되었습니다."
+                                buttonLabel="Confirm"
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomModal
+type="confirm"
+title="확인모달"
+content="뭔진 모르겠지만 일단 만듦"
+onCancel={() => console.log('삭제 취소')}
+onOk={() => console.log('삭제 확인')}
+cancelMessage="취소되었습니다."
+successMessage="확인되었습니다."
+buttonLabel="Confirm"/>`}
+        </pre>
+                        </div>
+                    </div>
+
+
+                    {/* 정보 모달 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>정보 모달</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomModal
+                                type="info"
+                                title="정보 알림"
+                                content="이것은 정보성 메시지입니다."
+                                onOk={() => console.log('정보 확인')}
+                                buttonLabel="Info"
+                                buttonColor="info"
+                                showCancel={false}
+                            />
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomModal
+type="info"
+title="정보 알림"
+content="이것은 정보성 메시지입니다."
+onOk={() => console.log('정보 확인')}
+buttonLabel="Info"
+buttonColor="info"
+showCancel={false}/>`}
+        </pre>
+                        </div>
+                    </div>
+
+                    {/* 경고 모달 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>경고 모달</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomModal
+                                type="warning"
+                                title="주의하세요!"
+                                content="이 작업은 위험할 수 있습니다."
+                                onOk={() => console.log('경고 확인')}
+                                buttonLabel="Warning"
+                                buttonColor="warning"
+                                showCancel={false}
+                            />
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomModal
+type="warning"
+title="주의하세요!"
+content="이 작업은 위험할 수 있습니다."
+onOk={() => console.log('경고 확인')}
+buttonLabel="Warning"
+buttonColor="warning"
+showCancel={false}/>`}
+        </pre>
+                        </div>
+                    </div>
+
+
+                    {/* 에러 모달 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>에러 모달</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomModal
+                                type="error"
+                                title="오류 발생"
+                                content="문제가 발생했습니다."
+                                onOk={() => console.log('오류 확인')}
+                                buttonLabel="Error"
+                                buttonColor="error"
+                                showCancel={false}   // 취소 버튼 노출 여부 (기본 true)
+                            />
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomModal
+type="error"
+title="오류 발생"
+content="문제가 발생했습니다."
+onOk={() => console.log('오류 확인')}
+buttonLabel="Error"
+buttonColor="error"
+showCancel={false}/>`}
+        </pre>
+                        </div>
+                    </div>
+
+                    {/* 삭제 모달 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>삭제 모달</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomModal
+                                type="error"
+                                title="삭제"
+                                content="정말 삭제하시겠습니까?"
+                                onCancel={() => console.log('삭제 취소')}
+                                onOk={() => console.log('삭제 처리 로직 실행')}
+                                successMessage="삭제되었습니다."
+                                cancelMessage="삭제가 취소되었습니다."
+                                buttonLabel="삭제"
+                                buttonColor="error"
+                            />
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomModal
+type="error"
+title="삭제"
+content="정말 삭제하시겠습니까?"
+onCancel={() => console.log('삭제 취소')}
+onOk={() => console.log('삭제 처리 로직 실행')}
+successMessage="삭제되었습니다."
+cancelMessage="삭제가 취소되었습니다."
+buttonLabel="삭제"
+buttonColor="error"/>`}
+        </pre>
+                        </div>
+                    </div>
+
+
+
+
+
 
 
                 </div>
             )}
-
 
         </div>
     );
