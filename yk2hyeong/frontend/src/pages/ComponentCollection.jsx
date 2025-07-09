@@ -26,6 +26,7 @@ import {
 } from '@ant-design/icons';
 import CustomStatistic from '../components/CustomStatistic';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import CustomTag from '../components/CustomTag';
 
 
 /**
@@ -245,6 +246,7 @@ function ComponentCollection() {
                 <button onClick={() => setActiveTab('carousel')} style={{ padding: '10px' }}>배너</button>
                 <button onClick={() => setActiveTab('sidebar')} style={{ padding: '10px' }}>사이드바</button>
                 <button onClick={() => setActiveTab('statistic')} style={{ padding: '10px' }}>통계</button>
+                <button onClick={() => setActiveTab('tag')} style={{ padding: '10px' }}>태그</button>
 
             </div>
 
@@ -1022,10 +1024,176 @@ cardProps={{ bordered: false }}/>`}
         </pre>
                         </div>
                     </div>
-
-
                 </div>
             )}
+
+
+            {/* 태그 */}
+            {activeTab === 'tag' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+                    {/* 🎨 Ant Design에서 제공하는 기본 색상 태그 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>🎨 Ant Design에서 제공하는 기본 색상 태그</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomTag color="magenta" label="magenta" />
+                            <CustomTag color="red" label="red" />
+                            <CustomTag color="volcano" label="volcano" />
+                            <CustomTag color="orange" label="orange" />
+                            <CustomTag color="gold" label="gold" />
+                            <CustomTag color="lime" label="lime" />
+                            <CustomTag color="green" label="green" />
+                            <CustomTag color="cyan" label="cyan" />
+                            <CustomTag color="blue" label="blue" size="small" />
+                            <CustomTag color="geekblue" label="geekblue" size="default" />
+                            <CustomTag color="purple" label="purple" size="large" />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomTag color="magenta" label="magenta" />
+<CustomTag color="red" label="red" />
+<CustomTag color="volcano" label="volcano" />
+<CustomTag color="orange" label="orange" />
+<CustomTag color="gold" label="gold" />
+<CustomTag color="lime" label="lime" />
+<CustomTag color="green" label="green" />
+<CustomTag color="cyan" label="cyan" />
+<CustomTag color="blue" label="blue" size="small" />
+<CustomTag color="geekblue" label="geekblue" size="default "/>
+<CustomTag color="purple" label="purple" size="large" />`}
+        </pre>
+                        </div>
+                    </div>
+
+                    {/* 🎨 사용자 정의 Tailwind 기반 커스텀 색상 태그 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>🎨 사용자 정의 Tailwind 기반 커스텀 색상 태그</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomTag color="customPrimary" label="customPrimary" />
+                            <CustomTag color="customSecondary" label="customSecondary" />
+                            <CustomTag color="customAccent" label="customAccent" />
+                            <CustomTag color="customInfo" label="customInfo" />
+                            <CustomTag color="customSuccess" label="customSuccess" size="small" />
+                            <CustomTag color="customWarning" label="customWarning" size="default" />
+                            <CustomTag color="customError" label="customError" size="large" />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomTag color="customPrimary" label="customPrimary" />
+<CustomTag color="customSecondary" label="customSecondary" />
+<CustomTag color="customAccent" label="customAccent" />
+<CustomTag color="customInfo" label="customInfo" />
+<CustomTag color="customSuccess" label="customSuccess" size="small" />
+<CustomTag color="customWarning" label="customWarning" size="default" />
+<CustomTag color="customError" label="customError" size="large" />`}
+        </pre>
+                        </div>
+                    </div>
+
+
+                    {/* 상태 태그 (아이콘 없이) */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>상태 태그 (아이콘 없이)</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomTag color="success" label="success" />
+                            <CustomTag color="processing" label="processing" />
+                            <CustomTag color="error" label="error" />
+                            <CustomTag color="warning" label="warning" size="small" />
+                            <CustomTag color="default" label="default" size="large" />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomTag color="success" label="success" />
+<CustomTag color="processing" label="processing" />
+<CustomTag color="error" label="error" />
+<CustomTag color="warning" label="warning" size="small" />
+<CustomTag color="default" label="default" size="large" />`}
+        </pre>
+                        </div>
+                    </div>
+
+
+                    {/* ✅ 상태 태그 (아이콘 포함) */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>✅ 상태 태그 (아이콘 포함)</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomTag color="success" label="success" iconName="success" />
+                            <CustomTag color="processing" label="processing" iconName="processing" />
+                            <CustomTag color="error" label="error" iconName="error" />
+                            <CustomTag color="warning" label="warning" iconName="warning" />
+                            <CustomTag color="default" label="waiting" iconName="waiting" size="small" />
+                            <CustomTag color="default" label="stop" iconName="stop" size="large"/>
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomTag color="success" label="success" iconName="success" />
+<CustomTag color="processing" label="processing" iconName="processing" />
+<CustomTag color="error" label="error" iconName="error" />
+<CustomTag color="warning" label="warning" iconName="warning" />
+<CustomTag color="default" label="waiting" iconName="waiting" size="small" />
+<CustomTag color="default" label="stop" iconName="stop" size="large" />`}
+        </pre>
+                        </div>
+                    </div>
+
+                    {/* 📱 소셜 미디어 태그 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>📱 소셜 미디어 태그</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomTag color="#55acee" label="Twitter" iconName="twitter" />
+                            <CustomTag color="#cd201f" label="Youtube" iconName="youtube" />
+                            <CustomTag color="#3b5999" label="Facebook" iconName="facebook" size="small" />
+                            <CustomTag color="#55acee" label="LinkedIn" iconName="linkedin" size="large" />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`<CustomTag color="#55acee" label="Twitter" iconName="twitter" />
+<CustomTag color="#cd201f" label="Youtube" iconName="youtube" />
+<CustomTag color="#3b5999" label="Facebook" iconName="facebook" size="small" />
+<CustomTag color="#55acee" label="LinkedIn" iconName="linkedin" size="large" />`}
+        </pre>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+
+
 
 
         </div>

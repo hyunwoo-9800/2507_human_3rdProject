@@ -579,3 +579,24 @@ input + span {
     transform: translateY(-4px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
+
+.custom-tag-small {
+    font-size: 10px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0 6px;
+}
+
+.custom-tag-default {
+    font-size: 14px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 10px;
+}
+
+.custom-tag-large {
+    font-size: 18px;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 14px;
+}
