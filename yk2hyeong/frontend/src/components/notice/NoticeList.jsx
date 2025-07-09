@@ -9,7 +9,7 @@ function NoticeList() {
     const [noticeList, setNoticeList] = useState([]);
     const [selectedIds, setSelectedIds] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [noticesPerPage] = useState(5);
+    const [noticesPerPage] = useState(10);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -60,29 +60,23 @@ function NoticeList() {
         <div className="notice-container">
             <div className="notice-header">
                 <h2>공지사항</h2>
-                <Button onClick={() => navigate("/notice/write")}>글쓰기</Button>
+
             </div>
 
             <table className="notice-table">
                 <thead>
                 <tr>
-                    <th>선택</th>
                     <th>번호</th>
                     <th>제목</th>
                     <th>작성자</th>
                     <th>작성일</th>
+                    <th>선택</th>
                 </tr>
                 </thead>
                 <tbody>
                 {currentNotices.map((notice, index) => (
                     <tr key={notice.noticeId}>
-                        <td>
-                            <input
-                                type="checkbox"
-                                checked={selectedIds.includes(notice.noticeId)}
-                                onChange={() => handleCheckboxChange(notice.noticeId)}
-                            />
-                        </td>
+
                         <td>{noticeList.length - indexOfFirst - index}</td>
                         <td
                             className="notice-title-link"
@@ -92,6 +86,14 @@ function NoticeList() {
                         </td>
                         <td>{notice.writerId}</td>
                         <td>{new Date(notice.createdDate).toLocaleDateString()}</td>
+                        <td>
+                            <input
+                                type="checkbox"
+                                checked={selectedIds.includes(notice.noticeId)}
+                                onChange={() => handleCheckboxChange(notice.noticeId)}
+                            />
+                        </td>
+
                     </tr>
                 ))}
                 </tbody>
@@ -106,6 +108,7 @@ function NoticeList() {
             </div>
 
             <div style={{ textAlign: "right", marginTop: "16px" }}>
+                <Button onClick={() => navigate("/notice/write")} className="write-btn">글쓰기</Button>
                 <Button variant="secondary" onClick={handleDeleteSelected}>
                     삭제하기
                 </Button>
