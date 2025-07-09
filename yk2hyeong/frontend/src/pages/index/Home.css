@@ -1,0 +1,258 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css');
+* {
+    box-sizing: border-box;
+}
+.banner{
+    width: 100%;
+    position: relative;
+    height: 250px;
+}
+.banner-img{
+    display: block;
+    width: 100%;
+    height: 250px;
+}
+.banner button{
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50px;
+    border: 0px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.banner button:hover{
+    background-color: rgba(200, 255, 100, 0.5);
+    color: white;
+}
+.left-scroll-btn{
+    left: 15px;
+}
+.right-scroll-btn{
+    right: 15px;
+}
+.main-content{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: stretch;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+.left-content{
+    width: 45%;
+}
+
+/*시세추이*/
+.trendy-price{
+    position: relative;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    padding: 12px 16px;
+}
+.trendy-price h1,
+.trendy-price p {
+    margin: 0;
+}
+.trendy-price h1 {
+    font-size: 1.1em;
+}
+
+.trendy-price p {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.trendy-price h1,
+.trendy-price p {
+    display: inline-block;
+}
+.trendy-price-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.trendy-price {
+    position: relative;
+    min-height: 400px;
+    background-color: #E6F9D5;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.trendy-price:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.trendy-price h1 {
+    float: left;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    font-size: 25px;
+    line-height: 40px;
+}
+
+.trendy-price p {
+    float: right;
+    margin-right: 10px;
+    font-size: 16px;
+    line-height: 40px;
+}
+
+.trendy-price-content {
+    clear: both;
+    margin-top: 8px;
+    background-color: #fff;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    height: 300px;
+    border-top: 2px solid #cfcfcf;
+}
+
+.trendy-price-content hr {
+    margin: 4px 0 8px;
+    border: none;
+    border-top: 1px solid #eee;
+}
+
+.trendy-price-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.trendy-price-table th {
+    font-size: 0.85em;
+    color: #666;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.trendy-price-table td {
+    font-size: 0.85em;
+    padding: 4px 0;
+    padding-top: 10px;
+}
+
+.up {
+    color: red;
+}
+.down {
+    color: blue;
+}
+
+/*오른쪽 카드*/
+.rignt-content{
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+/* 공통 카드 스타일 */
+.brand-leader,
+.notice-board {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    padding: 12px 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.brand-leader h1,
+.notice-board h1 {
+    font-size: 1.1em;
+    margin: 0 0 8px 0;
+}
+.brand-leader-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.brand-leader-content li {
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.brand-leader-content li:last-child {
+    border-bottom: none;
+}
+/* 공지사항 더보기 header */
+.notice-board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notice-board-header p {
+    font-size: 0.9em;
+    color: #888;
+    margin: 0;
+}
+
+/* 공지사항 ul li */
+.notice-board-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.notice-board-content li {
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.notice-board-content li:last-child {
+    border-bottom: none;
+}
+
+.brand-leader{
+    background-color: #E6F9D5;
+}
+.brand-leader-content{
+    background-color: #fff;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top: 2px solid #cfcfcf;
+}
+.brand-leader:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.notice-board{
+    background-color: #E6F9D5;
+}
+.notice-board-content{
+    background-color: #fff;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top: 2px solid #cfcfcf;
+}
+.notice-board:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+.brand-leader-content li,
+.notice-board-content li {
+    padding: 8px 0;
+    text-indent: 20px;
+}
+li{
+    transition: transform 0.2s ease, background-color 0.3s ease;
+    border-radius: 50px;
+}
+li:hover{
+    background-color: #eefce6;
+}
+.brand-leader-content,
+.notice-board-content{
+    margin-bottom: 3px;
+}
+a {
+    text-decoration: none;
+}

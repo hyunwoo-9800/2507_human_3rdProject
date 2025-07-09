@@ -14,6 +14,7 @@ import Login from "./pages/login/Login";
 import NoticePage from "./pages/notice/NoticePage";
 import NoticeDetail from "./components/notice/NoticeDetail";
 import ComponentCollection from "./pages/ComponentCollection";
+import Mypage from "./pages/mypage/Mypage";
 
 function App() {
   const [loginMember, setLoginMember] = useState(null);
@@ -44,6 +45,7 @@ function App() {
           <Route path="/member" element={<Member></Member>}></Route>
           <Route path="/product" element={<Product></Product>}></Route>
           <Route path="/login" element={<Login></Login>}></Route>
+          <Route path="/mypage" element={<Mypage></Mypage>}></Route>
           <Route
             path="/member/join"
             element={<JoinSelect></JoinSelect>}
