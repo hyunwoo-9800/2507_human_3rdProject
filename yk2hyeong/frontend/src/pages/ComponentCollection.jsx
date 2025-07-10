@@ -836,55 +836,120 @@ buttonText="Upload Files"/>`}
             {/* 카드 */}
             {activeTab === 'cards' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-                    {/* 수직카드 */}
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <CustomCard
-                            title="Europe Street beat"
-                            description="www.instagram.com"
-                            image="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                            layout="column"
-                        />
-                        <pre style={{
-                            marginLeft: 20,
-                            backgroundColor: '#f4f4f4',
-                            padding: '10px',
-                            borderRadius: '5px',
-                            fontSize: '14px',
-                            whiteSpace: 'pre-wrap',  // 긴 줄이 줄바꿈되도록 설정
-                            wordWrap: 'break-word',  // 단어 단위로 줄바꿈
-                            overflowX: 'auto'  // 가로 스크롤 추가
-                        }}>
-                                {`<CustomCard title="Europe Street beat"
-description="www.instagram.com"
-image="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-layout="column"/>`}
-                            </pre>
+                    {/* 아이템카드 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3> 즐겨찾기 + 즉시 + 예약</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomCard
+                                image="/static/images/tomato.png"
+                                company="천안청과(주)"
+                                productName="스테비아 방울토마토"
+                                price={10500}
+                                minQuantity={100}
+                                immediatePurchase={true}
+                                reservationPurchase={true}
+                                favorite={true}
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {`< CustomCard
+image="/static/images/tomato.png"
+company="천안청과(주)"
+productName="스테비아 방울토마토"
+price={10500}
+minQuantity={100}
+immediatePurchase={true}
+reservationPurchase={true}
+favorite={true} />
+`}
+        </pre>
+                        </div>
                     </div>
 
-                    {/* 수평카드 */}
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <CustomCard
-                            title="Europe Street beat"
-                            description="www.instagram.com"
-                            image="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                            layout="row"
-                        />
-                        <pre style={{
-                            marginLeft: 20,
-                            backgroundColor: '#f4f4f4',
-                            padding: '10px',
-                            borderRadius: '5px',
-                            fontSize: '14px',
-                            whiteSpace: 'pre-wrap',  // 긴 줄이 줄바꿈되도록 설정
-                            wordWrap: 'break-word',  // 단어 단위로 줄바꿈
-                            overflowX: 'auto'  // 가로 스크롤 추가
-                        }}>
-                                {`<CustomCard title="Europe Street beat" 
-description="www.instagram.com"
-image="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" 
-layout="row"/>`}
-                            </pre>
+                    {/* 즐겨찾기x + 즉시 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>즐겨찾기x + 즉시 </h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomCard
+                                image="/static/images/tomato.png"
+                                company="천안청과(주)"
+                                productName="스테비아 방울토마토"
+                                price={10500}
+                                minQuantity={100}
+                                immediatePurchase={true}
+                                reservationPurchase={false}
+                                favorite={false}
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+{`< CustomCard
+image="/static/images/tomato.png"
+company="천안청과(주)"
+productName="스테비아 방울토마토"
+price={10500}
+minQuantity={100}
+immediatePurchase={true}
+reservationPurchase={false}
+favorite={false} />
+`}
+        </pre>
+                        </div>
                     </div>
+
+                    {/* 즐겨찾기x + 예약 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>즐겨찾기x + 예약</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomCard
+                                image="/static/images/tomato.png"
+                                company="천안청과(주)"
+                                productName="스테비아 방울토마토"
+                                price={10500}
+                                minQuantity={100}
+                                immediatePurchase={false}
+                                reservationPurchase={true}
+                                favorite={false}
+                            />
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {` <CustomCard
+image="/static/images/tomato.png"
+company="천안청과(주)"
+productName="스테비아 방울토마토"
+price={10500}
+minQuantity={100}
+immediatePurchase={false}
+reservationPurchase={true}
+favorite={false} />
+`}
+        </pre>
+                        </div>
+                    </div>
+
                 </div>
             )}
 

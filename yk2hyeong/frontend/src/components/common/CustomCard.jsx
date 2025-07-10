@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Card, Tag } from 'antd';
 const { Meta } = Card;
 
 const CustomCard = ({
@@ -7,7 +7,14 @@ const CustomCard = ({
                         description = '',
                         image = '',
                         layout = 'column', // 'column' or 'row'
-                        width = 240,
+                        width = 320,
+                        company = '',
+                        productName = '',
+                        price = 0,
+                        minQuantity = 0,
+                        immediatePurchase = false,
+                        reservationPurchase = false,
+                        favorite = false,
                         ...rest
                     }) => {
     const isRow = layout === 'row';
@@ -39,22 +46,71 @@ const CustomCard = ({
                     style={{
                         width: isRow ? 100 : '100%',
                         height: isRow ? 'auto' : 'auto',
-                        objectFit: 'contain', // 잘리지 않고 비율 유지
+                        objectFit: 'contain',
                         borderRadius: 4,
                     }}
                 />
             )}
-            <Meta
-                title={title}
-                description={description}
-                style={{
-                    marginLeft: isRow ? 16 : 0,
-                    marginTop: isRow ? 0 : 12,
-                    flexGrow: 1,
-                    wordBreak: 'break-word',  // 긴 텍스트 줄바꿈
-                    minWidth: 0,  // flex-grow 텍스트 오버플로우 방지용
-                }}
-            />
+            <div style={{ flexGrow: 1, marginLeft: isRow ? 16 : 0, marginTop: isRow ? 0 : 12 }}>
+                {/* 즐겨찾기 별 아이콘 */}
+                {favorite && (
+                    <div style={{ position: 'absolute', top: 10, right: 10, fontSize: 24 }}>⭐</div>
+                )}
+
+                {/* 회사명 + 상품명 */}
+                <div style={{ fontSize: 16, fontWeight: 'bold', lineHeight: 1.4 }}>
+                    {company && <div>{company}</div>}
+                    {productName && <div>{productName}</div>}
+                </div>
+
+                {/* 가격 + 구매 버튼들 */}
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginTop: 8,
+                    }}
+                >
+                    <div style={{ fontSize: 20, fontWeight: 'bold' }}>{price.toLocaleString()}원</div>
+                    <div>
+                        {immediatePurchase && (
+                            <span
+                                style={{
+                                    backgroundColor: '#ff6699',
+                                    color: 'white',
+                                    borderRadius: 4,
+                                    padding: '4px 8px',
+                                    marginLeft: 4,
+                                    fontSize: 14,
+                                }}
+                            >
+                                즉시
+                            </span>
+                        )}
+                        {reservationPurchase && (
+                            <span
+                                style={{
+                                    backgroundColor: '#3366cc',
+                                    color: 'white',
+                                    borderRadius: 4,
+                                    padding: '4px 8px',
+                                    marginLeft: 4,
+                                    fontSize: 14,
+                                }}
+                            >
+                                예약
+                            </span>
+                        )}
+                    </div>
+                </div>
+
+
+                {/* 최소 구매수량 */}
+                <div style={{ marginTop: 10, fontSize: 14, color: '#555' }}>
+                    최소구매수량 <b>{minQuantity}</b>
+                </div>
+            </div>
         </Card>
     );
 };
