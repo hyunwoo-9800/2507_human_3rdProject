@@ -5,5 +5,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="fs.human.yk2hyeong.admin.dao.AdminDAO">
-
+    <select id="selectPendingProducts" resultType="fs.human.yk2hyeong.vo.ProductVO">
+        SELECT
+            PRODUCT_ID as productId,
+            PRODUCT_NAME as productName,
+            PRODUCT_DESCRIPTION as productDescription,
+            PRODUCT_STOCK_QTY as productStockQty,
+            PRODUCT_UNIT_PRICE as productUnitPrice,
+            SELL_MEMBER_ID as sellMemberId
+        FROM TB_PRODUCT
+        WHERE PRODUCT_STATUS = 'PENDING'
+    </select>
 </mapper>

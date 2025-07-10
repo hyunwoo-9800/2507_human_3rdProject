@@ -12,7 +12,6 @@ const AdminContent = ({ activeItem }) => {
 
             {isFormTab ? <FormTab /> : <TableTab />}
 
-            <button className="delete-btn">게시글 삭제</button>
         </div>
     );
 };

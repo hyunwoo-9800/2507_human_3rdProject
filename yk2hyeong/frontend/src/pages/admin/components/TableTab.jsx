@@ -1,6 +1,9 @@
 import React from "react";
 
 function TableTab(){
+    //테이블 게시글 리스트(추후 db연결)
+
+
     return (
         <div className="report-check-tab">
             <h2>신고관리 &gt; 신고확인</h2>

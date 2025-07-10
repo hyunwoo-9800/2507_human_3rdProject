@@ -1,5 +1,10 @@
 package fs.human.yk2hyeong.admin.service;
 
+import fs.human.yk2hyeong.product.vo.ProductVO;
+
+import java.util.List;
+
 // 관리자 서비스 인터페이스
 public interface AdminService {
+    List<ProductVO> getPendingProduct();
 }

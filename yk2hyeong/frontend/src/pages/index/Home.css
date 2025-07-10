@@ -255,6 +255,7 @@ li:hover{
 }
 a {
     text-decoration: none;
+    color: black;
 }
 
 .notice-board-content a:visited {
