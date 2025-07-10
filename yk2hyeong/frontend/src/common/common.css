@@ -557,6 +557,8 @@ input + span {
     content: '';
 }
 
+
+/* 사이드바 */
 /* 선택된 메뉴 아이템 배경색, 글자색 변경 */
 .ant-menu-light .ant-menu-item-selected {
     background-color: #d0f0c0 !important; /* 연한 초록 (연두빛) */
@@ -567,6 +569,67 @@ input + span {
 .ant-menu-light .ant-menu-item-selected:hover {
     background-color: #b3d89c !important;
     color: #2e5a33 !important;
+}
+
+/* 상위 메뉴 제목 (부모 메뉴) 배경색 모두 제거 */
+.admin-sidebar .ant-menu-submenu-title:hover,
+.admin-sidebar .ant-menu-submenu-open > .ant-menu-submenu-title,
+.admin-sidebar .ant-menu-submenu-active > .ant-menu-submenu-title {
+    background-color: transparent !important;
+}
+
+/* 하위 메뉴 아이템은 호버 시 배경색 유지 */
+.admin-sidebar .ant-menu-item:hover {
+    background-color: #d0f0c0 !important; /* 원하는 연한 초록색 */
+}
+
+/* 하위 메뉴 선택된 아이템 스타일 유지 */
+.admin-sidebar .ant-menu-item-selected {
+    background-color: #d0f0c0 !important;
+    color: #3a7d44 !important;
+}
+
+.admin-sidebar .ant-menu-item-selected:hover {
+    background-color: #b3d89c !important;
+    color: #2e5a33 !important;
+}
+
+/* 상위 메뉴 텍스트 스타일 */
+.admin-sidebar .ant-menu-submenu-title {
+    padding-left: 24px !important; /* 기본보다 왼쪽 여백 더 줌 */
+    font-weight: 700; /* 글씨 굵게 */
+    cursor: default; /* 호버시 포인터 커서 안 나오게 */
+}
+
+
+.admin-sidebar .ant-menu-submenu-title {
+    background-color: transparent !important;
+    transition: none !important; /* 애니메이션 제거 (필요시) */
+}
+
+.admin-sidebar .ant-menu-submenu-title:hover {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+/* 상위 메뉴 전체(.ant-menu-submenu) 호버 시 배경색 제거 */
+.admin-sidebar .ant-menu-submenu:hover {
+    background-color: transparent !important;
+}
+
+/* 상위 메뉴 전체 열렸을 때 배경색 제거 */
+.admin-sidebar .ant-menu-submenu-open {
+    background-color: transparent !important;
+}
+
+/* 상위 메뉴 전체 활성 상태일 때 배경색 제거 */
+.admin-sidebar .ant-menu-submenu-active {
+    background-color: transparent !important;
+}
+
+/* 메뉴 아이콘 왼쪽 여백 줄이기 */
+.admin-sidebar .ant-menu-item-icon {
+    margin-left: 4px !important; /* 기본보다 작게 조정 */
 }
 
 

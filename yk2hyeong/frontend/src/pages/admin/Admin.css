@@ -173,3 +173,21 @@
 thead span{
     font-size: 5px;
 }
+
+.admin-container {
+    display: flex; /* 수평 정렬 */
+    height: 100vh;
+}
+
+.admin-sidebar {
+    width: 256px;
+    /*background-color: #f0f2f5;*/
+    /*padding: 16px;*/
+}
+
+.admin-content {
+    flex: 1;
+    padding: 24px;
+    background-color: #fff;
+}
+
