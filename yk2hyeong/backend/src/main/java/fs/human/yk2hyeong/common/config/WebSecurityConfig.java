@@ -44,7 +44,9 @@ public class WebSecurityConfig {
                                 "/product/**",           // 상품 관련 페이지
                                 "/notice/**",            // 공지사항
                                 "/api/notice/**",        // 공지사항 api
-                                "/css/**"               // 컴포넌트
+                                "/css/**",               // 컴포넌트
+                                "/mypage/**",              //마이페이지
+                                "/admin/**"                //관리자페이지
 
                         ).permitAll() // 위 경로는 인증 없이 접근 허용
 
