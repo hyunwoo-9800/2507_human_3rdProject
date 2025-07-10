@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { InputNumber } from 'antd';
+import '../common/common.css'
 
 const CustomInputNumber = ({
                                     defaultValue = 0,

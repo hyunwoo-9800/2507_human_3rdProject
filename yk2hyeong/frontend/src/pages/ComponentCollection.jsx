@@ -4,6 +4,7 @@ import Badge from '../components/common/Badge'; // 뱃지
 import Input from '../components/common/Input' // 입력창
 import Textarea from '../components/common/Textarea' // textarea
 import Radio from '../components/common/Radio' // 라디오
+import CustomRadio from '../components/common/CustomRadio';
 import Checkbox from '../components/common/Checkbox' // 체크박스
 import TwoLevelSelect from '../components/common/TwoLevelSelect'; // 2단 셀렉트
 import CustomBreadcrumb  from '../components/common/CustomBreadcrumb'; // 브레드크럼(경로)
@@ -81,6 +82,19 @@ function ComponentCollection() {
     // 라디오
     const handleRadioChange = (e) => {
         setSelectedValue(e.target.value);
+    };
+
+    const [orderType, setOrderType] = useState('immediate');
+
+    const orderOptions = {
+        immediate: true,
+        reservation: true,
+        reserveRate: 30,
+    };
+
+    const onOrderTypeChange = (value) => {
+        console.log('선택된 타입:', value);
+        // 필요한 추가 로직 여기에 작성
     };
 
     // 체크박스
@@ -619,6 +633,7 @@ allowClear placeholder="과일을 선택하세요"/>`}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Radio
                             value="option1"
+                            label="1번"
                             checked={selectedValue === 'option1'}
                             onChange={handleRadioChange}
                             name="group1"
@@ -627,7 +642,7 @@ allowClear placeholder="과일을 선택하세요"/>`}
 
 
                         <pre style={{ marginLeft: 20, backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px', fontSize: '14px' }}>
-                {`<Radio value="option1" checked={selectedValue === 'option1'} onChange={handleRadioChange} name="group1" color="primary"/>`}
+                {`<Radio value="option1" label="1번" checked={selectedValue === 'option1'} onChange={handleRadioChange} name="group1" color="primary"/>`}
             </pre>
                     </div>
 
@@ -635,6 +650,7 @@ allowClear placeholder="과일을 선택하세요"/>`}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Radio
                             value="option2"
+                            label="2번"
                             checked={selectedValue === 'option2'}
                             onChange={handleRadioChange}
                             name="group1"
@@ -643,21 +659,54 @@ allowClear placeholder="과일을 선택하세요"/>`}
 
 
                         <pre style={{ marginLeft: 20, backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px', fontSize: '14px' }}>
-                {`<Radio value="option2" checked={selectedValue === 'option2'} onChange={handleRadioChange} name="group1" color="black"/>`}
+                {`<Radio value="option2" label="2번" checked={selectedValue === 'option2'} onChange={handleRadioChange} name="group1" color="black"/>`}
             </pre>
                     </div>
+
+                    {/* ant design 라디오 버튼 */}
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <CustomRadio
+                            value={orderType}
+                            onChange={(val) => {
+                                setOrderType(val);
+                                onOrderTypeChange(val);
+                            }}
+                            options={[
+                                ...(orderOptions.immediate ? [{ label: '즉시 구매', value: 'immediate' }] : []),
+                                ...(orderOptions.reservation ? [{ label: '예약 구매', value: 'reservation' }] : []),
+                            ]}
+                            name="orderType"
+                        />
+
+
+                        <pre style={{ marginLeft: 20, backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px', fontSize: '14px' }}>
+                {` < CustomRadio
+value={orderType}
+onChange={(val) => {
+    setOrderType(val);
+    onOrderTypeChange(val);
+}}
+options={[
+    ...(orderOptions.immediate ? [{ label: '즉시 구매', value: 'immediate' }] : []),
+    ...(orderOptions.reservation ? [{ label: '예약 구매', value: 'reservation' }] : []),
+]}
+name="orderType" />`}
+            </pre>
+                    </div>
+
 
                     {/* 기본(primary) 체크박스 */}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Checkbox
                             value="check1"
+                            label="이용약관에 동의합니다"
                             checked={checkedValues.includes('check1')}
                             onChange={handleCheckboxChange}
                             color="primary" // 색상은 color prop으로 지정
                         />
 
                         <pre style={{ marginLeft: 20, backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px', fontSize: '14px' }}>
-                {`<Checkbox value="check1" checked={checkedValues.includes('check1')} onChange={handleCheckboxChange} color="primary"/>`}
+                {`<Checkbox value="check1" label="이용약관에 동의합니다" checked={checkedValues.includes('check1')} onChange={handleCheckboxChange} color="primary"/>`}
             </pre>
                     </div>
 
@@ -665,13 +714,14 @@ allowClear placeholder="과일을 선택하세요"/>`}
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <Checkbox
                             value="check2"
+                            label="라벨입니다"
                             checked={checkedValues.includes('check2')}
                             onChange={handleCheckboxChange}
                             color="black" // 검정색(black) 색상
                         />
 
                         <pre style={{ marginLeft: 20, backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px', fontSize: '14px' }}>
-                {`<Checkbox value="check2" checked={checkedValues.includes('check2')} onChange={handleCheckboxChange} color="black"/> `}
+                {`<Checkbox value="check2" label="라벨입니다" checked={checkedValues.includes('check2')} onChange={handleCheckboxChange} color="black"/> `}
             </pre>
                     </div>
                 </div>
@@ -960,10 +1010,9 @@ favorite={false} />
 
                     {/* 상품상세 */}
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <h3>상품상세</h3>
+                        <h3>상품상세 + 즉시구매 , 예약구매</h3>
                         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                             <CustomDetailCard
-
                                 productName="스테비아 방울토마토"
                                 productCode="P250703-000121"
                                 quantity={239994}
@@ -973,12 +1022,17 @@ favorite={false} />
                                 releaseDate="2026년 7월 4일"
                                 minOrder={100}
                                 defaultQuantity={100}
-                                defaultOrderType="reservation"
+                                defaultOrderType="immediate"
                                 images={[
-                                    '/static/images/tomato.png/',
+                                    '/static/images/tomato.png',
                                     '/static/images/tomato.png',
                                     '/static/images/tomato.png'
                                 ]}
+                                orderOptions={{
+                                    immediate: true,
+                                    reservation: true,
+                                    reserveRate: 30,
+                                }}
                                 onQuantityChange={(q) => console.log("변경된 수량:", q)}
                                 onOrderTypeChange={(t) => console.log("선택된 타입:", t)}
                                 onOrder={(info) => console.log("주문 정보:", info)}
@@ -995,32 +1049,169 @@ favorite={false} />
                                 overflowX: 'auto'
                             }}>
             {` <CustomDetailCard
-  productName="스테비아 방울토마토"
-  productCode="P250703-000121"
-  quantity={239994}
-  shippingRegion="전체"
-  availableDate="판매자 문의"
-  price={10500}
-  releaseDate="2026년 7월 4일"
-  minOrder={100}
-  orderType="reservation"
-  orderQuantity={101}
-  favorite={true}
-  images={[
-    '/images/tomato1.png',
-    '/images/tomato2.png',
-    '/images/tomato3.png',
-    '/images/tomato4.png',
-  ]}
-  onQuantityChange={(q) => console.log('New Quantity:', q)}
-  onOrder={() => alert('예약 완료')}
-/>
-
+productName="스테비아 방울토마토"
+productCode="P250703-000121"
+quantity={239994}
+shippingRegion="전체"
+availableDate="판매자 문의"
+price={10500}
+releaseDate="2026년 7월 4일"
+minOrder={100}
+defaultQuantity={100}
+defaultOrderType="immediate"
+images={[
+    '/static/images/tomato.png',
+    '/static/images/tomato.png',
+    '/static/images/tomato.png'
+]}
+orderOptions={{
+    immediate: true,
+    reservation: true,
+    reserveRate: 30,
+}}
+onQuantityChange={(q) => console.log("변경된 수량:", q)}
+onOrderTypeChange={(t) => console.log("선택된 타입:", t)}
+onOrder={(info) => console.log("주문 정보:", info)} />
 `}
         </pre>
                         </div>
                     </div>
 
+                    {/* 상품상세 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>상품상세 + 예약구매</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomDetailCard
+                                productName="스테비아 방울토마토"
+                                productCode="P250703-000121"
+                                quantity={239994}
+                                shippingRegion="전체"
+                                availableDate="판매자 문의"
+                                price={10500}
+                                releaseDate="2026년 7월 4일"
+                                minOrder={100}
+                                defaultQuantity={100}
+                                defaultOrderType="reservation"
+                                images={[
+                                    '/static/images/tomato.png',
+                                    '/static/images/tomato.png',
+                                    '/static/images/tomato.png'
+                                ]}
+                                orderOptions={{
+                                    immediate: false,
+                                    reservation: true,
+                                    reserveRate: 30,
+                                }}
+                                onQuantityChange={(q) => console.log("변경된 수량:", q)}
+                                onOrderTypeChange={(t) => console.log("선택된 타입:", t)}
+                                onOrder={(info) => console.log("주문 정보:", info)}
+                            />
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {` <CustomDetailCard
+productName="스테비아 방울토마토"
+productCode="P250703-000121"
+quantity={239994}
+shippingRegion="전체"
+availableDate="판매자 문의"
+price={10500}
+releaseDate="2026년 7월 4일"
+minOrder={100}
+defaultQuantity={100}
+defaultOrderType="reservation"
+images={[
+    '/static/images/tomato.png',
+    '/static/images/tomato.png',
+    '/static/images/tomato.png'
+]}
+orderOptions={{
+    immediate: false,
+    reservation: true,
+    reserveRate: 30,
+}}
+onQuantityChange={(q) => console.log("변경된 수량:", q)}
+onOrderTypeChange={(t) => console.log("선택된 타입:", t)}
+onOrder={(info) => console.log("주문 정보:", info)} />
+`}
+        </pre>
+                        </div>
+                    </div>
+
+                    {/* 상품상세 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>상품상세 + 즉시구매</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomDetailCard
+                                productName="스테비아 방울토마토"
+                                productCode="P250703-000121"
+                                quantity={239994}
+                                shippingRegion="전체"
+                                availableDate="판매자 문의"
+                                price={10500}
+                                releaseDate="2026년 7월 4일"
+                                minOrder={100}
+                                defaultQuantity={100}
+                                defaultOrderType="immediate"
+                                images={[
+                                    '/static/images/tomato.png',
+                                    '/static/images/tomato.png',
+                                    '/static/images/tomato.png'
+                                ]}
+                                orderOptions={{
+                                    immediate: true,
+                                    reservation: false,
+                                }}
+                                onQuantityChange={(q) => console.log("변경된 수량:", q)}
+                                onOrderTypeChange={(t) => console.log("선택된 타입:", t)}
+                                onOrder={(info) => console.log("주문 정보:", info)}
+                            />
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {` <CustomDetailCard
+productName="스테비아 방울토마토"
+productCode="P250703-000121"
+quantity={239994}
+shippingRegion="전체"
+availableDate="판매자 문의"
+price={10500}
+releaseDate="2026년 7월 4일"
+minOrder={100}
+defaultQuantity={100}
+defaultOrderType="immediate"
+images={[
+    '/static/images/tomato.png',
+    '/static/images/tomato.png',
+    '/static/images/tomato.png'
+]}
+orderOptions={{
+    immediate: true,
+    reservation: false,
+}}
+onQuantityChange={(q) => console.log("변경된 수량:", q)}
+onOrderTypeChange={(t) => console.log("선택된 타입:", t)}
+onOrder={(info) => console.log("주문 정보:", info)} />
+`}
+        </pre>
+                        </div>
+                    </div>
 
                 </div>
             )}

@@ -1,18 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import '../../common/common.css';  // 기존 스타일링 파일을 참조
+import '../../common/common.css';
 
-/**
- * 공통 Radio 컴포넌트
- * @param {string} value 선택값
- * @param {boolean} checked 선택 여부
- * @param {function} onChange 선택값이 변경될 때 호출되는 함수
- * @param {string} name 그룹 이름 (같은 name을 가진 radio는 하나만 선택됨)
- * @param {boolean} disabled radio를 비활성화할지 여부
- * @param {boolean} required 필수 입력 필드 여부
- * @param {string} className 추가 클래스명 (옵션)
- * @param {*} rest 기타 props (aria-* 등)
- */
 function Radio({
                    value,
                    checked,
@@ -20,18 +9,28 @@ function Radio({
                    name,
                    disabled = false,
                    required = false,
-                   color = 'primary', // ← 추가
+                   color = 'primary',
                    className = '',
+                   label,
                    ...rest
                }) {
-    const classes = `input-radio ${color} ${className}`.trim(); // ← color 포함
+    const inputRef = useRef();
+
+    // 강제 동기화: checked 상태 변경될 때마다 DOM에 반영되게
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.checked = checked;
+        }
+    }, [checked]);
+
+    const classes = `input-radio ${color} ${className}`.trim();
 
     return (
-        <label>
+        <label className="radio-label">
             <input
+                ref={inputRef}
                 type="radio"
                 value={value}
-                checked={checked}
                 onChange={onChange}
                 name={name}
                 disabled={disabled}
@@ -39,11 +38,10 @@ function Radio({
                 className={classes}
                 {...rest}
             />
-            <span>{value}</span>
+            <span>{label || value}</span>
         </label>
     );
 }
-
 
 Radio.propTypes = {
     value: PropTypes.string.isRequired,
@@ -53,7 +51,8 @@ Radio.propTypes = {
     disabled: PropTypes.bool,
     required: PropTypes.bool,
     className: PropTypes.string,
-    color: PropTypes.oneOf(['primary', 'black']), // ← 추가
+    color: PropTypes.oneOf(['primary', 'black']),
+    label: PropTypes.string,
 };
 
 export default Radio;
