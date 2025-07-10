@@ -477,7 +477,7 @@ input + span {
     margin: 0 auto;
     position: relative;
     background-color: #f0f9f4; /* 연한 초록 배경 */
-    padding: 20px;             /* 내부 여백 추가 */
+    /*padding: 20px;             !* 내부 여백 추가 *!*/
 }
 
 .slick-track {

@@ -1,38 +1,38 @@
 import React, { useState } from 'react';  // useState 임포트
-import Button from '../components/Button';
-import Badge from '../components/Badge';
-import Input from '../components/Input'
-import Textarea from '../components/Textarea'
-import Radio from '../components/Radio'
-import Checkbox from '../components/Checkbox'
-import TwoLevelSelect from '../components/TwoLevelSelect';
-import CustomBreadcrumb  from '../components/CustomBreadcrumb';
-import CustomPagination from '../components/CustomPagination';
-import CustomTabs from '../components/CustomTabs';
-import CustomDatePicker  from '../components/CustomDatePicker';
-import CustomInputNumber from "../components/CustomInputNumber";
-import CustomUpload from '../components/CustomUpload';
-import CustomFloatButton from '../components/CustomFloatButton';
-import CustomCard from '../components/CustomCard';
-import CustomCarousel from '../components/CustomCarousel';
-import CustomSelect from '../components/CustomSelect';
-import CustomSidebarMenu from '../components/CustomSidebarMenu';
+import Button from '../components/common/Button'; // 버튼
+import Badge from '../components/common/Badge'; // 뱃지
+import Input from '../components/common/Input' // 입력창
+import Textarea from '../components/common/Textarea' // textarea
+import Radio from '../components/common/Radio' // 라디오
+import Checkbox from '../components/common/Checkbox' // 체크박스
+import TwoLevelSelect from '../components/common/TwoLevelSelect'; // 2단 셀렉트
+import CustomBreadcrumb  from '../components/common/CustomBreadcrumb'; // 브레드크럼(경로)
+import CustomPagination from '../components/common/CustomPagination'; // 페이지네이션
+import CustomTabs from '../components/common/CustomTabs'; // 탭
+import CustomDatePicker  from '../components/common/CustomDatePicker'; // 날짜 선택기
+import CustomInputNumber from "../components/common/CustomInputNumber"; // 수량
+import CustomUpload from '../components/common/CustomUpload'; // 업로드 폼
+import CustomFloatButton from '../components/common/CustomFloatButton'; // 챗봇
+import CustomCard from '../components/common/CustomCard'; // 카드
+import CustomCarousel from '../components/common/CustomCarousel'; // 슬라이드 배너
+import CustomSelect from '../components/common/CustomSelect'; // 셀렉트
+import CustomSidebarMenu from '../components/common/CustomSidebarMenu'; // 사이드바
 import {
     AppstoreOutlined,
     ContainerOutlined,
     DesktopOutlined,
     MailOutlined,
     PieChartOutlined,
-} from '@ant-design/icons'; // 슬라이드바용 아이콘
-import CustomStatistic from '../components/CustomStatistic';
+} from '@ant-design/icons'; // 사이드바용 아이콘
+import CustomStatistic from '../components/common/CustomStatistic'; // 통계
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons'; // 통계용 아이콘
-import CustomTag from '../components/CustomTag';
-import CustomTable from '../components/CustomTable';
-import { Tag, Space, Alert, Spin } from 'antd'; //테이블용
-import CustomModal from '../components/CustomModal';
-import CustomAlert from '../components/CustomAlert';
-import RollingAlert from '../components/RollingAlert';
-import CustomLoading from '../components/CustomLoading';
+import CustomTag from '../components/common/CustomTag'; // 태그
+import CustomTable from '../components/common/CustomTable'; // 테이블
+import { Tag, Space, Alert, Spin } from 'antd'; //태그, 여백, 알람, 로딩창용 근데 대충 모르겠으니까 일단 import
+import CustomModal from '../components/common/CustomModal'; // 모달
+import CustomAlert from '../components/common/CustomAlert'; // 알람
+import RollingAlert from '../components/common/RollingAlert'; // 롤링알람
+import CustomLoading from '../components/common/CustomLoading'; // 로딩바
 
 
 
