@@ -14,6 +14,7 @@ import Login from "./pages/login/Login";
 import NoticePage from "./pages/notice/NoticePage";
 import NoticeDetail from "./components/notice/NoticeDetail";
 import NoticeForm from "./components/notice/NoticeForm";
+import NoticeEdit from "./components/notice/NoticeEdit";
 import ComponentCollection from "./pages/ComponentCollection";
 import Mypage from "./pages/mypage/Mypage";
 
@@ -73,6 +74,11 @@ function App() {
           <Route
               path="/notice/write"
               element={<NoticeForm></NoticeForm>}
+          ></Route>
+
+          <Route
+              path="/notice/edit/:id"
+              element={<NoticeEdit></NoticeEdit>}
           ></Route>
 
 

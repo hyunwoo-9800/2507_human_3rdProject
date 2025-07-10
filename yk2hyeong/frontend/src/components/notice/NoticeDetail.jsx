@@ -33,8 +33,10 @@ function NoticeDetail() {
             </div>
 
             <div className="notice-detail-actions">
-                <Button onClick={() => navigate("/notice")}>이전으로</Button>
+                <Button variant="secondary" onClick={() => navigate("/notice")}>이전으로</Button>
+                <Button onClick={() => navigate(`/notice/edit/${id}`)}>수정하기</Button>
             </div>
+
         </div>
     );
 }

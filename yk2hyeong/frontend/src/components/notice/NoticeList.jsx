@@ -42,7 +42,7 @@ function NoticeList() {
             for (const id of selectedIds) {
                 await axios.delete(`/notice/${id}`);
             }
-            alert("삭제 완료");
+            alert("공지사항이 삭제되었습니다.");
             setSelectedIds([]);
             fetchNotices(); // 목록 갱신
         } catch (err) {

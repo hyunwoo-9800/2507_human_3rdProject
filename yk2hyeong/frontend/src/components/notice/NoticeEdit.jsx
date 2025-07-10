@@ -1,39 +1,48 @@
-// components/notice/NoticeForm.jsx
-import React, { useState } from "react";
+// components/notice/NoticeEdit.jsx
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../common/Button";
 import "./NoticeForm.css";
-import { v4 as uuidv4 } from "uuid";
 
-function NoticeForm() {
+function NoticeEdit() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [writerId, setWriterId] = useState("admin"); // 추후 로그인 정보 연동 가능
+    const [writerId, setWriterId] = useState("admin");
     const navigate = useNavigate();
+    const { id } = useParams();
+
+    useEffect(() => {
+        axios.get(`/notice/${id}`)
+            .then(res => {
+                setTitle(res.data.noticeTitle);
+                setContent(res.data.noticeContent);
+                setWriterId(res.data.writerId || "admin");
+            })
+            .catch(err => console.error("공지사항 불러오기 실패", err));
+    }, [id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            await axios.post("/notice", {
-                noticeId: uuidv4(),
+            await axios.put(`/notice/${id}`, {
                 noticeTitle: title,
                 noticeContent: content,
                 writerId: writerId,
-                createdId: writerId,
+                updatedId: writerId,
             });
-            alert("공지사항이 등록되었습니다.");
+            alert("공지사항이 수정되었습니다.");
             navigate("/notice");
-        } catch (error) {
-            console.error("등록 오류:", error);
-            alert("등록 실패");
+        } catch (err) {
+            console.error("수정 실패:", err);
+            alert("수정 실패");
         }
     };
 
     return (
         <div className="notice-form-container">
-            <h2>공지사항 등록</h2>
+            <h2>공지사항 수정</h2>
             <form onSubmit={handleSubmit} className="notice-form">
                 <div className="form-group">
                     <label>제목</label>
@@ -42,7 +51,6 @@ function NoticeForm() {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         required
-                        placeholder="제목을 입력하세요."
                     />
                 </div>
                 <div className="form-group">
@@ -51,18 +59,15 @@ function NoticeForm() {
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         required
-                        placeholder="내용을 입력하세요."
-                    ></textarea>
+                    />
                 </div>
                 <div className="form-actions">
-                    <Button type="submit">등록</Button>
-                    <Button variant="secondary" onClick={() => navigate("/notice")}>
-                        취소
-                    </Button>
+                    <Button variant="secondary" onClick={() => navigate("/notice")}>이전으로</Button>
+                    <Button type="submit">수정</Button>
                 </div>
             </form>
         </div>
     );
 }
 
-export default NoticeForm;
+export default NoticeEdit;

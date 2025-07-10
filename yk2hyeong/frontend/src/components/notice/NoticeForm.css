@@ -41,9 +41,11 @@
 }
 
 .notice-form .form-actions {
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
 }
 
-.notice-form .form-actions button {
-    margin-left: 10px;
-}
+/*.notice-form .form-actions button {*/
+/*    margin-left: 10px;*/
+/*}*/
