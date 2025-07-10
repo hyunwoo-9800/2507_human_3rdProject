@@ -33,6 +33,7 @@ import CustomModal from '../components/common/CustomModal'; // 모달
 import CustomAlert from '../components/common/CustomAlert'; // 알람
 import RollingAlert from '../components/common/RollingAlert'; // 롤링알람
 import CustomLoading from '../components/common/CustomLoading'; // 로딩바
+import CustomDetailCard from "../components/common/CustomDetailCard"; // 상품상세
 
 
 
@@ -841,6 +842,7 @@ buttonText="Upload Files"/>`}
                         <h3> 즐겨찾기 + 즉시 + 예약</h3>
                         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                             <CustomCard
+                                id="p-001"
                                 image="/static/images/tomato.png"
                                 company="천안청과(주)"
                                 productName="스테비아 방울토마토"
@@ -861,6 +863,7 @@ buttonText="Upload Files"/>`}
                                 overflowX: 'auto'
                             }}>
             {`< CustomCard
+id="p-001"
 image="/static/images/tomato.png"
 company="천안청과(주)"
 productName="스테비아 방울토마토"
@@ -879,6 +882,7 @@ favorite={true} />
                         <h3>즐겨찾기x + 즉시 </h3>
                         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                             <CustomCard
+                                id="p-001"
                                 image="/static/images/tomato.png"
                                 company="천안청과(주)"
                                 productName="스테비아 방울토마토"
@@ -899,6 +903,7 @@ favorite={true} />
                                 overflowX: 'auto'
                             }}>
 {`< CustomCard
+id="p-001"
 image="/static/images/tomato.png"
 company="천안청과(주)"
 productName="스테비아 방울토마토"
@@ -917,6 +922,7 @@ favorite={false} />
                         <h3>즐겨찾기x + 예약</h3>
                         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                             <CustomCard
+                                id="p-001"
                                 image="/static/images/tomato.png"
                                 company="천안청과(주)"
                                 productName="스테비아 방울토마토"
@@ -937,6 +943,7 @@ favorite={false} />
                                 overflowX: 'auto'
                             }}>
             {` <CustomCard
+id="p-001"
 image="/static/images/tomato.png"
 company="천안청과(주)"
 productName="스테비아 방울토마토"
@@ -949,6 +956,71 @@ favorite={false} />
         </pre>
                         </div>
                     </div>
+
+
+                    {/* 상품상세 */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <h3>상품상세</h3>
+                        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                            <CustomDetailCard
+
+                                productName="스테비아 방울토마토"
+                                productCode="P250703-000121"
+                                quantity={239994}
+                                shippingRegion="전체"
+                                availableDate="판매자 문의"
+                                price={10500}
+                                releaseDate="2026년 7월 4일"
+                                minOrder={100}
+                                defaultQuantity={100}
+                                defaultOrderType="reservation"
+                                images={[
+                                    '/static/images/tomato.png/',
+                                    '/static/images/tomato.png',
+                                    '/static/images/tomato.png'
+                                ]}
+                                onQuantityChange={(q) => console.log("변경된 수량:", q)}
+                                onOrderTypeChange={(t) => console.log("선택된 타입:", t)}
+                                onOrder={(info) => console.log("주문 정보:", info)}
+                            />
+
+                            <pre style={{
+                                marginLeft: 20,
+                                backgroundColor: '#f4f4f4',
+                                padding: '10px',
+                                borderRadius: '5px',
+                                fontSize: '14px',
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                overflowX: 'auto'
+                            }}>
+            {` <CustomDetailCard
+  productName="스테비아 방울토마토"
+  productCode="P250703-000121"
+  quantity={239994}
+  shippingRegion="전체"
+  availableDate="판매자 문의"
+  price={10500}
+  releaseDate="2026년 7월 4일"
+  minOrder={100}
+  orderType="reservation"
+  orderQuantity={101}
+  favorite={true}
+  images={[
+    '/images/tomato1.png',
+    '/images/tomato2.png',
+    '/images/tomato3.png',
+    '/images/tomato4.png',
+  ]}
+  onQuantityChange={(q) => console.log('New Quantity:', q)}
+  onOrder={() => alert('예약 완료')}
+/>
+
+`}
+        </pre>
+                        </div>
+                    </div>
+
 
                 </div>
             )}
