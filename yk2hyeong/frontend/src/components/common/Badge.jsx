@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../common/common.css';  // 기존 스타일링 파일을 참조
+import '../../common/common.css';  // 기존 스타일링 파일을 참조
 
 /**
  * 공통 뱃지 컴포넌트
