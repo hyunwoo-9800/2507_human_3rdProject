@@ -1,6 +1,11 @@
 import React,{useState} from "react";
 
 function Banner(){
+    const images = [
+        "/static/images/banner.png"
+        
+    ]
+    
     return(
         <div className="banner">
             <img src="/static/images/banner.png" alt="배너" className="banner-img"/>
