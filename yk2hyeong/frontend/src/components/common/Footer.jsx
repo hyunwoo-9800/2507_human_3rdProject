@@ -1,5 +1,5 @@
 import React from "react";
-import "./Header.css";
+import "./footer.css";
 import {Link} from "react-router-dom";
 
 /**
@@ -10,10 +10,20 @@ import {Link} from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="header">
-      <p>&copy; 리액트 테스트 페이지</p>
+    <footer className="footer-container">
+        <div className="footer-left">
+            <div className="notice-box">
+                <h4>공지사항</h4>
+                <p>공지사항 상품 픽업 시 배송수수료 결제 관련 안내입니다.</p>
+            </div>
+            <div className="footer-info">
+                [250704] 충청남도 천안시 동남구 대흥로 215 7층 <br/>
+                Copyrignt &copy; Yk2hyeong. All Right Reserved.
+            </div>
+        </div>
+        <div className="footer-rignt">
+            <img src="/images/sample.jpg" className="main-logo"/>
+        </div>
     </footer>
-
-
   );
 }
