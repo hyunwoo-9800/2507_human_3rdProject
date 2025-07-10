@@ -21,6 +21,8 @@ build/
 # =========================
 # ⚛ React (frontend + build result in Spring)
 # =========================
+
+# 📁 React 개발 환경 관련 무시
 node_modules/
 dist/
 build/
@@ -34,15 +36,14 @@ coverage/
 .vscode/
 .DS_Store
 
-# React build artifacts in Spring Boot static path
-**/src/main/resources/static/*.js
-**/src/main/resources/static/*.css
-**/src/main/resources/static/*.map
-**/src/main/resources/static/*.txt
-**/src/main/resources/static/asset-manifest.json
-**/src/main/resources/static/index.html
-**/src/main/resources/static/images/sample.jpg
-**/src/main/resources/static/**
+# 📁 Frontend 정적 리소스(static) 전체 무시
+yk2hyeong/frontend/public/static/**
+# ✅ 단, 이미지 폴더만 Git에 포함
+!yk2hyeong/frontend/public/static/images/
+!yk2hyeong/frontend/public/static/images/**
+
+# 📁 Backend static - Spring에 빌드되므로 Git에서 무시
+yk2hyeong/backend/src/main/resources/static/**
 
 # =========================
 # 🛠️ IntelliJ IDEA

@@ -81,6 +81,7 @@ task copyReactImages(type: Copy) {
 // 프론트엔드 정적 파일 빌드 결과 복사
 task copyFrontend(type: Copy) {
 	from("$projectDir/../frontend/build") {
+		exclude "images/**" // images 폴더 제외
 		// build 폴더 내부의 static 폴더만 따로 복사
 		// exclude("index.html")
 	}
