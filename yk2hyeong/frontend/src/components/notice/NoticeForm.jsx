@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Button from "../common/Button";
 import "./NoticeForm.css";
+import { v4 as uuidv4 } from "uuid";
 
 function NoticeForm() {
     const [title, setTitle] = useState("");
@@ -16,6 +17,7 @@ function NoticeForm() {
 
         try {
             await axios.post("/notice", {
+                noticeId: uuidv4(),
                 noticeTitle: title,
                 noticeContent: content,
                 writerId: writerId,

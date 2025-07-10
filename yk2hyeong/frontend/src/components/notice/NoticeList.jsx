@@ -70,14 +70,31 @@ function NoticeList() {
                     <th>제목</th>
                     <th>작성자</th>
                     <th>작성일</th>
-                    <th>선택</th>
+                    <th>
+                        <input
+                            type="checkbox"
+                            onChange={(e) => {
+                                if (e.target.checked) {
+                                    const ids = currentNotices.map(n => n.noticeId);
+                                    setSelectedIds(ids);
+                                } else {
+                                    setSelectedIds([]);
+                                }
+                            }}
+                            checked={
+                                currentNotices.length > 0 &&
+                                currentNotices.every(n => selectedIds.includes(n.noticeId))
+                            }
+                        />
+                    </th>
                 </tr>
                 </thead>
+
                 <tbody>
                 {currentNotices.map((notice, index) => (
                     <tr key={notice.noticeId}>
 
-                        <td>{noticeList.length - indexOfFirst - index}</td>
+                        <td>{notice.bno}</td>
                         <td
                             className="notice-title-link"
                             onClick={() => navigate(`/notice/${notice.noticeId}`)}

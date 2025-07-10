@@ -6,8 +6,10 @@
 <mapper namespace="fs.human.yk2hyeong.notice.dao.NoticeDAO">
 
     <select id="getAllNotices" resultType="fs.human.yk2hyeong.notice.vo.NoticeVO">
+        <![CDATA[
         SELECT
             NOTICE_ID       AS noticeId,
+            ROW_NUMBER() OVER(ORDER BY CREATED_DATE DESC) AS BNO,
             NOTICE_TITLE    AS noticeTitle,
             NOTICE_CONTENT  AS noticeContent,
             WRITER_ID       AS writerId,
@@ -17,6 +19,7 @@
             UPDATED_DATE    AS updatedDate
         FROM TB_NOTICE
         ORDER BY CREATED_DATE DESC
+        ]]>
     </select>
 
     <select id="getNoticeById" parameterType="string" resultType="fs.human.yk2hyeong.notice.vo.NoticeVO">
@@ -34,13 +37,22 @@
     </select>
 
     <insert id="insertNotice" parameterType="fs.human.yk2hyeong.notice.vo.NoticeVO">
+
         INSERT INTO TB_NOTICE (
-            NOTICE_ID, NOTICE_TITLE, NOTICE_CONTENT,
-            WRITER_ID, CREATED_ID, CREATED_DATE
-        ) VALUES (
-                     #{noticeId}, #{noticeTitle}, #{noticeContent},
-                     #{writerId}, #{createdId}, SYSDATE
-                 )
+            NOTICE_ID,
+            NOTICE_TITLE,
+            NOTICE_CONTENT,
+            WRITER_ID,
+            CREATED_ID,
+            CREATED_DATE
+            ) VALUES (
+            #{noticeId},
+            #{noticeTitle},
+            #{noticeContent},
+            #{writerId},
+            #{createdId},
+            SYSDATE
+            )
     </insert>
 
     <update id="updateNotice" parameterType="fs.human.yk2hyeong.notice.vo.NoticeVO">
@@ -50,12 +62,14 @@
             NOTICE_CONTENT = #{noticeContent},
             UPDATED_ID = #{updatedId},
             UPDATED_DATE = SYSDATE
-        WHERE NOTICE_ID = #{noticeId}
+        WHERE
+            NOTICE_ID = #{noticeId}
     </update>
 
     <delete id="deleteNotice" parameterType="string">
         DELETE FROM TB_NOTICE
-        WHERE NOTICE_ID = #{noticeId}
+        WHERE
+            NOTICE_ID = #{noticeId}
     </delete>
 
 </mapper>
