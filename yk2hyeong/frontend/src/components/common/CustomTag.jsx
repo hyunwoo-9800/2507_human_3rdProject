@@ -13,7 +13,7 @@ import {
     TwitterOutlined,
     YoutubeOutlined,
 } from '@ant-design/icons';
-import '../../common/common.css';
+import './common.css';
 
 const iconMap = {
     success: <CheckCircleOutlined />,

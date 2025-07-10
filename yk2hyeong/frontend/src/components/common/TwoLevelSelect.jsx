@@ -1,6 +1,6 @@
 // TwoLevelSelect.jsx
 import React, { useState, useEffect } from 'react';
-import '../../common/common.css';  // 기존 스타일링 파일을 참조
+import './common.css';  // 기존 스타일링 파일을 참조
 
 const TwoLevelSelect = ({
                             categoryData,

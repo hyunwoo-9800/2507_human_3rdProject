@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import '../../common/common.css';
+import './common.css';
 
 function Radio({
                    value,
