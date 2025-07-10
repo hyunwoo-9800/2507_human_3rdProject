@@ -2,8 +2,8 @@ import React,{useState} from "react";
 
 function Banner(){
     const images = [
+        "/static/images/banner.png",
         "/static/images/banner.png"
-        
     ]
     
     return(
