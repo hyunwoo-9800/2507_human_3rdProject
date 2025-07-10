@@ -107,7 +107,7 @@ function NoticeList() {
                 />
             </div>
 
-            <div style={{ textAlign: "right", marginTop: "16px" }}>
+            <div className="button-group">
                 <Button onClick={() => navigate("/notice/write")} className="write-btn">글쓰기</Button>
                 <Button variant="secondary" onClick={handleDeleteSelected}>
                     삭제하기

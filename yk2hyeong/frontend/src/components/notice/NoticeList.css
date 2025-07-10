@@ -3,21 +3,6 @@
     margin: 40px auto;
 }
 
-.notice-write-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 8px 14px;
-    margin-bottom: 12px;
-    border: none;
-    border-radius: 4px;
-    float: right;
-    cursor: pointer;
-}
-
-.notice-write-button:hover {
-    background-color: #45a049;
-}
-
 .notice-table {
     width: 100%;
     border-collapse: collapse;
@@ -40,6 +25,15 @@
     cursor: pointer;
 }
 
+.notice-title-link {
+    text-decoration: none;
+    color: black;
+}
+
+.notice-title-link:hover {
+    color: #0077cc;
+}
+
 .notice-pagination {
     text-align: center;
     margin-top: 20px;
@@ -59,14 +53,10 @@
     background-color: #0056b3;
 }
 
-.notice-title-link {
-    text-decoration: none;
-    color: black;
-}
-.notice-title-link:hover {
-    color: #0077cc;
-}
-
-.write-btn {
-    margin-right: 20px;
+/* 버튼 간격 조정 */
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px; /* 버튼 사이 간격 */
+    margin-top: 20px;
 }

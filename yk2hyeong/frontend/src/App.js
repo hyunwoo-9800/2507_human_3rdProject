@@ -13,6 +13,7 @@ import BuyerJoinForm from "./pages/member/BuyerJoinForm";
 import Login from "./pages/login/Login";
 import NoticePage from "./pages/notice/NoticePage";
 import NoticeDetail from "./components/notice/NoticeDetail";
+import NoticeForm from "./components/notice/NoticeForm";
 import ComponentCollection from "./pages/ComponentCollection";
 import Mypage from "./pages/mypage/Mypage";
 
@@ -68,6 +69,12 @@ function App() {
             path="/notice/:id"
             element={<NoticeDetail></NoticeDetail>}
           ></Route>
+
+          <Route
+              path="/notice/write"
+              element={<NoticeForm></NoticeForm>}
+          ></Route>
+
 
           <Route
               path="/css"

@@ -1,0 +1,49 @@
+.notice-form-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 24px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.notice-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.notice-form .form-group {
+    margin-bottom: 20px;
+}
+
+.notice-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #444;
+}
+
+.notice-form input,
+.notice-form textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.notice-form textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.notice-form .form-actions {
+    text-align: right;
+}
+
+.notice-form .form-actions button {
+    margin-left: 10px;
+}

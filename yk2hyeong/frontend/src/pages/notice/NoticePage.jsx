@@ -1,6 +1,7 @@
 import React from "react";
 import NoticeList from "../../components/notice/NoticeList";
 
+
 function NoticePage() {
     return (
         <div>
