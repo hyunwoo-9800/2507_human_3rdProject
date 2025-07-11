@@ -3286,7 +3286,7 @@ _:-ms-input-placeholder,
   color: #e0a25e;
 }
 .games-container.on-main {
-  height: 555px;
+  /* height: 555px; */
   padding-bottom: 0;
   margin-bottom: 15px;
 }
@@ -3684,7 +3684,7 @@ _:-ms-input-placeholder,
   flex-wrap: nowrap;
   -ms-flex-pack: distribute;
   justify-content: space-around;
-  padding: 20px 0;
+  height: 300px !important;
 }
 .footer-copyright {
   text-align: center;
@@ -3712,7 +3712,7 @@ _:-ms-input-placeholder,
 .site-footer {
   position: absolute;
   bottom: 0;
-  height: 260px;
+  height: 350px;
   left: 0;
   width: 100%;
 }
