@@ -1,0 +1,4668 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge"><script type="text/javascript">window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var o=n[t]={exports:{}};e[t][0].call(o.exports,function(n){var o=e[t][1][n];return r(o||n)},o,o.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<t.length;o++)r(t[o]);return r}({1:[function(e,n,t){function r(){}function o(e,n,t){return function(){return i(e,[c.now()].concat(u(arguments)),n?null:this,t),n?void 0:this}}var i=e("handle"),a=e(3),u=e(4),f=e("ee").get("tracer"),c=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],d="api-",l=d+"ixn-";a(p,function(e,n){s[n]=o(d+n,!0,"api")}),s.addPageAction=o(d+"addPageAction",!0),s.setCurrentRouteName=o(d+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,o="function"==typeof n;return i(l+"tracer",[c.now(),e,t],r),function(){if(f.emit((o?"":"no-")+"fn-start",[c.now(),r,o],t),o)try{return n.apply(this,arguments)}catch(e){throw f.emit("fn-err",[arguments,this,e],t),e}finally{f.emit("fn-end",[c.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=o(l+n)}),newrelic.noticeError=function(e){"string"==typeof e&&(e=new Error(e)),i("err",[e,c.now()])}},{}],2:[function(e,n,t){function r(e,n){if(!o)return!1;if(e!==o)return!1;if(!n)return!0;if(!i)return!1;for(var t=i.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var o=null,i=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var u=navigator.userAgent,f=u.match(a);f&&u.indexOf("Chrome")===-1&&u.indexOf("Chromium")===-1&&(o="Safari",i=f[1])}n.exports={agent:o,version:i,match:r}},{}],3:[function(e,n,t){function r(e,n){var t=[],r="",i=0;for(r in e)o.call(e,r)&&(t[i]=n(r,e[r]),i+=1);return t}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],4:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,o=t-n||0,i=Array(o<0?0:o);++r<o;)i[r]=e[n+r];return i}n.exports=r},{}],5:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function o(e){function n(e){return e&&e instanceof r?e:e?f(e,u,i):i()}function t(t,r,o,i){if(!d.aborted||i){e&&e(t,r,o);for(var a=n(o),u=v(t),f=u.length,c=0;c<f;c++)u[c].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function l(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||o(t)}function w(e,n){c(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:l,addEventListener:l,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function i(){return new r}function a(){(s.api||s.feature)&&(d.aborted=!0,s=d.backlog={})}var u="nr@context",f=e("gos"),c=e(3),s={},p={},d=n.exports=o();d.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(o.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(i){}return e[n]=r,r}var o=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){o.buffer([e],r),o.emit(e,n,t)}var o=e("ee").get("handle");n.exports=r,r.ee=o},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,i,function(){return o++})}var o=1,i="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!E++){var e=x.info=NREUM.info,n=l.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();c(y,function(n,t){e[n]||(e[n]=t)}),f("mark",["onload",a()+x.offset],null,"api");var t=l.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function o(){"complete"===l.readyState&&i()}function i(){f("mark",["domContent",a()+x.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(u=Math.max((new Date).getTime(),u))-x.offset}var u=(new Date).getTime(),f=e("handle"),c=e(3),s=e("ee"),p=e(2),d=window,l=d.document,m="addEventListener",v="attachEvent",g=d.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:d.setImmediate,CT:clearTimeout,XHR:g,REQ:d.Request,EV:d.Event,PR:d.Promise,MO:d.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1099.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),x=n.exports={offset:u,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),l[m]?(l[m]("DOMContentLoaded",i,!1),d[m]("load",r,!1)):(l[v]("onreadystatechange",o),d[v]("onload",r)),f("mark",["firstbyte",u],null,"api");var E=0,O=e(5)},{}]},{},["loader"]);</script>
+    <meta name="viewport" content="width=1240px">
+    <link rel="stylesheet" href="../css/index.css"/>
+    <script>
+        dataLayer = [{
+            'userId': '',
+            'network': '',
+            'refcode': 'fap_w11832p119_demo_game_cash'
+        }];
+    </script>
+
+    
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl+ '&gtm_auth=BcQ0J02fqp4z16p8McwT2Q&gtm_preview=env-18&gtm_cookies_win=x';f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-KGHLFD8');</script>
+    <!-- End Google Tag Manager -->
+
+            <link rel="alternate" media="only screen and (max-width: 640px)" href="https://m.elslots.com/">    
+
+        <link rel="stylesheet" href="/css/d3f6ee3.css?v=87"/>
+    
+    
+            <title>Онлайн казино Эльдорадо - лучшее игровые автоматы Украины - Эльслотс</title>
+
+                            <meta name="description" content="Надежное онлайн казино Украины - играйте в лучшие лицензированные игровые автоматы Эльдорадо, получайте крупнейшие джекпоты и выгодные бонусы! Испытайте свою удачу!">
+            
+            <meta property="og:image" content="https://elslots.com/elslots/images/logo.png"/>
+<meta property="og:site_name" content="Игровой клуб Эльдорадо – лучшие игровые автоматы онлайн"/>
+
+    
+    <!--[if IE]>
+        <script type="text/javascript" src="/js/3e68fa8.js?v=87"></script>
+        <![endif]-->
+
+    <link id="favicon" rel="icon" href="/favicon/favicon-16x16.png?v=87" sizes="16x16">
+    <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png?v=87">
+    <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png?v=87">
+    <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png?v=87">
+    <link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png?v=87">
+    <link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png?v=87">
+    <link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png?v=87">
+    <link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png?v=87">
+    <link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png?v=87">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png?v=87">
+    <link rel="manifest" href="/favicon/manifest.json?v=87">
+    <meta name="msapplication-TileColor" content="#140b01">
+    <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png?v=87">
+    <meta name="theme-color" content="#140b01">
+</head>
+<body class=" body-ru" data-channels="Elslots_elslots_prod_prod_users_all" data-is-prod="true">
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KGHLFD8&gtm_auth=BcQ0J02fqp4z16p8McwT2Q&gtm_preview=env-18&gtm_cookies_win=x"
+                      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+            <div id="link-to-mobile-container">
+    <a class="btn btn-red email-confirmation-link" href="//m.elslots.com">Мобильная версия</a>
+</div>    
+    
+
+    
+    <!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="page-wrapper page-wrapper-for-mobile " data-spy="affix" data-offset-top="51">
+        <div class="container">
+
+                            
+<header class="page-header ">
+
+    <nav class="header-navbar">
+        <ul class="header-top-nav">
+                                                                            <li>
+                                                <a class="header-navbar-link" href="../html/catch_yh.html"     class="button">
+                영근이형을 잡아라!
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="../html/make_yh.html"     class="button">
+                영근이형 생성기
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="../html/holjjack.html"     class="button">
+                홀짝
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="../html/suika_game.html"     class="button">
+                수박게임
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="../html/bubble_shooter.html"     class="button">
+                                <span class="icon icon-promo"></span>
+                버블슈터
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                                            <a class="header-navbar-link" href="../html/blackjack.html"     class="button" rel="nofollow">
+                                            <span class="icon icon-prizes"></span>
+                블랙잭
+            </a>
+    
+            </li>        
+
+
+
+
+        </ul>
+    </nav>
+
+    <div class="site-logo">
+        <SPAN style="padding: 0 AUTO; line-height: 51px; font-size: 20PX; color: gold;">
+            역시 영근이 형이야!
+        </SPAN>
+    </div>
+
+    <div class="header-info">
+
+        <div class="header-jackpot">
+    <a href="../html/slot_machine.html" class="header-jackpot-title" style="width: 200px;">
+        <span style="margin-left: 80px;">슬롯머신</span>
+        <span class="hover-second">도전해보세요!</span>
+    </a>
+
+    <a href="../html/slot_machine2.html" class="base-block odometer-box">
+        <i class="base-block curr-uah gradient"></i>
+        <h3 class="base-block header-jackpot-counter odometer gradient jackpot-total-sum"></h3>
+    </a>
+</div>
+        
+            <div class="header-entry">
+    <div class="header-entry-btn">
+        <div class="register-btn">
+            <a class="btn btn-block"
+               id="registration-button"
+               data-name="registration-popup"
+               rel="nofollow"
+               href="/user/register">회원가입</a>
+        </div>
+        <div class="login-btn">
+            <a class="btn btn-block auth-link login-button"
+               id="login-button"
+               data-name="login-popup"
+               rel="nofollow"
+               href="/user/login">로그인</a>
+        </div>
+    </div>
+
+    <div id="uLoginAuth" class="uLogin" data-ulogin="display=buttons; optional=first_name,last_name,email,nickname,bdate,sex,phone,city,country;redirect_uri=https%3A%2F%2Felslots.com%2Fulogin_check">
+
+    <a class="uLogin-custom-icon vk" data-uloginbutton="vkontakte">
+        <span>Y</span>
+    </a>
+    <a class="uLogin-custom-icon ml" data-uloginbutton="mailru">
+        <span>O</span>
+    </a>
+    <a class="uLogin-custom-icon ya" data-uloginbutton="yandex">
+        <span>U</span>
+    </a>
+    <a class="uLogin-custom-icon ok" data-uloginbutton="odnoklassniki">
+        <span>N</span>
+    </a>
+    <a class="uLogin-custom-icon ggl" data-uloginbutton="google">
+        <span>G</span>
+    </a>
+    <a class="uLogin-custom-icon fb" data-uloginbutton="facebook">
+        <span>G</span>
+    </a>
+        <a class="uLogin-custom-icon fb" data-uloginbutton="facebook">
+        <span>E</span>
+    </a>
+        <a class="uLogin-custom-icon fb" data-uloginbutton="facebook">
+        <span>U</span>
+    </a></a>
+        <a class="uLogin-custom-icon fb" data-uloginbutton="facebook">
+        <span>N</span>
+    </a>
+</div>
+</div>
+        
+    </div>
+
+    
+</header>                                        <main class="page-content">
+
+                    <aside class="site-sidebar sidebar-left">
+                                                                        <div class="sidebar-block highlight-block">
+            <div class="winners-widget ">
+            <div class="winners-header">
+                <a href="/hall-of-fame">
+                    <!-- <span class="icon icon-cup"></span> -->
+                    <span class="header-title" style="margin: 0 30PX;">신규 (25/07/06)</span>
+                </a>
+            </div>
+            <div class="winners-body">
+                <div class="carousel winners-carousel slide" data-ride="carousel">
+                    <div class="carousel-inner" role="listbox">
+                        <div class="item item-slide-up active">
+                            <div class="winner-box">
+                                <div class="winner-pic">
+                                    <SPAN style="font-size: 12PX; margin-right: 10PX;">NEW!</SPAN>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">이성하</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>10,000</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <SPAN style="font-size: 12PX; margin-right: 10PX;">NEW!</SPAN>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">이웬히</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>6,800</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <SPAN style="font-size: 12PX; margin-right: 10PX;">NEW!</SPAN>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">심남희</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>4,360</span>
+                                </div>
+                            </div>
+
+                            
+                                                    </div>
+                        <div class="item item-slide-up">
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/booongo/gods-temple-deluxe">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/ce/cea4bb14b97b9cec6566adb06f5ed1d5b24c88cb.jpeg?v=87" alt="gods temple deluxe">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">atoshn**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>3,455</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/netentertainment/gonzos-quest">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/11/11e8445b3d926b7655ca418549be0c6a5db21c7b.jpeg?v=87" alt="Gonzo&#039;s Quest">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">Steve1**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>2,400</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/booongo/gods-temple-deluxe">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/ce/cea4bb14b97b9cec6566adb06f5ed1d5b24c88cb.jpeg?v=87" alt="gods temple deluxe">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">@SGb9t**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>1,407</span>
+                                </div>
+                            </div>
+
+                            
+                                                    </div>
+                        <div class="item item-slide-up">
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/aristocrat/sun-and-moon">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/75/75c6187c8a001bef59e7da86591bdb16ecbea8ad.jpeg?v=87" alt="Sun&amp;Moon">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">@KMpKa**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>1,350</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/igrosoft/crazy-monkey">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/e8/e8aa414ace867e359a4880607f13023df64206ea.jpeg?v=87" alt="Crazy Monkey">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">nikola**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>1,305</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/casinotechnology/aztec-gold">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/f3/f3585da1df1082786c99c58d24a5854347fb2d53.jpeg?v=87" alt="Aztec Gold">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">OK**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>1,155</span>
+                                </div>
+                            </div>
+
+                            
+                                                    </div>
+                        <div class="item item-slide-up">
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/novomatic/sizzling-hot">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/d1/d10cd27e4b0546a8fe4d020ebb0090c7d4dfdae9.jpeg?v=87" alt="Sizzling Hot">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">Wew**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>1,000</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/booongo/gods-temple">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/08/08720b10fb72eaa70cadbea076ca33eaf2ac9c2e.jpeg?v=87" alt="gods temple">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">Lisn**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>946</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/playtech/premium-american-roulette">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/e7/e7b8280832ccef9a324fd988c0234087836bf8c7.jpeg?v=87" alt="Premium American Roulette">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">xram**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>875</span>
+                                </div>
+                            </div>
+
+                            
+                                                    </div>
+                        <div class="item item-slide-up">
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/williamsinteractive/giants-gold">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/1a/1a211e18175a3a4f075effd36dc21edf7e5b7e2a.jpeg?v=87" alt="Giant&#039;s Gold">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">@PAN03**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>866</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/igrosoft/resident">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/b9/b936dd611844f881f1a26763a6677eaddefabc02.jpeg?v=87" alt="Resident">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">@evyjX**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>800</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/igrosoft/crazy-monkey">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/e8/e8aa414ace867e359a4880607f13023df64206ea.jpeg?v=87" alt="Crazy Monkey">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">tar**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>755</span>
+                                </div>
+                            </div>
+
+                            
+                                                    </div>
+                        <div class="item item-slide-up">
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/casinotechnology/aztec-gold">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/f3/f3585da1df1082786c99c58d24a5854347fb2d53.jpeg?v=87" alt="Aztec Gold">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">@7vr1D**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>750</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/unicumgaming/party-gold">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/25/2516c54ee676a4cdbfb85c3ca9f1f117543a7660.jpeg?v=87" alt="Party Gold">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">Maksk**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>610</span>
+                                </div>
+                            </div>
+
+                            
+                                                        <div class="winner-box">
+                                <div class="winner-pic">
+                                    <a href="/games/igrosoft/crazy-monkey">
+                                        <img style="width: 57px; height: 33px" src="/uploads/games/icon/e8/e8aa414ace867e359a4880607f13023df64206ea.jpeg?v=87" alt="Crazy Monkey">
+                                    </a>
+                                </div>
+                                <div class="winner-data">
+                                    <span class="text__yellow winner-nick">@Zd**</span>
+                                    <span class="winner-sum"><span class="curr-uah"></span>600</span>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+    
+                        
+                        
+                                                            
+    
+                                                                                                
+                            <div class="sidebar-block highlight-block">
+            <div class="carousel promo-slider slide" data-ride="banner">
+            <div class="carousel-inner" role="listbox">
+                                    <div class="item item-fade active" data-ttl="7">
+                        <img alt="댄스영근" src="../static/images/sidebanner.gif" style="width: 168px; height: 300px;" /></a>
+                    </div>
+                            </div>
+        </div>
+    </div>
+                    
+    
+                            
+                                                                                                                                                            </aside>
+
+                    <div class="content-layout">
+
+                                <div class="carousel site-carousel slide" id="main-carousel" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators indicators-primary">
+                            <li data-target="#main-carousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#main-carousel" data-slide-to="1" ></li>
+                            <li data-target="#main-carousel" data-slide-to="2" ></li>
+                            <li data-target="#main-carousel" data-slide-to="3" ></li>
+                            <li data-target="#main-carousel" data-slide-to="4" ></li>
+                            <li data-target="#main-carousel" data-slide-to="5" ></li>
+                    </ol>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+            
+                <div class="item item-fade active">
+                        <img src="../static/images/banner.png" alt="Eldorado" style="width: 100%; height: auto;" >
+                </div>
+
+            
+                <div class="item item-fade ">
+                    <a href="/lottery/view/11">
+                        <img src="/uploads/slides/6aa3683f2b2928eab876cc3e1d5fa8565a95e167.jpeg?v=87" alt="sezon-rain">
+                    </a>
+                </div>
+
+            
+                <div class="item item-fade ">
+                    <a href="/tel-number-bonus">
+                        <img src="/uploads/slides/253a33bf2d5d87eae7e4c7af2568f46ee5b44eb5.jpeg?v=87" alt="RegBonus">
+                    </a>
+                </div>
+
+            
+                <div class="item item-fade ">
+                    <a href="/welcome-pack">
+                        <img src="/uploads/slides/0e7ecd740763a868a044667c0824b1d3e6292b48.jpeg?v=87" alt="welcome_pack">
+                    </a>
+                </div>
+
+            
+                <div class="item item-fade ">
+                    <a href="/repayment">
+                        <img src="/uploads/slides/9a486ad6f23fbb7cfe9f6c7c7d5bdef177f28343.jpeg?v=87" alt="Cashback_Friday">
+                    </a>
+                </div>
+
+            
+                <div class="item item-fade ">
+                    <a href="/weekly-gifts">
+                        <img src="/uploads/slides/99e10da921a34aa2d9e5504a6d64aa1d2992279a.jpeg?v=87" alt="Amazoniya_Present">
+                    </a>
+                </div>
+
+                    </div>
+        <!-- Controls -->
+        <a class="prev carousel-control" data-target="#main-carousel" href="#" role="button" data-slide="prev">
+            <span class="icon icon-arrow-prev"></span>
+        </a>
+        <a class="next carousel-control" data-target="#main-carousel" href="#" role="button" data-slide="next">
+            <span class="icon icon-arrow-next"></span>
+        </a>
+    </div>
+
+
+                        <section class="content-section">
+
+                                          <div class="filter-search">
+             <div class="filter-panel">
+                 <a class="filter-btn active-filter" href="/games#">게임</a>
+             </div>
+             <div class="search">
+                 <input class="search-input" type="text" placeholder="Поиск..."/>
+                 <i class="search-icon"></i>
+             </div>
+             <div class="dev-list-box">
+    <span>▼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;필터 <i class="toggler"></i></span>
+    <ul class="dev-list">
+                                    <li><a href="../html/catch_yh.html"  class="dev-filter-btn">영근이형을 잡아라!</a></li>
+                            <li><a href="../html/catch_yh.html"  class="dev-filter-btn">영근이형 생성기</a></li>
+                            <li><a href="../html/holjjack.html"  class="dev-filter-btn">홀짝</a></li>
+                            <li><a href="../html/suika_game.html"  class="dev-filter-btn">수박게임</a></li>
+                            <li><a href="../html/bubble_shooter.html"  class="dev-filter-btn">버블슈터</a></li>
+                            <li><a href="../html/slot_machine.html"  class="dev-filter-btn">슬롯머신</a></li>
+                            <li><a href="../html/blackjack.html"  class="dev-filter-btn">블랙잭</a></li>
+                            <li><a href="../html/shell_game.html"  class="dev-filter-btn">야바위</a></li>
+                            <li><a href="../html/different_card.html"  class="dev-filter-btn">틀린그림찾기</a></li>
+                            <li><a href="../html/tower_blocks.html"  class="dev-filter-btn">타워블록</a></li>
+                            <li><a href="/"  class="dev-filter-btn">Atronic</a></li>
+                            <li><a href="/"  class="dev-filter-btn">Sogaproducts</a></li>
+                            <li><a href="/"  class="dev-filter-btn">Aristocrat</a></li>
+                            <li><a href="/"  class="dev-filter-btn">Booongo</a></li>
+                            <li><a href="/"  class="dev-filter-btn">Endorphina</a></li>
+                        </ul>
+</div>
+         </div>
+      
+                            <div class="content-inner">
+                                                                        <div class="clear-top"></div>
+
+                                
+                                            <div class="game-room-content">
+            <div class="games-container on-main">
+                <h2 class="main-title"></h2>
+                <h2 class="games-title">게임 리스트</h2>
+                                    
+    
+
+    
+
+
+<div class="game"
+     data-gameid="105"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="../html/catch_yh.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Gonzo&#039;s Quest" data-src="/uploads/games/icon/11/11e8445b3d926b7655ca418549be0c6a5db21c7b.jpeg?v=87">
+        <span>영근이형을 잡아라!</span>
+        </div>
+</div>
+                                    
+    
+
+    
+
+
+<div class="game"
+     data-gameid="209"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="../html/make_yh.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Crazy Fruits" data-src="/uploads/games/icon/ab/ab17dc6bb554c9de417498592bf797059fe60819.jpeg?v=87">
+        <span>영근이형 생성기</span>
+        </div>
+</div>
+                                    
+    
+
+    
+
+
+<div class="game"
+     data-gameid="5"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="../html/holjjack.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Hot Gems" data-src="/uploads/games/icon/04/04b559490f04e6f2a0218e16576b04735be2c451.png?v=87">
+        <span>홀짝</span>
+        </div>
+</div>
+                                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="16"
+                    data-gamename="Li&#039;l Red Riches"
+            data-gamedev="Williams Interactive"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="../html/suika_game.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Li&#039;l Red Riches" data-src="/uploads/games/icon/91/91caed1102f8ff308d588a3535707b25156e9748.jpeg?v=87">
+        <span>수박게임</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="11"
+                    data-gamename="Book of Ra"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="../html/bubble_shooter.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Book of Ra" data-src="/uploads/games/icon/18/181565276a255284312e5c45d692606b1d4cf63a.jpeg?v=87">
+        <span>버블슈터</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="98"
+                    data-gamename="Jolly Fruit"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="../html/slot_machine.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Jolly Fruit" data-src="/uploads/games/icon/10/1004c640e81e8db703bc047cd07d83f6e343b268.jpeg?v=87">
+        <span>슬롯머신</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="179"
+                    data-gamename="Aztec Gold"
+            data-gamedev="Casino Technology"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="../html/blackjack.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Aztec Gold" data-src="/uploads/games/icon/f3/f3585da1df1082786c99c58d24a5854347fb2d53.jpeg?v=87">
+        <span>블랙잭</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="319"
+                    data-gamename="gods temple deluxe"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="../html/shell_game.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="gods temple deluxe" data-src="/uploads/games/icon/ce/cea4bb14b97b9cec6566adb06f5ed1d5b24c88cb.jpeg?v=87">
+        <span>야바위</span>
+        </div>
+</div>
+
+
+<div class="game jackpot-game"
+     data-gameid="143"
+                    data-gamename="Crazy Monkey"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link"> 
+                            <div class="game-shadow"></div>
+            <a href="../html/different_card.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Crazy Monkey" data-src="/uploads/games/icon/e8/e8aa414ace867e359a4880607f13023df64206ea.jpeg?v=87">
+        <span>틀린그림찾기</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="331"
+                    data-gamename="wild 888"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="../html/tower_blocks.html" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="wild 888" data-src="/uploads/games/icon/4a/4a64ec3085fded12996ff853644a98ff808e5850.jpeg?v=87">
+        <span>타워블록</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="249"
+                    data-gamename="secret of nefertiti"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/secret-of-nefertiti" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="secret of nefertiti" data-src="/uploads/games/icon/7d/7d720aa7b7cc55d389ac90193ded908e51e1a032.jpeg?v=87">
+        <span>secret of nefertiti</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="145"
+                    data-gamename="Fruit Cocktail"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/fruit-cocktail" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Fruit Cocktail" data-src="/uploads/games/icon/af/afe85234d5d9f85810ea95d1c19c791cd2ebaa84.jpeg?v=87">
+        <span>Fruit Cocktail</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="334"
+                    data-gamename="Just Jewels Deluxe"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/just-jewels-deluxe" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Just Jewels Deluxe" data-src="/uploads/games/icon/42/423888446baf1ab0c7079e53cff0274361a145d2.jpeg?v=87">
+        <span>Just Jewels Deluxe</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="25"
+                    data-gamename="Banana Splash"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/banana-splash" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Banana Splash" data-src="/uploads/games/icon/42/422bfe7ce28c69250fd4ddc278a3f6fe80ad97dd.jpeg?v=87">
+        <span>Banana Splash</span>
+        </div>
+</div>
+                                    
+    
+    
+
+
+
+<div class="game jackpot-game"
+     data-gameid="55"
+                    data-gamename="Sharky"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                    <h3 class="jp-info">Джекпот Богов</h3>
+            <b class="jp-sum">
+                <span class="curr-uah"></span>
+                <span class="jackpot-3-sum odometer">123,615.76</span>
+            </b>
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/sharky" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Sharky" data-src="/uploads/games/icon/2c/2cc3f925fae1b20151cfc656490e84afb8383e13.jpeg?v=87">
+        <span>Sharky</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="41"
+                    data-gamename="Book of Ra Deluxe 6"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/book-of-ra-deluxe-6" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Book of Ra Deluxe 6" data-src="/uploads/games/icon/3e/3e8c19d3fe89e61d5d7a2fd238794e13cd76888e.jpeg?v=87">
+        <span>Book of Ra Deluxe 6</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="90"
+                    data-gamename="Jack and the Beanstalk"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/jack-and-the-beanstalk" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Jack and the Beanstalk" data-src="/uploads/games/icon/7e/7ef004a30ff3e6c49b513a8aa2db2522efe4a3b8.jpeg?v=87">
+        <span>Jack and the Beanstalk</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="105"
+                    data-gamename="Gonzo&#039;s Quest"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/gonzos-quest" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Gonzo&#039;s Quest" data-src="/uploads/games/icon/11/11e8445b3d926b7655ca418549be0c6a5db21c7b.jpeg?v=87">
+        <span>Gonzo&#039;s Quest</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="15"
+                    data-gamename="Giant&#039;s Gold"
+            data-gamedev="Williams Interactive"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/williamsinteractive/giants-gold" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Giant&#039;s Gold" data-src="/uploads/games/icon/1a/1a211e18175a3a4f075effd36dc21edf7e5b7e2a.jpeg?v=87">
+        <span>Giant&#039;s Gold</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="342"
+                    data-gamename="Piggy Bank"
+            data-gamedev="Belatra"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/belatra/piggy-bank-v1" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Piggy Bank" data-src="/uploads/games/icon/e5/e5c4e4d63fa2e04a8de23b69040f49e117681e73.jpeg?v=87">
+        <span>Piggy Bank</span>
+        </div>
+</div>
+                                    
+
+<div class="game"
+     data-gameid="49"
+                    data-gamename="Always Hot"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/always-hot" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Always Hot" data-src="/uploads/games/icon/52/5217ef537cb6756907aaa0c6d733452bfd31a928.jpeg?v=87">
+        <span>Always Hot</span>
+        </div>
+</div>
+                                    
+
+
+<div class="game"
+     data-gameid="18"
+                    data-gamename="Cat Queen"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/cat-queen" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Cat Queen" data-src="/uploads/games/icon/de/de082baff078b3c3c2b7754a96300ea1d492ac97.jpeg?v=87">
+        <span>Cat Queen</span>
+        </div>
+</div>
+                                    
+
+<div class="game"
+     data-gameid="181"
+                    data-gamename="Party Gold"
+            data-gamedev="Unicum Gaming"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/unicumgaming/party-gold" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Party Gold" data-src="/uploads/games/icon/25/2516c54ee676a4cdbfb85c3ca9f1f117543a7660.jpeg?v=87">
+        <span>Party Gold</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="241"
+                    data-gamename="goddess of the moon"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/goddess-of-the-moon" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="goddess of the moon" data-src="/uploads/games/icon/20/20cec54a517c84ca946156f067fa4f265bfc7a2a.png?v=87">
+        <span>goddess of the moon</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="14"
+                    data-gamename="Spartacus"
+            data-gamedev="Williams Interactive"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/williamsinteractive/spartacus" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Spartacus" data-src="/uploads/games/icon/66/664d92d3e837c69a285620e29f7b01f11abbf630.jpeg?v=87">
+        <span>Spartacus</span>
+        </div>
+</div>
+                                    
+
+<div class="game"
+     data-gameid="310"
+                    data-gamename="star gems"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/star-gems" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="star gems" data-src="/uploads/games/icon/9b/9b752dd5c9ef67d97ce594bf7a83dd487507640b.png?v=87">
+        <span>star gems</span>
+        </div>
+</div>
+                                    
+    
+    
+
+
+
+<div class="game jackpot-game"
+     data-gameid="24"
+                    data-gamename="Bananas Go Bahamas"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/bananas-go-bahamas" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Bananas Go Bahamas" data-src="/uploads/games/icon/96/96e38b3838cd76139c60a9a5b8518be75cc5c042.jpeg?v=87">
+        <span>Bananas Go Bahamas</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="5"
+                    data-gamename="Hot Gems"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/hot-gems" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Hot Gems" data-src="/uploads/games/icon/04/04b559490f04e6f2a0218e16576b04735be2c451.png?v=87">
+        <span>Hot Gems</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="271"
+                    data-gamename="gods temple"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/gods-temple" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="gods temple" data-src="/uploads/games/icon/08/08720b10fb72eaa70cadbea076ca33eaf2ac9c2e.jpeg?v=87">
+        <span>gods temple</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="94"
+                    data-gamename="Columbus"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/columbus" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Columbus" data-src="/uploads/games/icon/72/72eccc90e0b717224d723d99aaaa5754417591b0.jpeg?v=87">
+        <span>Columbus</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="100"
+                    data-gamename="Premium European Roulette"
+            data-gamedev="Playtech"
+            data-gametype="roulettes"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/premium-european-roulette" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Premium European Roulette" data-src="/uploads/games/icon/8a/8ab70f8b393aa9a904d6697ba886215b9aed563f.jpeg?v=87">
+        <span>Premium European Roulette</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="213"
+                    data-gamename="Columbus Deluxe"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/columbus-deluxe" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Columbus Deluxe" data-src="/uploads/games/icon/d0/d0ab2c5ea6965ce2ffe48a13bbb0f5d12f177867.jpeg?v=87">
+        <span>Columbus Deluxe</span>
+        </div>
+</div>
+                                    
+    
+    
+
+
+
+<div class="game jackpot-game"
+     data-gameid="21"
+                    data-gamename="The Money Game"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/the-money-game" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="The Money Game" data-src="/uploads/games/icon/41/41c0687096a4c4c771adcbe160076df712a4e299.jpeg?v=87">
+        <span>The Money Game</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="273"
+                    data-gamename="poisoned apple"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/poisoned-apple" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="poisoned apple" data-src="/uploads/games/icon/02/02dd04566480917eaade88619a3595e33e05b4a4.jpeg?v=87">
+        <span>poisoned apple</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="13"
+                    data-gamename="Dragon Kingdom"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/dragon-kingdom" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Dragon Kingdom" data-src="/uploads/games/icon/f2/f2f2467010865f8a272133833821da03f6341493.jpeg?v=87">
+        <span>Dragon Kingdom</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="101"
+                    data-gamename="Premium American Roulette"
+            data-gamedev="Playtech"
+            data-gametype="roulettes"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/premium-american-roulette" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Premium American Roulette" data-src="/uploads/games/icon/e7/e7b8280832ccef9a324fd988c0234087836bf8c7.jpeg?v=87">
+        <span>Premium American Roulette</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="58"
+                    data-gamename="Aztec Treasure"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/aztec-treasure" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Aztec Treasure" data-src="/uploads/games/icon/50/5023c2be0e27ba40f768d64c3c4d3e4b090cc53d.png?v=87">
+        <span>Aztec Treasure</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="340"
+                    data-gamename="supreme fortune"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/supreme-fortune" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="supreme fortune" data-src="/uploads/games/icon/fb/fbeae8225e13e753922c1340c69f1829e61d6818.png?v=87">
+        <span>supreme fortune</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="63"
+                    data-gamename="Ultra Hot"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/ultra-hot" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Ultra Hot" data-src="/uploads/games/icon/68/68c0d7255483405e300473a0ff99f9d6778c38a2.jpeg?v=87">
+        <span>Ultra Hot</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="3"
+                    data-gamename="Gladiator"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/gladiator" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Gladiator" data-src="/uploads/games/icon/d8/d878fde33e44a514e1caf35d947f632646184246.jpeg?v=87">
+        <span>Gladiator</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="289"
+                    data-gamename="fruity frost"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/fruity-frost" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="fruity frost" data-src="/uploads/games/icon/63/63bbad4950902d461b50a6ba8dc02910b684be0b.jpeg?v=87">
+        <span>fruity frost</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="237"
+                    data-gamename="Lucky Lady&#039;s Charm Deluxe"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/lucky-ladys-charm-deluxe" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Lucky Lady&#039;s Charm Deluxe" data-src="/uploads/games/icon/1b/1b610181c1d8d618dcdd5cc5d360b945f9baaa45.jpeg?v=87">
+        <span>Lucky Lady&#039;s Charm Deluxe</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="19"
+                    data-gamename="Book of Ra Deluxe"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/book-of-ra-deluxe" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Book of Ra Deluxe" data-src="/uploads/games/icon/28/28e9d378a2914ed44d6100a3e4020b33ec6adb55.jpeg?v=87">
+        <span>Book of Ra Deluxe</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="297"
+                    data-gamename="nords war"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/nords-war" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="nords war" data-src="/uploads/games/icon/95/958e6f23a1165715114ff6a358d7de8883b53846.png?v=87">
+        <span>nords war</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="329"
+                    data-gamename="Taboo"
+            data-gamedev="Endorphina"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/endorphina/taboo" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Taboo" data-src="/uploads/games/icon/30/304eb481f6e6ad86fe4c58cc9a018fdf134dfb1b.jpeg?v=87">
+        <span>Taboo</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="275"
+                    data-gamename="12 animals"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/12-animals" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="12 animals" data-src="/uploads/games/icon/a1/a1415a65bb5856b08848e163f3f03bfbfa2d3afd.jpeg?v=87">
+        <span>12 animals</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="54"
+                    data-gamename="Mr. Cashback"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/mr-cashback" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Mr. Cashback" data-src="/uploads/games/icon/13/139fe4284a11490463c2d624186374e5df89e20f.jpeg?v=87">
+        <span>Mr. Cashback</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="80"
+                    data-gamename="Starburst"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/starburst" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Starburst" data-src="/uploads/games/icon/89/890aae91b9271c237a2fb6617f7361f517843e86.jpeg?v=87">
+        <span>Starburst</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="93"
+                    data-gamename="Kiss"
+            data-gamedev="Williams Interactive"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/williamsinteractive/kiss" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Kiss" data-src="/uploads/games/icon/33/33a8aec53defbbc104949575c06c3a4b1d520729.jpeg?v=87">
+        <span>Kiss</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="86"
+                    data-gamename="Sizzling Hot"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/sizzling-hot" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Sizzling Hot" data-src="/uploads/games/icon/d1/d10cd27e4b0546a8fe4d020ebb0090c7d4dfdae9.jpeg?v=87">
+        <span>Sizzling Hot</span>
+        </div>
+</div>
+                                    
+    
+    
+
+
+
+<div class="game jackpot-game"
+     data-gameid="61"
+                    data-gamename="Pharaoh&#039;s Gold III"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/pharaohs-gold-iii" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Pharaoh&#039;s Gold III" data-src="/uploads/games/icon/ea/ea1dafeb378aff436d2a864c9eb6b65c9ee696cc.jpeg?v=87">
+        <span>Pharaoh&#039;s Gold III</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="147"
+                    data-gamename="Resident"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/resident" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Resident" data-src="/uploads/games/icon/b9/b936dd611844f881f1a26763a6677eaddefabc02.jpeg?v=87">
+        <span>Resident</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="279"
+                    data-gamename="thunder zeus"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/thunder-zeus" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="thunder zeus" data-src="/uploads/games/icon/5d/5d2d4af1216c7c98b4976a43c9d4f3f38971c949.jpeg?v=87">
+        <span>thunder zeus</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="130"
+                    data-gamename="Football Carnival"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/football-carnival" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Football Carnival" data-src="/uploads/games/icon/7f/7f373d96949661f1440cd82ef2a54eed54b7ac4c.jpeg?v=87">
+        <span>Football Carnival</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="177"
+                    data-gamename="Ultra Hot Deluxe"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/ultra-hot-deluxe" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Ultra Hot Deluxe" data-src="/uploads/games/icon/15/15b5e7c0b8363d6baa5806b7f74e50a29dc510ec.jpeg?v=87">
+        <span>Ultra Hot Deluxe</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="10"
+                    data-gamename="Sultan&#039;s Gold"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/sultans-gold" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Sultan&#039;s Gold" data-src="/uploads/games/icon/a2/a23c2f79901c15bd55d29b4a5524cd1640635a06.jpeg?v=87">
+        <span>Sultan&#039;s Gold</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="315"
+                    data-gamename="Fruit Sensation"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/fruit-sensation" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Fruit Sensation" data-src="/uploads/games/icon/bb/bb25089579c92e70b12594e315b90481a50f7893.jpeg?v=87">
+        <span>Fruit Sensation</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="117"
+                    data-gamename="Mythic Maiden"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/mythic-maiden" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Mythic Maiden" data-src="/uploads/games/icon/d0/d0a19215b5ebbfca110a68bcd52c7e9185b8dbe4.jpeg?v=87">
+        <span>Mythic Maiden</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="209"
+                    data-gamename="Crazy Fruits"
+            data-gamedev="Atronic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/atronic/crazy-fruits" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Crazy Fruits" data-src="/uploads/games/icon/ab/ab17dc6bb554c9de417498592bf797059fe60819.jpeg?v=87">
+        <span>Crazy Fruits</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="253"
+                    data-gamename="88 dragon"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/88-dragon" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="88 dragon" data-src="/uploads/games/icon/92/92d1e8f3bca2fa58924edaef73c9f8be6eb0dbe9.png?v=87">
+        <span>88 dragon</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="37"
+                    data-gamename="Lucky Lady&#039;s Charm"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/lucky-ladys-charm" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Lucky Lady&#039;s Charm" data-src="/uploads/games/icon/82/8228ed5342b1344c17cd37387326d4c7c9958ba3.jpeg?v=87">
+        <span>Lucky Lady&#039;s Charm</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="122"
+                    data-gamename="Keks"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/keks" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Keks" data-src="/uploads/games/icon/a6/a6abf7e9dd363e3c7822c9260980e2d4e8535c89.jpeg?v=87">
+        <span>Keks</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="69"
+                    data-gamename="Secret Forest"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/secret-forest" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Secret Forest" data-src="/uploads/games/icon/45/45a5f91650bd8934517cc900796416b4627717d3.jpeg?v=87">
+        <span>Secret Forest</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="247"
+                    data-gamename="15 golden eggs"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/15-golden-eggs" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="15 golden eggs" data-src="/uploads/games/icon/94/94b5091617c92817fc3d33661875a11196807422.png?v=87">
+        <span>15 golden eggs</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="223"
+                    data-gamename="Sun&amp;Moon"
+            data-gamedev="Aristocrat"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/aristocrat/sun-and-moon" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Sun&amp;Moon" data-src="/uploads/games/icon/75/75c6187c8a001bef59e7da86591bdb16ecbea8ad.jpeg?v=87">
+        <span>Sun&amp;Moon</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="67"
+                    data-gamename="Royal Treasures"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/royal-treasures" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Royal Treasures" data-src="/uploads/games/icon/0d/0daedc3d0246c3e3ac82ab02c475b75f0e485b5b.jpeg?v=87">
+        <span>Royal Treasures</span>
+        </div>
+</div>
+                                    
+    
+    
+
+
+
+<div class="game jackpot-game"
+     data-gameid="27"
+                    data-gamename="Dolphin&#039;s Pearl"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/dolphins-pearl" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Dolphin&#039;s Pearl" data-src="/uploads/games/icon/cf/cf706eb82629ab5e35fa174dcde90ecc9d5fffd5.jpeg?v=87">
+        <span>Dolphin&#039;s Pearl</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="57"
+                    data-gamename="Super Jackpot Party"
+            data-gamedev="Williams Interactive"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/williamsinteractive/super-jackpot-party" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Super Jackpot Party" data-src="/uploads/games/icon/3a/3a2930c634b564586952b1068de771f4e32f70d9.jpeg?v=87">
+        <span>Super Jackpot Party</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="219"
+                    data-gamename="Pirate 2"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/pirate-2" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Pirate 2" data-src="/uploads/games/icon/74/747d98413ab0a89b55b027e47345cd9c24c5b3cb.jpeg?v=87">
+        <span>Pirate 2</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="108"
+                    data-gamename="Thor The Mighty Avenger"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/thor-the-mighty-avenger" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Thor The Mighty Avenger" data-src="/uploads/games/icon/f4/f4514f361aa4a26269d39d6eff722d1f1ed07ae1.jpeg?v=87">
+        <span>Thor The Mighty Avenger</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="136"
+                    data-gamename="Magic Portals"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/magic-portals" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Magic Portals" data-src="/uploads/games/icon/93/930a2f2d5adb202306a0810523253d3ff78f7aaf.jpeg?v=87">
+        <span>Magic Portals</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="1"
+                    data-gamename="Great Blue"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/great-blue" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Great Blue" data-src="/uploads/games/icon/2f/2f3135fd197150311415377cff3511a5b7fc1376.jpeg?v=87">
+        <span>Great Blue</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="52"
+                    data-gamename="Rocky"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/rocky" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Rocky" data-src="/uploads/games/icon/f7/f7bc0a44df16b018587fe5a59bf6481e643e4e86.jpeg?v=87">
+        <span>Rocky</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="211"
+                    data-gamename="The Witch"
+            data-gamedev="Sogaproducts"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/sogaproducts/the-witch" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="The Witch" data-src="/uploads/games/icon/4f/4f51e083dc3123f01931a5d2dd6363fc165159f8.jpeg?v=87">
+        <span>The Witch</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="153"
+                    data-gamename="Crazy Monkey 2"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/crazy-monkey-2" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Crazy Monkey 2" data-src="/uploads/games/icon/eb/eb6e21e915b0094089b5ddd86ddd8e8b9af38411.jpeg?v=87">
+        <span>Crazy Monkey 2</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="53"
+                    data-gamename="Zeus 1000"
+            data-gamedev="Williams Interactive"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/williamsinteractive/zeus-1000" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Zeus 1000" data-src="/uploads/games/icon/7f/7f55230a9f2a7d3ef0306ffa6f82a2388a4ebe41.jpeg?v=87">
+        <span>Zeus 1000</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="157"
+                    data-gamename="Fruit Cocktail 2"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/fruit-cocktail-2" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Fruit Cocktail 2" data-src="/uploads/games/icon/21/2119165f39f8de92f94db48a10485d43e1343b2e.jpeg?v=87">
+        <span>Fruit Cocktail 2</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="159"
+                    data-gamename="Gnome"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/gnome" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Gnome" data-src="/uploads/games/icon/f6/f66292f33ec5ed64861b452d861755b88180c128.jpeg?v=87">
+        <span>Gnome</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="251"
+                    data-gamename="age of caesar"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/age-of-caesar" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="age of caesar" data-src="/uploads/games/icon/b6/b67fd8c873135f9755ab5b834e622ff1eda072d9.png?v=87">
+        <span>age of caesar</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="187"
+                    data-gamename="Sizzling Hot Deluxe"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/sizzling-hot-deluxe" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Sizzling Hot Deluxe" data-src="/uploads/games/icon/3e/3ec2495077cec2891a881703d340b1af75c49570.jpeg?v=87">
+        <span>Sizzling Hot Deluxe</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="38"
+                    data-gamename="Mermaid&#039;s Pearl"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/mermaids-pearl" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Mermaid&#039;s Pearl" data-src="/uploads/games/icon/6c/6c51f3d3f518919414ad97db9bb5860d417f3cb7.jpeg?v=87">
+        <span>Mermaid&#039;s Pearl</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="151"
+                    data-gamename="Joker Pro"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/joker-pro" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Joker Pro" data-src="/uploads/games/icon/88/887df4215d5da3153ac58e81a747fac9e2915587.jpeg?v=87">
+        <span>Joker Pro</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="32"
+                    data-gamename="Golden Planet"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/golden-planet" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Golden Planet" data-src="/uploads/games/icon/95/95af8242bd72d1cf9cc6d6f5fd5872ae7985b938.jpeg?v=87">
+        <span>Golden Planet</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="281"
+                    data-gamename="halloween witch"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/halloween-witch" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="halloween witch" data-src="/uploads/games/icon/57/57fb18e32f6445c837fb957459f8bb9ef26d7234.jpeg?v=87">
+        <span>halloween witch</span>
+        </div>
+</div>
+                                    
+
+<div class="game"
+     data-gameid="139"
+                    data-gamename="Football: Champions Cup"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/football-champions-cup" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Football: Champions Cup" data-src="/uploads/games/icon/ac/ac97b473684a6a554e7ff8a76c2bae0c8912f563.jpeg?v=87">
+        <span>Football: Champions Cup</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="73"
+                    data-gamename="The Magic Flute"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/the-magic-flute" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="The Magic Flute" data-src="/uploads/games/icon/da/da2c0c9277ce2c4dbef543d871e493029d4cda19.jpeg?v=87">
+        <span>The Magic Flute</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="283"
+                    data-gamename="88 wild dragon"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/88-wild-dragon" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="88 wild dragon" data-src="/uploads/games/icon/c8/c8f5ae482333734a4b1fd1907a0b835b25702cc7.jpeg?v=87">
+        <span>88 wild dragon</span>
+        </div>
+</div>
+                                    
+
+<div class="game"
+     data-gameid="116"
+                    data-gamename="Creature from the Black Lagoon"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/creature-from-the-black-lagoon" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Creature from the Black Lagoon" data-src="/uploads/games/icon/29/29617c2621f988cc7bdd4a4777bd6e117f932e46.jpeg?v=87">
+        <span>Creature from the Black Lagoon</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="336"
+                    data-gamename="Diamond Trio"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/diamond-trio" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Diamond Trio" data-src="/uploads/games/icon/6d/6d447932676282d5e51225aea17e3c4329d64cfd.png?v=87">
+        <span>Diamond Trio</span>
+        </div>
+</div>
+
+
+<div class="game"
+     data-gameid="163"
+                    data-gamename="Garage"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/garage" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Garage" data-src="/uploads/games/icon/90/90b3feefeaf3ac3e805fc2c8d2ede45a522dba75.jpeg?v=87">
+        <span>Garage</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="183"
+                    data-gamename="Sizzling Hot Quattro"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/sizzling-hot-quattro" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Sizzling Hot Quattro" data-src="/uploads/games/icon/4d/4d786ee920efac71c578b80513cc29316d906604.jpeg?v=87">
+        <span>Sizzling Hot Quattro</span>
+        </div>
+</div>
+                                    
+
+<div class="game"
+     data-gameid="233"
+                    data-gamename="Secrets of the Sand"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/secrets-of-the-sand" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Secrets of the Sand" data-src="/uploads/games/icon/8e/8ea3fe55f45645e57928e7d052f1b9e73d4457e9.jpeg?v=87">
+        <span>Secrets of the Sand</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="285"
+                    data-gamename="lucky xmas"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/lucky-xmas" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="lucky xmas" data-src="/uploads/games/icon/70/703a4829efbc95ef0c64bee6cd830baaaecc4da3.jpeg?v=87">
+        <span>lucky xmas</span>
+        </div>
+</div>
+                                    
+
+<div class="game"
+     data-gameid="48"
+                    data-gamename="Mosquitozzz"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/mosquitozzz" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Mosquitozzz" data-src="/uploads/games/icon/ee/eefe1e5eb0517d89363da31b2a2c84b9d43fbb75.jpeg?v=87">
+        <span>Mosquitozzz</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="97"
+                    data-gamename="Red Flag Fleet"
+            data-gamedev="Williams Interactive"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/williamsinteractive/red-flag-fleet" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Red Flag Fleet" data-src="/uploads/games/icon/d0/d069ce1780b1b1f7ed172771441ef2cf789ae4bb.jpeg?v=87">
+        <span>Red Flag Fleet</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="40"
+                    data-gamename="Lunaris"
+            data-gamedev="Williams Interactive"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/williamsinteractive/lunaris" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Lunaris" data-src="/uploads/games/icon/eb/eb839f73c2927446dd9e3d18c98c020d9d0d560a.jpeg?v=87">
+        <span>Lunaris</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="6"
+                    data-gamename="Atlantis Queen"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/atlantis-queen" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Atlantis Queen" data-src="/uploads/games/icon/92/9213987cc673c272348a2cacface2ea9fae1dcec.png?v=87">
+        <span>Atlantis Queen</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="215"
+                    data-gamename="Always Hot Deluxe"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/always-hot-deluxe" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Always Hot Deluxe" data-src="/uploads/games/icon/0e/0eab2b78c2a97f0bdcc6d5fa29b12bdbbb2a3133.jpeg?v=87">
+        <span>Always Hot Deluxe</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="243"
+                    data-gamename="diego fortune"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/diego-fortune" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="diego fortune" data-src="/uploads/games/icon/aa/aabb82a51010881f8834928fa6f3737acd4fcab8.jpeg?v=87">
+        <span>diego fortune</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="111"
+                    data-gamename="Fairy Land 2"
+            data-gamedev="Duomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/duomatic/fairy-land-2" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Fairy Land 2" data-src="/uploads/games/icon/85/8549827122c0178bbac1a7c1da293eeb4dc01742.jpeg?v=87">
+        <span>Fairy Land 2</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="128"
+                    data-gamename="Riches of India"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/riches-of-india" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Riches of India" data-src="/uploads/games/icon/80/800639e806b2d85c81a5d3191f47ae971b0aac71.jpeg?v=87">
+        <span>Riches of India</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="176"
+                    data-gamename="Space Wars"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/space-wars" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Space Wars" data-src="/uploads/games/icon/5c/5c9582ae4eaac03282c5e2fe5bcf0c8b1923d046.jpeg?v=87">
+        <span>Space Wars</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="263"
+                    data-gamename="fruiterra"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/fruiterra" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="fruiterra" data-src="/uploads/games/icon/90/907841e513d551a1984000a8b674bb63683064dd.jpeg?v=87">
+        <span>fruiterra</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="303"
+                    data-gamename="patricks pub"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/patricks-pub" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="patricks pub" data-src="/uploads/games/icon/81/811970a6e8e69f6fd5b4097ffd24a4c1f3e795b0.jpeg?v=87">
+        <span>patricks pub</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="227"
+                    data-gamename="The Legendary Detective"
+            data-gamedev="Sogaproducts"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/sogaproducts/detective" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="The Legendary Detective" data-src="/uploads/games/icon/c1/c19c8852bd20746ca7cf7d7b61b1ec136003cd41.jpeg?v=87">
+        <span>The Legendary Detective</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="217"
+                    data-gamename="50 Lions"
+            data-gamedev="Aristocrat"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/aristocrat/50-lions" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="50 Lions" data-src="/uploads/games/icon/44/44989799c350f5477baa8bbb178f0f03bdd79ae9.jpeg?v=87">
+        <span>50 Lions</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="167"
+                    data-gamename="Dead or Alive"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/dead-or-alive" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Dead or Alive" data-src="/uploads/games/icon/c7/c709d812ce55c61160c56c16c02527904557b6f1.jpeg?v=87">
+        <span>Dead or Alive</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="295"
+                    data-gamename="fruity wild"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/fruity-wild" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="fruity wild" data-src="/uploads/games/icon/20/20a808af073dd7110a3139dba35b1877eca10141.png?v=87">
+        <span>fruity wild</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="131"
+                    data-gamename="Spider-man: Attack of the Green Goblin"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/spider-man-attack-of-the-green-goblin" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Spider-man: Attack of the Green Goblin" data-src="/uploads/games/icon/ab/abebc52e7f5883fd4cfc07a483719d506274c949.jpeg?v=87">
+        <span>Spider-man: Attack of the Green Goblin</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="231"
+                    data-gamename="Flame Dancer"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/flame-dancer" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Flame Dancer" data-src="/uploads/games/icon/f7/f7ae88fdea6c34bf0ff17effea75f7af068019ce.jpeg?v=87">
+        <span>Flame Dancer</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="185"
+                    data-gamename="Lucky Drink"
+            data-gamedev="Belatra"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/belatra/lucky-drink" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Lucky Drink" data-src="/uploads/games/icon/d9/d94fed66b04ec506973af02397155c19c34adc36.jpeg?v=87">
+        <span>Lucky Drink</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="9"
+                    data-gamename="Desert Treasure II"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/desert-treasure-2" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Desert Treasure II" data-src="/uploads/games/icon/c1/c1d4f0e9ac3297c2813c5aceb7656e7a1c2ac828.jpeg?v=87">
+        <span>Desert Treasure II</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="96"
+                    data-gamename="Dolphin Cash"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/dolphin-cash" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Dolphin Cash" data-src="/uploads/games/icon/ff/ffea3a76460873d5f70680f4ad900e1980f855c0.jpeg?v=87">
+        <span>Dolphin Cash</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="59"
+                    data-gamename="Pharaoh&#039;s Gold II"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/pharaohs-gold-ii" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Pharaoh&#039;s Gold II" data-src="/uploads/games/icon/5e/5e64cd10e38659d4da446a0f227a33507f703012.jpeg?v=87">
+        <span>Pharaoh&#039;s Gold II</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="171"
+                    data-gamename="Island 2"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/island-2" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Island 2" data-src="/uploads/games/icon/b6/b6e9646935acf36b7f332e0fac872d38ce9b2485.jpeg?v=87">
+        <span>Island 2</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="34"
+                    data-gamename="Gryphon&#039;s Gold"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/gryphons-gold" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Gryphon&#039;s Gold" data-src="/uploads/games/icon/42/424c83ac2bcf2be4ad873242915bdf6d1e0640bd.jpeg?v=87">
+        <span>Gryphon&#039;s Gold</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="174"
+                    data-gamename="Piggy Riches"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/piggy-riches" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Piggy Riches" data-src="/uploads/games/icon/d3/d39710c6347c9f6b7a9e3615717360814ee93c16.jpeg?v=87">
+        <span>Piggy Riches</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="325"
+                    data-gamename="Hot Chance"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/hot-chance" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Hot Chance" data-src="/uploads/games/icon/ec/ec64123f9f18424965784d3ef715bea6fb78a69d.jpeg?v=87">
+        <span>Hot Chance</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="287"
+                    data-gamename="wild galaxy"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/wild-galaxy" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="wild galaxy" data-src="/uploads/games/icon/7b/7bd70ba47145eaa099d925609a0d1ce4bbe87231.jpeg?v=87">
+        <span>wild galaxy</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="107"
+                    data-gamename="Halloween Fortune"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/halloween-fortune" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Halloween Fortune" data-src="/uploads/games/icon/e7/e792a268ec4e144f1c58611b79a876da7117f338.jpeg?v=87">
+        <span>Halloween Fortune</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="225"
+                    data-gamename="Dragon Girl"
+            data-gamedev="Sogaproducts"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/sogaproducts/dragon-girl" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Dragon Girl" data-src="/uploads/games/icon/4c/4c2140137b0f589d3c241f90c5ebdf6c19a2364e.jpeg?v=87">
+        <span>Dragon Girl</span>
+        </div>
+</div>
+                                    
+
+<div class="game"
+     data-gameid="307"
+                    data-gamename="secret of nefertiti 2"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/secret-of-nefertiti-2" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="secret of nefertiti 2" data-src="/uploads/games/icon/78/7895ffc929c3ace90b8f1856fbdd6b73ed676fa8.jpeg?v=87">
+        <span>secret of nefertiti 2</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="257"
+                    data-gamename="gnomes gems"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/gnomes-gems" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="gnomes gems" data-src="/uploads/games/icon/0e/0e344c960f42f0207426982d06d4a008006d024d.jpeg?v=87">
+        <span>gnomes gems</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="317"
+                    data-gamename="vikings gods gold"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/vikings-gods-gold" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="vikings gods gold" data-src="/uploads/games/icon/d3/d3981185bab2617f943f1ec7f799d0640959856b.jpeg?v=87">
+        <span>vikings gods gold</span>
+        </div>
+</div>
+                                    
+    
+    
+
+
+
+<div class="game jackpot-game"
+     data-gameid="29"
+                    data-gamename="The Ming Dynasty"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/the-ming-dynasty" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="The Ming Dynasty" data-src="/uploads/games/icon/70/706fc72d311b3698309cb8e114988bb86a685f3f.jpeg?v=87">
+        <span>The Ming Dynasty</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="113"
+                    data-gamename="Geisha Story"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/geisha-story" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Geisha Story" data-src="/uploads/games/icon/2a/2a2781afe16290e1f01e2cbdf2df66b085bf5c4e.jpeg?v=87">
+        <span>Geisha Story</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="7"
+                    data-gamename="Iron Man 3"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/iron-man-3" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Iron Man 3" data-src="/uploads/games/icon/92/92f807bdddd14cce0de05a1dd0212a048da242e4.jpeg?v=87">
+        <span>Iron Man 3</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="255"
+                    data-gamename="happy chinese new year"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/happy-chinese-new-year" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="happy chinese new year" data-src="/uploads/games/icon/33/337e631ac8ea33f5de0ee93fa1c53abc07b2b00a.jpeg?v=87">
+        <span>happy chinese new year</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="126"
+                    data-gamename="Oliver&#039;s Bar"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/olivers-bar" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Oliver&#039;s Bar" data-src="/uploads/games/icon/ac/ac91bc64bde23b894d1af23899d5ac0cd4dcc735.jpeg?v=87">
+        <span>Oliver&#039;s Bar</span>
+        </div>
+</div>
+
+<div class="game"
+     data-gameid="121"
+                    data-gamename="Fisticuffs"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/fisticuffs" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Fisticuffs" data-src="/uploads/games/icon/77/77d275d3a86c8da5db09e76c720872f7fc50db01.jpeg?v=87">
+        <span>Fisticuffs</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="120"
+                    data-gamename="Wild Water"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/wild-water" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Wild Water" data-src="/uploads/games/icon/37/37dd7b382894428cc8a27fb1500e488a8eb86d2d.jpeg?v=87">
+        <span>Wild Water</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="92"
+                    data-gamename="Zeus III"
+            data-gamedev="Williams Interactive"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/williamsinteractive/zeus-iii" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Zeus III" data-src="/uploads/games/icon/f9/f974af40271181bddc9ff32608313c02594d228d.jpeg?v=87">
+        <span>Zeus III</span>
+        </div>
+</div>
+                                
+
+<div class="game"
+     data-gameid="267"
+                    data-gamename="crazy gems"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/crazy-gems" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="crazy gems" data-src="/uploads/games/icon/73/73c45d07731045d3f2d687cea8528117e5cf565c.jpeg?v=87">
+        <span>crazy gems</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="161"
+                    data-gamename="Guns N&#039; Roses"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/guns-n-roses" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Guns N&#039; Roses" data-src="/uploads/games/icon/d0/d0cdbb21e59d146e7be5962f83042f61127d3c4a.jpeg?v=87">
+        <span>Guns N&#039; Roses</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="77"
+                    data-gamename="The Incredible Hulk 50 Lines"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/the-incredible-hulk-50-lines" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="The Incredible Hulk 50 Lines" data-src="/uploads/games/icon/2a/2aa3cd01a7c6f7afe573ace0a2cd8ec03062f535.jpeg?v=87">
+        <span>The Incredible Hulk 50 Lines</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="109"
+                    data-gamename="An Escape From Alcatraz,Тюремная романтика — игровой автомат Alcatraz от онлайн казино Эльдорадо в Украине"
+            data-gamedev="Belatra"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/belatra/an-escape-from-alcatraz" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="An Escape From Alcatraz" data-src="/uploads/games/icon/2b/2b51af3487bb2a5913cd117c63b70322a1b8cb52.jpeg?v=87">
+        <span>An Escape From Alcatraz</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="88"
+                    data-gamename="Big Bang"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/big-bang" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Big Bang" data-src="/uploads/games/icon/72/726651296332eacf50a8508f9d0a6fcbff8ac26a.jpeg?v=87">
+        <span>Big Bang</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="119"
+                    data-gamename="Ghost Pirates"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/ghost-pirates" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Ghost Pirates" data-src="/uploads/games/icon/23/23fdf150457e4b2451541536e8e78ec9e26bcd16.jpeg?v=87">
+        <span>Ghost Pirates</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="265"
+                    data-gamename="hells band"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/hells-band" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="hells band" data-src="/uploads/games/icon/c9/c96f7b138823b0fc93a17bdef1317ac1e363df0d.jpeg?v=87">
+        <span>hells band</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="338"
+                    data-gamename="Dolphin&#039;s Pearl Deluxe"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/dolphins-pearl-deluxe" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Dolphin&#039;s Pearl Deluxe" data-src="/uploads/games/icon/e0/e0b2c80b5e8d0c41ccf3cca374f15845b9504805.jpeg?v=87">
+        <span>Dolphin&#039;s Pearl Deluxe</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="71"
+                    data-gamename="Silver Fox"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/silver-fox" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Silver Fox" data-src="/uploads/games/icon/30/307baab7d26f286ffbd7c5d2dd40228ca281b145.jpeg?v=87">
+        <span>Silver Fox</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="132"
+                    data-gamename="Drive: Multiplier Mayhem"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/drive-multiplier-mayhem" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Drive: Multiplier Mayhem" data-src="/uploads/games/icon/3f/3fb753367fa965466f5de0e59d621692f664f564.jpeg?v=87">
+        <span>Drive: Multiplier Mayhem</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="102"
+                    data-gamename="Respinner"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/respinner" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Respinner" data-src="/uploads/games/icon/6e/6e4561cb145a7c17e92e1691ad13135b233e07b9.jpeg?v=87">
+        <span>Respinner</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="65"
+                    data-gamename="Ramses II"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/ramses-ii" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Ramses II" data-src="/uploads/games/icon/18/18823c313ce95e6a46ba077b451173432a4ea659.jpeg?v=87">
+        <span>Ramses II</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="291"
+                    data-gamename="african spirit"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/african-spirit" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="african spirit" data-src="/uploads/games/icon/b5/b5270a160fa9566905db517322d38bb5aa7ce37a.jpeg?v=87">
+        <span>african spirit</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="149"
+                    data-gamename="Dracula"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/dracula" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Dracula" data-src="/uploads/games/icon/f0/f090cf8c83f341efde78e9549e4f11a614d878d2.jpeg?v=87">
+        <span>Dracula</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="124"
+                    data-gamename="Rock Climber"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/rock-climber" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Rock Climber" data-src="/uploads/games/icon/76/7676d15f3ce7de4238b35fcc6389b74e6915582b.jpeg?v=87">
+        <span>Rock Climber</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="239"
+                    data-gamename="Marco Polo"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/marco-polo" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Marco Polo" data-src="/uploads/games/icon/ea/eabb72de672cfcade1e1a87f76484d91d4678661.jpeg?v=87">
+        <span>Marco Polo</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="155"
+                    data-gamename="Lucky Haunter"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/lucky-haunter" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Lucky Haunter" data-src="/uploads/games/icon/07/077abf8caf5caa0b98e7f5763823c4132bb015c1.jpeg?v=87">
+        <span>Lucky Haunter</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="277"
+                    data-gamename="singles day"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/singles-day" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="singles day" data-src="/uploads/games/icon/da/dad131eac61bd82757ac084698d8ee6960413cda.png?v=87">
+        <span>singles day</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="75"
+                    data-gamename="Unicorn Magic"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/unicorn-magic" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Unicorn Magic" data-src="/uploads/games/icon/f8/f8410007945e9c3b70ddaf5676f2f87070b59efa.jpeg?v=87">
+        <span>Unicorn Magic</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="259"
+                    data-gamename="fruiterra fortune"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/fruiterra-fortune" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="fruiterra fortune" data-src="/uploads/games/icon/d8/d8f914cd03bb6f6f595557294837a6e86fdcbeee.jpeg?v=87">
+        <span>fruiterra fortune</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="229"
+                    data-gamename="Fairy Queen"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/fairy-queen" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Fairy Queen" data-src="/uploads/games/icon/d5/d50d5db2ec93a11036339ccc8f8fe2a45aefdbae.jpeg?v=87">
+        <span>Fairy Queen</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="51"
+                    data-gamename="Benchwarmer Football Girls"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/benchwarmer-football-girls" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Benchwarmer Football Girls" data-src="/uploads/games/icon/c3/c33bf1602691bdf6f006a511cd275aa991cd65af.jpeg?v=87">
+        <span>Benchwarmer Football Girls</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="165"
+                    data-gamename="Aliens"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/aliens" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Aliens" data-src="/uploads/games/icon/4d/4d14ccf3b3bfba3dd67a5f874e290fc1eb8b3743.jpeg?v=87">
+        <span>Aliens</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="269"
+                    data-gamename="christmas charm"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/christmas-charm" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="christmas charm" data-src="/uploads/games/icon/cd/cda044296603fa22be9795e1b46b5b0c6fd0dd30.jpeg?v=87">
+        <span>christmas charm</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="78"
+                    data-gamename="Twin Spin"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/twin-spin" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Twin Spin" data-src="/uploads/games/icon/18/180a5a40b0235f0aa29aa2f2a1926a45d053d1e8.jpeg?v=87">
+        <span>Twin Spin</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="323"
+                    data-gamename="shen long mi bao"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/shen-long-mi-bao" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="shen long mi bao" data-src="/uploads/games/icon/d8/d8a389abbd9fb9536fe4ec1005df95134b9acfcb.jpeg?v=87">
+        <span>shen long mi bao</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="261"
+                    data-gamename="kailash mystery"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/kailash-mystery" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="kailash mystery" data-src="/uploads/games/icon/42/4213eaed1b8f74bc148b417ee484cba29d9feedc.jpeg?v=87">
+        <span>kailash mystery</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="103"
+                    data-gamename="Pokemon Slot"
+            data-gamedev="Jolly Roger"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/jollyroger/pokemon-slot" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Pokemon Slot" data-src="/uploads/games/icon/f7/f7ad88edf87b3a6f2307ed5711563025e8c2718d.jpeg?v=87">
+        <span>Pokemon Slot</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="134"
+                    data-gamename="Secrets of Christmas"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/secrets-of-christmas" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Secrets of Christmas" data-src="/uploads/games/icon/9c/9c7d1d266001925d509f50ff6cbade041b94ff5e.jpeg?v=87">
+        <span>Secrets of Christmas</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="313"
+                    data-gamename="Geisha"
+            data-gamedev="Aristocrat"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/aristocrat/geisha" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Geisha" data-src="/uploads/games/icon/b4/b46bb8b00574801c83f9fabafbc437262346c737.png?v=87">
+        <span>Geisha</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="82"
+                    data-gamename="Fruit Shop"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/fruit-shop" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Fruit Shop" data-src="/uploads/games/icon/84/84c84d3725b75a72a017f00fd0d88e65f03c5a66.jpeg?v=87">
+        <span>Fruit Shop</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="299"
+                    data-gamename="zodiac"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/zodiac" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="zodiac" data-src="/uploads/games/icon/ea/ea9c7509b9ca68a2f6260138e006122f3fcfbebb.jpeg?v=87">
+        <span>zodiac</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="138"
+                    data-gamename="Boom Brothers"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/boom-brothers" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Boom Brothers" data-src="/uploads/games/icon/52/52607b9f1cc7457101b1a7f3bca6697dfb018547.jpeg?v=87">
+        <span>Boom Brothers</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="44"
+                    data-gamename="Magic Princess"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/magic-princess" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Magic Princess" data-src="/uploads/games/icon/a0/a03adb4ac04c853eef8666b0f690a9279e465169.jpeg?v=87">
+        <span>Magic Princess</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="293"
+                    data-gamename="fortune multiplier"
+            data-gamedev="Booongo"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/booongo/fortune-multiplier" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="fortune multiplier" data-src="/uploads/games/icon/f1/f143499cbacf75a7946ecc6aca0b004430417fdf.png?v=87">
+        <span>fortune multiplier</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="173"
+                    data-gamename="Alien Robots"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/alien-robots" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Alien Robots" data-src="/uploads/games/icon/85/85fd8f9620e8728038f71f32453969666f99ff1b.jpeg?v=87">
+        <span>Alien Robots</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="221"
+                    data-gamename="Sweet Life"
+            data-gamedev="Igrosoft"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/igrosoft/sweet-life" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Sweet Life" data-src="/uploads/games/icon/d7/d7bfe17fe4354a3aa2e78f22d1ef2616dca9586b.jpeg?v=87">
+        <span>Sweet Life</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="43"
+                    data-gamename="King of Cards"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/king-of-cards" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="King of Cards" data-src="/uploads/games/icon/d0/d0a2578bdd7f8754d6e6f84cd35e0e39f5baa352.jpeg?v=87">
+        <span>King of Cards</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="31"
+                    data-gamename="Emperor&#039;s China"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/emperors-china" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Emperor&#039;s China" data-src="/uploads/games/icon/9d/9d134c52f5e4847c965b34ec438582cbe8d2d917.jpeg?v=87">
+        <span>Emperor&#039;s China</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="169"
+                    data-gamename="Jack Hammer"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/jack-hammer" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Jack Hammer" data-src="/uploads/games/icon/5a/5a024c3421fee541856f9fe2950f2ea511a6825f.jpeg?v=87">
+        <span>Jack Hammer</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="46"
+                    data-gamename="Attila"
+            data-gamedev="Novomatic"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/attila" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Attila" data-src="/uploads/games/icon/52/529a9de60b481e93f34fb4ac9282addc6036b345.jpeg?v=87">
+        <span>Attila</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="84"
+                    data-gamename="Flowers"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/flowers" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Flowers" data-src="/uploads/games/icon/8d/8da424d8a3ef3a115ffffb062ec8db3692f3bcaa.jpeg?v=87">
+        <span>Flowers</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="129"
+                    data-gamename="Santa Surprise"
+            data-gamedev="Playtech"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/playtech/santa-surprise" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Santa Surprise" data-src="/uploads/games/icon/59/59af7622285d29736cf394ac53d939d5b4921f76.jpeg?v=87">
+        <span>Santa Surprise</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="114"
+                    data-gamename="Lucky Angler"
+            data-gamedev="Net Entertainment"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/netentertainment/lucky-angler" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Lucky Angler" data-src="/uploads/games/icon/7e/7e0f956c9c72365808223a72c74b6234a44759b9.jpeg?v=87">
+        <span>Lucky Angler</span>
+        </div>
+</div>
+                                    
+    
+
+
+
+
+<div class="game"
+     data-gameid="235"
+                    data-gamename="Spinner&#039;s Way"
+            data-gamedev="Sogaproducts"
+            data-gametype="slots"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/sogaproducts/spinners-way" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Spinner&#039;s Way" data-src="/uploads/games/icon/41/41be516b02f52992133f27a27d74c92360e97a70.jpeg?v=87">
+        <span>Spinner&#039;s Way</span>
+        </div>
+</div>
+                                <div class="fail-search">
+                    <span class="fail-text"></span>
+                    <span class="fail-example" filter-fail>К сожалению, подходящих игр не найдено. Пожалуйста, выберите другой раздел.</span>
+                    <span class="fail-example" fave-fail>У Вас пока нет избранных игр.</br>Для добавления нажмите на звездочку на иконке игры.</span>
+                    <span class="fail-example" name-fail>Игра с таким названием не найдена.</br>Убедитесь, что название написано правильно, и повторите поиск.</span>
+                    <span class="fail-title">Популярные игры</span>
+                                            
+    
+
+    
+
+
+<div class="game"
+     data-gameid="16"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/williamsinteractive/lil-red-riches" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Li&#039;l Red Riches" data-src="/uploads/games/icon/91/91caed1102f8ff308d588a3535707b25156e9748.jpeg?v=87">
+        <span>Li&#039;l Red Riches</span>
+        </div>
+</div>
+                                            
+    
+
+    
+
+
+<div class="game"
+     data-gameid="11"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/book-of-ra" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Book of Ra" data-src="/uploads/games/icon/18/181565276a255284312e5c45d692606b1d4cf63a.jpeg?v=87">
+        <span>Book of Ra</span>
+        </div>
+</div>
+                                            
+    
+
+    
+
+
+<div class="game"
+     data-gameid="98"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/novomatic/jolly-fruit" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Jolly Fruit" data-src="/uploads/games/icon/10/1004c640e81e8db703bc047cd07d83f6e343b268.jpeg?v=87">
+        <span>Jolly Fruit</span>
+        </div>
+</div>
+                                            
+    
+
+    
+
+
+<div class="game"
+     data-gameid="179"
+        >
+    <a class="fave-star" title="Добавить в избранное" href="#"></a>
+        <div class="game-link">
+                            <div class="game-shadow"></div>
+            <a href="/games/casinotechnology/aztec-gold" class="play-btn real no-demo">바로가기</a>
+                <img src="/images/blank_icon.jpg?v=87" alt="Aztec Gold" data-src="/uploads/games/icon/f3/f3585da1df1082786c99c58d24a5854347fb2d53.jpeg?v=87">
+        <span>Aztec Gold</span>
+        </div>
+</div>
+                                    </div>
+            </div>
+            <a class="btn btn-blue more-games" href="/games" title="Игровой зал">더보기</a>
+        </div>
+    
+                                                            </div>
+
+                        </section>
+
+                                    <section class="content-promo">
+    <div class="content-promo-block highlight-block">
+        <h1 class="page-title">Онлайн казино Elslots в Украине: твой путь к Эльдорадо</h1>
+        <p>Вас приветствует украинский официальный сайт казино Эльдорадо - Эльслотс! Популярный азартный клуб уверенно расширяет свои условные границы. Теперь лучшие игровые автоматы на деньги стали доступны посетителям онлайн казино в Украине. Проект успешно обслуживает пользователей из этой и многих других стран, предоставляя услуги десктопной и мобильной версий. Добро пожаловать в онлайн казино Эльдорадо — ресурс игровых автоматов, предлагающий массу привлекательных возможностей!</p>
+
+<h2>Как начать игру в казино Эльдорадо: регистрация</h2>
+
+<p>Для полноценного пользования услугами Eldorado Casino необходимо зарегистрироваться на сайте Elslots. Эту процедуру можно пройти на официальном сайте. Регистрация доступна всем совершеннолетним поклонникам азартных слотов Украины. Для ее выполнения необходимо указать пароль и логин, а также подтвердить адрес электронной почты.</p>
+
+<p>После первого входа в аккаунт казино Эльдорадо онлайн следует проверить точность предоставленных персональных данных. Кроме того, для идентификации нового пользователя организаторы клуба предлагают подтвердить контактный номер телефона. Без выполнения этой процедуры игрок казино Эльдорадо не сможет подать заявку на вывод средств. Однако для внесения первого депозита подтверждение номера не требуется.</p>
+
+<h2>Игорный зал казино Eldorado Casino: ассортимент</h2>
+
+<p>В каталоге Эльслотс представлен софт от почти двадцати известных компаний разработчиков. Общее число игровых автоматов превышает три сотни, и их количество стабильно растет. Организаторы проекта, предоставляющие услуги своего онлайн казино для Украины, постоянно работают над обновлением ассортимента. Здесь регулярно появляются новые игральные аппараты отменного качества, соответствующие требованиям политики честной игры.</p>
+
+<p>Для удобства пользования слотами украинского онлайн казино Эльдорадо организаторы распределили софт по категориям. Поэтому пользователи официального сайта могут выбирать игры по таким признакам:</p>
+
+<ul>
+	<li>компания-разработчик, где самыми представленными являются коллекции игровых автоматов Novomatic, Playtech, Igrosoft, Aristocrat, Playson и Unicum Gaming;</li>
+	<li>тип геймплея с выделенными разделами сюжетных игры, карточных (преимущественно покерных) симуляторов и аппаратов с рулеткой;</li>
+	<li>популярность, которая определяется по результатам автоматического анализа статистики игры на том или ином игровом автомате;</li>
+	<li>новизна, выраженная разделом с новыми онлайн слотами казино Эльдорадо, куда система также автоматически размещает все свежие поступления!</li>
+</ul>
+
+<h2>Бонусная политика официального сайта Elslots</h2>
+
+<p>Эльдорадо казино онлайн предлагает насыщенную и щедрую программу лояльности. Знакомство с ней для каждого новичка начинается с приветственного бездепозитного бонуса. В дальнейшем активным гэмблерам предоставлены такие привлекательные возможности, как:</p>
+
+<ul>
+	<li>приветственный welcome pack (777%);</li>
+	<li>прогрессивные еженедельные бонусы (до 527%);</li>
+	<li>регулярные розыгрыши лотереи и турниры с крупными призовыми фондами;</li>
+	<li>начисление баллов, доступных для обмена на реальные деньги в кассе клуба;</li>
+	<li>разовые акции с разными выигрышами, включая бонусные начисления и фриспины!</li>
+</ul>
+
+<p>Сейчас вы находитесь всего в одном шаге от перечисленных возможностей популярного игорного заведения elslots.com в Украине. Приступайте к регистрации уже сейчас, и бескрайний мир роскоши казино Эльдорадо раскроется перед вами в полную силу!</p>
+    </div>
+</section>
+
+    
+                                                                                    <footer class="site-footer">
+    <div class="footer-payments">
+        <i class="icon icon-payment-visa"></i>
+        <i class="icon icon-payment-alfabank"></i>
+        <i class="icon icon-payment-mastercard"></i>
+    </div>
+    <div class="footer-secure">
+        <i class="icon icon-secure-2"></i>
+        <i class="icon icon-secure-3"></i>
+        <i class="icon icon-secure-4"></i>
+        <i class="icon icon-secure-5"></i>
+        <i class="icon icon-secure-6"></i>
+    </div>
+    <nav class="footer-navbar">
+        <ul class="footer-nav">
+                                                                            <li>
+                                                <a class="header-navbar-link" href="/faq"    >
+                            FAQ
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="/rules"    >
+                            Правила
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="/levels-info"    >
+                            Уровни
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="/partners"    >
+                            Партнерская программа
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="/ua-casino"    >
+                            Українське казино
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="/blog"    >
+                            Форум Джунглей
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="/ruletka-online"    >
+                            Рулетка онлайн
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="/zolotoy-kubok"    >
+                            Золотой Кубок
+            </a>
+    
+            </li>        
+
+                                                    <li>
+                                                <a class="header-navbar-link" href="/ukrainskaya-nacionalnaya-lotereya"    >
+                            Украинская Национальная Лотерея
+            </a>
+    
+            </li>        
+
+
+
+        </ul>
+    </nav>
+    <div class="footer-copyright-wrapper">
+        <div class="footer-copyright">
+            Игровой интернет клуб «Эльдорадо» © 2018. Казино Эльдорадо – лучшие игровые автоматы онлайн.
+        </div>
+        <div class="footer-socials">
+                                                                                </div>
+    </div>
+</footer>
+                                                                        </div>
+
+                    <aside class="site-sidebar sidebar-right">
+
+                                                    <div class="sidebar-block highlight-block">
+                                                                    <div
+    data-tournament-widget="13"
+    data-qty="6" data-score-text="Ваши очки:"
+    class="sidebar-tournament">
+    <div class="tournament-header">
+        <h3 class="tournament-title">
+            명예의 전당 <span class="tournament-name">2025년 7월 1주차</span>
+        </h3>
+    </div>
+    <div class="tournament-body">
+        <div class="tournament-countdown">
+                                        <div class="title">남은 시간</div>
+                        <div class="countdown">
+                <div id="widgetCounter" class="small-counter counter counter-analog" data-counter-init="" data-direction="down" data-format="99 23:59:59">1 10:59:13</div>
+                <!-- Legend -->
+                <!-- <div class="countdown-legend">
+                    <span>오동욱</span>
+                    <span></span>
+                    <span>минут</span>
+                    <span>секунд</span>
+                </div> -->
+            </div>
+        </div>
+        <table class="tournament-table">
+            <thead>
+            <tr>
+                <th>순위</th>
+                <th>유저</th>
+                <th>배당금</th>
+            </tr>
+            </thead>
+            <tbody id="players-score">
+                            <tr>
+                    <td>1</td>
+                    <td>
+                        <a href="#">오동욱</a>
+                    </td>
+                    <td>64,926.69</td>
+                </tr>
+                            <tr>
+                    <td>2</td>
+                    <td>
+                        <a href="#">조현우</a>
+                    </td>
+                    <td>16,776.04</td>
+                </tr>
+                            <tr>
+                    <td>3</td>
+                    <td>
+                        <a href="#">김창윤</a>
+                    </td>
+                    <td>11,901.41</td>
+                </tr>
+                            <tr>
+                    <td>4</td>
+                    <td>
+                        <a href="#">박현재</a>
+                    </td>
+                    <td>11,549.60</td>
+                </tr>
+                            <tr>
+                    <td>5</td>
+                    <td>
+                        <a href="#">정충교</a>
+                    </td>
+                    <td>10,981.53</td>
+                </tr>
+                            <tr>
+                    <td>6</td>
+                    <td>
+                        <a href="#">조소윤</a>
+                    </td>
+                    <td>9,912.59</td>
+                </tr>
+            
+                        </tbody>
+        </table>
+    </div>
+    <div class="tournament-footer">
+        <SPAN style="color: gold;">축하합니다!</SPAN>
+    </div>
+</div>
+
+                                                            </div>
+                        
+
+                                                                                    
+    
+                                                    
+                    </aside>
+
+                </main>
+                    </div>
+                    <!-- Support chat btn -->
+            <div class="support-wrapper" id="talk-me-support-chat-widget">
+                <div class="support-btn">Помощь 24/7</div>
+            </div>
+            <!-- End Support chat btn -->
+            </div>
+
+<div id="ajax-container">
+    <div id="ajax-content" class="all-form popup"></div>
+    <div class="modal fade" id="protection-popup" role="dialog" aria-hidden="true">
+    <div class="modal-dialog dialog-medium">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close-modal-btn" data-dismiss="modal" aria-label="Закрыть">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Введите код с картинки</h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="captcha-text">Вы превысили максимальное количество попыток. Для продолжения введите код с картинки</h4>
+                <form class="protection-form">
+                    <div class="captcha-row">
+                        <div class="captcha-image">
+                            <button class="btn btn-blue captcha-reload refresh" type="button">
+                                <svg version="1.1" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="#ffffff" d="M11 2q1.945 0 3.766 0.734 1.867 0.758 3.305 2.195 0.008 0.008 2.93 2.867v-3.797q0-0.414 0.293-0.707t0.707-0.293 0.707 0.293 0.293 0.707v6q0 0.414-0.293 0.707t-0.707 0.293h-6q-0.414 0-0.707-0.293t-0.293-0.707 0.293-0.707 0.707-0.293h3.375q-2.172-2.109-2.719-2.656-1.164-1.164-2.648-1.758-1.43-0.586-3.008-0.586t-3.008 0.586q-1.492 0.594-2.648 1.758-1.156 1.156-1.758 2.648-0.586 1.43-0.586 3.008t0.586 3.008q0.602 1.492 1.758 2.648 1.156 1.164 2.648 1.758 1.43 0.586 3.008 0.586t3.008-0.586q1.484-0.594 2.648-1.758 1.297-1.297 1.891-2.992 0.133-0.391 0.508-0.566t0.766-0.043q0.391 0.141 0.57 0.516t0.039 0.766q-0.359 1.023-0.973 2t-1.387 1.734q-1.437 1.437-3.305 2.195-1.82 0.734-3.766 0.734t-3.766-0.734q-1.867-0.758-3.305-2.195t-2.195-3.305q-0.734-1.82-0.734-3.766t0.734-3.766q0.758-1.867 2.195-3.305t3.305-2.195q1.82-0.734 3.766-0.734z"></path>
+                                </svg>
+                            </button>
+                            <img id="protection_image" src="" alt="">
+                        </div>
+                        <div class="captcha-controll">
+                            <div class="form-group">
+                                <input class="form-controll"
+                                       type="text"
+                                       name="protection_phrase"
+                                       id="protection-phrase"
+                                       placeholder="Код с картинки">
+                                <div id="protection-error" class="validation-msg">
+                                    <span class="validation-descr">Неверный код с картинки</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="captcha-submit">
+                            <button type="submit" class="btn btn-blue btn-block">Готово</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>    </div>
+
+<script type="text/javascript">
+    CURRENT_CURRENCY = "UAH";
+    PDPUSHER_DISABLED = true;
+    JACKPOT_TOTAL_SUM = "123,615.84";
+</script>
+
+            <!-- <script src="//ulogin.ru/js/ulogin.js">
+            uLogin.customInit("uLogin", "uLoginRegister", "uLoginAuth", "uLoginAuthPage") -->
+        </script>
+    
+    <script type="text/javascript">
+                var delayFirst = 30 *
+        1000;
+        var delayNext = 180 *
+        1000;
+        var popupName = 'registration';
+            </script>
+
+<div class="language-switch">
+    <div class="language-switch-container">
+        <a href="" id="language-switch-link"></a>
+        <img class="language-switch-icon" src="/images/icon-lang/language-switch-icon.png?v=87" alt="icon">
+        <div class="links-container">
+            
+        </div>
+    </div>
+</div>
+
+<!-- Scroll top btn -->
+<div class="btn-scroll-top js-scroll-top" role="button">
+    <span class="icon icon-arrow-top"></span>
+    <span class="scroll-text">вверх</span>
+</div>
+<!-- End Scroll top btn -->
+<script src="/bundles/fosjsrouting/js/router.js?v=87"></script>
+<script src="/js/routing?callback=fos.Router.setData"></script>
+
+
+<script type="text/javascript" src="/js/99ff27d.js?v=87"></script>
+
+            <script type="text/javascript">
+
+        const USER_TRACK_URL = "https://api.elslots.com/api/v11/track?projectId=20";
+        const USER_TRACK_REDIRECT_URL = "/";
+
+                userTracker.track();
+        
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.6.1/firebase-messaging.js"></script>
+<script>
+    const TOKEN_SEND_URL = Routing.generate('api_user_fcm_token', {version:'v11'});
+    const DELIVERED_EVENT_URL = Routing.generate('api_push_delivered', {version:'v12'});
+
+    firebase.initializeApp({
+        messagingSenderId: '1039659746367'
+    });
+
+    var notifications = {
+        subscribe: function () {
+            messaging.requestPermission()
+                .then(function () {
+                    messaging.getToken()
+                        .then(function (currentToken) {
+                            if (currentToken) {
+                                notifications
+                                    .sendTokenToServer(currentToken);
+                            } else {
+                                console.log('Can\'t get token');
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                })
+                .catch(function () {
+                    console.log('Can\'t get permissions');
+                });
+        },
+        sendTokenToServer: function (currentToken) {
+            if (!this.isTokenSendedToServer(currentToken)) {
+                $.post(TOKEN_SEND_URL, JSON.stringify({"token": currentToken}));
+                this.setTokenSendedToServer(currentToken);
+            }
+        },
+        isTokenSendedToServer: function (currentToken) {
+            return window.localStorage.getItem('sentFirebaseMessagingToken') == currentToken;
+        },
+        setTokenSendedToServer: function (currentToken) {
+            window.localStorage.setItem(
+                'sentFirebaseMessagingToken',
+                currentToken ? currentToken : ''
+            );
+        }
+    };
+
+    if (window.location.protocol === 'https:' &&
+        'Notification' in window &&
+        'serviceWorker' in navigator &&
+        'localStorage' in window &&
+        'fetch' in window &&
+        'postMessage' in window
+    ) {
+        var messaging = firebase.messaging();
+
+        messaging.onMessage(function (payload) {
+            if (!document.hidden) {
+                Notification.requestPermission(function (permission) {
+                    if (permission === 'granted') {
+                        navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope').then(function (registration) {
+                            payload.data.data = payload.data;
+                            var NotificationOptions = payload.data;
+                            if (NotificationOptions.actions !== undefined) {
+                                NotificationOptions.actions = JSON.parse(NotificationOptions.actions);
+                            }
+
+                            $.post(DELIVERED_EVENT_URL, JSON.stringify({
+                                title: payload.data.title,
+                                body: payload.data.body,
+                                icon: payload.data.icon,
+                                click_action: payload.data.click_action,
+                                user_id: payload.data.user_id,
+                                domain: payload.data.domain
+                            }));
+
+                            registration.getNotifications().then(function () {
+                                registration.showNotification(NotificationOptions.title, NotificationOptions);
+                            });
+                        }).catch(function (error) {
+                            console.log('Cant get service worker registration', error);
+                        });
+                    }
+                });
+            }
+        });
+
+        }
+</script>
+
+
+<script type='text/javascript'>
+            var TalkMeOptions = {
+        widgetId: '456c94d5ef263c8a439973363cd30386',
+        domain: 'elslots.com',
+        button: '.support-btn',
+        openChatSelectors: '.cash-support-button',
+        showDefaultButton: false,
+        clientInfo: []
+    };
+</script>
+
+<div id="jGrowl" class="top-right jGrowl">
+    </div>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    var userId = null;
+                    var yandexCounter = w.yaCounter49156846 = new Ya.Metrika2({id: 49156846,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true,
+                        webvisor:true,
+                        ecommerce:"dataLayer"});
+                    if (userId) {
+                        yandexCounter.setUserID(userId);
+                    }
+                } catch (e) {
+                }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () {
+                        n.parentNode.insertBefore(s, n);
+                    };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else {
+                f();
+            }
+        })(document, window, "yandex_metrika_callbacks2");
+    </script>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/49156846" style="position:absolute; left:-9999px;" alt="yandex.metrika"/></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+
+
+<script>
+    if (typeof demoGameId === 'undefined') {
+        var demoGameId = null;
+    }
+
+    DEMO_GAME_ID = demoGameId;
+    USER_ID = null;
+    TRACK_DOMAIN = 'api.elslots.com';
+    MULTIWL_ID = '20';
+    ASSETS_VERSION = '87';
+
+    var _params = _params || [];
+    _params.push({
+        popup: 0,
+        demoGameId: DEMO_GAME_ID,
+        userId: USER_ID,
+        trackDomain: TRACK_DOMAIN,
+        multiwlId: MULTIWL_ID,
+        type: 'auto'
+    });
+    (function(d, s, id) {
+        if (d.getElementById(id)){ return; }
+        s = d.createElement("script");
+        s.type = "text/javascript";
+        s.async = false;
+        s.src = document.location.protocol + "//" + TRACK_DOMAIN + "/js/mwla-1.0.js?projectId=" + MULTIWL_ID + "&v=" + ASSETS_VERSION;
+        s.onload = function () { mwla.exec(); };
+        d.documentElement.firstChild.appendChild(s);
+    })(document, 'script', 'mwla');
+</script>
+<div id="promoPopupModals"></div>
+
+<!-- START ExoClick Goal Tag | main --><img width="1" height="1" src="//main.exoclick.com/tag.php?goal=2722110d9807b6afa8072e8d22ffaf56"><!-- END ExoClick Goal Tag | main -->
+
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"c8c49a74c0","applicationID":"190883805","transactionName":"MVQHY0QDDBFYBRUPWggeJFRCCw0MFhENA2oOXghSRgMFBw==","queueTime":0,"applicationTime":377,"atts":"HRMEFQwZHx8=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>
