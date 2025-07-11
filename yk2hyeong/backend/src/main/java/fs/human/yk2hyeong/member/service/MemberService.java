@@ -4,8 +4,9 @@ import fs.human.yk2hyeong.member.vo.MemberVO;
 
 /**
  * 회원 관련 서비스 인터페이스
- * - 이메일 중복 확인
- * - 회원 가입 처리
+ *
+ * 이 인터페이스는 회원 가입 처리 및 이메일 중복 확인과 같은 회원 관련 비즈니스 로직을 정의합니다.
+ * 회원 가입을 위한 메서드가 포함되어 있으며, 이 인터페이스를 구현한 클래스에서 실제 로직을 처리합니다.
  *
  * @author 조현우
  * @since 2025-07-06
@@ -13,18 +14,13 @@ import fs.human.yk2hyeong.member.vo.MemberVO;
 public interface MemberService {
 
     /**
-     * 이메일 중복 여부 확인
+     * 회원 가입 처리 메서드
      *
-     * @param email 중복 검사할 이메일
-     * @return 중복 시 1 이상, 아니면 0
-     */
-    int isEmailExist(String email);
-
-    /**
-     * 회원가입 처리
+     * 이 메서드는 회원 가입 요청을 받아, 회원 정보를 처리하여 데이터베이스에 저장하는 역할을 합니다.
+     * 회원 정보는 `MemberVO` 객체로 전달되며, 이 객체는 회원 가입에 필요한 모든 정보를 포함합니다.
      *
-     * @param member 가입할 회원 정보
+     * @param vo 회원 정보를 담고 있는 `MemberVO` 객체
+     * @throws Exception DB 처리 중 발생할 수 있는 예외 처리
      */
-    void registerMember(MemberVO member);
-
+    void insertMember(MemberVO vo) throws Exception;
 }

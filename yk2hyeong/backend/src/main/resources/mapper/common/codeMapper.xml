@@ -6,4 +6,79 @@
 
 <mapper namespace="fs.human.yk2hyeong.common.code.dao.CodeDAO">
 
+    <!-- 은행명 목록 -->
+    <select id="getBankNameList" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.DETAIL_CODE_ID,
+            A.CODE_ID,
+            A.MID_CODE_VALUE,
+            A.MID_CODE_NAME,
+            A.LOW_CODE_VALUE,
+            A.LOW_CODE_NAME,
+            A.SORT_ORDER,
+            A.CREATED_ID,
+            A.CREATED_DATE,
+            A.UPDATED_ID,
+            A.UPDATED_DATE
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                ON A.CODE_ID = B.CODE_Id
+        WHERE B.TOP_CODE_NAME = 'BANK'
+    </select>
+
+    <!-- 회원 권한 목록 -->
+    <select id="getRoleList" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.DETAIL_CODE_ID,
+            A.CODE_ID,
+            A.MID_CODE_VALUE,
+            A.MID_CODE_NAME,
+            A.LOW_CODE_VALUE,
+            A.LOW_CODE_NAME,
+            A.SORT_ORDER,
+            A.CREATED_ID,
+            A.CREATED_DATE,
+            A.UPDATED_ID,
+            A.UPDATED_DATE
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                          ON A.CODE_ID = B.CODE_Id
+        WHERE B.TOP_CODE_NAME = 'ROLE'
+    </select>
+
+    <!-- 회원 상태 목록 -->
+    <select id="getMemberStatList" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.DETAIL_CODE_ID,
+            A.CODE_ID,
+            A.MID_CODE_VALUE,
+            A.MID_CODE_NAME,
+            A.LOW_CODE_VALUE,
+            A.LOW_CODE_NAME,
+            A.SORT_ORDER,
+            A.CREATED_ID,
+            A.CREATED_DATE,
+            A.UPDATED_ID,
+            A.UPDATED_DATE
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                          ON A.CODE_ID = B.CODE_Id
+        WHERE B.TOP_CODE_NAME = 'MEMBER_STAT'
+    </select>
+
+    <!-- 미승인 회원 권한 코드 조회(회원 가입 용) -->
+    <select id="getRoleWithNoEntry" resultType="String">
+        SELECT
+            A.LOW_CODE_VALUE AS MEMBERSTAT
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                          ON A.CODE_ID = B.CODE_Id
+        WHERE B.TOP_CODE_NAME = 'MEMBER_STAT'
+          AND A.LOW_CODE_NAME = '미승인'
+    </select>
+
 </mapper>

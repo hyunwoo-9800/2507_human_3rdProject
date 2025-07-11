@@ -1,83 +1,30 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Route, Routes, Link } from "react-router-dom";
-import Admin from "./pages/admin/Admin";
-import Product from "./pages/product/Product";
-import Header from "./components/common/Header";
-import Home from "./pages/index/Home";
-import Footer from "./components/common/Footer";
-import NoticePage from "./pages/notice/NoticePage";
-import NoticeDetail from "./components/notice/NoticeDetail";
-import NoticeForm from "./components/notice/NoticeForm";
-import NoticeEdit from "./components/notice/NoticeEdit";
-import ComponentCollection from "./pages/ComponentCollection";
-import Mypage from "./pages/mypage/Mypage";
+import Header from "./components/common/Header"; // 헤더 컴포넌트
+import Footer from "./components/common/Footer"; // 푸터 컴포넌트
+import AppRouter from "./AppRouter"; // 라우팅을 담당하는 AppRouter 컴포넌트
+import { LoginProvider } from "./pages/login/LoginContext"; // 로그인 상태를 전역에서 관리하기 위한 LoginContext 제공자
 
 function App() {
-  const [loginMember, setLoginMember] = useState(null);
+    return (
 
-  useEffect(() => {
-    // 최초 실행 시 백엔드 세션 존재 여부 확인
-    const fetchSession = async () => {
-      try {
-        const res = await axios.get("/api/session-check");
-        localStorage.setItem("loginMember", JSON.stringify(res.data)); // 세션 있으면 로컬 저장
-      } catch {
-        localStorage.removeItem("loginMember");                       // 세션 만료되면 클리어
-      }
-    };
-    fetchSession();
-  }, []);
+        // LoginProvider로 감싸서 애플리케이션 전체에서 로그인 상태를 관리
+        <LoginProvider>
 
-  return (
-    <div>
-      <header>
-        <Header></Header>
-      </header>
+            {/* 헤더 컴포넌트 (사이트의 상단) */}
+            <Header />
 
-      <main>
-        <Routes>
-          <Route path="/" element={<Home></Home>}></Route>
-          <Route path="/admin" element={<Admin></Admin>}></Route>
-          <Route path="/product" element={<Product></Product>}></Route>
-          <Route path="/mypage" element={<Mypage></Mypage>}></Route>
+            <main>
 
-          <Route
-            path="/notice"
-            element={<NoticePage></NoticePage>}
-          ></Route>
+                {/* AppRouter 컴포넌트를 통해 페이지 라우팅 */}
+                <AppRouter />
 
-          <Route
-            path="/notice/:id"
-            element={<NoticeDetail></NoticeDetail>}
-          ></Route>
+            </main>
 
-          <Route
-              path="/notice/write"
-              element={<NoticeForm></NoticeForm>}
-          ></Route>
+            {/* 푸터 컴포넌트 (사이트의 하단) */}
+            <Footer />
 
-          <Route
-              path="/notice/edit/:id"
-              element={<NoticeEdit></NoticeEdit>}
-          ></Route>
+        </LoginProvider>
 
-
-          <Route
-              path="/css"
-              element={<ComponentCollection />}
-          ></Route>
-
-          </Routes>
-
-      </main>
-
-      <footer>
-        <Footer></Footer>
-      </footer>
-    </div>
-
-  );
+    );
 }
 
 export default App;

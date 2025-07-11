@@ -1,73 +1,71 @@
 package fs.human.yk2hyeong.login.controller;
 
+import fs.human.yk2hyeong.common.config.AESUtil;
+import fs.human.yk2hyeong.common.config.JwtUtil;
 import fs.human.yk2hyeong.login.service.LoginService;
 import fs.human.yk2hyeong.member.vo.MemberVO;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 // 로그인 컨트롤러
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/go")
 @RequiredArgsConstructor
 public class LoginController {
 
+
     private final LoginService loginService;
+    private final JwtUtil jwtUtil; // JwtUtil 주입
 
-    // 세션 유지 확인용 API (React 새로고침 시 로컬스토리지 초기화 방지)
-    @GetMapping("/session-check")
-    public ResponseEntity<?> checkSession(HttpSession session) {
-
-        MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
-
-        if (loginMember != null) {
-
-            return ResponseEntity.ok(loginMember);                   // 로그인 정보 그대로 반환
-
-        } else {
-
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("세션 없음 또는 만료");
-
-        }
-
-    }
-
-    // 로그인 요청 처리
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody MemberVO input, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest,
+                                   HttpServletResponse response) throws Exception {
 
-        try {
+        String email = loginRequest.get("email");
+        String password = loginRequest.get("password");
 
-            MemberVO loginMember = loginService.login(input.getMemberEmail(), input.getMemberPwd());
-
-            if (loginMember == null) {
-
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("이메일 또는 비밀번호가 올바르지 않습니다.");
-
-            }
-
-            // 로그인 성공: 세션에 저장
-            session.setAttribute("loginMember", loginMember);
-            loginMember.setMemberPwd(null);                         // 비밀번호는 응답에서 제거
-            return ResponseEntity.ok(loginMember);
-
-        } catch (RuntimeException e) {
-
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-
+        // 사용자 조회
+        MemberVO member = loginService.selectByEmail(email);
+        if (member == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "이메일 또는 비밀번호 오류"));
         }
 
-    }
+        // 비밀번호 AES 암호화 후 비교
+        String encryptedInputPwd = AESUtil.encrypt(password);
+        if (!encryptedInputPwd.equals(member.getMemberPwd())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "이메일 또는 비밀번호 오류"));
+        }
 
-    // 로그아웃 요청 처리
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpSession session) {
+        // JWT 토큰 생성
+        String token = jwtUtil.createToken(email);
 
-        session.invalidate();
-        return ResponseEntity.ok("로그아웃 완료");
+        // HttpOnly 쿠키 설정
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+                .httpOnly(true)
+                .secure(false) // HTTPS 환경에서는 true로 설정
+                .path("/")
+                .maxAge(60 * 60 * 24) // 1일
+                .sameSite("Lax")
+                .build();
 
+        response.addHeader("Set-Cookie", cookie.toString());
+
+        // 로그인 성공 응답
+        return ResponseEntity.ok(Map.of(
+                "message", "로그인 성공",
+                "memberId", member.getMemberId(),
+                "memberName", member.getMemberName(),
+                "memberRole", member.getMemberRole()
+        ));
     }
 
 }

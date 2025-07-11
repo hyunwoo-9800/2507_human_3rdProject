@@ -5,12 +5,13 @@ import fs.human.yk2hyeong.member.vo.MemberVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import static fs.human.yk2hyeong.member.constant.MemberStatus.*;
 
 /**
  * 로그인 서비스 구현 클래스
- * - 이메일로 사용자 조회
- * - 비밀번호 검증
+ *
+ * 이 클래스는 로그인 기능을 구현하며, 이메일을 사용하여 사용자를 조회하고
+ * 비밀번호를 검증하는 역할을 합니다.
+ * 주로 이메일을 기반으로 사용자 정보를 조회하고, 비밀번호 검증은 컨트롤러에서 처리합니다.
  *
  * @author 조현우
  * @since 2025-07-06
@@ -19,39 +20,32 @@ import static fs.human.yk2hyeong.member.constant.MemberStatus.*;
 @RequiredArgsConstructor
 public class LoginServiceImpl implements LoginService {
 
+    // 로그인 관련 DB 작업을 수행하는 DAO
     private final LoginDAO loginDAO;
+
+    // 비밀번호를 암호화/검증하는 PasswordEncoder
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 이메일과 비밀번호로 로그인 시도
-     * 1. 이메일로 사용자 정보 조회
-     * 2. 비밀번호가 일치하면 사용자 정보 반환, 아니면 null
+     * 이메일로 회원 정보를 조회하는 메서드
      *
-     * @param memberEmail 사용자 이메일
-     * @param memberPwd   입력한 비밀번호
-     * @return 로그인 성공 시 회원 정보, 실패 시 null
+     * @param memberEmail 사용자가 입력한 이메일
+     * @return 해당 이메일을 가진 회원 정보 (없으면 null 반환)
+     * @throws Exception DB 조회 중 발생할 수 있는 예외 처리
      */
     @Override
-    public MemberVO login(String memberEmail, String memberPwd) {
+    public MemberVO selectByEmail(String memberEmail) throws Exception {
 
-        MemberVO dbMember = loginDAO.selectByEmail(memberEmail);
+        // 이메일로 사용자 정보를 조회
+        MemberVO member = loginDAO.selectByEmail(memberEmail);
 
-        if (dbMember == null) return null;
-
-        if (!passwordEncoder.matches(memberPwd, dbMember.getMemberPwd())) {
-
-            return null;
-
+        // 이메일에 해당하는 사용자가 없으면 null 반환
+        if (member == null) {
+            return null; // 이메일에 해당하는 사용자 없음
         }
 
-        if (!NORMAL.equals(dbMember.getMemberStatus())) {
-
-            throw new RuntimeException("현재 상태: " + dbMember.getMemberStatus());
-
-        }
-
-        return dbMember;
-
+        // 사용자 정보 반환 (비밀번호는 Controller에서 검증)
+        return member;
     }
 
 }

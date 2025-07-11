@@ -2,6 +2,9 @@
 import React from 'react';
 import { Select } from 'antd';
 
+/**
+ * @returns {JSX.Element}
+ */
 const CustomSelect = ({
                           allowClear = false,
                           loading = false,

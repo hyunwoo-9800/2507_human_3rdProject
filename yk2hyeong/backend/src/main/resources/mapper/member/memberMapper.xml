@@ -15,43 +15,51 @@
 
     <!-- 회원 등록 -->
     <insert id="insertMember">
-        INSERT INTO TB_MEMBER (
+        INSERT INTO TB_MEMBER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             MEMBER_ID,
             MEMBER_EMAIL,
             MEMBER_PWD,
             MEMBER_NAME,
             MEMBER_BNAME,
             MEMBER_BNUM,
-            MEMBER_SHIPPER_NAME,
+            <if test="memberShipperName != null and memberShipperName != ''">
+                MEMBER_SHIPPER_NAME,
+            </if>
             MEMBER_TEL,
             MEMBER_ADDR,
-            MEMBER_BANKNAME,
-            MEMBER_ACCNUM,
+            MEMBER_DETAIL_ADDR,
+            MEMBER_BANK_CODE,
+            MEMBER_ACCOUNTNUM,
             MEMBER_ROLE,
             MEMBER_STATUS,
-            CREATED_BY,
-            CREATED_AT,
-            UPDATED_BY,
-            UPDATED_AT
-        ) VALUES (
+            CREATED_ID,
+            CREATED_DATE,
+            UPDATED_ID,
+            UPDATED_DATE
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
             sys_guid(),
             #{memberEmail},
             #{memberPwd},
             #{memberName},
             #{memberBname},
             #{memberBnum},
-            #{memberShipperName},
+            <if test="memberShipperName != null and memberShipperName != ''">
+                #{memberShipperName},
+            </if>
             #{memberTel},
             #{memberAddr},
-            #{memberBankname},
-            #{memberAccnum},
+            #{memberDetailAddr},
+            #{memberBankCode},
+            #{memberAccountNum},
             #{memberRole},
             #{memberStatus},
-            #{createdBy},
+            #{createdId},
             SYSDATE,
-            #{updatedBy},
+            #{updatedId},
             SYSDATE
-        )
+        </trim>
     </insert>
 
 </mapper>

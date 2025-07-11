@@ -14,25 +14,42 @@ import './common.css';  // 기존 스타일링 파일을 참조
  * @param {string} className 추가 클래스명 (옵션)
  * @param {*} rest 기타 props (aria-* 등)
  */
-function Input({ type = 'text', value, onChange, placeholder, disabled = false, required = false, size = 'md', className = '', ...rest }) {
+function Input({
+                   label,
+                   name,
+                   type = 'text',
+                   value,
+                   onChange,
+                   placeholder,
+                   disabled = false,
+                   required = false,
+                   size = 'md',
+                   className = '',
+                   ...rest
+               }) {
     // 크기별 클래스명 추가
     const classes = `input input-${size} ${className}`.trim();
 
     return (
-        <input
-            type={type}
-            value={value}
-            onChange={onChange}
-            placeholder={placeholder}
-            disabled={disabled}
-            required={required}
-            className={classes}
-            {...rest}
-        />
+        <div className={`input-group ${className}`}>
+            {label && <label className="input-label" htmlFor={name}>{label}</label>}
+            <input
+                name={name}
+                type={type}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                disabled={disabled}
+                required={required}
+                className={classes}
+                {...rest}
+            />
+        </div>
     );
 }
 
 Input.propTypes = {
+    name: PropTypes.string.isRequired,
     type: PropTypes.oneOf(['text', 'password', 'email', 'number', 'checkbox', 'radio']),
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
