@@ -40,7 +40,7 @@ var game = {
         clearInterval(timerId);
         // ⬅️ 카드 선택 가능 상태
       }
-    }, 300);
+    }, 200);
   },
 
   reset: function () {
@@ -81,7 +81,7 @@ var board = {
 var cards = {
   numOfCards: 3,
   arrCards: [],
-  numsOfShuffle: 7,
+  numsOfShuffle: 10,
 
   generateCards: function () {
     const classArray = ["left", "middle", "right"];
