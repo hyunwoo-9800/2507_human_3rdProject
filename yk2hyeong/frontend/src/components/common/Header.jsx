@@ -42,7 +42,7 @@ export default function Header() {
                                 </div>
                             )}
                         </div>
-                        {loginMember.memberRole === "SELLER" && (
+                        {loginMember.memberRole === "002" && (
                             <Link to="/product/register" className="btn register">상품 등록하기</Link>
                         )}
                     </>
