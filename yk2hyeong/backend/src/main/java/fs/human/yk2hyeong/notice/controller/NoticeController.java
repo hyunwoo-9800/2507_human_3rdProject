@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/notice")
@@ -17,7 +18,6 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    // 전체 공지사항 목록 조회
     @GetMapping("/all")
     public ResponseEntity<?> getAllNotices() {
         try {
@@ -29,7 +29,6 @@ public class NoticeController {
         }
     }
 
-    // 공지사항 단건 조회
     @GetMapping("/{id}")
     public ResponseEntity<?> getNoticeById(@PathVariable("id") String noticeId) {
         try {
@@ -44,10 +43,21 @@ public class NoticeController {
         }
     }
 
-    // 공지사항 등록
     @PostMapping
-    public ResponseEntity<?> insertNotice(@RequestBody NoticeVO vo) {
+    public ResponseEntity<?> insertNotice(@RequestBody Map<String, Object> params) {
         try {
+            String userRole = (String) params.get("userRole");
+            if (!"001".equals(userRole)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+            }
+
+            NoticeVO vo = new NoticeVO();
+            vo.setNoticeId((String) params.get("noticeId"));
+            vo.setNoticeTitle((String) params.get("noticeTitle"));
+            vo.setNoticeContent((String) params.get("noticeContent"));
+            vo.setWriterId((String) params.get("writerId"));
+            vo.setCreatedId((String) params.get("createdId"));
+
             noticeService.insertNotice(vo);
             return ResponseEntity.ok("공지사항이 등록되었습니다.");
         } catch (Exception e) {
@@ -56,11 +66,21 @@ public class NoticeController {
         }
     }
 
-    // 공지사항 수정
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateNotice(@PathVariable("id") String noticeId, @RequestBody NoticeVO vo) {
+    public ResponseEntity<?> updateNotice(@PathVariable("id") String noticeId, @RequestBody Map<String, Object> params) {
+        String userRole = (String) params.get("userRole");
+        if (!"001".equals(userRole)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+        }
+
         try {
+            NoticeVO vo = new NoticeVO();
             vo.setNoticeId(noticeId);
+            vo.setNoticeTitle((String) params.get("noticeTitle"));
+            vo.setNoticeContent((String) params.get("noticeContent"));
+            vo.setWriterId((String) params.get("writerId"));
+            vo.setUpdatedId((String) params.get("updatedId"));
+
             noticeService.updateNotice(vo);
             return ResponseEntity.ok("공지사항이 수정되었습니다.");
         } catch (Exception e) {
@@ -69,9 +89,13 @@ public class NoticeController {
         }
     }
 
-    // 공지사항 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteNotice(@PathVariable("id") String noticeId) {
+    public ResponseEntity<?> deleteNotice(@PathVariable("id") String noticeId, @RequestBody Map<String, Object> params) {
+        String userRole = (String) params.get("userRole");
+        if (!"001".equals(userRole)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+        }
+
         try {
             noticeService.deleteNotice(noticeId);
             return ResponseEntity.ok("공지사항이 삭제되었습니다.");
