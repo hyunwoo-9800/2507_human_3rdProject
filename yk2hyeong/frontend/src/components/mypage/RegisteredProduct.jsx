@@ -1,5 +1,5 @@
 import React from "react";
-import Pagination from "../../../components/common/Pagination";
+import Pagination from "../common/Pagination";
 
 function RegisteredProduct(){
     return (

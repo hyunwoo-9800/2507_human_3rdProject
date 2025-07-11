@@ -1,11 +1,11 @@
 import React from "react";
-import Pagination from "../../../components/common/Pagination";
+import Pagination from "../common/Pagination";
 
-function Notification(){
+function WishlistProduct(){
     return (
         <div className="card-list">
             <div className="card">
-                <img src="./intro1.png" alt="product"/>
+                <img src="/static/images/product3.jpg" alt="product"/>
                 <div className="card-content">
                     <p>
                         <strong className="item-label">출하자</strong>
@@ -32,10 +32,9 @@ function Notification(){
                         <span>yyyy/mm/dd</span>
                     </p>
                 </div>
-                <i className="fa-solid fa-xmark" id="delete-btn"></i>
             </div>
             <div className="card">
-                <img src="./intro2.png" alt="product"/>
+                <img src="/static/images/product3.jpg" alt="product"/>
                 <div className="card-content">
                     <p>
                         <strong className="item-label">출하자</strong>
@@ -62,10 +61,10 @@ function Notification(){
                         <span>yyyy/mm/dd</span>
                     </p>
                 </div>
-                <i className="fa-solid fa-xmark" id="delete-btn"></i>
             </div>
+            <Pagination/>
         </div>
     )
 }
 
-export default Notification;
+export default WishlistProduct;

@@ -1,13 +1,13 @@
 import React,{useState} from "react";
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
-import Notification from "./components/Notification";
-import PurchaseProduct from "./components/PurchaseProduct";
-import RegisteredProduct from "./components/RegisteredProduct";
-import WishlistProduct from "./components/WishlistProduct";
-import SelectGroup from "./components/SelectGroup";
+import Notification from "../../components/mypage/Notification";
+import PurchaseProduct from "../../components/mypage/PurchaseProduct";
+import RegisteredProduct from "../../components/mypage/RegisteredProduct";
+import WishlistProduct from "../../components/mypage/WishlistProduct";
+import SelectGroup from "../../components/mypage/SelectGroup";
 import Pagination from "../../components/common/Pagination";
-import RadioGroup from "./components/RadioGroup";
+import RadioGroup from "../../components/mypage/RadioGroup";
 import "./Mypage.css";
 
 function Mypage(){

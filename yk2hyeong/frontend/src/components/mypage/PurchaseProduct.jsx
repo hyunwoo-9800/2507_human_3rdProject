@@ -1,11 +1,11 @@
 import React from "react";
-import Pagination from "../../../components/common/Pagination";
+import Pagination from "../common/Pagination";
 
-function WishlistProduct(){
+function PurchaseProduct(){
     return (
         <div className="card-list">
             <div className="card">
-                <img src="/static/images/product3.jpg" alt="product"/>
+                <img src="/static/images/product1.jpg" alt="product"/>
                 <div className="card-content">
                     <p>
                         <strong className="item-label">출하자</strong>
@@ -34,7 +34,7 @@ function WishlistProduct(){
                 </div>
             </div>
             <div className="card">
-                <img src="/static/images/product3.jpg" alt="product"/>
+                <img src="/static/images/product1.jpg" alt="product"/>
                 <div className="card-content">
                     <p>
                         <strong className="item-label">출하자</strong>
@@ -67,4 +67,4 @@ function WishlistProduct(){
     )
 }
 
-export default WishlistProduct;
+export default PurchaseProduct;

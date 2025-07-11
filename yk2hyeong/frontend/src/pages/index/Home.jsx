@@ -1,9 +1,9 @@
 import React from "react";
 import './Home.css';
-import Banner from "./components/Banner";
-import MarketTrend from "./components/MarketTrend";
-import PopularItem from "./components/PopularItem";
-import NoticeBoard from "./components/NoticeBoard";
+import Banner from "../../components/index/Banner";
+import MarketTrend from "../../components/index/MarketTrend";
+import PopularItem from "../../components/index/PopularItem";
+import NoticeBoard from "../../components/index/NoticeBoard";
 
 export default function Home() {
   return (

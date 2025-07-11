@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Sidebar from "./components/Sidebar";
-import AdminContent from "./components/AdminContent";
+import Sidebar from "../../components/admin/Sidebar";
+import AdminContent from "../../components/admin/AdminContent";
 import './Admin.css';
 import CustomSidebarMenu from '../../components/common/CustomSidebarMenu';
 import { AppstoreOutlined, MailOutlined } from '@ant-design/icons';
