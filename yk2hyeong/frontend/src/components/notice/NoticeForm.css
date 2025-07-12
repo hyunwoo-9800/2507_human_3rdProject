@@ -4,25 +4,25 @@
     padding: 24px;
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 8px;     /* 모서리 둥글게 */
     font-family: 'Arial', sans-serif;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);     /* 부드러운 그림자 효과 */
 }
 
 .notice-form h2 {
     font-size: 24px;
-    margin-bottom: 20px;
+    margin-bottom: 20px;    /* 아래 여백 */
     color: #333;
 }
 
 .notice-form .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 20px;    /* 그룹 간 여백 */
 }
 
 .notice-form label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: bold;
+    display: block;     /* 블록 요소로 표시(줄바꿈 포함) */
+    margin-bottom: 6px;     /* 라벨과 인풋 사이 여백 */
+    font-weight: bold;      /* 글자 두껍게 */
     color: #444;
 }
 
@@ -37,7 +37,7 @@
 
 .notice-form textarea {
     min-height: 200px;
-    resize: vertical;
+    resize: vertical;   /* 세로 방향 크기 조절 허용 */
 }
 
 .notice-form .form-actions {

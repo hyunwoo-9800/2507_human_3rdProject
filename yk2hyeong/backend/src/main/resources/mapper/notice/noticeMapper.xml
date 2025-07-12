@@ -5,6 +5,8 @@
 
 <mapper namespace="fs.human.yk2hyeong.notice.dao.NoticeDAO">
 
+
+    <!-- 전체 공지사항 목록 조회 -->
     <select id="getAllNotices" resultType="fs.human.yk2hyeong.notice.vo.NoticeVO">
         <![CDATA[
         SELECT
@@ -22,6 +24,7 @@
         ]]>
     </select>
 
+    <!-- 공지사항 단건 조회 -->
     <select id="getNoticeById" parameterType="string" resultType="fs.human.yk2hyeong.notice.vo.NoticeVO">
         SELECT
             NOTICE_ID       AS noticeId,
@@ -36,6 +39,7 @@
         WHERE NOTICE_ID = #{noticeId}
     </select>
 
+    <!-- 공지사항 등록 -->
     <insert id="insertNotice" parameterType="fs.human.yk2hyeong.notice.vo.NoticeVO">
 
         INSERT INTO TB_NOTICE (
@@ -55,6 +59,7 @@
             )
     </insert>
 
+    <!-- 공지사항 수정 -->
     <update id="updateNotice" parameterType="fs.human.yk2hyeong.notice.vo.NoticeVO">
         UPDATE TB_NOTICE
         SET
@@ -66,6 +71,7 @@
             NOTICE_ID = #{noticeId}
     </update>
 
+    <!-- 공지사항 삭제 -->
     <delete id="deleteNotice" parameterType="string">
         DELETE FROM TB_NOTICE
         WHERE

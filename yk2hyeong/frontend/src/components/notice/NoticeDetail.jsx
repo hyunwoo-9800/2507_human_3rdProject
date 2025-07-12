@@ -6,23 +6,32 @@ import "./NoticeDetail.css";
 import CustomLoading from "../common/CustomLoading";
 
 function NoticeDetail() {
+
+    // URL 파라미터에서 공지사항 ID 추출
     const { id } = useParams();
+    // 공지사항 데이터 상태 관리
     const [notice, setNotice] = useState(null);
+    // 페이지 이동을 위한 navigate 훅 사용
     const navigate = useNavigate();
+    // 권한 값 가져오기 (로컬스토리지 사용)
     const memberRole = localStorage.getItem("memberRole") || "";
 
+    // 페이지 마운트 및 ID 변경 시 데이터 요청
     useEffect(() => {
         axios.get(`/notice/${id}`)
-            .then(res => setNotice(res.data))
+            .then(res => setNotice(res.data))// 데이터 저장
             .catch(err => console.error("공지사항 조회 실패:", err));
     }, [id]);
 
+    // 데이터 로딩 중 표시
     if (!notice) return (
         <div className="notice-detail-container">
             <CustomLoading size="large" />
         </div>
     );
 
+
+    // 데이터 렌더링
     return (
         <div className="notice-detail-container">
             <div className="notice-detail-title">{notice.noticeTitle}</div>

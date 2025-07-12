@@ -6,14 +6,22 @@ import "./NoticeForm.css";
 import { v4 as uuidv4 } from "uuid";
 
 function NoticeForm() {
+
+    // 제목,내용,작성자 상태값 선언
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [writerId, setWriterId] = useState("admin");
+
     const navigate = useNavigate();
+
+    // 로컬스토리지에서 memberRole 값을 가져옴 (권한 체크용)
     const memberRole = localStorage.getItem("memberRole") || "";
 
+    // 폼 제출 핸들러
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // 관리자 권한 확인
         if (memberRole !== '001') {
             alert("관리자 권한이 없습니다.");
             return;
@@ -21,12 +29,12 @@ function NoticeForm() {
 
         try {
             await axios.post("/notice", {
-                noticeId: uuidv4(),
+                noticeId: uuidv4(),     //uuid로 noticeId 생성
                 noticeTitle: title,
                 noticeContent: content,
                 writerId: writerId,
                 createdId: writerId,
-                memberRole: memberRole
+                memberRole: memberRole      // 관리자 권한 전달
             });
             alert("공지사항이 등록되었습니다.");
             navigate("/notice");
@@ -36,6 +44,7 @@ function NoticeForm() {
         }
     };
 
+    // 권한 없는 사용자는 폼을 아예 렌더링하지 않음
     if (memberRole !== '001') return null;
 
     return (
