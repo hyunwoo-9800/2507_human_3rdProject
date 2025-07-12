@@ -50,38 +50,86 @@
   color: white;
 }
 
-.dropdown-wrapper {
-  position: relative;
-  display: inline-block;
+/*.dropdown-wrapper {*/
+/*  position: relative;*/
+/*  display: inline-block;*/
+/*}*/
+
+/*.dropdown-toggle {*/
+/*  background: none;*/
+/*  border: none;*/
+/*  cursor: pointer;*/
+/*  font-weight: bold;*/
+/*}*/
+
+/*.dropdown-menu {*/
+/*  position: absolute;*/
+/*  right: 0;*/
+/*  top: 100%;*/
+/*  background-color: white;*/
+/*  border: 1px solid #ccc;*/
+/*  width: 150px;*/
+/*  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);*/
+/*  z-index: 1000;*/
+/*}*/
+
+/*.dropdown-item {*/
+/*  padding: 10px;*/
+/*  text-align: left;*/
+/*  width: 100%;*/
+/*  border-bottom: 1px solid #eee;*/
+/*  cursor: pointer;*/
+/*  background: white;*/
+/*}*/
+
+/*.dropdown-item:hover {*/
+/*  background-color: #f0f0f0;*/
+/*}*/
+
+
+.custom-dropdown-menu {
+  min-width: 140px !important;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 9999;
 }
 
-.dropdown-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
+.custom-dropdown-btn {
+  border-radius: 0 4px 4px 0 !important;
+  height: 40px !important;
+  padding: 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  width: 140px;
+  justify-content: space-between !important;
 }
 
-.dropdown-menu {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background-color: white;
-  border: 1px solid #ccc;
-  width: 150px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+#custom-dropdown-username {
+  /* 원하는 스타일 */
+  margin-left: 0;
+  /* 예: font-weight, color 등 */
 }
 
-.dropdown-item {
-  padding: 10px;
-  text-align: left;
-  width: 100%;
-  border-bottom: 1px solid #eee;
-  cursor: pointer;
-  background: white;
+.custom-dropdown-btn span:last-child {
+  margin-left: 8px;
 }
 
-.dropdown-item:hover {
-  background-color: #f0f0f0;
+.custom-dropdown-icon-box {
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border: 1px solid #d9d9d9;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  background-color: #fff;
+  user-select: none;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.custom-dropdown-icon-box span{
+  margin-left:0;
 }
