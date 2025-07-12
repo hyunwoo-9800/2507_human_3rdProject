@@ -17,6 +17,7 @@
     white-space: pre-wrap;
     margin-bottom: 20px;
     padding-left: 6px;
+    text-indent: 20px;
 }
 
 .notice-detail-box {
@@ -28,7 +29,7 @@
     color: #333;
     white-space: pre-wrap;
     min-height: 300px;
-    text-indent: 5px;
+    margin-left: 20px;
 }
 
 .notice-detail-actions {

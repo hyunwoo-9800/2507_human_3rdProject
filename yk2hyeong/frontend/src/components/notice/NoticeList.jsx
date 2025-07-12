@@ -17,13 +17,11 @@ function NoticeList() {
     const navigate = useNavigate();
     // 로그인한 사용자의 권한 정보 가져오기 (로컬스토리지에서 가져옴)
     const memberRole = localStorage.getItem("memberRole") || "";
+
     // 페이지네이션은 별도 상태값
     const [page, setPage] = useState(1);
-    // 페이지 변경 시 호출될 함수 : 페이지 상태값 업데이트
-    const handlePageChange = (newPage) => {
-        setPage(newPage);
-        setCurrentPage(newPage);
-    }
+
+
 
     // 컴포넌트가 처음 렌더링될 때 실행 :  공지사항 목록 조회
     useEffect(() => {
@@ -70,9 +68,14 @@ function NoticeList() {
     };
 
     // 페이지별 데이터 나누기 위한 인덱스 계산
-    const indexOfLast = currentPage * noticesPerPage;
+    const indexOfLast = page * noticesPerPage;
     const indexOfFirst = indexOfLast - noticesPerPage;
     const currentNotices = noticeList.slice(indexOfFirst, indexOfLast);
+
+    // 페이지 변경 시 호출될 함수 : 페이지 상태값 업데이트
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    }
 
     return (
         <div className="notice-container">
