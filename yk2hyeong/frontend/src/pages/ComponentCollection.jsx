@@ -1025,8 +1025,8 @@ favorite={false} />
                                 defaultOrderType="immediate"
                                 images={[
                                     '/static/images/tomato.png',
-                                    '/static/images/tomato.png',
-                                    '/static/images/tomato.png'
+                                    '/static/images/potato.png',
+                                    '/static/images/carrot.png'
                                 ]}
                                 orderOptions={{
                                     immediate: true,
@@ -1061,8 +1061,8 @@ defaultQuantity={100}
 defaultOrderType="immediate"
 images={[
     '/static/images/tomato.png',
-    '/static/images/tomato.png',
-    '/static/images/tomato.png'
+    '/static/images/potato.png',
+    '/static/images/carrot.png'
 ]}
 orderOptions={{
     immediate: true,
@@ -1094,8 +1094,8 @@ onOrder={(info) => console.log("주문 정보:", info)} />
                                 defaultOrderType="reservation"
                                 images={[
                                     '/static/images/tomato.png',
-                                    '/static/images/tomato.png',
-                                    '/static/images/tomato.png'
+                                    '/static/images/potato.png',
+                                    '/static/images/carrot.png'
                                 ]}
                                 orderOptions={{
                                     immediate: false,
@@ -1130,8 +1130,8 @@ defaultQuantity={100}
 defaultOrderType="reservation"
 images={[
     '/static/images/tomato.png',
-    '/static/images/tomato.png',
-    '/static/images/tomato.png'
+    '/static/images/potato.png',
+    '/static/images/carrot.png''
 ]}
 orderOptions={{
     immediate: false,
@@ -1163,8 +1163,8 @@ onOrder={(info) => console.log("주문 정보:", info)} />
                                 defaultOrderType="immediate"
                                 images={[
                                     '/static/images/tomato.png',
-                                    '/static/images/tomato.png',
-                                    '/static/images/tomato.png'
+                                    '/static/images/potato.png',
+                                    '/static/images/carrot.png'
                                 ]}
                                 orderOptions={{
                                     immediate: true,
@@ -1198,8 +1198,8 @@ defaultQuantity={100}
 defaultOrderType="immediate"
 images={[
     '/static/images/tomato.png',
-    '/static/images/tomato.png',
-    '/static/images/tomato.png'
+    '/static/images/potato.png',
+    '/static/images/carrot.png'
 ]}
 orderOptions={{
     immediate: true,

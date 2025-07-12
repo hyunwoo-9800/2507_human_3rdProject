@@ -16,9 +16,9 @@ const CustomDetailCard = ({
                               orderOptions = { immediate: false, reservation: false, reserveRate: 30 },
                               defaultQuantity = 100,
                               defaultOrderType = '',
-                              onQuantityChange = () => {},
-                              onOrderTypeChange = () => {},
-                              onOrder = () => {},
+                              onQuantityChange = () => { },
+                              onOrderTypeChange = () => { },
+                              onOrder = () => { },
                               images = [],
                           }) => {
     const [orderType, setOrderType] = useState(() => {
@@ -32,6 +32,7 @@ const CustomDetailCard = ({
 
     const [orderQuantity, setOrderQuantity] = useState(defaultQuantity);
     const [isFavorite, setIsFavorite] = useState(favorite);
+    const [selectedImageIndex, setSelectedImageIndex] = useState(0); // 썸네일 선택 상태 추가
 
     const handleOrderTypeChange = (value) => {
         setOrderType(value);
@@ -52,7 +53,6 @@ const CustomDetailCard = ({
         (totalPrice * (orderOptions.reserveRate || 30)) / 100
     );
 
-    // orderOptions 기반으로 options 배열 생성
     const radioOptions = [];
     if (orderOptions.immediate) radioOptions.push({ label: '즉시 구매', value: 'immediate' });
     if (orderOptions.reservation) radioOptions.push({ label: '예약 구매', value: 'reservation' });
@@ -91,22 +91,29 @@ const CustomDetailCard = ({
             {/* 이미지 */}
             <div style={{ width: '250px', marginRight: 20 }}>
                 <img
-                    src={images[0]}
+                    src={images[selectedImageIndex]}
                     alt="상품 이미지"
                     style={{ width: '100%', borderRadius: 8, border: '1px solid black' }}
                 />
-                <div style={{ display: 'flex', marginTop: 8 }}>
-                    {images.slice(1).map((img, idx) => (
+                <div style={{ display: 'flex', marginTop: 8, flexWrap: 'wrap' }}>
+                    {images.map((img, idx) => (
                         <img
                             key={idx}
                             src={img}
                             alt={`thumb-${idx}`}
+                            onClick={() => setSelectedImageIndex(idx)}
                             style={{
                                 width: 60,
                                 height: 60,
                                 objectFit: 'cover',
                                 borderRadius: 4,
                                 marginRight: 6,
+                                marginBottom: 6,
+                                cursor: 'pointer',
+                                border:
+                                    selectedImageIndex === idx
+                                        ? '2px solid #333'
+                                        : '1px solid #ccc',
                             }}
                         />
                     ))}
