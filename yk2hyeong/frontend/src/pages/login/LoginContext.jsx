@@ -1,5 +1,6 @@
 // src/contexts/LoginContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const LoginContext = createContext(); // LoginContext 생성
@@ -10,6 +11,7 @@ export const useLogin = () => useContext(LoginContext);
 export const LoginProvider = ({ children }) => {
     const [loginMember, setLoginMember] = useState(null); // 로그인된 사용자 정보
     const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+    const navigate = useNavigate(); // 경로 이동
 
     useEffect(() => {
         // 초기 로드 시 로그인 상태 확인
@@ -28,6 +30,7 @@ export const LoginProvider = ({ children }) => {
             console.error('로그아웃 실패:', err); // 로그아웃 실패 시 에러 로그
         } finally {
             setLoginMember(null); // 로그아웃 후 상태 초기화
+            navigate('/'); // 로그아웃 후 메인 페이지로 이동
         }
     };
 
