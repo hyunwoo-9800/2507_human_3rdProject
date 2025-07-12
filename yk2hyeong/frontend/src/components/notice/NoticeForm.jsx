@@ -10,11 +10,11 @@ function NoticeForm() {
     const [content, setContent] = useState("");
     const [writerId, setWriterId] = useState("admin");
     const navigate = useNavigate();
-    const userRole = localStorage.getItem("userRole") || "";
+    const memberRole = localStorage.getItem("memberRole") || "";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (userRole !== '001') {
+        if (memberRole !== '001') {
             alert("관리자 권한이 없습니다.");
             return;
         }
@@ -26,7 +26,7 @@ function NoticeForm() {
                 noticeContent: content,
                 writerId: writerId,
                 createdId: writerId,
-                userRole: userRole
+                memberRole: memberRole
             });
             alert("공지사항이 등록되었습니다.");
             navigate("/notice");
@@ -36,7 +36,7 @@ function NoticeForm() {
         }
     };
 
-    if (userRole !== '001') return null;
+    if (memberRole !== '001') return null;
 
     return (
         <div className="notice-form-container">

@@ -1,4 +1,3 @@
-// NoticeEdit.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,7 +10,7 @@ function NoticeEdit() {
     const [writerId, setWriterId] = useState("admin");
     const navigate = useNavigate();
     const { id } = useParams();
-    const userRole = localStorage.getItem("userRole") || "";
+    const memberRole = localStorage.getItem("memberRole") || "";
 
     useEffect(() => {
         axios.get(`/notice/${id}`)
@@ -25,7 +24,7 @@ function NoticeEdit() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (userRole !== '001') {
+        if (memberRole !== '001') {
             alert("관리자 권한이 없습니다.");
             return;
         }
@@ -36,7 +35,7 @@ function NoticeEdit() {
                 noticeContent: content,
                 writerId: writerId,
                 updatedId: writerId,
-                userRole: userRole
+                memberRole: memberRole
             });
             alert("공지사항이 수정되었습니다.");
             navigate("/notice");
@@ -46,7 +45,7 @@ function NoticeEdit() {
         }
     };
 
-    if (userRole !== '001') return null;
+    if (memberRole !== '001') return null;
 
     return (
         <div className="notice-form-container">

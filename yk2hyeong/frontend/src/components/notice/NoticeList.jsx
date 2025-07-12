@@ -11,7 +11,7 @@ function NoticeList() {
     const [currentPage, setCurrentPage] = useState(1);
     const [noticesPerPage] = useState(10);
     const navigate = useNavigate();
-    const userRole = localStorage.getItem("userRole") || "";
+    const memberRole = localStorage.getItem("memberRole") || "";
 
     useEffect(() => {
         fetchNotices();
@@ -41,7 +41,7 @@ function NoticeList() {
         try {
             for (const id of selectedIds) {
                 await axios.delete(`/notice/${id}`, {
-                    data: { userRole }
+                    data: { memberRole }
                 });
             }
             alert("공지사항이 삭제되었습니다.");
@@ -70,7 +70,7 @@ function NoticeList() {
                     <th>제목</th>
                     <th>작성자</th>
                     <th>작성일</th>
-                    {userRole === '001' && <th>선택</th>}
+                    {memberRole === '001' && <th>선택</th>}
                 </tr>
                 </thead>
                 <tbody>
@@ -80,7 +80,7 @@ function NoticeList() {
                         <td onClick={() => navigate(`/notice/${notice.noticeId}`)}>{notice.noticeTitle}</td>
                         <td>{notice.writerId}</td>
                         <td>{new Date(notice.createdDate).toLocaleDateString()}</td>
-                        {userRole === '001' && (
+                        {memberRole === '001' && (
                             <td>
                                 <input
                                     type="checkbox"
@@ -100,7 +100,7 @@ function NoticeList() {
                 onPageChange={setCurrentPage}
             />
 
-            {userRole === '001' && (
+            {memberRole === '001' && (
                 <div className="button-group">
                     <Button onClick={() => navigate("/notice/write")}>글쓰기</Button>
                     <Button variant="secondary" onClick={handleDeleteSelected}>삭제하기</Button>

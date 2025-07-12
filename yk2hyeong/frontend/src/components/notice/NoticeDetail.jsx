@@ -9,7 +9,7 @@ function NoticeDetail() {
     const { id } = useParams();
     const [notice, setNotice] = useState(null);
     const navigate = useNavigate();
-    const userRole = localStorage.getItem("userRole") || "";
+    const memberRole = localStorage.getItem("memberRole") || "";
 
     useEffect(() => {
         axios.get(`/notice/${id}`)
@@ -29,7 +29,7 @@ function NoticeDetail() {
             <div className="notice-detail-box">{notice.noticeContent}</div>
             <div className="notice-detail-actions">
                 <Button variant="secondary" onClick={() => navigate("/notice")}>이전으로</Button>
-                {userRole === '001' && (
+                {memberRole === '001' && (
                     <Button onClick={() => navigate(`/notice/edit/${id}`)}>수정하기</Button>
                 )}
             </div>

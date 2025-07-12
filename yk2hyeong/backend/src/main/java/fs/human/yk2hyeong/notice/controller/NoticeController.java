@@ -46,8 +46,8 @@ public class NoticeController {
     @PostMapping
     public ResponseEntity<?> insertNotice(@RequestBody Map<String, Object> params) {
         try {
-            String userRole = (String) params.get("userRole");
-            if (!"001".equals(userRole)) {
+            String memberRole = (String) params.get("memberRole");
+            if (!"001".equals(memberRole)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
             }
 
@@ -68,8 +68,8 @@ public class NoticeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateNotice(@PathVariable("id") String noticeId, @RequestBody Map<String, Object> params) {
-        String userRole = (String) params.get("userRole");
-        if (!"001".equals(userRole)) {
+        String memberRole = (String) params.get("memberRole");
+        if (!"001".equals(memberRole)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
         }
 
@@ -91,8 +91,8 @@ public class NoticeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteNotice(@PathVariable("id") String noticeId, @RequestBody Map<String, Object> params) {
-        String userRole = (String) params.get("userRole");
-        if (!"001".equals(userRole)) {
+        String memberRole = (String) params.get("memberRole");
+        if (!"001".equals(memberRole)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
         }
 
