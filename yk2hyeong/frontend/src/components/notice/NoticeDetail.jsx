@@ -28,9 +28,9 @@ function NoticeDetail() {
             <div className="notice-detail-title">{notice.noticeTitle}</div>
             <div className="notice-detail-box">{notice.noticeContent}</div>
             <div className="notice-detail-actions">
-                <Button variant="secondary" onClick={() => navigate("/notice")}>이전으로</Button>
+                <Button color="primary" size="sm" onClick={() => navigate("/notice")}>목록으로</Button>
                 {memberRole === '001' && (
-                    <Button onClick={() => navigate(`/notice/edit/${id}`)}>수정하기</Button>
+                    <Button color="success" size="sm" onClick={() => navigate(`/notice/edit/${id}`)}>수정하기</Button>
                 )}
             </div>
         </div>

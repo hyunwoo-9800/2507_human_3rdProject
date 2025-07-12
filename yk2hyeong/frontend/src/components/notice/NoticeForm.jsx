@@ -51,8 +51,8 @@ function NoticeForm() {
                     <textarea value={content} onChange={(e) => setContent(e.target.value)} required placeholder="내용을 입력하세요."></textarea>
                 </div>
                 <div className="form-actions">
-                    <Button type="submit">등록</Button>
-                    <Button variant="secondary" onClick={() => navigate("/notice")}>취소</Button>
+                    <Button color="primary" size="sm" type="submit">등록</Button>
+                    <Button color="success" size="sm" onClick={() => navigate("/notice")}>취소</Button>
                 </div>
             </form>
         </div>

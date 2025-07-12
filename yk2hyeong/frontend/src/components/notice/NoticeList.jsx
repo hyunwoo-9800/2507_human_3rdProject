@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Button from "../common/Button";
-import Pagination from "../common/Pagination";
+import CustomPagination from "../common/CustomPagination";
 import "./NoticeList.css";
 
 function NoticeList() {
@@ -94,16 +94,18 @@ function NoticeList() {
                 </tbody>
             </table>
 
-            <Pagination
-                currentPage={currentPage}
-                totalPages={Math.ceil(noticeList.length / noticesPerPage)}
-                onPageChange={setCurrentPage}
-            />
+            <div className="notice-pagination">
+                <CustomPagination
+                    defaultCurrent={currentPage}
+                    total={noticeList.length}
+                    onChange={setCurrentPage}
+                />
+            </div>
 
             {memberRole === '001' && (
                 <div className="button-group">
-                    <Button onClick={() => navigate("/notice/write")}>글쓰기</Button>
-                    <Button variant="secondary" onClick={handleDeleteSelected}>삭제하기</Button>
+                    <Button color="primary" size="sm" onClick={() => navigate("/notice/write")}>글쓰기</Button>
+                    <Button color="error" size="sm" onClick={handleDeleteSelected}>삭제하기</Button>
                 </div>
             )}
         </div>

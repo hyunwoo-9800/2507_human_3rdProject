@@ -60,8 +60,8 @@ function NoticeEdit() {
                     <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
                 </div>
                 <div className="form-actions">
-                    <Button variant="secondary" onClick={() => navigate("/notice")}>이전으로</Button>
-                    <Button type="submit">수정</Button>
+                    <Button color="primary" size="sm" onClick={() => navigate("/notice")}>목록으로</Button>
+                    <Button color="success" size="sm" type="submit">수정</Button>
                 </div>
             </form>
         </div>
