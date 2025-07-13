@@ -1,6 +1,8 @@
 package fs.human.yk2hyeong.member.service;
 
 import fs.human.yk2hyeong.member.vo.MemberVO;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.dao.DataAccessException;
 
 /**
  * 회원 관련 서비스 인터페이스
@@ -35,5 +37,9 @@ public interface MemberService {
      * @throws Exception DB 처리 중 발생할 수 있는 예외 처리
      */
     boolean isEmailExist(String email) throws Exception;
+
+    String findEmail(String memberName, String memberTel) throws Exception;
+
+    void updatePassword(@Param("email") String email, @Param("newPassword") String newPassword) throws Exception;
 
 }

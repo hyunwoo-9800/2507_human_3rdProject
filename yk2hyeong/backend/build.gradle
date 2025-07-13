@@ -82,13 +82,6 @@ task buildReact(type: Exec) {
 	commandLine yarnCommand, "run", "build"
 }
 
-// React 빌드 task 추가
-task buildReact(type: Exec) {
-	workingDir "$projectDir/../frontend" // React 프로젝트 경로 설정
-	def yarnCommand = System.getProperty("os.name").toLowerCase().contains("windows") ? "yarn.cmd" : "yarn" // 운영체제에 따라 yarn 명령어 설정
-	commandLine yarnCommand, "run", "build" // React 빌드 명령어 실행
-}
-
 // React 이미지 자동 복사
 task copyReactImages(type: Copy) {
 	from "$rootDir/frontend/public/images" // React 빌드 폴더의 이미지 파일을

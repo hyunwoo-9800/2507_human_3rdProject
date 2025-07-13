@@ -51,7 +51,7 @@ public class MailService {
 
         message.setText(
                 "안녕하세요, YH 서비스에 가입해주셔서 감사합니다.\n\n" +
-                        "아래 인증번호를 입력하여 회원가입을 완료해 주세요:\n\n" +
+                        "아래 인증번호를 입력하여 회원가입을 완료해 주세요\n\n" +
                         "인증번호: " + code + "\n\n" +
                         "※ 유효시간은 3분입니다. 시간이 지나면 인증번호가 만료됩니다.\n\n" +
                         "감사합니다.\nYH 서비스 드림"
@@ -59,6 +59,26 @@ public class MailService {
 
         mailSender.send(message); // 메일 발송
         
+    }
+
+    public void sendPasswordResetCode(String email) {
+        String code = generateCode(); // 6자리 인증번호 생성
+        codeStorage.put(email, new CodeData(code)); // 이메일과 인증번호, 발송 시각 저장
+
+        // 메일 발송
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email); // 수신 이메일 설정
+        message.setSubject("[비밀번호 찾기] 이메일 인증 요청"); // 메일 제목 변경: 비밀번호 찾기 인증
+
+        message.setText(
+                "안녕하세요, YH 서비스입니다.\n\n" +
+                        "비밀번호 재설정을 위한 인증번호는 아래와 같습니다\n\n" +
+                        "인증번호: " + code + "\n\n" +
+                        "※ 유효시간은 3분입니다. 시간이 지나면 인증번호가 만료됩니다.\n\n" +
+                        "감사합니다.\nYH 서비스 드림"
+        ); // 메일 내용 변경: 비밀번호 찾기 관련 내용
+
+        mailSender.send(message); // 메일 발송
     }
 
     /**
@@ -74,6 +94,11 @@ public class MailService {
      */
     public boolean verifyCode(String email, String inputCode) {
         CodeData saved = codeStorage.get(email); // 저장된 인증번호 데이터 가져오기
+
+
+        System.out.println("✅ [검증 요청] email=" + email + ", inputCode=" + inputCode);
+        System.out.println("✅ [저장된 코드] " + (saved != null ? saved.getCode() : "없음"));
+
 
         if (saved == null) {
             return false; // 인증번호 없음

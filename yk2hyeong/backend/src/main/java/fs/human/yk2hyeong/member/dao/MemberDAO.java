@@ -2,6 +2,7 @@ package fs.human.yk2hyeong.member.dao;
 
 import fs.human.yk2hyeong.member.vo.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -40,5 +41,9 @@ public interface MemberDAO {
      * @throws DataAccessException DB 접근 중 발생할 수 있는 예외 처리
      */
     int isEmailExist(String memberEmail) throws DataAccessException;
+
+    String findEmail(String memberName, String memberTel) throws DataAccessException;
+
+    void updatePassword(@Param("email") String email, @Param("newPassword") String newPassword) throws DataAccessException;
 
 }

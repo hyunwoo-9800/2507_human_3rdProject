@@ -1,66 +1,78 @@
-import { Routes, Route } from "react-router-dom";
-import Home from "./pages/index/Home"; // 홈 페이지
-import Admin from "./pages/admin/Admin"; // 관리자 페이지
-import Product from "./pages/product/Product"; // 제품 페이지
-import Mypage from "./pages/mypage/Mypage"; // 마이 페이지
-import NoticePage from "./pages/notice/NoticePage"; // 공지사항 목록 페이지
-import NoticeDetail from "./components/notice/NoticeDetail"; // 공지사항 상세 페이지
-import NoticeForm from "./components/notice/NoticeForm"; // 공지사항 작성 페이지
-import NoticeEdit from "./components/notice/NoticeEdit"; // 공지사항 수정 페이지
-import ComponentCollection from "./pages/ComponentCollection"; // CSS 컴포넌트 모음 페이지
-import Login from "./pages/login/Login"; // 로그인 페이지
-import SignupRoleSelect from "./pages/member/SignupRoleSelect"; // 회원가입 역할 선택 페이지
-import SellerTerms from "./pages/member/SellerTerms"; // 판매자 약관 페이지
-import BuyerTerms from "./pages/member/BuyerTerms"; // 구매자 약관 페이지
-import SignupForm from "./pages/member/SignupForm"; // 회원가입 폼 페이지
+import { Routes, Route } from 'react-router-dom'
+import Home from './pages/index/Home' // 홈 페이지
+import Admin from './pages/admin/Admin' // 관리자 페이지
+import Product from './pages/product/Product' // 제품 페이지
+import Mypage from './pages/mypage/Mypage' // 마이 페이지
+import NoticePage from './pages/notice/NoticePage' // 공지사항 목록 페이지
+import NoticeDetail from './components/notice/NoticeDetail' // 공지사항 상세 페이지
+import NoticeForm from './components/notice/NoticeForm' // 공지사항 작성 페이지
+import NoticeEdit from './components/notice/NoticeEdit' // 공지사항 수정 페이지
+import ComponentCollection from './pages/ComponentCollection' // CSS 컴포넌트 모음 페이지
+import Login from './pages/login/Login' // 로그인 페이지
+import SignupRoleSelect from './pages/member/SignupRoleSelect' // 회원가입 역할 선택 페이지
+import SellerTerms from './pages/member/SellerTerms' // 판매자 약관 페이지
+import BuyerTerms from './pages/member/BuyerTerms' // 구매자 약관 페이지
+import SignupForm from './pages/member/SignupForm' // 회원가입 폼 페이지
+import FindId from './pages/login/FindId'
+import FindPassword from './pages/login/FindPassword'
+import ResetPassword from './pages/login/ResetPassword'
 
 export default function AppRouter() {
-        return (
-            <Routes>
-                    {/* 기본 홈 페이지 */}
-                    <Route path="/" element={<Home />} />
+  return (
+    <Routes>
+      {/* 기본 홈 페이지 */}
+      <Route path="/" element={<Home />} />
 
-                    {/* 관리자 페이지 */}
-                    <Route path="/admin" element={<Admin />} />
+      {/* 관리자 페이지 */}
+      <Route path="/admin" element={<Admin />} />
 
-                    {/* 제품 페이지 */}
-                    <Route path="/product" element={<Product />} />
+      {/* 제품 페이지 */}
+      <Route path="/product" element={<Product />} />
 
-                    {/* 마이 페이지 */}
-                    <Route path="/mypage" element={<Mypage />} />
+      {/* 마이 페이지 */}
+      <Route path="/mypage" element={<Mypage />} />
 
-                    {/* 공지사항 목록 페이지 */}
-                    <Route path="/notice" element={<NoticePage />} />
+      {/* 공지사항 목록 페이지 */}
+      <Route path="/notice" element={<NoticePage />} />
 
-                    {/* 공지사항 상세 페이지 (동적 경로 사용) */}
-                    <Route path="/notice/:id" element={<NoticeDetail />} />
+      {/* 공지사항 상세 페이지 (동적 경로 사용) */}
+      <Route path="/notice/:id" element={<NoticeDetail />} />
 
-                    {/* 공지사항 작성 페이지 */}
-                    <Route path="/notice/write" element={<NoticeForm />} />
+      {/* 공지사항 작성 페이지 */}
+      <Route path="/notice/write" element={<NoticeForm />} />
 
-                    {/* 공지사항 수정 페이지 (동적 경로 사용) */}
-                    <Route path="/notice/edit/:id" element={<NoticeEdit />} />
+      {/* 공지사항 수정 페이지 (동적 경로 사용) */}
+      <Route path="/notice/edit/:id" element={<NoticeEdit />} />
 
-                    {/* CSS 컴포넌트 모음 페이지 */}
-                    <Route path="/css" element={<ComponentCollection />} />
+      {/* CSS 컴포넌트 모음 페이지 */}
+      <Route path="/css" element={<ComponentCollection />} />
 
-                    {/* 로그인 페이지 */}
-                    <Route path="/login" element={<Login />} />
+      {/* 로그인 페이지 */}
+      <Route path="/login" element={<Login />} />
 
-                    {/* 회원가입 역할 선택 페이지 */}
-                    <Route path="/signup" element={<SignupRoleSelect />} />
+      {/* 아이디 찾기 페이지 */}
+      <Route path="/findId" element={<FindId />} />
 
-                    {/* 판매자 약관 페이지 */}
-                    <Route path="/signup/seller" element={<SellerTerms />} />
+      {/* 비밀번호 찾기 페이지 */}
+      <Route path="/findPwd" element={<FindPassword />} />
 
-                    {/* 구매자 약관 페이지 */}
-                    <Route path="/signup/buyer" element={<BuyerTerms />} />
+      {/* 비밀번호 재설정 페이지 */}
+      <Route path="/findPwd" element={<ResetPassword />} />
 
-                    {/* 판매자 회원가입 폼 페이지 */}
-                    <Route path="/signup/seller/form" element={<SignupForm role="SELLER" />} />
+      {/* 회원가입 역할 선택 페이지 */}
+      <Route path="/signup" element={<SignupRoleSelect />} />
 
-                    {/* 구매자 회원가입 폼 페이지 */}
-                    <Route path="/signup/buyer/form" element={<SignupForm role="BUYER" />} />
-            </Routes>
-        );
+      {/* 판매자 약관 페이지 */}
+      <Route path="/signup/seller" element={<SellerTerms />} />
+
+      {/* 구매자 약관 페이지 */}
+      <Route path="/signup/buyer" element={<BuyerTerms />} />
+
+      {/* 판매자 회원가입 폼 페이지 */}
+      <Route path="/signup/seller/form" element={<SignupForm role="SELLER" />} />
+
+      {/* 구매자 회원가입 폼 페이지 */}
+      <Route path="/signup/buyer/form" element={<SignupForm role="BUYER" />} />
+    </Routes>
+  )
 }

@@ -69,7 +69,9 @@ function LoginPage() {
       </form>
 
       <div>
-        <p>비밀번호를 잊으셨나요?</p>
+        <p>
+          <a href="/findId">아이디를 잊으셨나요?</a> | <a href="/findPwd">비밀번호를 잊으셨나요?</a>
+        </p>
         <p>
           아직 계정이 없으신가요? <a href="/signup">회원가입</a>
         </p>

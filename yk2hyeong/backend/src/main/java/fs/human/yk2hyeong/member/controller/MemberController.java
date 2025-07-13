@@ -159,4 +159,90 @@ public class MemberController {
         else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 실패"); // 인증 실패
     }
 
+    @GetMapping("/find-id")
+    public ResponseEntity<Map<String, String>> findId(
+            @RequestParam String memberName, @RequestParam String memberTel) throws Exception {
+
+        // 예시: DB에서 이름과 전화번호로 아이디 찾기
+        String email = memberService.findEmail(memberName, memberTel);
+
+        if (email != null) {
+
+            return ResponseEntity.ok(Map.of("email", email)); // 아이디(이메일) 반환
+
+        } else {
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("email", ""));
+
+        }
+
+    }
+
+    /**
+     * 인증번호 발송 API (비밀번호 찾기)
+     *
+     * 사용자가 이메일을 입력하면 해당 이메일로 인증번호를 발송하는 API입니다.
+     *
+     * @param request 인증번호를 발송할 이메일
+     * @return 성공 시 200 OK 응답
+     */
+    @PostMapping("/send-code-password-reset")
+    public ResponseEntity<?> sendCodeForPasswordReset(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            mailService.sendPasswordResetCode(email);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "인증번호 발송 실패"));
+        }
+    }
+
+    /**
+     * 인증번호 확인 API (비밀번호 찾기)
+     *
+     * 사용자가 입력한 인증번호가 맞는지 확인하는 API입니다.
+     * 이메일과 인증번호를 비교하여 일치하면 인증 성공, 아니면 인증 실패를 반환합니다.
+     *
+     * @param email 이메일 주소
+     * @param code 사용자가 입력한 인증번호
+     * @return 인증 성공/실패 응답
+     */
+    @GetMapping("/verify-code-password-reset")
+    public ResponseEntity<?> verifyCodeForPasswordReset(@RequestParam String email, @RequestParam String code) {
+        boolean result = mailService.verifyCode(email, code); // 인증번호 검증
+        if (result) {
+            return ResponseEntity.ok().build(); // 인증 성공
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 실패"); // 인증 실패
+        }
+    }
+
+    /**
+     * 비밀번호 재설정 API
+     *
+     * 이메일과 인증번호가 일치하면 사용자가 새 비밀번호를 설정할 수 있습니다.
+     *
+     * @param request 이메일, 인증번호, 새 비밀번호
+     * @return 성공 시 비밀번호 변경
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email"); // 이메일 받기
+        String newPassword = request.get("newPassword"); // 새 비밀번호 받기
+
+        try {
+
+            // 1. 암호화
+            String encryptedPassword = AESUtil.encrypt(newPassword);
+
+            memberService.updatePassword(email, encryptedPassword); // 새 비밀번호와 이메일을 함께 업데이트
+
+            return ResponseEntity.ok().build();
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "비밀번호 변경 중 오류가 발생했습니다."));
+        }
+    }
+
 }

@@ -67,4 +67,21 @@
         </trim>
     </insert>
 
+    <!-- 아이디 찾기 -->
+    <select id="findEmail" resultType="String">
+        SELECT
+            MEMBER_EMAIL
+        FROM
+            TB_MEMBER
+        WHERE MEMBER_NAME = #{memberName}
+              AND MEMBER_TEL = #{memberTel}
+    </select>
+
+    <!-- 비밀번호 재설정 쿼리 -->
+    <update id="updatePassword" parameterType="map">
+        UPDATE TB_MEMBER
+            SET MEMBER_PWD = #{newPassword}
+        WHERE MEMBER_EMAIL = #{email}
+    </update>
+
 </mapper>

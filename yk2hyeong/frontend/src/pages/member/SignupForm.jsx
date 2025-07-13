@@ -320,6 +320,17 @@ function SignupForm({ role }) {
           </div>
         </div>
 
+        {isAddressModalOpen && (
+          <AddressSearchModal
+            onClose={() => setIsAddressModalOpen(false)} // 모달 닫기
+            onComplete={(selectedAddress) => {
+              setAddress(selectedAddress) // 선택된 주소 상태 설정
+              setForm((prev) => ({ ...prev, memberAddr: selectedAddress }))
+              setIsAddressModalOpen(false) // 모달 닫기
+            }}
+          />
+        )}
+
         {/* 상세 주소, 사업자명, 사업자등록번호 등의 필드 */}
         <Input
           label="상세 주소"
