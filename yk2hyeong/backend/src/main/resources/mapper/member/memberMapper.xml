@@ -15,6 +15,11 @@
 
     <!-- 회원 등록 -->
     <insert id="insertMember">
+
+        <selectKey keyProperty="memberId" order="BEFORE" resultType="string">
+            SELECT SYS_GUID() FROM DUAL
+        </selectKey>
+
         INSERT INTO TB_MEMBER
         <trim prefix="(" suffix=")" suffixOverrides=",">
             MEMBER_ID,

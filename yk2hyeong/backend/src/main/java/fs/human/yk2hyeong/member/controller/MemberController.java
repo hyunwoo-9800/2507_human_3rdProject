@@ -2,15 +2,16 @@ package fs.human.yk2hyeong.member.controller;
 
 import fs.human.yk2hyeong.common.code.service.CodeService;
 import fs.human.yk2hyeong.common.config.AESUtil;
+import fs.human.yk2hyeong.images.service.ImageService;
+import fs.human.yk2hyeong.member.service.MailService;
 import fs.human.yk2hyeong.member.service.MemberService;
 import fs.human.yk2hyeong.member.vo.MemberVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -30,6 +31,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final CodeService codeService;
+    private final ImageService imageService;
+    private final MailService mailService;
 
     /**
      * 회원가입 처리 메서드
@@ -41,8 +44,12 @@ public class MemberController {
      * @return 회원가입 성공 또는 오류 메시지
      * @throws Exception 예외 처리 - 비밀번호 암호화 또는 DB 처리 중 발생할 수 있는 예외
      */
-    @PostMapping("/signup")
-    public ResponseEntity<?> signupMember(@RequestBody MemberVO member) throws Exception {
+    @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> signupMember(
+            @RequestPart("member") MemberVO member,
+            @RequestPart(value = "businessCertImage", required = false) MultipartFile businessCertImage,
+            @RequestPart(value = "bankBookImage", required = false) MultipartFile bankBookImage
+    ) throws Exception {
 
         // 기본 사용자 상태 조회 (미승인 상태)
         String memberStat = codeService.getRoleWithNoEntry();
@@ -73,6 +80,21 @@ public class MemberController {
             // 회원 정보 DB에 삽입
             memberService.insertMember(member);
 
+            // 이미지 저장
+            if (businessCertImage != null && !businessCertImage.isEmpty()) {
+
+                String imageId = imageService.insertImage(businessCertImage, member.getMemberId());
+                imageService.updateImageMemberId(imageId, member.getMemberId());
+
+            }
+
+            if (bankBookImage != null && !bankBookImage.isEmpty()) {
+
+                String imageId = imageService.insertImage(bankBookImage, member.getMemberId());
+                imageService.updateImageMemberId(imageId, member.getMemberId());
+
+            }
+
             // 회원가입 성공 메시지 반환
             return ResponseEntity.ok().body(Map.of(
                     "message", "회원가입 성공",
@@ -86,6 +108,29 @@ public class MemberController {
                     .body(Map.of("error", "회원가입 중 오류 발생"));
         }
 
+    }
+
+    // 이메일 중복 확인 API
+    @GetMapping("/checkEmail")
+    public ResponseEntity<Map<String, Boolean>> checkEmailDuplication(@RequestParam("email") String email) throws Exception {
+
+        boolean exists = memberService.isEmailExist(email);
+
+        return ResponseEntity.ok(Map.of("exists", exists));
+
+    }
+
+    @PostMapping("/send-code")
+    public ResponseEntity<?> sendCode(@RequestParam String email) {
+        mailService.sendCode(email);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/verify-code")
+    public ResponseEntity<?> verifyCode(@RequestParam String email, @RequestParam String code) {
+        boolean result = mailService.verifyCode(email, code);
+        if (result) return ResponseEntity.ok().build();
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 실패");
     }
 
 }

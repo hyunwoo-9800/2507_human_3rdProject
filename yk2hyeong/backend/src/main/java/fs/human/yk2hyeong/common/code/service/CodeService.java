@@ -19,4 +19,6 @@ public interface CodeService {
     // 회원 상태 목록
     List<CodeVO> getMemberStatList() throws Exception;
 
+    String getImageLowCodeValue() throws Exception;
+
 }

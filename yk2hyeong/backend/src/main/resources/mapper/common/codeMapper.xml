@@ -81,4 +81,16 @@
           AND A.LOW_CODE_NAME = '미승인'
     </select>
 
+    <select id="getImageLowCodeValue" resultType="string">
+        SELECT
+            A.LOW_CODE_VALUE
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                    ON A.CODE_ID = B.CODE_ID
+        WHERE B.TOP_CODE_NAME = 'IMG_TYPE'
+                AND A.LOW_CODE_NAME = '사용자'
+    </select>
+
+
 </mapper>

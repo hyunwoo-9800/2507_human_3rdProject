@@ -37,4 +37,11 @@ public class MemberServiceImpl implements MemberService {
         // DAO를 통해 회원 정보를 DB에 삽입
         memberDAO.insertMember(vo);
     }
+
+    @Override
+    public boolean isEmailExist(String email) throws Exception {
+
+        return memberDAO.isEmailExist(email) > 0;
+
+    }
 }

@@ -1,0 +1,101 @@
+/* 로그인 전체 영역 */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 60vh;
+  padding-top: 60px;
+}
+
+/* 제목 */
+.login-container h2 {
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* 로그인 폼 */
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* 공통 인풋 필드 스타일 */
+.login-input.input {
+  width: 300px;
+  height: 40px;
+  padding: 8px 12px;
+  font-size: 14px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* 인풋 간격 */
+.login-input + .login-input {
+  margin-top: 10px;
+}
+
+/* 버튼 묶음 정렬 */
+.login-button-wrapper {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+  width: 300px; /* 버튼 너비 기준선 */
+}
+
+/* 공통 Button 컴포넌트의 secondary 스타일 보완 */
+.back-btn {
+  background-color: #e0dcd8;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  height: 45px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background-color: #cfcac3;
+}
+
+/* 로그인 버튼 */
+.login-button {
+  background-color: #28a745;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  height: 45px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: #218838;
+}
+
+/* 아래 링크 텍스트 */
+.login-container div {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+/* 링크 스타일 */
+.login-container a {
+  color: #007bff;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.login-container a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}

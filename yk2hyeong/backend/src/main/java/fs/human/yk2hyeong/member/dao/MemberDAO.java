@@ -27,4 +27,6 @@ public interface MemberDAO {
      */
     void insertMember(MemberVO vo) throws DataAccessException;
 
+    int isEmailExist(String memberEmail) throws DataAccessException;
+
 }

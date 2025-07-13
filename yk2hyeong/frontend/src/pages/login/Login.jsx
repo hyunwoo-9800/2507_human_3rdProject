@@ -4,6 +4,7 @@ import axios from 'axios';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import { useLogin } from '../../pages/login/LoginContext';
+import './login.css';
 
 function LoginPage() {
     const [email, setEmail] = useState(''); // 이메일 상태
@@ -40,14 +41,24 @@ function LoginPage() {
         <div className="login-container">
             <h2>로그인</h2>
             <form onSubmit={handleLogin}>
-                <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" required />
-                <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" required />
-                <Button type="submit">로그인</Button>
+
+                <Input type="email" className="login-input" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" required />
+
+                <Input type="password" className="login-input" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" required />
+
+                <div className="login-button-wrapper">
+                    <Button className="secondary" size="md" onClick={() => navigate(-1)}>뒤로가기</Button>
+
+                    <Button className="secondary" size="md" type="submit">로그인</Button>
+                </div>
+
             </form>
+
             <div>
                 <p>비밀번호를 잊으셨나요?</p>
                 <p>아직 계정이 없으신가요? <a href="/signup">회원가입</a></p>
             </div>
+
         </div>
     );
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fs.human.yk2hyeong.images.dao.ImageDAO">
+
+    <!-- 회워가입 시 이미지 저장 -->
+    <insert id="insertImage" parameterType="fs.human.yk2hyeong.images.vo.ImageVO">
+        INSERT INTO TB_IMAGES (
+                IMAGE_ID,
+                IMAGE_PATH,
+                IMAGE_NAME,
+                IMAGE_TYPE,
+                MEMBER_ID,
+                PRODUCT_ID,
+                CREATED_ID,
+                CREATED_DATE,
+                UPDATED_ID,
+                UPDATED_DATE
+            ) VALUES (
+                SYS_GUID(),
+                #{imagePath},
+                #{imageName},
+                #{imageType},
+                #{memberId},
+                #{productId},
+                #{createdId},
+                SYSDATE,
+                #{updatedId},
+                SYSDATE
+        )
+    </insert>
+
+    <update id="updateImageMemberId">
+        UPDATE TB_IMAGES
+            SET MEMBER_ID = #{memberId}
+        WHERE IMAGE_ID = #{imageId}
+    </update>
+
+</mapper>

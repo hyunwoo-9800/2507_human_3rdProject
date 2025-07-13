@@ -1,4 +1,3 @@
-// src/components/CustomSelect.jsx
 import React from 'react';
 import { Select } from 'antd';
 
@@ -6,17 +5,19 @@ import { Select } from 'antd';
  * @returns {JSX.Element}
  */
 const CustomSelect = ({
-                          allowClear = false,
-                          loading = false,
-                          disabled = false,
-                          defaultValue,
-                          placeholder, // ✅ placeholder props
-                          onChange,
-                          onSearch,
-                          style = { width: 200 },
-                          names = null,
-                          options = null,
-                      }) => {
+    allowClear = false,
+    loading = false,
+    disabled = false,
+    defaultValue,
+    placeholder,
+    onChange,
+    onSearch,
+    style = { width: '100%' },
+    dropdownMatchSelectWidth = false,
+    dropdownStyle = { textAlign: 'left' },
+    names = null,
+    options = null,
+}) => {
     const handleChange = value => {
         console.log(`selected ${value}`);
         if (onChange) onChange(value);
@@ -27,18 +28,17 @@ const CustomSelect = ({
         if (onSearch) onSearch(value);
     };
 
-    // ✅ names 배열이 있으면 자동 변환
     const finalOptions = names
         ? names.map(name => ({
-            value: name.toLowerCase(),
-            label: name,
-        }))
+              value: name.toLowerCase(),
+              label: name,
+          }))
         : options || [
-        { value: 'jack', label: 'Jack' },
-        { value: 'lucy', label: 'Lucy' },
-        { value: 'tom', label: 'Tom' },
-        { value: 'disabled', label: 'Disabled', disabled: true },
-    ];
+              { value: 'jack', label: 'Jack' },
+              { value: 'lucy', label: 'Lucy' },
+              { value: 'tom', label: 'Tom' },
+              { value: 'disabled', label: 'Disabled', disabled: true },
+          ];
 
     return (
         <Select
@@ -53,6 +53,8 @@ const CustomSelect = ({
             onSearch={handleSearch}
             style={style}
             options={finalOptions}
+            dropdownMatchSelectWidth={dropdownMatchSelectWidth}
+            dropdownStyle={dropdownStyle}
         />
     );
 };

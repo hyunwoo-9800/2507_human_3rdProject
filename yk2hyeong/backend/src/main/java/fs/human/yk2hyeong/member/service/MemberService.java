@@ -23,4 +23,7 @@ public interface MemberService {
      * @throws Exception DB 처리 중 발생할 수 있는 예외 처리
      */
     void insertMember(MemberVO vo) throws Exception;
+
+    boolean isEmailExist(String email) throws Exception;
+
 }

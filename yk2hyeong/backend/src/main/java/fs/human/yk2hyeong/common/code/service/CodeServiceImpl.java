@@ -46,4 +46,11 @@ public class CodeServiceImpl implements CodeService {
 
     }
 
+    @Override
+    public String getImageLowCodeValue() {
+
+        return codeDAO.getImageLowCodeValue();
+
+    }
+
 }
