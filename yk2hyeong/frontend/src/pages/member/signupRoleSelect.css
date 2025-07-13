@@ -1,40 +1,40 @@
 .signup-role-page {
-    text-align: center;
-    margin-top: 40px;
+  text-align: center;
+  margin-top: 40px;
 }
 
 .signup-title {
-    font-size: 24px;
-    margin-bottom: 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
 .signup-card-container {
-    display: flex;
-    justify-content: center;
-    gap: 32px; /* 카드 간 간격 */
-    flex-wrap: wrap;
-    padding: 0 20px;
+  display: flex;
+  justify-content: center;
+  gap: 32px; /* 카드 간 간격 */
+  flex-wrap: wrap;
+  padding: 0 20px;
 }
 
 .signup-btn-group {
-    display: flex;
-    justify-content: center;
-    gap: 12px;             /* 버튼 간 간격 */
-    margin-top: 20px;      /* 버튼과 카드 본문 간 간격 */
+  display: flex;
+  justify-content: center;
+  gap: 12px; /* 버튼 간 간격 */
+  margin-top: 20px; /* 버튼과 카드 본문 간 간격 */
 }
 
 .signup-login-link {
-    margin-top: 40px;
-    text-align: center;
-    font-size: 14px;
+  margin-top: 40px;
+  text-align: center;
+  font-size: 14px;
 }
 
 .signup-login-link a {
-    color: #3366cc;
-    text-decoration: none;
-    transition: color 0.2s ease;
+  color: #3366cc;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
 .signup-login-link a:hover {
-    color: #003399;
+  color: #003399;
 }

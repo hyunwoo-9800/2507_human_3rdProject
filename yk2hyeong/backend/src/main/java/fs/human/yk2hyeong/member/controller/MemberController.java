@@ -46,9 +46,9 @@ public class MemberController {
      */
     @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> signupMember(
-            @RequestPart("member") MemberVO member,
-            @RequestPart(value = "businessCertImage", required = false) MultipartFile businessCertImage,
-            @RequestPart(value = "bankBookImage", required = false) MultipartFile bankBookImage
+            @RequestPart("member") MemberVO member, // 회원 정보
+            @RequestPart(value = "businessCertImage", required = false) MultipartFile businessCertImage, // 사업자 등록증 이미지
+            @RequestPart(value = "bankBookImage", required = false) MultipartFile bankBookImage // 통장 사본 이미지
     ) throws Exception {
 
         // 기본 사용자 상태 조회 (미승인 상태)
@@ -58,9 +58,9 @@ public class MemberController {
 
             // 비밀번호 암호화
             String encryptedPwd = AESUtil.encrypt(member.getMemberPwd());
-            member.setMemberPwd(encryptedPwd);
+            member.setMemberPwd(encryptedPwd); // 암호화된 비밀번호로 설정
 
-            // 기본 사용자 상태 설정
+            // 기본 사용자 상태 설정 (예: 미승인)
             member.setMemberStatus(memberStat);
 
             // 출하자(상호) 이름이 null일 경우 기본 값 설정
@@ -80,19 +80,16 @@ public class MemberController {
             // 회원 정보 DB에 삽입
             memberService.insertMember(member);
 
-            // 이미지 저장
+            // 이미지 저장 (사업자 등록증)
             if (businessCertImage != null && !businessCertImage.isEmpty()) {
-
                 String imageId = imageService.insertImage(businessCertImage, member.getMemberId());
                 imageService.updateImageMemberId(imageId, member.getMemberId());
-
             }
 
+            // 이미지 저장 (통장 사본)
             if (bankBookImage != null && !bankBookImage.isEmpty()) {
-
                 String imageId = imageService.insertImage(bankBookImage, member.getMemberId());
                 imageService.updateImageMemberId(imageId, member.getMemberId());
-
             }
 
             // 회원가입 성공 메시지 반환
@@ -110,27 +107,56 @@ public class MemberController {
 
     }
 
-    // 이메일 중복 확인 API
+    /**
+     * 이메일 중복 확인 API
+     *
+     * 이 메서드는 이메일 중복 여부를 확인하는 API입니다.
+     * 사용자가 입력한 이메일이 이미 존재하는지 확인하고, 그 결과를 반환합니다.
+     *
+     * @param email 사용자가 입력한 이메일
+     * @return 이메일 중복 여부 (exists: true/false)
+     * @throws Exception 이메일 중복 확인 중 발생할 수 있는 예외
+     */
     @GetMapping("/checkEmail")
     public ResponseEntity<Map<String, Boolean>> checkEmailDuplication(@RequestParam("email") String email) throws Exception {
 
+        // 이메일 중복 확인
         boolean exists = memberService.isEmailExist(email);
 
+        // 중복 여부 반환
         return ResponseEntity.ok(Map.of("exists", exists));
 
     }
 
+    /**
+     * 인증번호 발송 API
+     *
+     * 이메일로 인증번호를 발송하는 API입니다. 사용자가 입력한 이메일로 인증번호를 발송합니다.
+     *
+     * @param email 인증번호를 발송할 이메일
+     * @return 성공 시 200 OK 응답
+     */
     @PostMapping("/send-code")
     public ResponseEntity<?> sendCode(@RequestParam String email) {
-        mailService.sendCode(email);
+        mailService.sendCode(email); // 인증번호 발송
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 인증번호 확인 API
+     *
+     * 사용자가 입력한 인증번호가 맞는지 확인하는 API입니다.
+     * 이메일과 인증번호를 비교하여 일치하면 인증 성공, 아니면 인증 실패를 반환합니다.
+     *
+     * @param email 이메일 주소
+     * @param code 사용자가 입력한 인증번호
+     * @return 인증 성공/실패 응답
+     */
     @GetMapping("/verify-code")
     public ResponseEntity<?> verifyCode(@RequestParam String email, @RequestParam String code) {
-        boolean result = mailService.verifyCode(email, code);
-        if (result) return ResponseEntity.ok().build();
-        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 실패");
+        boolean result = mailService.verifyCode(email, code); // 인증번호 검증
+        if (result) return ResponseEntity.ok().build(); // 인증 성공
+        else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증 실패"); // 인증 실패
     }
 
 }

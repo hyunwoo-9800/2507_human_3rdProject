@@ -24,6 +24,16 @@ public interface MemberService {
      */
     void insertMember(MemberVO vo) throws Exception;
 
+    /**
+     * 이메일 중복 확인 메서드
+     *
+     * 이 메서드는 입력된 이메일이 이미 데이터베이스에 존재하는지 확인하는 역할을 합니다.
+     * 이메일이 이미 존재하면 중복된 이메일로 처리하고, 그렇지 않으면 새로운 이메일로 처리합니다.
+     *
+     * @param email 확인하려는 이메일 주소
+     * @return 이메일 존재 여부 (true: 존재, false: 없음)
+     * @throws Exception DB 처리 중 발생할 수 있는 예외 처리
+     */
     boolean isEmailExist(String email) throws Exception;
 
 }

@@ -4,7 +4,16 @@ import lombok.Data;
 
 import java.sql.Date;
 
-
+/**
+ * 이미지 정보 VO (Value Object) 클래스
+ *
+ * 이 클래스는 이미지 정보를 담기 위한 VO 클래스입니다.
+ * 이미지 고유 ID, 이미지 경로, 타입 등의 정보를 저장하며,
+ * 특정 회원이나 상품과 연결될 수 있습니다.
+ *
+ * @author 조현우
+ * @since 2025-07-13
+ */
 @Data
 public class ImageVO {
 

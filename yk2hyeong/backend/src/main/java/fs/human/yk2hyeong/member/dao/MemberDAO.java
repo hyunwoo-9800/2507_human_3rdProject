@@ -27,6 +27,18 @@ public interface MemberDAO {
      */
     void insertMember(MemberVO vo) throws DataAccessException;
 
+    /**
+     * 이메일 중복 확인 메서드
+     *
+     * 이 메서드는 회원가입 시, 사용자가 입력한 이메일이 이미 데이터베이스에 존재하는지 확인합니다.
+     * 이메일이 존재하면 1 이상을 반환하고, 존재하지 않으면 0을 반환합니다.
+     *
+     * SQL 쿼리는 MyBatis 매퍼 XML에서 정의되어 있습니다.
+     *
+     * @param memberEmail 확인하려는 이메일 주소
+     * @return 이메일 존재 여부 (1: 존재, 0: 없음)
+     * @throws DataAccessException DB 접근 중 발생할 수 있는 예외 처리
+     */
     int isEmailExist(String memberEmail) throws DataAccessException;
 
 }

@@ -36,35 +36,38 @@ repositories {
 
 // 프로젝트 의존성
 dependencies {
+
 	// 핵심기능
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+	implementation 'org.springframework.boot:spring-boot-starter-web' 				// 웹 관련 기본 의존성
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4' 		// MyBatis 기본 의존성
 
 	// 개발 편의
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+	compileOnly 'org.projectlombok:lombok' 											// Lombok 의존성
+	annotationProcessor 'org.projectlombok:lombok' 									// Lombok 어노테이션 처리기
+	developmentOnly 'org.springframework.boot:spring-boot-devtools' 				// 개발 중에만 필요한 도구들
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16' 			// JDBC 로그 출력
 
 	// 비밀번호 암호화
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security' 			// 보안 관련 의존성
 
 	// 데이터베이스 드라이버
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11' 									// Oracle DB 드라이버
 
 	// WAS 설정(WAS 배포 시)
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat' 			// 톰캣 제공 런타임
 
 	// 테스트 관련
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test' 			// Spring Boot 테스트
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4' // MyBatis 테스트
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher' 					// JUnit 런처
 
+	// JWT 관련 라이브러리
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON 직렬화/역직렬화용 (Jackson)
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' 								// JSON 직렬화/역직렬화용 (Jackson)
 
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// 메일 관련 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-mail' 				// 이메일 발송 기능
 
 }
 
@@ -79,28 +82,33 @@ task buildReact(type: Exec) {
 	commandLine yarnCommand, "run", "build"
 }
 
+// React 빌드 task 추가
+task buildReact(type: Exec) {
+	workingDir "$projectDir/../frontend" // React 프로젝트 경로 설정
+	def yarnCommand = System.getProperty("os.name").toLowerCase().contains("windows") ? "yarn.cmd" : "yarn" // 운영체제에 따라 yarn 명령어 설정
+	commandLine yarnCommand, "run", "build" // React 빌드 명령어 실행
+}
+
 // React 이미지 자동 복사
 task copyReactImages(type: Copy) {
-	from "$rootDir/frontend/public/images"
-	into "$projectDir/src/main/resources/static/images"
+	from "$rootDir/frontend/public/images" // React 빌드 폴더의 이미지 파일을
+	into "$projectDir/src/main/resources/static/images" // Spring 프로젝트의 static/images 폴더로 복사
 }
 
 // 프론트엔드 정적 파일 빌드 결과 복사
 task copyFrontend(type: Copy) {
 	from("$projectDir/../frontend/build") {
 		exclude "images/**" // images 폴더 제외
-		// build 폴더 내부의 static 폴더만 따로 복사
-		// exclude("index.html")
 	}
-	into "$projectDir/src/main/resources/static"			// Spring static 경로로 복사
+	into "$projectDir/src/main/resources/static" // Spring static 폴더로 복사
 }
 
 // 의존성 명시
-copyReactImages.mustRunAfter buildReact
-copyFrontend.mustRunAfter copyReactImages
+copyReactImages.mustRunAfter buildReact // React 빌드 후 이미지 복사 실행
+copyFrontend.mustRunAfter copyReactImages // 이미지 복사 후 정적 파일 복사 실행
 
-bootRun.dependsOn buildReact
-bootRun.dependsOn copyReactImages
-bootRun.dependsOn copyFrontend
+bootRun.dependsOn buildReact // Spring Boot 실행 전에 React 빌드를 수행
+bootRun.dependsOn copyReactImages // React 이미지 복사 후 Spring Boot 실행
+bootRun.dependsOn copyFrontend // 정적 파일 복사 후 Spring Boot 실행
 
-processResources.dependsOn(copyFrontend)
+processResources.dependsOn(copyFrontend) // 리소스 처리 전에 프론트엔드 복사

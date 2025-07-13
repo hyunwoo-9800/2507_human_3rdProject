@@ -38,10 +38,22 @@ public class MemberServiceImpl implements MemberService {
         memberDAO.insertMember(vo);
     }
 
+    /**
+     * 이메일 중복 확인 메서드
+     *
+     * 이 메서드는 입력된 이메일이 이미 존재하는지 확인합니다.
+     * 이메일이 이미 존재하면 `true`, 그렇지 않으면 `false`를 반환합니다.
+     *
+     * @param email 확인하려는 이메일 주소
+     * @return 이메일 존재 여부 (true: 존재, false: 없음)
+     * @throws Exception DB 처리 중 발생할 수 있는 예외 처리
+     */
     @Override
     public boolean isEmailExist(String email) throws Exception {
 
-        return memberDAO.isEmailExist(email) > 0;
+        // DAO를 통해 이메일 존재 여부 확인
+        return memberDAO.isEmailExist(email) > 0;  // 존재하면 1 이상, 존재하지 않으면 0 반환
 
     }
+
 }
