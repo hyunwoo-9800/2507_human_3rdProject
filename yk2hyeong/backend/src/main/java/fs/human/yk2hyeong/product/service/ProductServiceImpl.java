@@ -17,8 +17,27 @@ public class ProductServiceImpl implements ProductService {
         this.productDAO = productDAO;
     }
 
+    // 상품 전체 조회
     @Override
     public List<ProductVO> getAllProducts() {
         return productDAO.getAllProducts();
+    }
+
+    // 즐겨찾기 등록
+    @Override
+    public void insertFavorite(String memberId, String productId) {
+        productDAO.insertFavorite(memberId, productId);
+    }
+
+    // 즐겨찾기 삭제
+    @Override
+    public void deleteFavorite(String memberId, String productId) {
+        productDAO.deleteFavorite(memberId, productId);
+    }
+
+    // 즐겨찾기된 productId 목록 조회
+    @Override
+    public List<String> getFavoriteProductIds(String memberId) {
+        return productDAO.selectFavoriteProductIds(memberId);
     }
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from 'antd';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
-const { Meta } = Card;
+import axios from "axios";
 
 const CustomCard = ({
                         id,
@@ -17,18 +17,45 @@ const CustomCard = ({
                         immediatePurchase = false,
                         reservationPurchase = false,
                         defaultFavorite = false,
+                        memberId = null,
                         ...rest
                     }) => {
     const [favorite, setFavorite] = useState(defaultFavorite);
     const isRow = layout === 'row';
 
-    const handleFavoriteToggle = (e) => {
+    const handleFavoriteToggle = async (e) => {
         e.stopPropagation();
-        const newFav = !favorite;
-        setFavorite(newFav);
 
-        console.log(`[즐겨찾기 변경] ID: ${id}, 회사: ${company}, 상품명: ${productName} →`, newFav);
-    }
+        if (!memberId) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+
+        try {
+            if (!favorite) {
+                // 즐겨찾기 등록
+                await axios.post("/api/favorites", {
+                    memberId,
+                    productId: id,
+                });
+                console.log("즐겨찾기 등록 완료");
+            } else {
+                // 즐겨찾기 취소
+                await axios.delete("/api/favorites", {
+                    data: {
+                        memberId,
+                        productId: id,
+                    }
+                });
+                console.log("즐겨찾기 취소 완료");
+            }
+
+            setFavorite(!favorite);
+        } catch (error) {
+            console.error("즐겨찾기 토글 실패", error);
+            alert("즐겨찾기 중 문제가 발생했습니다.");
+        }
+    };
 
     return (
         <Card

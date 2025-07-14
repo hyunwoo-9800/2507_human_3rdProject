@@ -8,6 +8,8 @@ export default function ProductList() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [activeKey, setActiveKey] = useState('all');
+    const [memberId, setMemberId] = useState(null);
+    const [favoriteProductIds, setFavoriteProductIds] = useState([]);
 
     const productTypes = [
         { label: '전체', key: 'all' },
@@ -21,18 +23,13 @@ export default function ProductList() {
         try {
             setLoading(true);
             const response = await axios.get('/api/products');
-
-            // 🔍 imageType === '003' (상세이미지)인 항목 제거
             const filtered = response.data.filter(p => p.imageType !== '003');
-
-            // 🔄 productId 기준 중복 제거 (가장 먼저 나타난 항목 유지)
             const seen = new Map();
             filtered.forEach(p => {
                 if (!seen.has(p.productId)) {
                     seen.set(p.productId, p);
                 }
             });
-
             setProducts(Array.from(seen.values()));
         } catch (error) {
             console.error('상품 목록 불러오기 실패:', error);
@@ -41,14 +38,39 @@ export default function ProductList() {
         }
     };
 
+    const fetchMe = async () => {
+        try {
+            const res = await axios.get("/auth/me");
+            setMemberId(res.data.memberId);
+            return res.data.memberId;
+        } catch (error) {
+            console.error("로그인 정보 불러오기 실패:", error);
+            return null;
+        }
+    };
+
+    const fetchFavorites = async (id) => {
+        try {
+            const res = await axios.get(`/api/favorites?memberId=${id}`);
+            const favoriteIds = res.data.map(fav => fav.productId);
+            setFavoriteProductIds(favoriteIds);
+        } catch (error) {
+            console.error("즐겨찾기 목록 불러오기 실패:", error);
+        }
+    };
+
     useEffect(() => {
         fetchProducts();
+        fetchMe().then((id) => {
+            if (id) {
+                fetchFavorites(id);
+            }
+        });
     }, []);
 
     const handleTabChange = (key) => {
         setActiveKey(key);
     };
-
 
     const tabItems = productTypes.map(type => {
         const filteredProducts = type.key === 'all'
@@ -56,7 +78,7 @@ export default function ProductList() {
             : products.filter(
                 p =>
                     p.productDisplayType === '표시' &&
-                    p.productCat === type.key // 🔍 여기에 맞게 카테고리 필드 사용
+                    p.productCat === type.key
             );
 
         return {
@@ -84,6 +106,8 @@ export default function ProductList() {
                                     minQuantity={product.productMinQtr}
                                     immediatePurchase={["즉시 구매 상품", "즉시/예약"].includes(product.productSellType)}
                                     reservationPurchase={["예약 상품", "즉시/예약"].includes(product.productSellType)}
+                                    memberId={memberId}
+                                    defaultFavorite={favoriteProductIds.includes(product.productId)}
                                 />
                             </Col>
                         ))
@@ -96,7 +120,6 @@ export default function ProductList() {
             )
         };
     });
-
 
     return (
         <div>

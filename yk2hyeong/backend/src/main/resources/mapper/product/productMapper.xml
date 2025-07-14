@@ -64,4 +64,21 @@
         ORDER BY p.CREATED_DATE DESC
     </select>
 
+    <!-- 즐겨찾기 등록 -->
+    <insert id="insertFavorite">
+        INSERT INTO TB_FAVORITE (FAVORITE_ID, MEMBER_ID, PRODUCT_ID, CREATED_ID, UPDATED_ID)
+        VALUES (SYS_GUID(), #{memberId}, #{productId}, #{memberId}, #{memberId})
+    </insert>
+
+    <!-- 즐겨찾기 삭제 -->
+    <delete id="deleteFavorite">
+        DELETE FROM TB_FAVORITE
+        WHERE MEMBER_ID = #{memberId} AND PRODUCT_ID = #{productId}
+    </delete>
+
+    <!-- 회원 즐겨찾기 상품 ID 목록 조회 -->
+    <select id="selectFavoriteProductIds" resultType="string">
+        SELECT PRODUCT_ID FROM TB_FAVORITE WHERE MEMBER_ID = #{memberId}
+    </select>
+
 </mapper>
