@@ -18,4 +18,6 @@ public interface AdminService {
 
     void deleteMember(List<String> reportId);
     void deleteReport(List<String> reportId);
+
+
 }

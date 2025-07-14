@@ -41,4 +41,7 @@ public class AdminVO {
     private String reportContent;    // 신고 상세 내용
     private String updatedId;        // 수정자 ID
     private Date updatedDate;        // 수정일시
+
+    private String memberRoleName;    // 역할 한글명
+    private String memberStatusName;  // 상태 한글명
 }

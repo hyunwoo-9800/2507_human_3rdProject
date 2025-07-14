@@ -61,6 +61,8 @@
         <result property="memberStatus" column="memberStatus"/>
         <result property="createdId" column="createdId"/>
         <result property="createdDate" column="createdDate"/>
+        <result property="memberRoleName" column="memberRoleName"/>
+        <result property="memberStatusName" column="memberStatusName"/>
     </resultMap>
     <select id="selectPendingMember" resultMap="memberMap">
         SELECT
@@ -86,7 +88,7 @@
     </select>
     <!--유저관리 페이지 유저 정보 불러오기-->
     <select id="selectMember" resultMap="memberMap">
-        SELECT DISTINCT
+        SELECT
             M.MEMBER_ID AS memberId,
             M.MEMBER_EMAIL AS memberEmail,
             M.MEMBER_PWD AS memberPwd,
@@ -99,13 +101,30 @@
             M.MEMBER_DETAIL_ADDR AS memberDetailAddr,
             M.MEMBER_BANK_CODE AS memberBankCode,
             M.MEMBER_ACCOUNTNUM AS memberAccountNum,
+
             M.MEMBER_ROLE AS memberRole,
+            (
+                SELECT D.LOW_CODE_NAME
+                FROM TB_CODE_DETAIL D
+                WHERE D.CODE_ID = 'B553133B409D4B3BADDE089F3D9A5F15'
+                  AND TRIM(D.LOW_CODE_VALUE) = TRIM(M.MEMBER_ROLE)
+                  AND ROWNUM = 1
+            ) AS memberRoleName,
+
             M.MEMBER_STATUS AS memberStatus,
+            (
+                SELECT D.LOW_CODE_NAME
+                FROM TB_CODE_DETAIL D
+                WHERE D.CODE_ID = 'AE2B0847E4464A64804343EC818DAC26'
+                  AND TRIM(D.LOW_CODE_VALUE) = TRIM(M.MEMBER_STATUS)
+                  AND ROWNUM = 1
+            ) AS memberStatusName,
+
             M.CREATED_ID AS createdId,
             M.CREATED_DATE AS createdDate
         FROM YH.TB_MEMBER M
-                 JOIN TB_CODE_DETAIL D ON M.MEMBER_STATUS = D.LOW_CODE_VALUE
     </select>
+
 
     <!-- 신고 리스트 불러오기 -->
     <resultMap id="ReportMap" type="fs.human.yk2hyeong.admin.vo.AdminVO">
@@ -189,4 +208,6 @@
             #{id}
         </foreach>
     </delete>
+
+
 </mapper>

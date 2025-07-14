@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Button from "../common/Button";
+import CustomPagination from "../common/CustomPagination";
 
 function TableTab({tabType}){
     const [selectItem, setSelectItem] = useState(null);
+    const [page, setPage] = useState(1);
 
     //테이블 게시글 리스트(db연결)
     const [item, setItem] = useState([]);
@@ -86,57 +88,91 @@ function TableTab({tabType}){
             });
     };
 
+    //코드 정리, td항상 12줄 고정
+    const renderDataRow = (item) => {
+        const isReport = tabType === "report";
+        const key = isReport ? item.reportId : item.memberId;
+
+        const columns = [
+            <td onClick={() => handleRowClick(item)}>{isReport ? item.postNum : item.memberName}</td>,
+            <td onClick={() => handleRowClick(item)}>{isReport ? item.reasonName : item.memberRoleName}</td>,
+            <td onClick={() => handleRowClick(item)}>{isReport ? item.reportContent : item.memberBname}</td>,
+            <td onClick={() => handleRowClick(item)}>{isReport ? item.productName : item.memberEmail}</td>,
+            <td onClick={() => handleRowClick(item)}>{isReport ? item.reporterName : item.memberStatusName}</td>,
+            <td>
+                <input
+                    type="checkbox"
+                    checked={item.checked}
+                    onChange={() => handleItemCheck(key)}
+                    className="table-checkbox"
+                />
+            </td>
+        ];
+
+        const padding = Array.from({ length: 12 - columns.length }, (_, i) => (
+            <td key={`pad-${i}`}>&nbsp;</td>
+        ));
+        return <tr key={key}>{[...columns, ...padding]}</tr>;
+    };
+
+    const renderEmptyRows = () => {
+        const emptyRowCount = Math.max(0, 12 - item.length);
+        return Array.from({ length: emptyRowCount }, (_, rowIdx) => (
+            <tr key={`empty-${rowIdx}`}>
+                {Array.from({ length: 12 }, (_, i) => (
+                    <td key={`empty-td-${rowIdx}-${i}`}>&nbsp;</td>
+                ))}
+            </tr>
+        ));
+    };
+
+    // 페이지네이션
+
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
+
     return (
         <div className="report-check-tab">
             <h2>{tabType === 'member' ? '유저관리 > 유저관리' : '신고관리 > 신고확인'}</h2>
             <table className="report-check-table">
+                <colgroup>
+                    <col style={{ width: "15%" }} />  {/* 사용자 번호 */}
+                    <col style={{ width: "10%" }} />  {/* 분류 */}
+                    <col style={{ width: "30%" }} />  {/* 이름 */}
+                    <col style={{ width: "20%" }} />  {/* 이메일 */}
+                    <col style={{ width: "20%" }} />  {/* 연락처 */}
+                    <col style={{ width: "5%" }} />   {/* 체크박스 */}
+                </colgroup>
                 <thead>
                 <tr>
-                    <th>{tabType === 'report'?'게시글 번호' :'사용자 번호'} </th>
-                    <th>{tabType === 'report'?'신고분류' :'분류'}</th>
-                    <th>{tabType === 'report'?'신고내용' :'이름'}</th>
+                    <th>{tabType === 'report'?'게시글 번호' :'이름'} </th>
+                    <th>{tabType === 'report'?'분류' :'분류'}</th>
+                    <th>{tabType === 'report'?'신고내용' :'사업자명'}</th>
                     <th>{tabType === 'report'?'제목' :'이메일'}</th>
-                    <th>{tabType === 'report'?'사업자명' :'연락처'}</th>
+                    <th>{tabType === 'report'?'사업자명' :'상태'}</th>
                     <th>
                         <input
                             type="checkbox"
                             onChange={handleSelectAll}
-                            checked={item.every(item => item.checked)}
+                            checked={item.length > 0 && item.every((i) => i.checked)}
                         />
                     </th>
+                    {[...Array(6)].map((_,i) => (
+                        <th key={`head-pad-${i}`}></th>
+                    ))}
                 </tr>
                 </thead>
                 <tbody>
-                {item.filter(item => item && (item.reportId || item.memberId)).map((item) =>(
-                    <tr key={tabType === 'report' ? item.reportId : item.memberId}>
-                        <td onClick={()=>handleRowClick(item)}>
-                            {tabType === 'report' ? item.postNum : item.memberName}
-                        </td>
-                        <td onClick={()=>handleRowClick(item)}>
-                            {tabType === 'report' ? item.reasonName : item.memberRole}
-                        </td>
-                        <td onClick={()=>handleRowClick(item)}>
-                            {tabType === 'report' ? item.reportContent : item.memberName}
-                        </td>
-                        <td onClick={()=>handleRowClick(item)}>
-                            {tabType === 'report' ? item.productName : item.memberEmail}
-                        </td>
-                        <td onClick={()=>handleRowClick(item)}>
-                            {tabType === 'report' ? item.reporterName : item.memberTel}
-                        </td>
-                        <td>
-                            <input
-                                type="checkbox"
-                                checked={item.checked}
-                                onChange={() => handleItemCheck(item.reportId || item.memberId)}
-                                className="table-checkbox"
-                            />
-                        </td>
-                    </tr>
-                ))}
-
+                    {item.filter((i) => i && (i.reportId || i.memberId))
+                        .slice((page -1)*10, page * 10)
+                        .map(renderDataRow)}
+                    {renderEmptyRows()}
                 </tbody>
             </table>
+            <div className="pagination-wrapper">
+                <CustomPagination defaultCurrent={page} total={item.length} pageSize={10} onChange={(p) => setPage(p)}/>
+            </div>
             <Button color="error" onClick={handleDelete}>삭제</Button>
         </div>
     )

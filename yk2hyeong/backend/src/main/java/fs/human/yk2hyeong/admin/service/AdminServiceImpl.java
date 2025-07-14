@@ -104,4 +104,6 @@ public class AdminServiceImpl implements AdminService {
     public void deleteMember(List<String> reportId){
         adminDAO.deleteReport(reportId);
     }
+
+
 }

@@ -88,6 +88,7 @@
 /* 테이블 css */
 .report-check-table{
     width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
     text-align: center;
 }
@@ -115,10 +116,38 @@
     transform: scale(1.2);
     cursor: pointer;
 }
-.delete-btn{
-
+.report-check-table th:nth-child(6),
+.report-check-table td:nth-child(6) {
+    width: 24px;          /* ✅ 체크박스만 들어갈 최소 크기 */
+    padding: 0;           /* ✅ 여백 제거 */
+    text-align: center;   /* ✅ 가운데 정렬 */
 }
-
+.report-check-table td:nth-child(3),
+.report-check-table th:nth-child(3) {
+    width: 20%; /* 적당히 늘려주기 */
+    min-width: 200px;
+    white-space: normal; /* 줄바꿈 허용 */
+}
+.report-check-table td:nth-child(2),
+.report-check-table th:nth-child(2){
+    width: 10%;
+    min-width: 200px;
+    white-space: normal;
+}
+.report-check-table td:nth-child(4),
+.report-check-table th:nth-child(4),
+.report-check-table td:nth-child(5),
+.report-check-table th:nth-child(5) {
+    width: 18%;
+    white-space: nowrap; /* 줄바꿈 안 함 */
+    overflow: hidden;     /* 넘치면 숨김 */
+    text-overflow: ellipsis; /* ... 처리 */
+}
+/*TableTab 페이지네이션, 버튼 위치 조정*/
+.pagination-wrapper{
+    display: flex;
+    justify-content: center;
+}
 
 
 
@@ -188,6 +217,7 @@ thead span{
 .admin-container {
     display: flex; /* 수평 정렬 */
     height: 100vh;
+    margin-bottom: 100px;
 }
 
 .admin-sidebar {

@@ -25,4 +25,6 @@ public interface AdminDAO {
 //    게시글 삭제
     void deleteReport(@Param("reportId") List<String> reportId);
     void deleteMember(@Param("memberId") List<String> memberId);
+
+
 }
