@@ -61,7 +61,11 @@ export default function ProductList() {
                             <Col key={product.productId} xs={24} sm={12} md={8} lg={6}>
                                 <CustomCard
                                     id={product.productId}
-                                    image={product.imagePath || "/images/no-image.png"}
+                                    image={
+                                        product.imagePath && product.imageName
+                                            ? `/static${product.imagePath}/${product.imageName}`
+                                            : "/static/images/no-image.png"
+                                    }
                                     company={product.sellerCompany}
                                     productName={product.productName}
                                     price={product.productUnitPrice}

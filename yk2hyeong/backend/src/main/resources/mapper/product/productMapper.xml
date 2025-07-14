@@ -37,7 +37,14 @@
 
             -- 상품 유형 및 표시 여부
             cd3.LOW_CODE_NAME AS PRODUCT_SELL_TYPE, -- 예약상품, 즉시구매상품
-            cd4.LOW_CODE_NAME AS PRODUCT_DISPLAY_TYPE -- 표시, 비표시
+            cd4.LOW_CODE_NAME AS PRODUCT_DISPLAY_TYPE, -- 표시, 비표시
+
+            img.IMAGE_ID AS IMAGE_ID, --이미지 uuid
+            img.IMAGE_PATH AS IMAGE_PATH, --이미지경로
+            img.IMAGE_NAME AS IMAGE_NAME, -- 이미지명
+            img.IMAGE_TYPE AS IMAGE_TYPE, -- 이미지유형
+            img.MEMBER_ID AS MEMBER_ID -- 이미지 등록한 회원
+
         FROM TB_PRODUCT p
                  LEFT JOIN TB_CODE_DETAIL cd1
                            ON p.PRODUCT_CODE = cd1.DETAIL_CODE_ID  -- 사과, 깻잎 등
@@ -49,6 +56,10 @@
                            ON p.PRODUCT_TYPE = cd3.DETAIL_CODE_ID -- 예약구매, 즉시구매
                  LEFT JOIN TB_CODE_DETAIL cd4
                            ON p.PRODUCT_DISPLAY_FLAG = cd4.DETAIL_CODE_ID -- 표시, 비표시
+                LEFT JOIN TB_IMAGES img
+                            ON p.PRODUCT_ID = img.PRODUCT_ID -- 이미지 테이블 조인
+
+
 
         ORDER BY p.CREATED_DATE DESC
     </select>
