@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card } from 'antd';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
-import axios from "axios";
 
 const CustomCard = ({
                         id,
@@ -16,46 +15,11 @@ const CustomCard = ({
                         minQuantity = 0,
                         immediatePurchase = false,
                         reservationPurchase = false,
-                        defaultFavorite = false,
-                        memberId = null,
+                        isFavorite = false,
+                        onFavoriteToggle,
                         ...rest
                     }) => {
-    const [favorite, setFavorite] = useState(defaultFavorite);
     const isRow = layout === 'row';
-
-    const handleFavoriteToggle = async (e) => {
-        e.stopPropagation();
-
-        if (!memberId) {
-            alert("로그인이 필요합니다.");
-            return;
-        }
-
-        try {
-            if (!favorite) {
-                // 즐겨찾기 등록
-                await axios.post("/api/favorites", {
-                    memberId,
-                    productId: id,
-                });
-                console.log("즐겨찾기 등록 완료");
-            } else {
-                // 즐겨찾기 취소
-                await axios.delete("/api/favorites", {
-                    data: {
-                        memberId,
-                        productId: id,
-                    }
-                });
-                console.log("즐겨찾기 취소 완료");
-            }
-
-            setFavorite(!favorite);
-        } catch (error) {
-            console.error("즐겨찾기 토글 실패", error);
-            alert("즐겨찾기 중 문제가 발생했습니다.");
-        }
-    };
 
     return (
         <Card
@@ -92,7 +56,10 @@ const CustomCard = ({
             <div style={{ flexGrow: 1, marginLeft: isRow ? 16 : 0, marginTop: isRow ? 0 : 12 }}>
                 {/* 즐겨찾기 아이콘 */}
                 <div
-                    onClick={handleFavoriteToggle}
+                    onClick={e => {
+                        e.stopPropagation();
+                        if (onFavoriteToggle) onFavoriteToggle();
+                    }}
                     style={{
                         position: 'absolute',
                         top: 10,
@@ -101,10 +68,9 @@ const CustomCard = ({
                         cursor: 'pointer',
                     }}
                 >
-                    {favorite
+                    {isFavorite
                         ? <StarFilled style={{ color: '#faad14' }} />
-                        : <StarOutlined style={{ color: '#aaa' }} />
-                    }
+                        : <StarOutlined style={{ color: '#aaa' }} />}
                 </div>
 
                 {/* 회사명 + 상품명 */}

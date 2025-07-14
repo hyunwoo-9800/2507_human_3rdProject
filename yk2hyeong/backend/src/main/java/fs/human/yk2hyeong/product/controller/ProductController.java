@@ -34,6 +34,12 @@ public class ProductController {
         String memberId = payload.get("memberId");
         String productId = payload.get("productId");
         productService.insertFavorite(memberId, productId);
+        System.out.println("[즐겨찾기 등록 완료] memberId=" + memberId + ", productId=" + productId);
+
+        // 현재 즐겨찾기 목록 출력
+        List<String> currentFavorites = productService.getFavoriteProductIds(memberId);
+        System.out.println("[현재 즐겨찾기 목록] " + currentFavorites);
+
         return ResponseEntity.ok("즐겨찾기 등록 완료");
     }
 
@@ -43,6 +49,12 @@ public class ProductController {
         String memberId = payload.get("memberId");
         String productId = payload.get("productId");
         productService.deleteFavorite(memberId, productId);
+        System.out.println("[즐겨찾기 삭제 완료] memberId=" + memberId + ", productId=" + productId);
+
+        // 현재 즐겨찾기 목록 출력
+        List<String> currentFavorites = productService.getFavoriteProductIds(memberId);
+        System.out.println("[현재 즐겨찾기 목록] " + currentFavorites);
+
         return ResponseEntity.ok("즐겨찾기 삭제 완료");
     }
 
