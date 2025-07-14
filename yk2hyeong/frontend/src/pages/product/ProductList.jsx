@@ -3,6 +3,7 @@ import axios from 'axios';
 import CustomTabs from "../../components/common/CustomTabs";
 import CustomCard from "../../components/common/CustomCard";
 import { Row, Col, Empty, Spin } from 'antd';
+import { useNavigate } from "react-router-dom";
 
 export default function ProductList() {
     const [products, setProducts] = useState([]);
@@ -62,6 +63,8 @@ export default function ProductList() {
             console.error("❌ 즐겨찾기 목록 불러오기 실패:", error);
         }
     };
+
+    const navigate = useNavigate();
 
     // 컴포넌트 최초 마운트 시 데이터 로딩
     useEffect(() => {
@@ -135,6 +138,7 @@ export default function ProductList() {
                                 reservationPurchase={["예약 상품", "즉시/예약"].includes(product.productSellType)}
                                 isFavorite={favoriteProductIds.includes(product.productId)}
                                 onFavoriteToggle={() => toggleFavorite(product.productId)}
+                                onClick={() => navigate(`/product/${product.productId}`)}
                             />
                         </Col>
                     )) : (

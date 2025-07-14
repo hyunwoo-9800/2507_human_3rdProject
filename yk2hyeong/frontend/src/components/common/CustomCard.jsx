@@ -17,6 +17,7 @@ const CustomCard = ({
                         reservationPurchase = false,
                         isFavorite = false,
                         onFavoriteToggle,
+                        onClick,
                         ...rest
                     }) => {
     const isRow = layout === 'row';
@@ -24,6 +25,7 @@ const CustomCard = ({
     return (
         <Card
             hoverable
+            onClick={onClick}
             style={{
                 position: 'relative',
                 display: isRow ? 'flex' : 'block',
