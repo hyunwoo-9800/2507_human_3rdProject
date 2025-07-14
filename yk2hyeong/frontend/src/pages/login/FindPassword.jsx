@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Input from '../../components/common/Input'
 import Button from '../../components/common/Button'
+import './findPassword.css'
 
 function FindPasswordPage() {
   const navigate = useNavigate()

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import Input from '../../components/common/Input'
 import Button from '../../components/common/Button'
-// import './findId.css'
+import './findId.css'
 
 function FindId() {
   const [memberName, setMemberName] = useState('') // 이름 상태
