@@ -14,7 +14,7 @@
         <result property="productUnitPrice" column="productUnitPrice"/>
         <result property="sellMemberId" column="sellMemberId"/>
         <result property="productType" column="productType"/>
-        <result property="productMinQty" column="productMinQty"/>
+        <result property="productMinQtr" column="productMinQtr"/>
         <result property="productRevEnd" column="productRevEnd"/>
         <result property="productRevStart" column="productRevStart"/>
         <result property="createdId" column="createdId"/>
@@ -33,7 +33,7 @@
             P.PRODUCT_UNIT_PRICE AS productUnitPrice,
             P.SELL_MEMBER_ID AS sellMemberId,
             P.PRODUCT_TYPE AS productType,
-            P.PRODUCT_MIN_QTR AS productMinQty,
+            P.PRODUCT_MIN_QTR AS productMinQtr,
             P.PRODUCT_REV_START AS productRevStart,
             P.PRODUCT_REV_END AS productRevEnd,
             P.CREATED_ID AS createdId,
