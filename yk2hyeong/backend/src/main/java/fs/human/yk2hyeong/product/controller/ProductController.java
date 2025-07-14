@@ -12,7 +12,7 @@ import java.util.List;
 
 // 상품관련 컨트롤러
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api")
 public class ProductController {
 
     private final ProductService productService;
@@ -22,7 +22,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/products")
     public List<ProductVO> getAllProducts() {
         return productService.getAllProducts();
     }
