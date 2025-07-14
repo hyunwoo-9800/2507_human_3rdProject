@@ -15,7 +15,7 @@ public class ProductVO {
     private double productUnitPrice;
     private String sellMemberId;
     private String productType;
-    private int productMinQty;
+    private int productMinQtr;
     private Date productRevStart;
     private Date productRevEnd;
     private String productDisplayFlag;
