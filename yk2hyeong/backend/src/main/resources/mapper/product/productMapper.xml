@@ -22,6 +22,8 @@
             p.PRODUCT_REV_END,
             p.PRODUCT_DISPLAY_FLAG,
             p.PRODUCT_STATUS,
+            p.CREATED_ID AS createdId,
+            p.CREATED_DATE AS createdDate,
 
             -- 코드명 (카테고리명, 상태명)
             cd1.LOW_CODE_NAME AS PRODUCT_CODE_NAME, -- 식량작물, 채소류 등

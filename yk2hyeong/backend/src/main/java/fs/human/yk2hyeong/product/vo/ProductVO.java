@@ -15,7 +15,7 @@ public class ProductVO {
     private double productUnitPrice;
     private String sellMemberId;
     private String productType;
-    private int productMinQtr;
+    private int productMinQty;
     private Date productRevStart;
     private Date productRevEnd;
     private String productDisplayFlag;
@@ -26,4 +26,13 @@ public class ProductVO {
     private String sellerEmail;
     private String productSellType;
     private String productDisplayType;
+    private String createdId;
+    private String createdDate;
+
+    // 이미지
+    private String imageId;
+    private String imagePath;
+    private String imageName;
+    private String imageType;
+    private String memberId;
 }
