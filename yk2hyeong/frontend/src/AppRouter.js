@@ -17,6 +17,7 @@ import FindId from './pages/login/FindId'
 import FindPassword from './pages/login/FindPassword'
 import ResetPassword from './pages/login/ResetPassword'
 import ProductList from "./pages/product/ProductList";
+import ForecastChart from "./pages/chart/ForecastChart";
 
 export default function AppRouter() {
   return (
@@ -77,6 +78,9 @@ export default function AppRouter() {
 
         {/* 상품리스트 페이지 */}
         <Route path="/productlist" element={<ProductList />} />
+
+        <Route path="/chart" element={<ForecastChart />} />
+
     </Routes>
   )
 }

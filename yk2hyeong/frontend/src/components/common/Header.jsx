@@ -27,7 +27,7 @@ export default function Header() {
                     <Link to="/productlist" className="nav-item">
                         상품리스트
                     </Link>
-                    <Link to="/member" className="nav-item">
+                    <Link to="/chart" className="nav-item">
                         시세추이
                     </Link>
                     <Link to="/notice" className="nav-item">
