@@ -1,9 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="fs.human.yk2hyeong.product.dao.ProductDAO">
+
+    <!-- 상품 정보, 코드 상세, 판매자 정보 조인 조회 -->
+    <select id="getAllProducts" resultType="fs.human.yk2hyeong.product.vo.ProductVO">
+        SELECT
+            -- 상품 정보
+            p.PRODUCT_ID,
+            p.PRODUCT_CODE,
+            p.PRODUCT_NAME,
+            p.PRODUCT_DESCRIPTION,
+            p.PRODUCT_STOCK_QTY,
+            p.PRODUCT_UNIT_PRICE,
+            p.SELL_MEMBER_ID,
+            p.PRODUCT_TYPE,
+            p.PRODUCT_MIN_QTR,
+            p.PRODUCT_REV_START,
+            p.PRODUCT_REV_END,
+            p.PRODUCT_DISPLAY_FLAG,
+            p.PRODUCT_STATUS,
+
+            -- 코드명 (카테고리명, 상태명)
+            cd1.LOW_CODE_NAME AS PRODUCT_CODE_NAME, -- 식량작물, 채소류 등
+            cd2.LOW_CODE_NAME AS PRODUCT_STATUS_NAME, -- 판매중, 판매종료 등
+
+            -- 판매자 정보
+            m.MEMBER_NAME AS SELLER_NAME, -- 판매자 이름
+            m.MEMBER_EMAIL AS SELLER_EMAIL, -- 판매자 이메일
+
+            -- 상품 유형 및 표시 여부
+            cd3.LOW_CODE_NAME AS PRODUCT_SELL_TYPE, -- 예약상품, 즉시구매상품
+            cd4.LOW_CODE_NAME AS PRODUCT_DISPLAY_TYPE -- 표시, 비표시
+        FROM TB_PRODUCT p
+                 LEFT JOIN TB_CODE_DETAIL cd1
+                           ON p.PRODUCT_CODE = cd1.DETAIL_CODE_ID  -- 식량작물, 채소류 등
+                 LEFT JOIN TB_CODE_DETAIL cd2
+                           ON p.PRODUCT_STATUS = cd2.DETAIL_CODE_ID  -- 판매중, 판매종료, 예약마감 등
+                 LEFT JOIN TB_MEMBER m
+                           ON p.SELL_MEMBER_ID = m.MEMBER_ID  -- 판매자 정보
+                 LEFT JOIN TB_CODE_DETAIL cd3
+                           ON p.PRODUCT_TYPE = cd3.DETAIL_CODE_ID -- 예약구매, 즉시구매
+                 LEFT JOIN TB_CODE_DETAIL cd4
+                           ON p.PRODUCT_DISPLAY_FLAG = cd4.DETAIL_CODE_ID -- 표시, 비표시
+        ORDER BY p.CREATED_DATE DESC
+    </select>
 
 </mapper>
