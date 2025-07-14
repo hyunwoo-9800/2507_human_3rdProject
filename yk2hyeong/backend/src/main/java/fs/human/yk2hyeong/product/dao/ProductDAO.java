@@ -10,7 +10,8 @@ import java.util.List;
 @Mapper
 public interface ProductDAO {
 
-    @Select("SELECT * FROM TB_PRODUCT")
+//    @Select("SELECT * FROM TB_PRODUCT")
     List<ProductVO> getAllProducts();
+
 
 }
