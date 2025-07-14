@@ -32,6 +32,8 @@
             -- 판매자 정보
             m.MEMBER_NAME AS SELLER_NAME, -- 판매자 이름
             m.MEMBER_EMAIL AS SELLER_EMAIL, -- 판매자 이메일
+            m.MEMBER_BNAME AS SELLER_COMPANY, --상호명
+            m.MEMBER_SHIPPER_NAME AS SHIPPER_NAME, --출하자명
 
             -- 상품 유형 및 표시 여부
             cd3.LOW_CODE_NAME AS PRODUCT_SELL_TYPE, -- 예약상품, 즉시구매상품

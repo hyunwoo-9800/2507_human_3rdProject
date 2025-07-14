@@ -20,14 +20,18 @@ public class ProductVO {
     private Date productRevEnd;
     private String productDisplayFlag;
     private String productStatus;
-    private String productCodeName;
-    private String productStatusName;
-    private String sellerName;
-    private String sellerEmail;
-    private String productSellType;
-    private String productDisplayType;
     private String createdId;
     private String createdDate;
+
+    private String productCodeName;
+    private String productStatusName;
+
+    private String sellerName;
+    private String sellerEmail;
+    private String sellerCompany;
+
+    private String productSellType;
+    private String productDisplayType;
 
     // 이미지
     private String imageId;
