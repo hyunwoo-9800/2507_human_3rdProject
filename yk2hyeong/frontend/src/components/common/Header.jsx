@@ -24,7 +24,7 @@ export default function Header() {
                     />
                 </Link>
                 <nav className="nav">
-                    <Link to="/product" className="nav-item">
+                    <Link to="/productlist" className="nav-item">
                         상품리스트
                     </Link>
                     <Link to="/member" className="nav-item">

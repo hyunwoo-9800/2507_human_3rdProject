@@ -116,10 +116,10 @@ function NoticeList() {
 
             <div className="notice-pagination">
                 <CustomPagination
-                defaultCurrent={page}
-                total={100}
-                pageSize={10}
-                onChange={handlePageChange}
+                    defaultCurrent={page}
+                    total={noticeList.length} // ✅ 실제 공지 수 반영
+                    pageSize={noticesPerPage}
+                    onChange={handlePageChange}
                 />
             </div>
 

@@ -16,6 +16,7 @@ import SignupForm from './pages/member/SignupForm' // 회원가입 폼 페이지
 import FindId from './pages/login/FindId'
 import FindPassword from './pages/login/FindPassword'
 import ResetPassword from './pages/login/ResetPassword'
+import ProductList from "./pages/product/ProductList";
 
 export default function AppRouter() {
   return (
@@ -73,6 +74,9 @@ export default function AppRouter() {
 
       {/* 구매자 회원가입 폼 페이지 */}
       <Route path="/signup/buyer/form" element={<SignupForm role="BUYER" />} />
+
+        {/* 상품리스트 페이지 */}
+        <Route path="/productlist" element={<ProductList />} />
     </Routes>
   )
 }
