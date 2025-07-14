@@ -1,19 +1,169 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+
 <mapper namespace="fs.human.yk2hyeong.admin.dao.AdminDAO">
-    <select id="selectPendingProducts" resultType="fs.human.yk2hyeong.product.vo.ProductVO">
+
+    <resultMap id="productMap" type="fs.human.yk2hyeong.product.vo.ProductVO">
+        <result property="productId" column="productId"/>
+        <result property="productName" column="productName"/>
+        <result property="productDescription" column="productDescription"/>
+        <result property="productStockQty" column="productStockQty"/>
+        <result property="productUnitPrice" column="productUnitPrice"/>
+        <result property="sellMemberId" column="sellMemberId"/>
+        <result property="productType" column="productType"/>
+        <result property="productMinQty" column="productMinQty"/>
+        <result property="productRevEnd" column="productRevEnd"/>
+        <result property="productRevStart" column="productRevStart"/>
+        <result property="createdId" column="createdId"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="productStatus" column="productStatus"/>
+        <result property="imagePath" column="imagePath"/>
+        <result property="imageName" column="imageName"/>
+    </resultMap>
+
+    <select id="selectPendingProduct" resultMap="productMap">
         SELECT
-            PRODUCT_ID as productId,
-            PRODUCT_NAME as productName,
-            PRODUCT_DESCRIPTION as productDescription,
-            PRODUCT_STOCK_QTY as productStockQty,
-            PRODUCT_UNIT_PRICE as productUnitPrice,
-            SELL_MEMBER_ID as sellMemberId
-        FROM TB_PRODUCT
-        WHERE PRODUCT_STATUS = 'PENDING'
+            P.PRODUCT_ID AS productId,
+            P.PRODUCT_NAME AS productName,
+            P.PRODUCT_DESCRIPTION AS productDescription,
+            P.PRODUCT_STOCK_QTY AS productStockQty,
+            P.PRODUCT_UNIT_PRICE AS productUnitPrice,
+            P.SELL_MEMBER_ID AS sellMemberId,
+            P.PRODUCT_TYPE AS productType,
+            P.PRODUCT_MIN_QTR AS productMinQty,
+            P.PRODUCT_REV_START AS productRevStart,
+            P.PRODUCT_REV_END AS productRevEnd,
+            P.CREATED_ID AS createdId,
+            P.CREATED_DATE AS createdDate,
+            P.PRODUCT_STATUS AS productStatus
+        FROM YH.TB_PRODUCT P
+        WHERE PRODUCT_STATUS = 'BE710CAB879F48DCB15CD44FC2FD1C50'
+    </select>
+
+    <!-- 회원가입승인, 유저관리 -->
+    <resultMap id="memberMap" type="fs.human.yk2hyeong.admin.vo.AdminVO">
+        <result property="memberId" column="memberId"/>
+        <result property="memberEmail" column="memberEmail"/>
+        <result property="memberPwd" column="memberPwd"/>
+        <result property="memberName" column="memberName"/>
+        <result property="memberBname" column="memberBname"/>
+        <result property="memberBnum" column="memberBnum"/>
+        <result property="memberShipperName" column="memberShipperName"/>
+        <result property="memberTel" column="memberTel"/>
+        <result property="memberAddr" column="memberAddr"/>
+        <result property="memberDetailAddr" column="memberDetailAddr"/>
+        <result property="memberBankCode" column="memberBankCode"/>
+        <result property="memberAccountNum" column="memberAccountNum"/>
+        <result property="memberRole" column="memberRole"/>
+        <result property="memberStatus" column="memberStatus"/>
+        <result property="createdId" column="createdId"/>
+        <result property="createdDate" column="createdDate"/>
+    </resultMap>
+    <select id="selectPendingMember" resultMap="memberMap">
+        SELECT
+            M.MEMBER_ID AS memberId,
+            M.MEMBER_EMAIL AS memberEmail,
+            M.MEMBER_PWD AS memberPwd,
+            M.MEMBER_NAME AS memberName,
+            M.MEMBER_BNAME AS memberBname,
+            M.MEMBER_BNUM AS memberBnum,
+            M.MEMBER_SHIPPER_NAME AS memberShipperName,
+            M.MEMBER_TEL AS memberTel,
+            M.MEMBER_ADDR AS memberAddr,
+            M.MEMBER_DETAIL_ADDR AS memberDetailAddr,
+            M.MEMBER_BANK_CODE AS memberBankCode,
+            M.MEMBER_ACCOUNTNUM AS memberAccountNum,
+            M.MEMBER_ROLE AS memberRole,
+            M.MEMBER_STATUS AS memberStatus,
+            M.CREATED_ID AS createdId,
+            M.CREATED_DATE AS createdDate
+        FROM YH.TB_MEMBER M
+                 JOIN TB_CODE_DETAIL D ON M.MEMBER_STATUS = D.LOW_CODE_VALUE
+        WHERE D.LOW_CODE_NAME = '미승인'
+    </select>
+    <!--유저관리 페이지 유저 정보 불러오기-->
+    <select id="selectMember" resultMap="memberMap">
+        SELECT DISTINCT
+            M.MEMBER_ID AS memberId,
+            M.MEMBER_EMAIL AS memberEmail,
+            M.MEMBER_PWD AS memberPwd,
+            M.MEMBER_NAME AS memberName,
+            M.MEMBER_BNAME AS memberBname,
+            M.MEMBER_BNUM AS memberBnum,
+            M.MEMBER_SHIPPER_NAME AS memberShipperName,
+            M.MEMBER_TEL AS memberTel,
+            M.MEMBER_ADDR AS memberAddr,
+            M.MEMBER_DETAIL_ADDR AS memberDetailAddr,
+            M.MEMBER_BANK_CODE AS memberBankCode,
+            M.MEMBER_ACCOUNTNUM AS memberAccountNum,
+            M.MEMBER_ROLE AS memberRole,
+            M.MEMBER_STATUS AS memberStatus,
+            M.CREATED_ID AS createdId,
+            M.CREATED_DATE AS createdDate
+        FROM YH.TB_MEMBER M
+                 JOIN TB_CODE_DETAIL D ON M.MEMBER_STATUS = D.LOW_CODE_VALUE
+    </select>
+
+    <!-- 신고 리스트 불러오기 -->
+    <resultMap id="ReportMap" type="fs.human.yk2hyeong.admin.vo.AdminVO">
+        <result property="reportId" column="reportId"/>
+        <result property="reporterId" column="reporterId"/>
+        <result property="reporterName" column="reporterName"/>
+        <result property="productId" column="productId"/>
+        <result property="productName" column="productName"/>
+        <result property="reasonCode" column="reasonCode"/>
+        <result property="reasonName" column="reasonName"/> <!-- 신고 사유 상태명 -->
+        <result property="reportContent" column="reportContent"/>
+        <result property="createdId" column="createdId"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="updatedId" column="updatedId"/>
+        <result property="updatedDate" column="updatedDate"/>
+    </resultMap>
+    <select id="selectReport" resultMap="ReportMap">
+        SELECT
+            R.report_id AS reportId,                -- 신고 고유 ID
+            R.reporter_id AS reporterId,            -- 신고자 ID
+            M.member_name AS reporterName,          -- 신고자 이름 (TB_MEMBER에서 가져옴)
+            R.product_id AS productId,              -- 신고 대상 상품 ID
+            P.product_name AS productName,          -- 상품명 (TB_PRODUCT에서 가져옴)
+            R.reason_code AS reasonCode,            -- 신고 사유 코드
+            D.LOW_CODE_NAME AS reasonName,          -- 신고 사유 상태명 (TB_CODE_DETAIL에서 가져옴)
+            R.report_content AS reportContent,      -- 신고 상세 내용
+            R.created_id AS createdId,              -- 등록자 ID
+            R.created_date AS createdDate,          -- 등록일시
+            R.updated_id AS updatedId,              -- 수정자 ID
+            R.updated_date AS updatedDate           -- 수정일시
+        FROM
+            YH.TB_REPORT R
+                JOIN
+            TB_MEMBER M ON R.reporter_id = M.member_id  -- 신고자 ID와 TB_MEMBER 테이블 JOIN
+                JOIN
+            TB_PRODUCT P ON R.product_id = P.product_id  -- 상품 ID와 TB_PRODUCT 테이블 JOIN
+                JOIN
+            TB_CODE_DETAIL D ON R.reason_code = D.LOW_CODE_VALUE  -- 신고 사유 코드와 TB_CODE_DETAIL 테이블 JOIN
+                JOIN
+            TB_CODE C ON D.CODE_ID = C.CODE_ID            -- TOP_CODE_NAME이 'REPORT'인 코드만 가져오기 위해 TB_CODE와 JOIN
+        WHERE
+            C.TOP_CODE_NAME = 'REPORT'
+    </select>
+
+<!--이미지 리스트 불러오기-->
+    <resultMap id="ImageMap" type="fs.human.yk2hyeong.product.vo.ProductImageVO">
+        <result property="imageId" column="IMAGE_ID"/>
+        <result property="imagePath" column="IMAGE_PATH"/>
+        <result property="imageName" column="IMAGE_NAME"/>
+        <result property="imageType" column="IMAGE_TYPE"/>
+        <result property="memberId" column="MEMBER_ID"/>
+        <result property="productId" column="PRODUCT_ID"/>
+    </resultMap>
+
+    <select id="getProductImages" resultMap="ImageMap">
+        SELECT IMAGE_ID, IMAGE_PATH, IMAGE_NAME, IMAGE_TYPE, MEMBER_ID, PRODUCT_ID
+        FROM YH.TB_IMAGES
+        WHERE PRODUCT_ID = #{productId}
+          AND IMAGE_TYPE = 'PRODUCT'
     </select>
 </mapper>

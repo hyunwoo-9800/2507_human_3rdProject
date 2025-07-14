@@ -34,7 +34,7 @@ const menuItems = [
 ];
 
 const Admin = () => {
-    const [activeItem, setActiveItem] = useState(null);
+    const [activeItem, setActiveItem] = useState("상품등록승인");
 
     // ✅ 상위 메뉴 선택 방지 (선택적으로 적용)
     const handleMenuSelect = (label) => {

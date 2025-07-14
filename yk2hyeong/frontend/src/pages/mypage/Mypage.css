@@ -108,7 +108,7 @@ main{
 .card-content p{
     height: 10px;
 }
-span{
+.card-content span{
     margin-left: 50px;
 }
 
