@@ -92,11 +92,11 @@ function TableTab({tabType}){
             <table className="report-check-table">
                 <thead>
                 <tr>
-                    <th>게시글 번호</th>
-                    <th>신고분류</th>
-                    <th>신고내용</th>
-                    <th>제목</th>
-                    <th>사업자명</th>
+                    <th>{tabType === 'report'?'게시글 번호' :'사용자 번호'} </th>
+                    <th>{tabType === 'report'?'신고분류' :'분류'}</th>
+                    <th>{tabType === 'report'?'신고내용' :'이름'}</th>
+                    <th>{tabType === 'report'?'제목' :'이메일'}</th>
+                    <th>{tabType === 'report'?'사업자명' :'연락처'}</th>
                     <th>
                         <input
                             type="checkbox"

@@ -161,10 +161,17 @@
     </resultMap>
 
     <select id="getProductImages" resultMap="ImageMap">
-        SELECT IMAGE_ID, IMAGE_PATH, IMAGE_NAME, IMAGE_TYPE, MEMBER_ID, PRODUCT_ID
-        FROM YH.TB_IMAGES
-        WHERE PRODUCT_ID = #{productId}
-          AND IMAGE_TYPE = 'PRODUCT'
+        SELECT DISTINCT
+            IMAGE_ID,
+            IMAGE_PATH,
+            IMAGE_NAME,
+            IMAGE_TYPE,
+            MEMBER_ID,
+            PRODUCT_ID
+        FROM
+            YH.TB_IMAGES
+        WHERE
+            PRODUCT_ID = #{productId}
     </select>
 
 <!--    게시글 삭제-->
