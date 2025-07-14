@@ -18,7 +18,7 @@ export default function Header() {
             <div className="header-left">
                 <Link to="/">
                     <img
-                        src={process.env.PUBLIC_URL + '/images/sample.jpg'}
+                        src={process.env.PUBLIC_URL + '/static/images/logo.png'}
                         alt="로고"
                         className="logo-img"
                     />

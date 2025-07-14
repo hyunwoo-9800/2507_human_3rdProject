@@ -22,7 +22,13 @@ export default function Footer() {
             </div>
         </div>
         <div className="footer-rignt">
-            <img src="/images/sample.jpg" className="main-logo"/>
+            <Link to="/">
+                <img
+                    src={process.env.PUBLIC_URL + '/static/images/logo.png'}
+                    alt="로고"
+                    className="logo-img"
+                />
+            </Link>
         </div>
     </footer>
   );
