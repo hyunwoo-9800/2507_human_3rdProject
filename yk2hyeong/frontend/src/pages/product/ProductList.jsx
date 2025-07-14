@@ -20,8 +20,20 @@ export default function ProductList() {
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('/api/products'); // ✅ 실제 API 경로로 수정 필요
-            setProducts(response.data);
+            const response = await axios.get('/api/products');
+
+            // 🔍 imageType === '003' (상세이미지)인 항목 제거
+            const filtered = response.data.filter(p => p.imageType !== '003');
+
+            // 🔄 productId 기준 중복 제거 (가장 먼저 나타난 항목 유지)
+            const seen = new Map();
+            filtered.forEach(p => {
+                if (!seen.has(p.productId)) {
+                    seen.set(p.productId, p);
+                }
+            });
+
+            setProducts(Array.from(seen.values()));
         } catch (error) {
             console.error('상품 목록 불러오기 실패:', error);
         } finally {
@@ -70,8 +82,8 @@ export default function ProductList() {
                                     productName={product.productName}
                                     price={product.productUnitPrice}
                                     minQuantity={product.productMinQtr}
-                                    immediatePurchase={product.productSellType === "즉시 구매 상품"}
-                                    reservationPurchase={product.productSellType === "예약 상품"}
+                                    immediatePurchase={["즉시 구매 상품", "즉시/예약"].includes(product.productSellType)}
+                                    reservationPurchase={["예약 상품", "즉시/예약"].includes(product.productSellType)}
                                 />
                             </Col>
                         ))
