@@ -93,4 +93,15 @@ public class AdminServiceImpl implements AdminService {
         System.out.println("[AdminServiceImpl] 조회된 이미지 개수: " + images.size());
         return adminDAO.getProductImages(productId);
     }
+
+//    게시글 삭제
+    @Override
+    public void deleteReport(List<String> reportId){
+        adminDAO.deleteReport(reportId);
+    }
+
+    @Override
+    public void deleteMember(List<String> reportId){
+        adminDAO.deleteReport(reportId);
+    }
 }

@@ -4,6 +4,7 @@ import fs.human.yk2hyeong.admin.vo.AdminVO;
 import fs.human.yk2hyeong.product.vo.ProductImageVO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -20,4 +21,8 @@ public interface AdminDAO {
 
     List<AdminVO> selectReport();
     List<AdminVO> selectMember();
+
+//    게시글 삭제
+    void deleteReport(@Param("reportId") List<String> reportId);
+    void deleteMember(@Param("memberId") List<String> memberId);
 }

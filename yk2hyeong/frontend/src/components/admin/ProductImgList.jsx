@@ -19,24 +19,27 @@ function ProductImgList({images}){
             });
         }
     };
-
+    console.log("images 전체 확인:", images);
     return(
         <div className="image-scroll-wrapper">
             <button onClick={scrollLeft}>&lt;</button>
             <div className="image-scroll-container" ref={scrollRef}>
                 {Array.isArray(images) && images.length > 0 ? (
-                    images.map((img, index) => (
-                        <div key={index} className="image-box" onClick={() => setModalImg(img)}>
-                            <img
-                                src={`static/images/${img.imageName}`}
-                                alt="상품이미지"
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = '/images/no-image.png';
-                                }}
-                            />
-                    </div>
-                ))
+                    images.map((img, index) => {
+                        console.log("imageName 확인:", img.imageName);  // ← 여기 콘솔 추가
+                        return (
+                            <div key={index} className="image-box" onClick={() => setModalImg(img)}>
+                                <img
+                                    src={`/static/images/${img.imageName}`}
+                                    alt="상품이미지"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = '/images/no-image.png';
+                                    }}
+                                />
+                            </div>
+                        );
+                    })
                 ) : (
                     <p className="no-image-text">이미지가 없습니다</p>
                 )}
@@ -51,7 +54,7 @@ function ProductImgList({images}){
                         alt="확대 이미지"
                         onError={(e) =>{
                             e.target.onerror = null;
-                            e.target.src = '/images/no-image.png'; //기본이미지경로
+                            e.target.src = '/static/images/no-image.png'; //기본이미지경로
                         }}
                     />
                     <button className="close-btn" onClick={() => setModalImg(null)}>X</button>

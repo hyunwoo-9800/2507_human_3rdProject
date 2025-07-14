@@ -26,7 +26,7 @@ function ProductForm({product}){
             setForm(product);
 
             if (product.productId) {
-                axios.get(`/api/product/${product.productId}/images`)
+                axios.get(`http://localhost:8080/api/product/${product.productId}/images`)
                     .then(res => {
                         console.log("받아온 이미지 데이터:", res.data);
                         setImages(res.data);

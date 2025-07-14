@@ -16,4 +16,6 @@ public interface AdminService {
     List<AdminVO> getReport();
     List<AdminVO> getMember();
 
+    void deleteMember(List<String> reportId);
+    void deleteReport(List<String> reportId);
 }

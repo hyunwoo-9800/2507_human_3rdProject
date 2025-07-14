@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import Button from "../common/Button";
 
 function TableTab({tabType}){
     const [selectItem, setSelectItem] = useState(null);
@@ -50,6 +51,39 @@ function TableTab({tabType}){
 
     const handleRowClick = (item) => {
         setSelectItem(item);
+    };
+
+    // 선택한 데이터 삭제
+    const handleDelete = () => {
+        const selectId = item
+            .filter((i) => i.checked)
+            .map((i) => tabType === 'report' ? i.reportId : i.memberId);
+
+        if(selectId.length === 0){
+            alert("삭제할 항목을 선택하세요.");
+            return;
+        }
+        if(!window.confirm("정말 삭제하시겠습니까?")) return;
+
+        axios
+            .post(`/api/${tabType}/delete`, selectId)
+            .then(() => {
+                alert("삭제되었습니다.");
+            //     삭제 후 기존 데이터 불러오기
+                const apiUrl = tabType === 'report' ? '/api/report' : '/api/member';
+                return axios.get(apiUrl);
+            })
+            .then((res) => {
+                const withCheckbox = res.data.map((p) => ({
+                    ...p,
+                    checked: false,
+                }));
+                setItem(withCheckbox);
+            })
+            .catch((err) => {
+                console.error("삭제 실패:", err);
+                alert("삭제 중 오류가 발생했습니다.");
+            });
     };
 
     return (
@@ -103,6 +137,7 @@ function TableTab({tabType}){
 
                 </tbody>
             </table>
+            <Button color="error" onClick={handleDelete}>삭제</Button>
         </div>
     )
 }

@@ -45,9 +45,20 @@ public class AdminController {
     }
 
     //상품이미지 불러오기
-    @GetMapping("/{productId}/images")
+    @GetMapping("/product/{productId}/images")
     @ResponseBody
     public List<ProductImageVO> getProductImages(@PathVariable String productId) {
         return adminService.getProductImages(productId);
     }
+
+//    게시글 삭제
+    @PostMapping("/member/delete")
+    public void deleteMember(@RequestParam List<String> memberId) {
+        adminService.deleteMember(memberId);
+    }
+    @PostMapping("/report/delete")
+    public void deleteReport(@RequestParam List<String> reportId) {
+        adminService.deleteReport(reportId);
+    }
+
 }

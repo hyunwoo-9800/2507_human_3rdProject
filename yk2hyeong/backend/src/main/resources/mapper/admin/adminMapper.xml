@@ -166,4 +166,20 @@
         WHERE PRODUCT_ID = #{productId}
           AND IMAGE_TYPE = 'PRODUCT'
     </select>
+
+<!--    게시글 삭제-->
+    <delete id="deleteMember">
+        DELETE FROM tb_member
+        WHERE member_id IN
+        <foreach item="id" collection="memberId" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteReport">
+        DELETE FROM tb_report
+        WHERE report_id IN
+        <foreach item="id" collection="reportId" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
