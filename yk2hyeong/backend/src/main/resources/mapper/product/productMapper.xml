@@ -26,21 +26,21 @@
             p.CREATED_DATE AS createdDate,
 
             -- 코드명 (카테고리명, 상태명)
-            cd1.LOW_CODE_NAME AS PRODUCT_CODE_NAME, -- 식량작물, 채소류 등
+            cd1.MID_CODE_NAME AS PRODUCT_CAT, -- 식량작물,채소류 등
+            cd1.LOW_CODE_NAME AS PRODUCT_CODE_NAME, -- 사과, 깻잎 등
             cd2.LOW_CODE_NAME AS PRODUCT_STATUS_NAME, -- 판매중, 판매종료 등
 
             -- 판매자 정보
             m.MEMBER_NAME AS SELLER_NAME, -- 판매자 이름
             m.MEMBER_EMAIL AS SELLER_EMAIL, -- 판매자 이메일
             m.MEMBER_BNAME AS SELLER_COMPANY, --상호명
-            m.MEMBER_SHIPPER_NAME AS SHIPPER_NAME, --출하자명
 
             -- 상품 유형 및 표시 여부
             cd3.LOW_CODE_NAME AS PRODUCT_SELL_TYPE, -- 예약상품, 즉시구매상품
             cd4.LOW_CODE_NAME AS PRODUCT_DISPLAY_TYPE -- 표시, 비표시
         FROM TB_PRODUCT p
                  LEFT JOIN TB_CODE_DETAIL cd1
-                           ON p.PRODUCT_CODE = cd1.DETAIL_CODE_ID  -- 식량작물, 채소류 등
+                           ON p.PRODUCT_CODE = cd1.DETAIL_CODE_ID  -- 사과, 깻잎 등
                  LEFT JOIN TB_CODE_DETAIL cd2
                            ON p.PRODUCT_STATUS = cd2.DETAIL_CODE_ID  -- 판매중, 판매종료, 예약마감 등
                  LEFT JOIN TB_MEMBER m
@@ -49,6 +49,7 @@
                            ON p.PRODUCT_TYPE = cd3.DETAIL_CODE_ID -- 예약구매, 즉시구매
                  LEFT JOIN TB_CODE_DETAIL cd4
                            ON p.PRODUCT_DISPLAY_FLAG = cd4.DETAIL_CODE_ID -- 표시, 비표시
+
         ORDER BY p.CREATED_DATE DESC
     </select>
 

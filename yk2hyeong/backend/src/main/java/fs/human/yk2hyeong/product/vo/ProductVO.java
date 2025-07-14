@@ -23,6 +23,7 @@ public class ProductVO {
     private String createdId;
     private String createdDate;
 
+    private String productCat;
     private String productCodeName;
     private String productStatusName;
 
