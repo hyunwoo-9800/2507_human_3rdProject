@@ -1,34 +1,38 @@
 package fs.human.yk2hyeong.product.vo;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+
+import java.sql.Date;
 
 // 상품관련 VO
 @Data
-@Getter
-@Setter
 public class ProductVO {
-    private String productId;             // PRODUCT_ID
-    private String productName;           // PRODUCT_NAME
-    private String productDescription;    // PRODUCT_DESCRIPTION
-    private int productStockQty;          // PRODUCT_STOCK_QTY
-    private int productUnitPrice;         // PRODUCT_UNIT_PRICE
-    private String sellMemberId;          // SELL_MEMBER_ID
-    private String productType;           // PRODUCT_TYPE
-    private int productMinQty;            // PRODUCT_MIN_QTR
-    private String productRevEnd;         // PRODUCT_REV_END (예약 종료일)
-    private String productRevStart;       // PRODUCT_REV_START (예약 시작일)
-    private String createdId;             // CREATED_ID
-    private String createdDate;           // CREATED_DATE
-    private String productStatus;         // PRODUCT_STATUS
+    private String productId;
+    private String productCode;
+    private String productName;
+    private String productDescription;
+    private int productStockQty;
+    private double productUnitPrice;
+    private String sellMemberId;
+    private String productType;
+    private int productMinQty;
+    private Date productRevStart;
+    private Date productRevEnd;
+    private String productDisplayFlag;
+    private String productStatus;
+    private String productCodeName;
+    private String productStatusName;
+    private String sellerName;
+    private String sellerEmail;
+    private String productSellType;
+    private String productDisplayType;
+    private String createdId;
+    private String createdDate;
 
-//    tb_images
+    // 이미지
     private String imageId;
     private String imagePath;
     private String imageName;
     private String imageType;
     private String memberId;
-
-
 }
