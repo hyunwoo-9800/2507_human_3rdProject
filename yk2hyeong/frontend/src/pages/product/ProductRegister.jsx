@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductRegisterInfo from "./ProductRegisterInfo";
 import ProductRegisterGuide from "./ProductRegisterGuide";
 import ProductRegisterDescription from "./ProductRegisterDescription";
@@ -6,14 +6,14 @@ import CustomAlert from "../../components/common/CustomAlert";
 import ProductSidebarMenu from "./ProductSidebarMenu";
 
 export default function ProductRegister() {
-    const [activeItem, setActiveItem] = useState("1");
-    const [guideConfirmed, setGuideConfirmed] = useState(false);
-    const [showWarning, setShowWarning] = useState(false);
+    const [activeItem, setActiveItem] = useState("1");            // 현재 활성 탭 키
+    const [guideConfirmed, setGuideConfirmed] = useState(false);  // 안내사항 체크 여부
+    const [showWarning, setShowWarning] = useState(false);        // 경고창 표시 여부
 
-    // 체크박스 상태
+    // 체크박스 상태 (안내사항 체크박스)
     const [guideChecked, setGuideChecked] = useState(false);
 
-    // 기본정보 상태
+    // 기본정보 상태 관리
     const [productForm, setProductForm] = useState({
         productName: '',
         startDate: null,
@@ -34,7 +34,7 @@ export default function ProductRegister() {
     const [thumbnail, setThumbnail] = useState(null);
     const [detailImages, setDetailImages] = useState([]);
 
-    // ✅ 기본정보 유효성 검사
+    // 기본정보 유효성 검사 함수
     const isBasicInfoValid = (form) => {
         return (
             form.productName?.trim() !== '' &&
@@ -48,18 +48,19 @@ export default function ProductRegister() {
         );
     };
 
-    // ✅ 상품소개 유효성 검사
+    // 상품소개 유효성 검사 함수
     const isDescriptionValid = () => {
         return (
             thumbnail !== null
         );
     };
 
-    // ✅ 사이드바 라벨 표시
+    // 사이드바 라벨에 완료 표시 붙이기
     const getLabelWithStatus = (label, isComplete) => {
         return isComplete ? `${label} ✅` : label;
     };
 
+    // 메뉴 아이템 정의
     const menuItems = [
         {
             key: 'sub1',
@@ -72,25 +73,36 @@ export default function ProductRegister() {
         }
     ];
 
-    // ✅ 사이드바 탭 클릭 시
+    // guideConfirmed가 true가 되면 showWarning을 자동으로 false로 설정해 경고창 숨김
+    useEffect(() => {
+        if (guideConfirmed) {
+            setShowWarning(false);
+        }
+    }, [guideConfirmed]);
+
+    // 사이드바 탭 클릭 핸들러
     const handleMenuSelect = (info) => {
-        console.log('선택된 key:', info.key);  // info.key에 실제 key가 들어있음
-        setShowWarning(false);
+        console.log('선택된 key:', info.key);  // 선택된 key 확인용 로그
+
+        setShowWarning(false);  // 탭 클릭 시 기본적으로 경고 숨기기
 
         if (info.key === '1') {
+            // 첫번째 탭(안내사항)은 항상 이동 가능
             setActiveItem('1');
             return;
         }
 
+        // 안내사항 확인 안 됐으면 경고 표시하고 이동 차단
         if (!guideConfirmed) {
             setShowWarning(true);
             return;
         }
 
+        // 정상적으로 선택된 탭으로 이동
         setActiveItem(info.key);
     };
 
-    // ✅ 최종 제출 핸들러
+    // 최종 제출 버튼 클릭 핸들러
     const handleFinalSubmit = () => {
         if (!isBasicInfoValid(productForm) || !isDescriptionValid()) {
             alert("모든 필수 항목을 입력해주세요.");
@@ -105,9 +117,10 @@ export default function ProductRegister() {
         };
 
         console.log("✅ 최종 제출 데이터:", submitData);
-        // 예: axios.post('/api/products', submitData)
+        // 실제 제출 시 axios 등으로 API 호출 가능
     };
 
+    // 활성 탭에 따라 다른 컴포넌트 렌더링
     const renderContent = () => {
         switch (activeItem) {
             case '1':
@@ -116,8 +129,8 @@ export default function ProductRegister() {
                         checked={guideChecked}
                         onChangeChecked={setGuideChecked}
                         onNext={() => {
-                            setGuideConfirmed(true);
-                            setActiveItem('2');
+                            setGuideConfirmed(true);  // 체크 후 안내사항 확인 완료 상태로 변경
+                            setActiveItem('2');       // 기본정보 탭으로 이동
                         }}
                     />
                 );
@@ -176,6 +189,7 @@ export default function ProductRegister() {
                 />
             </div>
             <div style={{ flex: 1, padding: 20 }}>
+                {/* 경고창 표시 */}
                 {showWarning && (
                     <CustomAlert
                         type="warning"
