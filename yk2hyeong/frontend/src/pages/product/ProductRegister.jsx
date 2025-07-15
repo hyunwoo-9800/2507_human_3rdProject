@@ -8,7 +8,29 @@ import CustomAlert from "../../components/common/CustomAlert";
 export default function ProductRegister() {
     const [activeItem, setActiveItem] = useState("1. 안내사항");
     const [guideConfirmed, setGuideConfirmed] = useState(false);
-    const [showWarning, setShowWarning] = useState(false); // 여기 추가!
+    const [showWarning, setShowWarning] = useState(false);
+
+    // 기본정보 상태 선언 추가 (여기에 기본정보 상태를 선언하세요)
+    const [productForm, setProductForm] = useState({
+        productName: '',
+        startDate: null,
+        endDate: null,
+        productPrice: '',
+        detailCodeId: null,
+        orderType: 'immediate',
+        saleQuantity: 100,
+        minSaleUnit: 10,
+        selectedCategory: null,
+        selectedSubCategory: null,
+        categoryData: {},
+        showDateWarning: false,
+    });
+
+    // 상품소개 관련 상태
+    const [descriptionText, setDescriptionText] = useState('');
+    const [thumbnail, setThumbnail] = useState(null);
+    const [detailImages, setDetailImages] = useState([]);
+
 
     const menuItems = [
         {
@@ -21,11 +43,6 @@ export default function ProductRegister() {
             ]
         }
     ];
-
-    // 모든 하위 메뉴 label 수집 (상위 메뉴 제외)
-    const allSubLabels = menuItems.flatMap(item =>
-        item.children ? item.children.map(child => child.label) : []
-    );
 
     // onSelectItem이 label을 인자로 받으므로 label 기반 상태 변경
     const handleMenuSelect = (label) => {
@@ -47,42 +64,37 @@ export default function ProductRegister() {
     const renderContent = () => {
         switch (activeItem) {
             case '1. 안내사항':
-                return <ProductRegisterGuide
-                    onNext={() => {
-                        setGuideConfirmed(true);
-                        setActiveItem('2. 기본정보');
-                    }}
-                />;
+                return (
+                    <ProductRegisterGuide
+                        onNext={() => {
+                            setGuideConfirmed(true);
+                            setActiveItem('2. 기본정보');
+                        }}
+                    />
+                );
             case '2. 기본정보':
-                return <ProductRegisterInfo
-                    form={productForm}
-                    setForm={setProductForm}
-                    onNext={() => {
-                        setActiveItem('3. 상품소개');
-                    }}
-                />;
-            case '3. 상품소개': return <ProductRegisterDescription />;
+                return (
+                    <ProductRegisterInfo
+                        form={productForm}
+                        setForm={setProductForm}
+                        onNext={() => setActiveItem('3. 상품소개')}
+                    />
+                );
+            case '3. 상품소개':
+                return (
+                    <ProductRegisterDescription
+                        text={descriptionText}
+                        setText={setDescriptionText}
+                        thumbnail={thumbnail}
+                        setThumbnail={setThumbnail}
+                        detailImages={detailImages}
+                        setDetailImages={setDetailImages}
+                    />
+                );
             default:
                 return <div>선택된 콘텐츠가 없습니다.</div>;
         }
     };
-
-    // 기본정보 저장
-    const [productForm, setProductForm] = useState({
-        productName: '',
-        startDate: null,
-        endDate: null,
-        productPrice: '',
-        detailCodeId: null,
-        orderType: 'immediate',
-        saleQuantity: 100,
-        minSaleUnit: 10,
-        selectedCategory: null,
-        selectedSubCategory: null,
-        categoryData: {},         // 카테고리 데이터
-        showDateWarning: false,   // 날짜 유효성
-    });
-
 
     return (
         <div style={{ display: 'flex' }}>
