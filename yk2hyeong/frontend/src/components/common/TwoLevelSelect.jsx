@@ -12,12 +12,16 @@ const TwoLevelSelect = ({
     const categoryList = Object.keys(categoryData);
     const defaultCategory = value && value[0] ? value[0] : categoryList[0];
     const [selectedCategory, setSelectedCategory] = useState(defaultCategory);
-    const [selectedSub, setSelectedSub] = useState(
-        value && value[1] ? value[1] : categoryData[defaultCategory][0]
-    );
+
+    // 선택된 서브카테고리는 객체 형태로 변경
+    const defaultSub = value && value[1]
+        ? value[1]
+        : categoryData[defaultCategory][0];
+
+    const [selectedSub, setSelectedSub] = useState(defaultSub);
 
     useEffect(() => {
-        if (onChange) onChange([selectedCategory, selectedSub]);
+        if (onChange) onChange([selectedCategory, selectedSub.lowCodeName, selectedSub.detailCodeId]);
     }, [selectedCategory, selectedSub, onChange]);
 
     const handleCategoryChange = (e) => {
@@ -27,18 +31,17 @@ const TwoLevelSelect = ({
     };
 
     const handleSubChange = (e) => {
-        setSelectedSub(e.target.value);
+        const sub = categoryData[selectedCategory].find(
+            (item) => item.lowCodeName === e.target.value
+        );
+        setSelectedSub(sub);
     };
 
     const selectClass = `input input-${size} ${className}`.trim();
 
     return (
         <div style={{ display: 'flex', gap: '10px' }}>
-            <select
-                className={selectClass}
-                value={selectedCategory}
-                onChange={handleCategoryChange}
-            >
+            <select className={selectClass} value={selectedCategory} onChange={handleCategoryChange}>
                 {categoryList.map((cat) => (
                     <option key={cat} value={cat}>
                         {cat}
@@ -46,14 +49,10 @@ const TwoLevelSelect = ({
                 ))}
             </select>
 
-            <select
-                className={selectClass}
-                value={selectedSub}
-                onChange={handleSubChange}
-            >
+            <select className={selectClass} value={selectedSub.lowCodeName} onChange={handleSubChange}>
                 {categoryData[selectedCategory].map((sub) => (
-                    <option key={sub} value={sub}>
-                        {sub}
+                    <option key={sub.lowCodeName} value={sub.lowCodeName}>
+                        {sub.lowCodeName}
                     </option>
                 ))}
             </select>

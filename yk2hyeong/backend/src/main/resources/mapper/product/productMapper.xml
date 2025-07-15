@@ -59,8 +59,6 @@
                 LEFT JOIN TB_IMAGES img
                             ON p.PRODUCT_ID = img.PRODUCT_ID -- 이미지 테이블 조인
 
-
-
         ORDER BY p.CREATED_DATE DESC
     </select>
 
@@ -79,6 +77,18 @@
     <!-- 회원 즐겨찾기 상품 ID 목록 조회 -->
     <select id="selectFavoriteProductIds" resultType="string">
         SELECT PRODUCT_ID FROM TB_FAVORITE WHERE MEMBER_ID = #{memberId}
+    </select>
+
+    <!-- 카테고리 중위코드(MID)별 하위코드(LOW) 목록 조회 -->
+    <select id="selectCategoryDetails" resultType="fs.human.yk2hyeong.product.vo.CategoryDetailVO">
+        SELECT
+            DETAIL_CODE_ID,
+            MID_CODE_VALUE,
+            MID_CODE_NAME,
+            LOW_CODE_VALUE,
+            LOW_CODE_NAME
+        FROM TB_CODE_DETAIL
+        ORDER BY MID_CODE_VALUE, SORT_ORDER
     </select>
 
 </mapper>

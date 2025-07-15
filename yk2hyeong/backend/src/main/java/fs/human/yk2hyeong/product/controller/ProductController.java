@@ -1,6 +1,7 @@
 package fs.human.yk2hyeong.product.controller;
 
 import fs.human.yk2hyeong.product.service.ProductService;
+import fs.human.yk2hyeong.product.vo.CategoryVO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -65,4 +66,9 @@ public class ProductController {
         return ResponseEntity.ok(favorites);
     }
 
+    // 카테고리 리스트 조회
+    @GetMapping("/category")
+    public ResponseEntity<List<CategoryVO>> getCategoryHierarchy() {
+        return ResponseEntity.ok(productService.getCategoryHierarchy());
+    }
 }

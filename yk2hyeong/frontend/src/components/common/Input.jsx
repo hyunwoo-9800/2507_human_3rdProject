@@ -32,7 +32,15 @@ function Input({
 
     return (
         <div className={`input-group ${className}`}>
-            {label && <label className="input-label" htmlFor={name}>{label}</label>}
+            {label && (
+                <label
+                    className="input-label"
+                    htmlFor={name}
+                    style={{ fontWeight: 600 }} // ✅ 여기!
+                >
+                    {label} {required && <span style={{ color: 'red' }}>*</span>}
+                </label>
+            )}
             <input
                 name={name}
                 type={type}

@@ -1,5 +1,6 @@
 package fs.human.yk2hyeong.product.service;
 
+import fs.human.yk2hyeong.product.vo.CategoryVO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
 
 import java.util.List;
@@ -18,4 +19,7 @@ public interface ProductService {
 
     // 즐겨찾기된 상품 ID 리스트 조회
     List<String> getFavoriteProductIds(String memberId);
+
+    // 카테고리 리스트 조회
+    List<CategoryVO> getCategoryHierarchy();
 }
