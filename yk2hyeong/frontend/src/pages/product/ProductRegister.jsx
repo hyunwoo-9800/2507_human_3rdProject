@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import CustomSidebarMenu from "../../components/common/CustomSidebarMenu";
 import ProductRegisterInfo from "./ProductRegisterInfo";
 import ProductRegisterGuide from "./ProductRegisterGuide";
 import ProductRegisterDescription from "./ProductRegisterDescription";
 import CustomAlert from "../../components/common/CustomAlert";
+import ProductSidebarMenu from "./ProductSidebarMenu";
 
 export default function ProductRegister() {
     const [activeItem, setActiveItem] = useState("1");
@@ -51,8 +51,7 @@ export default function ProductRegister() {
     // ✅ 상품소개 유효성 검사
     const isDescriptionValid = () => {
         return (
-            thumbnail !== null &&
-            detailImages.length > 0
+            thumbnail !== null
         );
     };
 
@@ -74,10 +73,11 @@ export default function ProductRegister() {
     ];
 
     // ✅ 사이드바 탭 클릭 시
-    const handleMenuSelect = ({ key }) => {
+    const handleMenuSelect = (info) => {
+        console.log('선택된 key:', info.key);  // info.key에 실제 key가 들어있음
         setShowWarning(false);
 
-        if (key === '1') {
+        if (info.key === '1') {
             setActiveItem('1');
             return;
         }
@@ -87,7 +87,7 @@ export default function ProductRegister() {
             return;
         }
 
-        setActiveItem(key);
+        setActiveItem(info.key);
     };
 
     // ✅ 최종 제출 핸들러
@@ -168,7 +168,7 @@ export default function ProductRegister() {
     return (
         <div style={{ display: 'flex' }}>
             <div style={{ width: 256, marginTop: 5 }}>
-                <CustomSidebarMenu
+                <ProductSidebarMenu
                     items={menuItems}
                     selectedKeys={[activeItem]}
                     defaultOpenKeys={['sub1']}
