@@ -20,7 +20,6 @@ const AdminContent = ({ activeItem }) => {
     return (
         <div className="admin-content">
             <h1 className="admin-title">관리자 페이지</h1>
-            <button className="exit-btn">나가기</button>
 
             {isFormTab ? <FormTab tabType={tabType}/> : <TableTab tabType = {tabType}/>}
 

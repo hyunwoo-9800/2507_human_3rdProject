@@ -209,5 +209,37 @@
         </foreach>
     </delete>
 
+<!-- 회원가입승인 거부-->
+    <insert id="insertAlarm" parameterType="fs.human.yk2hyeong.admin.vo.AdminVO">
+        INSERT INTO tb_alarm (
+            alarm_id,
+            alarm_type,
+            alarm_content,
+            receiver_id,
+            is_read,
+            created_id,
+            created_date
+        )
+        VALUES (
+                   #{alarmId},
+                   #{alarmType},
+                   #{alarmContent,jdbcType = VARCHAR},
+                   #{receiverId},
+                   'N',
+                   #{createdId},
+                   SYSDATE
+               )
+    </insert>
+    <update id="updateProductStatus">
+        UPDATE tb_product
+        SET product_status = #{status}
+        WHERE product_id = #{productId}
+    </update>
+    <update id="updateProductFlag">
+        UPDATE tb_product
+        SET product_display_flag = #{flag}
+        WHERE product_id = #{productId}
+    </update>
+
 
 </mapper>

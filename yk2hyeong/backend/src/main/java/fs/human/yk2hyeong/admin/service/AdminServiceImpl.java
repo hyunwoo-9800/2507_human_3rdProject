@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 // 관리자 서비스 구현
 @Service
@@ -103,6 +104,33 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteMember(List<String> reportId){
         adminDAO.deleteReport(reportId);
+    }
+
+//    회원가입승인
+    @Override
+    public void insertAlarm(AdminVO adminVO) {
+        System.out.println("[AdminServiceImpl] insertAlarm 호출");
+        System.out.println("productId: " + adminVO.getProductId());
+        // UUID, 관리자 ID 등 보완
+        if (adminVO.getAlarmId() == null || adminVO.getAlarmId().isEmpty()) {
+            adminVO.setAlarmId(UUID.randomUUID().toString());
+        }
+        if (adminVO.getReceiverId() == null) {
+            adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
+        }
+        if (adminVO.getCreatedId() == null) {
+            adminVO.setCreatedId("SYSTEM");
+        }
+
+        adminDAO.insertAlarm(adminVO); // DAO로 전달
+    }
+    @Override
+    public void updateProductStatus(String productId, String status) {
+        adminDAO.updateProductStatus(productId, status);
+    }
+    @Override
+    public void updateProductFlag(String productId, String flag) {
+        adminDAO.updateProductFlag(productId, flag);
     }
 
 

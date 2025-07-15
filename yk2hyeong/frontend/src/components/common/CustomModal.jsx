@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Modal } from 'antd';
 import PropTypes from 'prop-types';
 import {
@@ -43,8 +43,11 @@ const CustomModal = ({
                          cancelMessage,
                          showOk,
                          showCancel,
+                         useInputMode = false, //admin 페이지 input요소 전용
                      }) => {
     const [modal, contextHolder] = Modal.useModal();
+    //admin 페이지 input요소 적용
+    const [isOpen, setIsOpen] = useState(false);
 
     const resolvedButtonColor = buttonColor || type;
 
@@ -55,17 +58,26 @@ const CustomModal = ({
         color: 'white',
     };
 
-    const showModal = () => {
-        const IconComponent = iconMap[type] || InfoCircleOutlined;
-        const iconColor = iconColorMap[type] || colorMap.info;
-        const iconElement = <IconComponent style={{ color: iconColor }} />;
-
-        // 모달 내부 확인 버튼 진한 회색 고정 스타일
+    // 모달 내부 확인 버튼 진한 회색 고정 스타일
         const modalOkButtonStyle = {
             backgroundColor: '#444444',
             borderColor: '#444444',
             color: 'white',
         };
+
+
+    const showModal = () => {
+
+        if(useInputMode){
+            setIsOpen(true);
+            return;
+        }
+        const IconComponent = iconMap[type] || InfoCircleOutlined;
+        const iconColor = iconColorMap[type] || colorMap.info;
+        const iconElement = <IconComponent style={{ color: iconColor }} />;
+
+
+
 
         // 기본 버튼 노출 여부 결정
         const defaultShowOk = showOk !== undefined ? showOk : true;
@@ -140,6 +152,27 @@ const CustomModal = ({
             >
                 {buttonLabel || type}
             </Button>
+
+            {/*useInputMode가 true일 때 별도 모달(input 요소 추가*/}
+            {useInputMode && (
+                <Modal
+                    open={isOpen}
+                    title={title}
+                    onOk={()=> {
+                        onOk?.();
+                        setIsOpen(false);
+                    }}
+                    onCancel={()=>{
+                        onCancel?.();
+                        setIsOpen(false);
+                    }}
+                    okText="확인"
+                    cancelText="취소"
+                    okButtonProps={{style: modalOkButtonStyle}}
+                >
+                    {content}
+                </Modal>
+            )}
             {contextHolder}
         </>
     );
@@ -148,7 +181,7 @@ const CustomModal = ({
 CustomModal.propTypes = {
     type: PropTypes.oneOf(['info', 'warning', 'error', 'success']),
     title: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
+    content: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
     onOk: PropTypes.func,
     onCancel: PropTypes.func,
     buttonLabel: PropTypes.string,

@@ -112,7 +112,7 @@ function FormTab({tabType}){
                     {tabType === 'product' ? <ProductForm product={selectItem}/> : <UserForm user={selectItem}/>}
                 </div>
             </div>
-            <ButtonGroup/>
+            <ButtonGroup productId={tabType === 'product' ? selectItem?.productId : null}/>
         </div>
 
 )

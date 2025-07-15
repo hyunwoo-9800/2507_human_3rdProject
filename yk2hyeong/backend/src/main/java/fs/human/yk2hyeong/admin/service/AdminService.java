@@ -19,5 +19,10 @@ public interface AdminService {
     void deleteMember(List<String> reportId);
     void deleteReport(List<String> reportId);
 
+//    회원가입승인 알람
+    void insertAlarm(AdminVO adminVO);
+    void updateProductStatus(String productId, String status);
+    void updateProductFlag(String productId, String flag);
+
 
 }

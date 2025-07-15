@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import Button from "../common/Button";
 import CustomPagination from "../common/CustomPagination";
+import DropboxGroup from "./DropboxGroup";
 
 function TableTab({tabType}){
     const [selectItem, setSelectItem] = useState(null);
@@ -9,6 +10,10 @@ function TableTab({tabType}){
 
     //테이블 게시글 리스트(db연결)
     const [item, setItem] = useState([]);
+
+    // 유저 테이블 드롭박스 상태값 관리
+    const [selectRole, setSelectRole] = useState('전체');
+    const [selectStatus, setSelectStatus] = useState('전체');
 
     useEffect(() => {
 
@@ -135,11 +140,24 @@ function TableTab({tabType}){
     return (
         <div className="report-check-tab">
             <h2>{tabType === 'member' ? '유저관리 > 유저관리' : '신고관리 > 신고확인'}</h2>
+
+            {/*member 드롭박스*/}
+            {tabType === 'member' &&(
+                <DropboxGroup
+                    selectStatus={selectStatus}
+                    selectRole={selectRole}
+                    onRoleChange={setSelectRole}
+                    onStatusChange={setSelectStatus}
+                    roleOption={[...new Set(item.map(i => i.memberRoleName).filter(Boolean))]}
+                    statusOption={[...new Set(item.map(i=>i.memberStatusName).filter(Boolean))]}
+                />
+            )}
+
             <table className="report-check-table">
                 <colgroup>
-                    <col style={{ width: "15%" }} />  {/* 사용자 번호 */}
-                    <col style={{ width: "10%" }} />  {/* 분류 */}
-                    <col style={{ width: "30%" }} />  {/* 이름 */}
+                    <col style={{ width: "10%" }} />  {/* 사용자 번호 */}
+                    <col style={{ width: "18%" }} />  {/* 분류 */}
+                    <col style={{ width: "27%" }} />  {/* 이름 */}
                     <col style={{ width: "20%" }} />  {/* 이메일 */}
                     <col style={{ width: "20%" }} />  {/* 연락처 */}
                     <col style={{ width: "5%" }} />   {/* 체크박스 */}
@@ -164,7 +182,14 @@ function TableTab({tabType}){
                 </tr>
                 </thead>
                 <tbody>
-                    {item.filter((i) => i && (i.reportId || i.memberId))
+                    {item
+                        .filter((i) => i && (i.reportId || i.memberId))
+                        .filter((i)=>
+                            tabType === 'member'
+                                ? (selectRole === '전체' || i.memberRoleName === selectRole) &&
+                                (selectStatus === '전체' || i.memberStatusName === selectStatus)
+                                : true
+                        )
                         .slice((page -1)*10, page * 10)
                         .map(renderDataRow)}
                     {renderEmptyRows()}
@@ -173,7 +198,7 @@ function TableTab({tabType}){
             <div className="pagination-wrapper">
                 <CustomPagination defaultCurrent={page} total={item.length} pageSize={10} onChange={(p) => setPage(p)}/>
             </div>
-            <Button color="error" onClick={handleDelete}>삭제</Button>
+            <Button color="error" onClick={handleDelete} className="delete-btn">삭제</Button>
         </div>
     )
 }

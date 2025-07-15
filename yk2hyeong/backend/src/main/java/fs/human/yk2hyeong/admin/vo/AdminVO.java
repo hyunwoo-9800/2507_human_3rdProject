@@ -44,4 +44,10 @@ public class AdminVO {
 
     private String memberRoleName;    // 역할 한글명
     private String memberStatusName;  // 상태 한글명
+
+//    회원가입승인 tb_alarm
+    private String alarmId;          // UUID
+    private String alarmType;        // 예: '012'
+    private String alarmContent;     // textarea 내용
+    private String receiverId;       // 관리자 ID: 고정
 }

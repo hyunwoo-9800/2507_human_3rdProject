@@ -26,5 +26,9 @@ public interface AdminDAO {
     void deleteReport(@Param("reportId") List<String> reportId);
     void deleteMember(@Param("memberId") List<String> memberId);
 
+//    회원가입승인
+    void insertAlarm(AdminVO adminVO);
+    void updateProductStatus(@Param("productId") String productId, @Param("status") String status);
+    void updateProductFlag(@Param("productId") String productId, @Param("flag") String flag);
 
 }
