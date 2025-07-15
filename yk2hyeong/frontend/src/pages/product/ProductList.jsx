@@ -124,7 +124,7 @@ export default function ProductList() {
             ) : (
                 <Row gutter={[16, 16]}>
                     {filteredProducts.length > 0 ? filteredProducts.map(product => (
-                        <Col key={product.productId} xs={24} sm={12} md={8} lg={6}>
+                        <Col key={product.productId} xs={24} sm={12} md={6} lg={6}>
                             <CustomCard
                                 id={product.productId}
                                 image={product.imagePath && product.imageName
@@ -139,6 +139,7 @@ export default function ProductList() {
                                 isFavorite={favoriteProductIds.includes(product.productId)}
                                 onFavoriteToggle={() => toggleFavorite(product.productId)}
                                 onClick={() => navigate(`/product/${product.productId}`)}
+                                style={{ width: '280px'}}
                             />
                         </Col>
                     )) : (
