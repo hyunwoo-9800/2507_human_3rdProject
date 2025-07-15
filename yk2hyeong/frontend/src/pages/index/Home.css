@@ -4,7 +4,7 @@
 }
 
 .slick-slider {
-    max-width: 1225px !important;
+    max-width: 1080px !important;
     width: 100%; /* width 100%로 지정해줘서 부모에 맞춤 */
     height: 300px !important;
     margin: 0 auto; /* 가운데 정렬용 */
@@ -22,7 +22,7 @@
 }
 
 .slick-slide {
-    width: 1225px !important; /* 슬라이드 하나 너비 고정 */
+    width: 1080px !important; /* 슬라이드 하나 너비 고정 */
     height: 300px !important;
 }
 
@@ -33,6 +33,9 @@
     display: block;
 }
 
+.slick-arrow {
+
+}
 
 
 .banner{
