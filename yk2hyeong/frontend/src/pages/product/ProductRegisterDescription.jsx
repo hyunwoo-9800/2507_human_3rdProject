@@ -7,7 +7,8 @@ export default function ProductRegisterDescription({
                                                        thumbnail,
                                                        setThumbnail,
                                                        detailImages,
-                                                       setDetailImages
+                                                       setDetailImages,
+                                                       onBack
                                                    }) {
     const [thumbnailPreview, setThumbnailPreview] = React.useState(null);
     const [detailPreviews, setDetailPreviews] = React.useState([]);
@@ -69,12 +70,12 @@ export default function ProductRegisterDescription({
             <h2>3. 상품 소개</h2>
 
             <div style={{ marginTop: '20px' }}>
-                <RequiredLabel>상품소개를 적어주세요.</RequiredLabel>
+                <Label>상품소개를 적어주세요. (선택)</Label>
                 <div style={{ marginLeft: '13px' }}>
                     <Textarea
                         value={text}
                         onChange={handleTextareaChange}
-                        placeholder="여기에 내용을 입력하세요"
+                        placeholder="상품에 대한 간단한 설명을 입력해주세요."
                         style={{ width: '100%', height: '300px', resize: 'vertical' }}
                     />
                 </div>
@@ -113,6 +114,23 @@ export default function ProductRegisterDescription({
                         </div>
                     )}
                 </div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 30 }}>
+                <button
+                    onClick={onBack}
+                    style={{
+                        padding: '10px 20px',
+                        backgroundColor: '#888',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease-in-out'
+                    }}
+                >
+                    이전
+                </button>
             </div>
         </div>
     );

@@ -1,40 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { InputNumber } from 'antd';
-import '../common/common.css'
+import '../common/common.css';
 
 const CustomInputNumber = ({
-                                    defaultValue = 0,
-                                    min,
-                                    max,
-                                    step = 1,
-                                    onChange,
-                                    className = '',
-                                    ...rest
-                                }) => {
-    const [value, setValue] = useState(defaultValue);
-
-    useEffect(() => {
-        if (onChange) onChange(value);
-    }, [value, onChange]);
-
+                               value,
+                               onChange,
+                               min,
+                               max,
+                               step = 1,
+                               className = '',
+                               ...rest
+                           }) => {
     const increment = () => {
-        setValue((prev) => {
-            const next = (prev ?? 0) + step;
-            if (max !== undefined && next > max) return prev;
-            return next;
-        });
+        const next = (value ?? 0) + step;
+        if (max !== undefined && next > max) return;
+        onChange?.(next);
     };
 
     const decrement = () => {
-        setValue((prev) => {
-            const next = (prev ?? 0) - step;
-            if (min !== undefined && next < min) return prev;
-            return next;
-        });
+        const next = (value ?? 0) - step;
+        if (min !== undefined && next < min) return;
+        onChange?.(next);
     };
 
     const onInputChange = (val) => {
-        setValue(val);
+        onChange?.(val);
     };
 
     return (
@@ -49,7 +39,7 @@ const CustomInputNumber = ({
                 min={min}
                 max={max}
                 step={step}
-                controls={false}  // 증감 버튼 숨김
+                controls={false}
                 {...rest}
             />
             <button type="button" className="input-btn plus" onClick={increment}>

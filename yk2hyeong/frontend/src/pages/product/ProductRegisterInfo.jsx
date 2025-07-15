@@ -10,11 +10,7 @@ import dayjs from "dayjs";
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 dayjs.extend(isSameOrBefore);
 
-export default function ProductRegisterInfo({ form, setForm, onNext }) {
-    const orderOptions = {
-        immediate: true,
-        reservation: true,
-    };
+export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
 
     const isValidDateRange = (start, end) => {
         if (!start || !end) return true;
@@ -61,6 +57,12 @@ export default function ProductRegisterInfo({ form, setForm, onNext }) {
         }));
     };
 
+    const orderOptions = [
+        { label: '즉시구매 + 예약구매', value: 'immediate/reservation' },
+        { label: '즉시구매만', value: 'immediate' },
+        { label: '예약구매만', value: 'reservation' },
+    ];
+
     useEffect(() => {
         axios.get('http://localhost:8080/api/category')
             .then(res => {
@@ -89,16 +91,6 @@ export default function ProductRegisterInfo({ form, setForm, onNext }) {
         </label>
     );
 
-    const isFormValid =
-        form.productName?.trim() !== '' &&
-        form.productPrice?.trim() !== '' &&
-        form.startDate !== null &&
-        form.endDate !== null &&
-        form.detailCodeId !== null &&
-        form.saleQuantity > 0 &&
-        form.minSaleUnit > 0 &&
-        !form.showDateWarning;
-
     return (
         <div>
             <h2>2. 기본정보 입력</h2>
@@ -118,10 +110,7 @@ export default function ProductRegisterInfo({ form, setForm, onNext }) {
                     <CustomRadio
                         value={form.orderType}
                         onChange={onOrderTypeChange}
-                        options={[
-                            ...(orderOptions.immediate ? [{ label: '즉시 구매', value: 'immediate' }] : []),
-                            ...(orderOptions.reservation ? [{ label: '예약 구매', value: 'reservation' }] : []),
-                        ]}
+                        options={orderOptions}
                         name="orderType"
                     />
                 </div>
@@ -206,17 +195,30 @@ export default function ProductRegisterInfo({ form, setForm, onNext }) {
                 </div>
             )}
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '30px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '30px' }}>
                 <button
-                    disabled={!isFormValid}
-                    onClick={onNext}
+                    onClick={onBack}
                     style={{
                         padding: '10px 20px',
-                        backgroundColor: isFormValid ? '#00a43c' : '#ccc',
+                        backgroundColor: '#888',
                         color: '#fff',
                         border: 'none',
                         borderRadius: '4px',
-                        cursor: isFormValid ? 'pointer' : 'not-allowed',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease-in-out'
+                    }}
+                >
+                    이전
+                </button>
+                <button
+                    onClick={onNext}
+                    style={{
+                        padding: '10px 20px',
+                        backgroundColor: '#00a43c',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer',
                         transition: 'all 0.2s ease-in-out'
                     }}
                 >

@@ -6,18 +6,21 @@ import ProductRegisterDescription from "./ProductRegisterDescription";
 import CustomAlert from "../../components/common/CustomAlert";
 
 export default function ProductRegister() {
-    const [activeItem, setActiveItem] = useState("1. 안내사항");
+    const [activeItem, setActiveItem] = useState("1");
     const [guideConfirmed, setGuideConfirmed] = useState(false);
     const [showWarning, setShowWarning] = useState(false);
 
-    // 기본정보 상태 선언 추가 (여기에 기본정보 상태를 선언하세요)
+    // 체크박스 상태
+    const [guideChecked, setGuideChecked] = useState(false);
+
+    // 기본정보 상태
     const [productForm, setProductForm] = useState({
         productName: '',
         startDate: null,
         endDate: null,
         productPrice: '',
         detailCodeId: null,
-        orderType: 'immediate',
+        orderType: 'immediate/reservation',
         saleQuantity: 100,
         minSaleUnit: 10,
         selectedCategory: null,
@@ -26,70 +29,136 @@ export default function ProductRegister() {
         showDateWarning: false,
     });
 
-    // 상품소개 관련 상태
+    // 상품소개 상태
     const [descriptionText, setDescriptionText] = useState('');
     const [thumbnail, setThumbnail] = useState(null);
     const [detailImages, setDetailImages] = useState([]);
 
+    // ✅ 기본정보 유효성 검사
+    const isBasicInfoValid = (form) => {
+        return (
+            form.productName?.trim() !== '' &&
+            form.productPrice?.trim() !== '' &&
+            form.startDate !== null &&
+            form.endDate !== null &&
+            form.detailCodeId !== null &&
+            form.saleQuantity > 0 &&
+            form.minSaleUnit > 0 &&
+            !form.showDateWarning
+        );
+    };
+
+    // ✅ 상품소개 유효성 검사
+    const isDescriptionValid = () => {
+        return (
+            thumbnail !== null &&
+            detailImages.length > 0
+        );
+    };
+
+    // ✅ 사이드바 라벨 표시
+    const getLabelWithStatus = (label, isComplete) => {
+        return isComplete ? `${label} ✅` : label;
+    };
 
     const menuItems = [
         {
             key: 'sub1',
             label: '상품 등록하기',
             children: [
-                { key: '1', label: '1. 안내사항' },
-                { key: '2', label: '2. 기본정보' },
-                { key: '3', label: '3. 상품소개' },
+                { key: '1', label: getLabelWithStatus('1. 안내사항', guideConfirmed) },
+                { key: '2', label: getLabelWithStatus('2. 기본정보', isBasicInfoValid(productForm)) },
+                { key: '3', label: getLabelWithStatus('3. 상품소개', isDescriptionValid()) },
             ]
         }
     ];
 
-    // onSelectItem이 label을 인자로 받으므로 label 기반 상태 변경
-    const handleMenuSelect = (label) => {
-        setShowWarning(false); // 클릭 때마다 경고 숨김
+    // ✅ 사이드바 탭 클릭 시
+    const handleMenuSelect = ({ key }) => {
+        setShowWarning(false);
 
-        if (label === '1. 안내사항') {
-            setActiveItem(label);
+        if (key === '1') {
+            setActiveItem('1');
             return;
         }
 
         if (!guideConfirmed) {
-            setShowWarning(true); // 체크 안 됐을 때 경고 표시
+            setShowWarning(true);
             return;
         }
 
-        setActiveItem(label);
+        setActiveItem(key);
+    };
+
+    // ✅ 최종 제출 핸들러
+    const handleFinalSubmit = () => {
+        if (!isBasicInfoValid(productForm) || !isDescriptionValid()) {
+            alert("모든 필수 항목을 입력해주세요.");
+            return;
+        }
+
+        const submitData = {
+            ...productForm,
+            descriptionText,
+            thumbnail,
+            detailImages
+        };
+
+        console.log("✅ 최종 제출 데이터:", submitData);
+        // 예: axios.post('/api/products', submitData)
     };
 
     const renderContent = () => {
         switch (activeItem) {
-            case '1. 안내사항':
+            case '1':
                 return (
                     <ProductRegisterGuide
+                        checked={guideChecked}
+                        onChangeChecked={setGuideChecked}
                         onNext={() => {
                             setGuideConfirmed(true);
-                            setActiveItem('2. 기본정보');
+                            setActiveItem('2');
                         }}
                     />
                 );
-            case '2. 기본정보':
+            case '2':
                 return (
                     <ProductRegisterInfo
                         form={productForm}
                         setForm={setProductForm}
-                        onNext={() => setActiveItem('3. 상품소개')}
+                        onNext={() => setActiveItem('3')}
+                        onBack={() => setActiveItem('1')}
                     />
                 );
-            case '3. 상품소개':
+            case '3':
                 return (
-                    <ProductRegisterDescription
-                        text={descriptionText}
-                        setText={setDescriptionText}
-                        thumbnail={thumbnail}
-                        setThumbnail={setThumbnail}
-                        detailImages={detailImages}
-                        setDetailImages={setDetailImages}
-                    />
+                    <>
+                        <ProductRegisterDescription
+                            text={descriptionText}
+                            setText={setDescriptionText}
+                            thumbnail={thumbnail}
+                            setThumbnail={setThumbnail}
+                            detailImages={detailImages}
+                            setDetailImages={setDetailImages}
+                            onBack={() => setActiveItem('2')}
+                        />
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 30 }}>
+                            <button
+                                onClick={handleFinalSubmit}
+                                style={{
+                                    padding: '10px 20px',
+                                    backgroundColor: '#00a43c',
+                                    color: '#fff',
+                                    border: 'none',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease-in-out'
+                                }}
+                            >
+                                최종 등록하기
+                            </button>
+                        </div>
+                    </>
                 );
             default:
                 return <div>선택된 콘텐츠가 없습니다.</div>;
@@ -101,7 +170,7 @@ export default function ProductRegister() {
             <div style={{ width: 256, marginTop: 5 }}>
                 <CustomSidebarMenu
                     items={menuItems}
-                    defaultSelectedKeys={['1']}
+                    selectedKeys={[activeItem]}
                     defaultOpenKeys={['sub1']}
                     onSelectItem={handleMenuSelect}
                 />

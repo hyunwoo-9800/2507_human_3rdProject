@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Checkbox from "../../components/common/Checkbox";
 
-export default function ProductRegisterGuide({ onNext }) {
+export default function ProductRegisterGuide({ checked, onChangeChecked, onNext }) {
     const [checkedValues, setCheckedValues] = useState([]);
 
     const handleCheckboxChange = (e) => {
@@ -74,8 +74,8 @@ export default function ProductRegisterGuide({ onNext }) {
                     <Checkbox
                         value="check1"
                         label="위 안내사항을 모두 확인하였습니다."
-                        checked={isChecked}
-                        onChange={handleCheckboxChange}
+                        checked={checked}
+                        onChange={(e) => onChangeChecked(e.target.checked)}
                         color="primary"
                     />
                 </div>
@@ -83,20 +83,20 @@ export default function ProductRegisterGuide({ onNext }) {
                 {/* 버튼 오른쪽 정렬 */}
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <button
-                        disabled={!isChecked}
+                        disabled={!checked}
                         onClick={onNext}
                         style={{
                             padding: '10px 20px',
-                            backgroundColor: isChecked ? '#00a43c' : '#ccc',
+                            backgroundColor: checked ? '#00a43c' : '#ccc',
                             color: '#fff',
                             border: 'none',
                             borderRadius: '4px',
-                            cursor: isChecked ? 'pointer' : 'not-allowed'
+                            cursor: checked ? 'pointer' : 'not-allowed'
                         }}
                     >
                         다음
                     </button>
-                 </div>
+                </div>
             </div>
         </div>
     );
