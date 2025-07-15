@@ -53,12 +53,36 @@ export default function ProductRegister() {
                         setActiveItem('2. 기본정보');
                     }}
                 />;
-            case '2. 기본정보': return <ProductRegisterInfo />;
+            case '2. 기본정보':
+                return <ProductRegisterInfo
+                    form={productForm}
+                    setForm={setProductForm}
+                    onNext={() => {
+                        setActiveItem('3. 상품소개');
+                    }}
+                />;
             case '3. 상품소개': return <ProductRegisterDescription />;
             default:
                 return <div>선택된 콘텐츠가 없습니다.</div>;
         }
     };
+
+    // 기본정보 저장
+    const [productForm, setProductForm] = useState({
+        productName: '',
+        startDate: null,
+        endDate: null,
+        productPrice: '',
+        detailCodeId: null,
+        orderType: 'immediate',
+        saleQuantity: 100,
+        minSaleUnit: 10,
+        selectedCategory: null,
+        selectedSubCategory: null,
+        categoryData: {},         // 카테고리 데이터
+        showDateWarning: false,   // 날짜 유효성
+    });
+
 
     return (
         <div style={{ display: 'flex' }}>
