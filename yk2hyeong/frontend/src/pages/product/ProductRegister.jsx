@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import CustomSidebarMenu from "../../components/common/CustomSidebarMenu";
+import ProductRegisterInfo from "./ProductRegisterInfo";
+import ProductRegisterGuide from "./ProductRegisterGuide";
+import ProductRegisterDescription from "./ProductRegisterDescription";
 
 export default function ProductRegister() {
     // label을 상태로 관리
@@ -32,12 +35,9 @@ export default function ProductRegister() {
     // label 기준으로 콘텐츠 렌더링
     const renderContent = () => {
         switch (activeItem) {
-            case '1. 안내사항':
-                return <div>📌 1. 안내사항 콘텐츠</div>;
-            case '2. 기본정보':
-                return <div>📝 2. 기본정보 콘텐츠</div>;
-            case '3. 상품소개':
-                return <div>🛒 3. 상품소개 콘텐츠</div>;
+            case '1. 안내사항': return <ProductRegisterGuide />;
+            case '2. 기본정보': return <ProductRegisterInfo />;
+            case '3. 상품소개': return <ProductRegisterDescription />;
             default:
                 return <div>선택된 콘텐츠가 없습니다.</div>;
         }
