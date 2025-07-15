@@ -1,6 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Checkbox from "../../components/common/Checkbox";
 
-export default function ProductRegisterGuide() {
+export default function ProductRegisterGuide({ onNext }) {
+    const [checkedValues, setCheckedValues] = useState([]);
+
+    const handleCheckboxChange = (e) => {
+        const value = e.target.value;
+        setCheckedValues((prev) =>
+            prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+        );
+    };
+
+    const isChecked = checkedValues.includes('check1');
+
     return (
         <div>
             <h2>1. 안내사항</h2>
@@ -55,6 +67,36 @@ export default function ProductRegisterGuide() {
                     </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <div style={{ marginTop: '32px' }}>
+                <div style={{ marginBottom: '12px' }}>
+                    <Checkbox
+                        value="check1"
+                        label="위 안내사항을 모두 확인하였습니다."
+                        checked={isChecked}
+                        onChange={handleCheckboxChange}
+                        color="primary"
+                    />
+                </div>
+
+                {/* 버튼 오른쪽 정렬 */}
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <button
+                        disabled={!isChecked}
+                        onClick={onNext}
+                        style={{
+                            padding: '10px 20px',
+                            backgroundColor: isChecked ? '#00a43c' : '#ccc',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: isChecked ? 'pointer' : 'not-allowed'
+                        }}
+                    >
+                        다음
+                    </button>
+                 </div>
             </div>
         </div>
     );

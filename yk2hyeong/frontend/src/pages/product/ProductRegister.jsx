@@ -35,7 +35,7 @@ export default function ProductRegister() {
     // label 기준으로 콘텐츠 렌더링
     const renderContent = () => {
         switch (activeItem) {
-            case '1. 안내사항': return <ProductRegisterGuide />;
+            case '1. 안내사항': return <ProductRegisterGuide onNext={() => setActiveItem('2. 기본정보')} />;
             case '2. 기본정보': return <ProductRegisterInfo />;
             case '3. 상품소개': return <ProductRegisterDescription />;
             default:
