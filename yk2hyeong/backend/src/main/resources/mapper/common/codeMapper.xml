@@ -92,5 +92,23 @@
                 AND A.LOW_CODE_NAME = '사용자'
     </select>
 
+    <!-- 상품 카테고리(하위) 조회 -->
+    <select id="getItemsByCategory" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.LOW_CODE_VALUE,
+            A.LOW_CODE_NAME
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                    ON A.CODE_ID = B.CODE_ID
+        WHERE B.TOP_CODE_NAME = 'CAT'
+          AND A.MID_CODE_VALUE = #{midCodeValue}
+        GROUP BY
+            A.LOW_CODE_VALUE,
+            A.LOW_CODE_NAME
+        ORDER BY
+            A.LOW_CODE_VALUE
+    </select>
+
 
 </mapper>

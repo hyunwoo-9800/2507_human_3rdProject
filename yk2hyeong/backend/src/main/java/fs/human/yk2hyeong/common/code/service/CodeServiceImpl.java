@@ -3,6 +3,7 @@ package fs.human.yk2hyeong.common.code.service;
 import fs.human.yk2hyeong.common.code.dao.CodeDAO;
 import fs.human.yk2hyeong.common.code.vo.CodeVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,4 +54,11 @@ public class CodeServiceImpl implements CodeService {
 
     }
 
+    // 상품 하위 목록 조회
+    @Override
+    public List<CodeVO> getItemsByCategory(String midCode) throws DataAccessException {
+
+        return codeDAO.getItemsByCategory(midCode);
+
+    }
 }

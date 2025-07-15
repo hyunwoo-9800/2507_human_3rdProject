@@ -1,6 +1,7 @@
 package fs.human.yk2hyeong.common.code.service;
 
 import fs.human.yk2hyeong.common.code.vo.CodeVO;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -20,5 +21,8 @@ public interface CodeService {
     List<CodeVO> getMemberStatList() throws Exception;
 
     String getImageLowCodeValue() throws Exception;
+
+    // 상품 하위 목록 조회
+    List<CodeVO> getItemsByCategory(String midCode) throws DataAccessException;
 
 }

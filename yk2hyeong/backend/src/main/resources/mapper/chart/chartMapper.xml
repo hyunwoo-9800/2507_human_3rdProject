@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="fs.human.yk2hyeong.chart.dao.chartDAO">
+
+    <!--  주간 데이터 조회  -->
+    <select id="getUnitPriceWeek" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
+        SELECT
+            B.LOW_CODE_NAME,
+            SUM(A.RECORDED_UNIT_PRICE) AS RECORDED_UNIT_PRICE,
+            A.RECORDED_DATE
+        FROM
+            TB_PRICE_API_HISTORY A
+                LEFT JOIN TB_CODE_DETAIL B
+                          ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
+        WHERE A.DETAIL_CODE_ID = #{detailCodeId}
+          AND A.RECORDED_DATE >= (SELECT SYSDATE - 7 from dual)
+        GROUP BY
+            B.MID_CODE_NAME,
+            B.LOW_CODE_NAME,
+            A.RECORDED_DATE
+        ORDER BY
+            A.RECORDED_DATE
+    </select>
+
+    <!--  월간 데이터 조회  -->
+    <select id="getUnitPriceMonth" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
+        SELECT
+            B.LOW_CODE_NAME,
+            SUM(A.RECORDED_UNIT_PRICE) AS RECORDED_UNIT_PRICE,
+            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YY/MM'), 'YY/MM') AS RECORDED_DATE
+
+        FROM
+            TB_PRICE_API_HISTORY A
+                LEFT JOIN TB_CODE_DETAIL B
+                          ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
+        WHERE A.DETAIL_CODE_ID = #{detailCodeId}
+          AND A.RECORDED_DATE >=(SELECT ADD_MONTHS(SYSDATE, -1) FROM dual)
+        GROUP BY
+            B.MID_CODE_NAME,
+            B.LOW_CODE_NAME,
+            TO_CHAR(A.RECORDED_DATE, 'YY/MM')
+        ORDER BY
+            TO_CHAR(A.RECORDED_DATE, 'YY/MM')
+    </select>
+
+    <!--  년간 데이터 조회  -->
+    <select id="getUnitPriceYear" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
+        SELECT
+            B.LOW_CODE_NAME,
+            SUM(A.RECORDED_UNIT_PRICE) AS RECORDED_UNIT_PRICE,
+            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YY'), 'YY') AS RECORDED_DATE
+        FROM
+            TB_PRICE_API_HISTORY A
+                LEFT JOIN TB_CODE_DETAIL B
+                          ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
+        WHERE A.DETAIL_CODE_ID = #{detailCodeId}
+          AND A.RECORDED_DATE >=(SELECT ADD_MONTHS(SYSDATE, -36) FROM dual)
+        GROUP BY
+            B.MID_CODE_NAME,
+            B.LOW_CODE_NAME,
+            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YY'), 'YY')
+        ORDER BY
+            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YY'), 'YY')
+    </select>
+
+</mapper>
