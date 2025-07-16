@@ -54,11 +54,19 @@ public class CodeServiceImpl implements CodeService {
 
     }
 
+    // 상품 부류 목록 조회
+    @Override
+    public List<CodeVO> getMidList() throws Exception {
+
+        return codeDAO.getMidList();
+
+    }
+
     // 상품 하위 목록 조회
     @Override
-    public List<CodeVO> getItemsByCategory(String midCode) throws DataAccessException {
+    public List<CodeVO> getLowList(String midCodeValue) throws DataAccessException {
 
-        return codeDAO.getItemsByCategory(midCode);
+        return codeDAO.getLowList(midCodeValue);
 
     }
 }

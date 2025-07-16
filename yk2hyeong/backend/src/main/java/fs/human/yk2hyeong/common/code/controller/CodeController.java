@@ -29,7 +29,7 @@ public class CodeController {
 
     // 회원 권한 목록
     @GetMapping("/memberRole")
-    public ResponseEntity<?> getmemberRole() throws Exception {
+    public ResponseEntity<?> getMemberRole() throws Exception {
 
         List<CodeVO> roleList = codeService.getRoleList();
         return ResponseEntity.ok(roleList);
@@ -38,11 +38,28 @@ public class CodeController {
     
     // 회원 상태 목록
     @GetMapping("/memberStat")
-    public ResponseEntity<?> getmemberStat() throws Exception {
+    public ResponseEntity<?> getMemberStat() throws Exception {
 
         List<CodeVO> statList = codeService.getMemberStatList();
         return ResponseEntity.ok(statList);
 
     }
+    
+    // 부류 코드 목록
+    @GetMapping("/midList")
+    public ResponseEntity<?> getMidList() throws Exception {
 
+        List<CodeVO> midList = codeService.getMidList();
+        return ResponseEntity.ok(midList);
+
+    }
+    
+    // 품목 코드 목록
+    @GetMapping("/lowList")
+    public ResponseEntity<?> getLowList(String midCodeValue) throws Exception {
+
+        List<CodeVO> lowList = codeService.getLowList(midCodeValue);
+        return ResponseEntity.ok(lowList);
+
+    }
 }

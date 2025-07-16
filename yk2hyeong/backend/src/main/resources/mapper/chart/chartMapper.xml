@@ -17,7 +17,7 @@
                 LEFT JOIN TB_CODE_DETAIL B
                           ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
         WHERE A.DETAIL_CODE_ID = #{detailCodeId}
-          AND A.RECORDED_DATE >= (SELECT SYSDATE - 7 from dual)
+          AND A.RECORDED_DATE >= TO_DATE(SYSDATE - 7)
         GROUP BY
             B.MID_CODE_NAME,
             B.LOW_CODE_NAME,
@@ -30,41 +30,41 @@
     <select id="getUnitPriceMonth" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
         SELECT
             B.LOW_CODE_NAME,
-            SUM(A.RECORDED_UNIT_PRICE) AS RECORDED_UNIT_PRICE,
-            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YY/MM'), 'YY/MM') AS RECORDED_DATE
+            AVG(A.RECORDED_UNIT_PRICE) AS RECORDED_UNIT_PRICE,
+            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YYYY/MM'), 'YYYY/MM') AS RECORDED_DATE
 
         FROM
             TB_PRICE_API_HISTORY A
                 LEFT JOIN TB_CODE_DETAIL B
                           ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
         WHERE A.DETAIL_CODE_ID = #{detailCodeId}
-          AND A.RECORDED_DATE >=(SELECT ADD_MONTHS(SYSDATE, -1) FROM dual)
+          AND A.RECORDED_DATE >= (SELECT ADD_MONTHS(SYSDATE, -5) FROM DUAL)
         GROUP BY
             B.MID_CODE_NAME,
             B.LOW_CODE_NAME,
-            TO_CHAR(A.RECORDED_DATE, 'YY/MM')
+            TO_CHAR(A.RECORDED_DATE, 'YYYY/MM')
         ORDER BY
-            TO_CHAR(A.RECORDED_DATE, 'YY/MM')
+            TO_CHAR(A.RECORDED_DATE, 'YYYY/MM')
     </select>
 
     <!--  년간 데이터 조회  -->
     <select id="getUnitPriceYear" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
         SELECT
             B.LOW_CODE_NAME,
-            SUM(A.RECORDED_UNIT_PRICE) AS RECORDED_UNIT_PRICE,
-            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YY'), 'YY') AS RECORDED_DATE
+            AVG(A.RECORDED_UNIT_PRICE) AS RECORDED_UNIT_PRICE,
+            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YYYY'), 'YYYY') AS RECORDED_DATE
         FROM
             TB_PRICE_API_HISTORY A
                 LEFT JOIN TB_CODE_DETAIL B
                           ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
         WHERE A.DETAIL_CODE_ID = #{detailCodeId}
-          AND A.RECORDED_DATE >=(SELECT ADD_MONTHS(SYSDATE, -36) FROM dual)
+          AND A.RECORDED_DATE >= (SELECT ADD_MONTHS(SYSDATE, -60) FROM DUAL)
         GROUP BY
             B.MID_CODE_NAME,
             B.LOW_CODE_NAME,
-            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YY'), 'YY')
+            TO_CHAR(A.RECORDED_DATE, 'YYYY')
         ORDER BY
-            TO_DATE(TO_CHAR(A.RECORDED_DATE, 'YY'), 'YY')
+            TO_CHAR(A.RECORDED_DATE, 'YYYY')
     </select>
 
 </mapper>

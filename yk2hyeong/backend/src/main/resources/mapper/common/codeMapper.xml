@@ -92,8 +92,23 @@
                 AND A.LOW_CODE_NAME = '사용자'
     </select>
 
+    <!-- 상품 부류 목록 조회 -->
+    <select id="getMidList" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT DISTINCT
+            MID_CODE_VALUE,
+            MID_CODE_NAME
+        FROM
+            TB_CODE_DETAIL
+        WHERE
+            <![CDATA[
+            MID_CODE_VALUE <> ' '
+            ]]>
+        ORDER BY
+            MID_CODE_VALUE
+    </select>
+
     <!-- 상품 카테고리(하위) 조회 -->
-    <select id="getItemsByCategory" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+    <select id="getLowList" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
         SELECT
             A.LOW_CODE_VALUE,
             A.LOW_CODE_NAME

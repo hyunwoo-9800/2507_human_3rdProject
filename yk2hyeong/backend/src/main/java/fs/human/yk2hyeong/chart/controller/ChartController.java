@@ -1,8 +1,7 @@
 package fs.human.yk2hyeong.chart.controller;
 
 import fs.human.yk2hyeong.chart.service.ChartService;
-import fs.human.yk2hyeong.common.code.service.CodeService;
-import fs.human.yk2hyeong.common.code.vo.CodeVO;
+import fs.human.yk2hyeong.chart.vo.ChartVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,37 +15,29 @@ public class ChartController {
 
     private final ChartService chartService;
 
-    private final CodeService codeService;
+    @GetMapping("/price")
+    public ResponseEntity<List<ChartVO>> getWeeklyPrice(
+            @RequestParam String detailCodeId,
+            @RequestParam String timeFrame // 예: "week", "month", "year"
+    ) throws Exception {
 
-    // 부류 코드에 해당하는 품목 코드 목록 반환
-    @GetMapping("/items")
-    public ResponseEntity<List<CodeVO>> getItemsByCategory(@RequestParam String midCode) {
-
-        // categoryCode에 해당하는 품목 코드 목록을 DB에서 가져옴
-        List<CodeVO> items = codeService.getItemsByCategory(midCode);
-        return ResponseEntity.ok(items);
-
-    }
-
-    @GetMapping
-    public ResponseEntity<?> getChartDat(@RequestParam String timeFrame, @RequestParam(required = false) String itemCode) throws Exception {
+        List<ChartVO> result;
 
         switch (timeFrame) {
-
             case "week":
-                return ResponseEntity.ok(chartService.getUnitPriceWeek(itemCode));
-
+                result = chartService.getUnitPriceWeek(detailCodeId);
+                break;
             case "month":
-                return ResponseEntity.ok(chartService.getUnitPriceMonth(itemCode));
-
+                result = chartService.getUnitPriceMonth(detailCodeId);
+                break;
             case "year":
-                return ResponseEntity.ok(chartService.getUnitPriceYear(itemCode));
-
+                result = chartService.getUnitPriceYear(detailCodeId);
+                break;
             default:
-                return ResponseEntity.badRequest().body("Invalid timeFrame");
-
+                return ResponseEntity.badRequest().build();
         }
 
+        return ResponseEntity.ok(result);
     }
 
 }

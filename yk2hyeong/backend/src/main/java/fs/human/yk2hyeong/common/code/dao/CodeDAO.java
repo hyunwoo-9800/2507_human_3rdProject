@@ -24,7 +24,10 @@ public interface CodeDAO {
    
     String getImageLowCodeValue();
 
+    // 상품 부류 목록 조회
+    List<CodeVO> getMidList() throws DataAccessException;
+
     // 상품 하위 목록 조회
-    List<CodeVO> getItemsByCategory(String midCode) throws DataAccessException;
+    List<CodeVO> getLowList(String midCodeValue) throws DataAccessException;
 
 }

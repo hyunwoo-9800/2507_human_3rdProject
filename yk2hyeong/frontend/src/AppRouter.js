@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import {Routes, Route} from 'react-router-dom'
 import Home from './pages/index/Home' // 홈 페이지
 import Admin from './pages/admin/Admin' // 관리자 페이지
 import Product from './pages/product/Product' // 제품 페이지
@@ -17,78 +17,79 @@ import FindId from './pages/login/FindId'
 import FindPassword from './pages/login/FindPassword'
 import ResetPassword from './pages/login/ResetPassword'
 import ProductList from "./pages/product/ProductList";
-import ForecastChart from "./pages/chart/ForecastChart";
+import PriceChartPage from "./pages/chart/PriceChartPage";
 import ProductDetail from "./pages/product/ProductDetail";
 import ProductRegister from "./pages/product/ProductRegister";
 
 export default function AppRouter() {
-  return (
-    <Routes>
-      {/* 기본 홈 페이지 */}
-      <Route path="/" element={<Home />} />
+    return (
+        <Routes>
+            {/* 기본 홈 페이지 */}
+            <Route path="/" element={<Home/>}/>
 
-      {/* 관리자 페이지 */}
-      <Route path="/admin" element={<Admin />} />
+            {/* 관리자 페이지 */}
+            <Route path="/admin" element={<Admin/>}/>
 
-      {/* 제품 페이지 */}
-      <Route path="/product" element={<Product />} />
+            {/* 제품 페이지 */}
+            <Route path="/product" element={<Product/>}/>
 
-      {/* 마이 페이지 */}
-      <Route path="/mypage" element={<Mypage />} />
+            {/* 마이 페이지 */}
+            <Route path="/mypage" element={<Mypage/>}/>
 
-      {/* 공지사항 목록 페이지 */}
-      <Route path="/notice" element={<NoticePage />} />
+            {/* 공지사항 목록 페이지 */}
+            <Route path="/notice" element={<NoticePage/>}/>
 
-      {/* 공지사항 상세 페이지 (동적 경로 사용) */}
-      <Route path="/notice/:id" element={<NoticeDetail />} />
+            {/* 공지사항 상세 페이지 (동적 경로 사용) */}
+            <Route path="/notice/:id" element={<NoticeDetail/>}/>
 
-      {/* 공지사항 작성 페이지 */}
-      <Route path="/notice/write" element={<NoticeForm />} />
+            {/* 공지사항 작성 페이지 */}
+            <Route path="/notice/write" element={<NoticeForm/>}/>
 
-      {/* 공지사항 수정 페이지 (동적 경로 사용) */}
-      <Route path="/notice/edit/:id" element={<NoticeEdit />} />
+            {/* 공지사항 수정 페이지 (동적 경로 사용) */}
+            <Route path="/notice/edit/:id" element={<NoticeEdit/>}/>
 
-      {/* CSS 컴포넌트 모음 페이지 */}
-      <Route path="/css" element={<ComponentCollection />} />
+            {/* CSS 컴포넌트 모음 페이지 */}
+            <Route path="/css" element={<ComponentCollection/>}/>
 
-      {/* 로그인 페이지 */}
-      <Route path="/login" element={<Login />} />
+            {/* 로그인 페이지 */}
+            <Route path="/login" element={<Login/>}/>
 
-      {/* 아이디 찾기 페이지 */}
-      <Route path="/findId" element={<FindId />} />
+            {/* 아이디 찾기 페이지 */}
+            <Route path="/findId" element={<FindId/>}/>
 
-      {/* 비밀번호 찾기 페이지 */}
-      <Route path="/findPwd" element={<FindPassword />} />
+            {/* 비밀번호 찾기 페이지 */}
+            <Route path="/findPwd" element={<FindPassword/>}/>
 
-      {/* 비밀번호 재설정 페이지 */}
-      <Route path="/findPwd" element={<ResetPassword />} />
+            {/* 비밀번호 재설정 페이지 */}
+            <Route path="/findPwd" element={<ResetPassword/>}/>
 
-      {/* 회원가입 역할 선택 페이지 */}
-      <Route path="/signup" element={<SignupRoleSelect />} />
+            {/* 회원가입 역할 선택 페이지 */}
+            <Route path="/signup" element={<SignupRoleSelect/>}/>
 
-      {/* 판매자 약관 페이지 */}
-      <Route path="/signup/seller" element={<SellerTerms />} />
+            {/* 판매자 약관 페이지 */}
+            <Route path="/signup/seller" element={<SellerTerms/>}/>
 
-      {/* 구매자 약관 페이지 */}
-      <Route path="/signup/buyer" element={<BuyerTerms />} />
+            {/* 구매자 약관 페이지 */}
+            <Route path="/signup/buyer" element={<BuyerTerms/>}/>
 
-      {/* 판매자 회원가입 폼 페이지 */}
-      <Route path="/signup/seller/form" element={<SignupForm role="SELLER" />} />
+            {/* 판매자 회원가입 폼 페이지 */}
+            <Route path="/signup/seller/form" element={<SignupForm role="SELLER"/>}/>
 
-      {/* 구매자 회원가입 폼 페이지 */}
-      <Route path="/signup/buyer/form" element={<SignupForm role="BUYER" />} />
+            {/* 구매자 회원가입 폼 페이지 */}
+            <Route path="/signup/buyer/form" element={<SignupForm role="BUYER"/>}/>
 
-        {/* 상품리스트 페이지 */}
-        <Route path="/productlist" element={<ProductList />} />
+            {/* 상품리스트 페이지 */}
+            <Route path="/productlist" element={<ProductList/>}/>
 
-        <Route path="/chart" element={<ForecastChart />} />
+            {/* 시세 추이 페이지 */}
+            <Route path="/chart" element={<PriceChartPage/>}/>
 
-        {/* 상품상세 페이지 */}
-        <Route path="/product/:productId" element={<ProductDetail />} />
+            {/* 상품상세 페이지 */}
+            <Route path="/product/:productId" element={<ProductDetail/>}/>
 
-        {/* 상품등록 페이지 */}
-        <Route path="/product/register" element={<ProductRegister />} />
+            {/* 상품등록 페이지 */}
+            <Route path="/product/register" element={<ProductRegister/>}/>
 
-    </Routes>
-  )
+        </Routes>
+    )
 }
