@@ -24,5 +24,13 @@ public interface AdminService {
     void updateProductStatus(String productId, String status);
     void updateProductFlag(String productId, String flag);
 
+//    상품관리 상품삭제
+    void rejectProduct(List<String> productId);
+//    유저관리 유저삭제
+    void rejectMember(List<String> memberId);
+//    신고관리 신고삭제는 상품관리 상품삭제랑 기능 동일해서 재사용
+
+//    회원가입승인
+    void approveMember(String memberId);
 
 }

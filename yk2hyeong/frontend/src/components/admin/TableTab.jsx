@@ -50,6 +50,20 @@ function TableTab({tabType}){
         );
     const pageData = filteredItem.slice((page - 1) * 10, page * 10);
 
+    // tabType으로 api 변경
+    const apiMap = {
+        member: '/api/member',
+        report: '/api/report',
+        products: '/api/products'
+    }
+
+    // tabType별 삭제버튼 기능 변경
+    const deleteApiMap = {
+        products: '/api/products/reject',
+        member: '/api/member/reject',
+        report: '/api/report/resolve'
+    };
+
     useEffect(() => {
 
         setItem([]); //이전 데이터 초기화
@@ -57,12 +71,6 @@ function TableTab({tabType}){
 
         console.log("받은 tabType: ", tabType);
 
-        // tabType으로 api 변경
-        const apiMap = {
-            member: '/api/member',
-            report: '/api/report',
-            products: '/api/products'
-        }
         const apiUrl = apiMap[tabType];
         axios.get(apiUrl)
             .then((res)=>{
@@ -124,42 +132,45 @@ function TableTab({tabType}){
         );
     };
 
-    // 선택한 데이터 삭제(변경으로 바꾸기 유저: 삭제x 탈퇴ㅇ 신고: flag 변경
+    // 선택한 데이터 삭제(tabType별로 기능 변경)
     const handleDelete = () => {
-        const selectId = item
-            .filter((i) => i.checked)
-            .map((i) => tabType === 'report' ? i.reportId : i.memberId);
+        const selectedIds = item
+            .filter(i => i.checked)
+            .map(i =>
+                tabType === 'products' ? i.productId :
+                    tabType === 'report' ? i.productId :
+                        i.memberId
+            );
 
-        if(selectId.length === 0){
+        if (selectedIds.length === 0) {
             alert("삭제할 항목을 선택하세요.");
             return;
         }
-        if(!window.confirm("정말 삭제하시겠습니까?")) return;
 
-        axios
-            .post(`/api/${tabType}/delete`, selectId)
+        if (!window.confirm("정말 처리하시겠습니까?")) return;
+
+        const apiUrl = deleteApiMap[tabType];
+
+        axios.post(apiUrl, selectedIds)
             .then(() => {
-                alert("삭제되었습니다.");
-            //     삭제 후 기존 데이터 불러오기
-                const apiUrl = {
-                    member: '/api/member',
-                    report: '/api/report',
-                    products: '/api/products'
-                }[tabType];
-                return axios.get(apiUrl);
+                alert("처리 완료되었습니다.");
+                return axios.get(apiMap[tabType]); // 목록 새로고침
             })
             .then((res) => {
-                const withCheckbox = res.data.map((p) => ({
+                console.log('삭제 후 받은 데이터:', res.data.map(i => i.productId));
+                const withCheckbox = res.data.map((p, index) => ({
                     ...p,
                     checked: false,
+                    postNum: tabType === 'report' ? index + 1 : undefined
                 }));
                 setItem(withCheckbox);
             })
             .catch((err) => {
                 console.error("삭제 실패:", err);
-                alert("삭제 중 오류가 발생했습니다.");
+                alert("오류가 발생했습니다.");
             });
     };
+
     // thead 관리
     const theadConfig = {
         report: ['번호', '분류', '신고내용', '제목', '사업자명', ''],

@@ -1,5 +1,6 @@
 package fs.human.yk2hyeong.product.controller;
 
+import fs.human.yk2hyeong.admin.service.AdminService;
 import fs.human.yk2hyeong.product.service.ProductService;
 import fs.human.yk2hyeong.product.vo.CategoryVO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
@@ -17,10 +18,12 @@ import java.util.Map;
 public class ProductController {
 
     private final ProductService productService;
+    private final AdminService adminService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, AdminService adminService) {
         this.productService = productService;
+        this.adminService = adminService;
     }
 
     // 상품 목록 조회
@@ -72,4 +75,5 @@ public class ProductController {
     public ResponseEntity<List<CategoryVO>> getCategoryHierarchy() {
         return ResponseEntity.ok(productService.getCategoryHierarchy());
     }
+
 }

@@ -3,6 +3,7 @@ import ButtonGroup from "./ButtonGroup";
 import axios from "axios";
 import ProductForm from "./ProductForm";
 import UserForm from "./UserForm";
+import UserApproveButton from "./UserApproveButton";
 
 function FormTab({tabType}){
     const [selectItem, setSelectItem] = useState(null);
@@ -103,7 +104,12 @@ function FormTab({tabType}){
                         : <UserForm user={selectItem}/>}
                 </div>
             </div>
-            <ButtonGroup productId={tabType === 'product' ? selectItem?.productId : null}/>
+            {tabType ==='product' ? (
+                <ButtonGroup tabType={tabType} selectItem={selectItem}/>
+            ):(
+                <UserApproveButton user={selectItem}/>
+            )}
+
         </div>
     );
 }

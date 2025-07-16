@@ -133,5 +133,29 @@ public class AdminServiceImpl implements AdminService {
         adminDAO.updateProductFlag(productId, flag);
     }
 
+//    상품관리 상품삭제
+    @Transactional
+    @Override
+    public void rejectProduct(List<String> productIds) {
+        for (String productId : productIds) {
+            adminDAO.updateProductStatusFlag(
+                    productId,
+                    "6524D569917E4468B4B4323E4355E0B8",
+                    "C64A2EE83FBB4B0B9681227F31401EE0"
+            );
+        }
+    }
+    @Override
+    public void rejectMember(List<String> memberId) {
+        for (String id : memberId){
+            adminDAO.updateMemberStatus(id, "003");
+        }
+    }
+
+//    회원가입승인
+    public void approveMember(String memberId) {
+        adminDAO.updateMemberStatusToApprove(memberId);
+    }
+
 
 }

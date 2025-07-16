@@ -97,7 +97,7 @@ public ResponseEntity<String> insertAlarm(@RequestBody AdminVO adminVO) {
 @PostMapping("/alarm/approve")
 public ResponseEntity<String> approveProduct(@RequestBody AdminVO adminVO) {
     System.out.println("[AdminController] approveProduct 호출");
-    adminService.updateProductStatus(adminVO.getProductId(), "EFA81F6A88A34960AC41EEA075469128");
+    adminService.updateProductStatus(adminVO.getProductId(), "E79E6C1F58604795AD30CCDDD37115FF");
     adminService.updateProductFlag(adminVO.getProductId(), "B57FCB1CA009426E9D3EF7FC335F7DCA");
 
     if (adminVO.getAlarmId() == null || adminVO.getAlarmId().isEmpty()) {
@@ -112,7 +112,29 @@ public ResponseEntity<String> approveProduct(@RequestBody AdminVO adminVO) {
 
     return ResponseEntity.ok("상품 승인 및 알림 전송 완료");
 }
-
-
+//상품관리 삭제버튼
+    @PostMapping("/products/reject")
+    public ResponseEntity<?> rejectProduct(@RequestBody List<String> productId) {
+        adminService.rejectProduct(productId);
+        return ResponseEntity.ok().build();
+    }
+//유저관리 삭제버튼
+    @PostMapping("/member/reject")
+    public ResponseEntity<?> rejectMember(@RequestBody List<String> memberId) {
+        adminService.rejectMember(memberId);
+        return ResponseEntity.ok().build();
+    }
+//신고관리 삭제버튼
+    @PostMapping("/report/resolve")
+    public ResponseEntity<String> resolveReport(@RequestBody List<String> productId) {
+        adminService.rejectProduct(productId); //재사용
+        return ResponseEntity.ok().build();
+    }
+    //    회원가입 승인
+    @PutMapping("/member/{memberId}/approve")
+    public ResponseEntity<?> approveMember(@PathVariable String memberId) {
+        adminService.approveMember(memberId);
+        return ResponseEntity.ok().build();
+    }
 
 }

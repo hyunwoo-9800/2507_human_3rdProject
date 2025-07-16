@@ -241,5 +241,26 @@
         WHERE product_id = #{productId}
     </update>
 
+<!--    상품관리 상품삭제버튼, 신고관리 신고삭제버튼-->
+    <update id="updateProductStatusFlag">
+        UPDATE tb_product
+        SET product_status = #{status},
+            product_display_flag = #{flag},
+            updated_date = SYSDATE
+        WHERE product_id = #{productId}
+    </update>
+<!--유저 관리 유저삭제버튼-->
+    <update id="updateMemberStatus">
+        UPDATE tb_member
+        SET member_status = #{status},
+            updated_date = SYSDATE
+        WHERE member_id = #{memberId}
+    </update>
+<!--회원가입승인-->
+    <update id="updateMemberStatusToApprove" parameterType="string">
+        UPDATE tb_member
+        SET member_status = '001'
+        WHERE member_id = #{memberId}
+    </update>
 
 </mapper>

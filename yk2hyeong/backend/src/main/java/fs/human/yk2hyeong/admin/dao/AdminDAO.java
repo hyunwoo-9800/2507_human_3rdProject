@@ -31,4 +31,14 @@ public interface AdminDAO {
     void updateProductStatus(@Param("productId") String productId, @Param("status") String status);
     void updateProductFlag(@Param("productId") String productId, @Param("flag") String flag);
 
+
+//    상품관리 상품삭제
+    void updateProductStatusFlag(@Param("productId") String productId,
+                                 @Param("status") String status,
+                                 @Param("flag") String flag);
+//    유저관리 유저삭제
+    void updateMemberStatus(@Param("memberId") String memberId, @Param("status") String status);
+
+//    회원가입승인
+    void updateMemberStatusToApprove(String memberId);
 }

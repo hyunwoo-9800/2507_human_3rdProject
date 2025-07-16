@@ -22,4 +22,5 @@ public interface ProductService {
 
     // 카테고리 리스트 조회
     List<CategoryVO> getCategoryHierarchy();
+
 }
