@@ -8,10 +8,11 @@ import { AppstoreOutlined, MailOutlined } from '@ant-design/icons';
 const menuItems = [
     {
         key: 'sub1',
-        label: '게시글 관리',
+        label: '상품관리',
         icon: <MailOutlined />,
         children: [
             { key: '1', label: '상품등록승인' },
+            { key: '5', label: '상품관리'}
         ],
     },
     {

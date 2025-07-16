@@ -24,6 +24,7 @@ public class ProductController {
     }
 
     // 상품 목록 조회
+
     @GetMapping("/products")
     public List<ProductVO> getAllProducts() {
         return productService.getAllProducts();

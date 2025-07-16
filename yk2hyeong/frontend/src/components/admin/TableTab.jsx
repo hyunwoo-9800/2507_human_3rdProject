@@ -3,6 +3,7 @@ import axios from "axios";
 import Button from "../common/Button";
 import CustomPagination from "../common/CustomPagination";
 import DropboxGroup from "./DropboxGroup";
+import ProductsDropboxGroup from "./ProductsDropboxGroup";
 
 function TableTab({tabType}){
     const [selectItem, setSelectItem] = useState(null);
@@ -15,28 +16,85 @@ function TableTab({tabType}){
     const [selectRole, setSelectRole] = useState('전체');
     const [selectStatus, setSelectStatus] = useState('전체');
 
+    //상품 테이블 드롭박스 상태값 관리
+    const [selectCategory, setSelectCategory] = useState('전체');
+
+    // tabType을 받아와서 id값을 변경
+    const getIdkey = (tabType)=>{
+        if(tabType === 'report') return 'reportId';
+        if(tabType === 'member') return  'memberId';
+        if(tabType === 'products') return 'productId';
+        return 'id';
+    }
+    const idKey = getIdkey(tabType);
+
+    // tabType별 응답데이터 분리
+    const extractData = (data, tabType) => {
+        if(tabType === 'products'){
+            return Array.isArray(data) ? data : [];
+        }
+        //member랑 report는 기존 그대로 받아오기
+        return Array.isArray(data) ? data : [];
+    };
+    // 페이지네이션 필터링된 데이터 따로 저장
+    const filteredItem = item
+        .filter((i) => i && i[idKey])
+        .filter((i) =>
+            tabType === 'member'
+                ? (selectRole === '전체' || i.memberRoleName === selectRole) &&
+                (selectStatus === '전체' || i.memberStatusName === selectStatus)
+                : tabType === 'products'
+                    ? (selectCategory === '전체' || i.productCat === selectCategory) &&
+                    (selectStatus === '전체' || i.productStatusName === selectStatus)
+                    : true
+        );
+    const pageData = filteredItem.slice((page - 1) * 10, page * 10);
+
     useEffect(() => {
 
         setItem([]); //이전 데이터 초기화
         setSelectItem(null);// 선택한 항목 초기화
 
         console.log("받은 tabType: ", tabType);
-        const apiUrl = tabType === 'member' ? '/api/member' : '/api/report';
+
+        // tabType으로 api 변경
+        const apiMap = {
+            member: '/api/member',
+            report: '/api/report',
+            products: '/api/products'
+        }
+        const apiUrl = apiMap[tabType];
         axios.get(apiUrl)
             .then((res)=>{
                 console.log("불러온 데이터:" , res.data);
-                const withCheckbox = res.data.map((p,index)=>({
+
+                const rawData = extractData(res.data, tabType);
+                console.log("rawData: ", rawData);
+
+                const uniqueRawData = tabType === 'products'
+                    ? rawData.filter(
+                        (item, index, self) =>
+                            index === self.findIndex((t) => t.productId === item.productId)
+                    )
+                    : rawData;
+
+                const withCheckbox = uniqueRawData.map((p, index)=>({
                     ...p,
                     checked:false,
-                    postNum : tabType === 'report' ? index+1 : undefined //게시글오름차순
+                    postNum : tabType === 'report' ? index+1 : undefined
                 }));
+
+                console.log("최종 withCheckbox:", withCheckbox);
                 setItem(withCheckbox);
-                console.log("불러온 데이터: ", withCheckbox);
             })
             .catch((err)=>{
                 console.error("데이터 불러오기 실패:", err);
             });
     }, [tabType]);
+    // 필터 조건이 바뀔 때마다 페이지 초기화
+    useEffect(() => {
+        setPage(1);
+    }, [selectRole, selectStatus, selectCategory])
 
     //전체 선택 체크박스 처리
     const handleSelectAll = (e) => {
@@ -49,18 +107,24 @@ function TableTab({tabType}){
     const handleItemCheck = (id) => {
         setItem(prev =>
             prev.map(item =>
-                tabType === 'report'
-                    ? item.reportId === id ? { ...item, checked: !item.checked } : item
-                    : item.memberId === id ? { ...item, checked: !item.checked} : item
+                item[idKey] === id ? {...item, checked: !item.checked} : item
             )
         );
     };
 
-    const handleRowClick = (item) => {
-        setSelectItem(item);
+    const handleRowClick = (clickedItem) => {
+        setSelectItem(clickedItem);
+
+        setItem(prev =>
+            prev.map(item =>
+                item[idKey] === clickedItem[idKey]
+                    ? { ...item, checked: !item.checked }
+                    : item
+            )
+        );
     };
 
-    // 선택한 데이터 삭제
+    // 선택한 데이터 삭제(변경으로 바꾸기 유저: 삭제x 탈퇴ㅇ 신고: flag 변경
     const handleDelete = () => {
         const selectId = item
             .filter((i) => i.checked)
@@ -77,7 +141,11 @@ function TableTab({tabType}){
             .then(() => {
                 alert("삭제되었습니다.");
             //     삭제 후 기존 데이터 불러오기
-                const apiUrl = tabType === 'report' ? '/api/report' : '/api/member';
+                const apiUrl = {
+                    member: '/api/member',
+                    report: '/api/report',
+                    products: '/api/products'
+                }[tabType];
                 return axios.get(apiUrl);
             })
             .then((res) => {
@@ -92,22 +160,40 @@ function TableTab({tabType}){
                 alert("삭제 중 오류가 발생했습니다.");
             });
     };
+    // thead 관리
+    const theadConfig = {
+        report: ['번호', '분류', '신고내용', '제목', '사업자명', ''],
+        member: ['이름', '분류', '사업자명', '이메일', '상태', ''],
+        products: ['분류', '상품명', '게시글 제목', '상태', '등록일', '']
+    }
 
     //코드 정리, td항상 12줄 고정
     const renderDataRow = (item) => {
         const isReport = tabType === "report";
-        const key = isReport ? item.reportId : item.memberId;
+        const isMember = tabType === "member";
+        const isProducts = tabType === "products";
+        const key = item[idKey];
 
         const columns = [
-            <td onClick={() => handleRowClick(item)}>{isReport ? item.postNum : item.memberName}</td>,
-            <td onClick={() => handleRowClick(item)}>{isReport ? item.reasonName : item.memberRoleName}</td>,
-            <td onClick={() => handleRowClick(item)}>{isReport ? item.reportContent : item.memberBname}</td>,
-            <td onClick={() => handleRowClick(item)}>{isReport ? item.productName : item.memberEmail}</td>,
-            <td onClick={() => handleRowClick(item)}>{isReport ? item.reporterName : item.memberStatusName}</td>,
             <td>
+                {isReport ? item.postNum : isMember ? item.memberName : item.productCat}
+            </td>,
+            <td>
+                {isReport ? item.reasonName : isMember ? item.memberRoleName : item.productCodeName}
+            </td>,
+            <td>
+                {isReport ? item.reportContent : isMember ? item.memberBname : item.productName}
+            </td>,
+            <td>
+                {isReport ? item.productName : isMember ? item.memberEmail : item.productStatusName}
+            </td>,
+            <td>
+                {isReport ? item.reporterName : isMember ? item.memberStatusName : item.createdDate}
+            </td>,
+            <td onClick={(e) => e.stopPropagation()}>
                 <input
                     type="checkbox"
-                    checked={item.checked}
+                    checked={item.checked !==undefined ? item.checked : false}
                     onChange={() => handleItemCheck(key)}
                     className="table-checkbox"
                 />
@@ -117,7 +203,7 @@ function TableTab({tabType}){
         const padding = Array.from({ length: 12 - columns.length }, (_, i) => (
             <td key={`pad-${i}`}>&nbsp;</td>
         ));
-        return <tr key={key}>{[...columns, ...padding]}</tr>;
+        return <tr key={item[idKey]} onClick={() => handleRowClick(item)}>{[...columns, ...padding]}</tr>;
     };
 
     const renderEmptyRows = () => {
@@ -136,10 +222,17 @@ function TableTab({tabType}){
     const handlePageChange = (newPage) => {
         setPage(newPage);
     };
+    
+    // tabType에 따라 달라지는 title 관리
+    const titleMap = {
+        member: '유저관리 > 유저관리',
+        report: '신고관리 > 신고확인',
+        products: '상품관리 > 상품관리',
+    };
 
     return (
         <div className="report-check-tab">
-            <h2>{tabType === 'member' ? '유저관리 > 유저관리' : '신고관리 > 신고확인'}</h2>
+            <h2>{titleMap[tabType] || '관리자 페이지'}</h2>
 
             {/*member 드롭박스*/}
             {tabType === 'member' &&(
@@ -152,7 +245,17 @@ function TableTab({tabType}){
                     statusOption={[...new Set(item.map(i=>i.memberStatusName).filter(Boolean))]}
                 />
             )}
-
+            {/*products 드롭박스*/}
+            {tabType === 'products' && (
+                <ProductsDropboxGroup
+                    selectCategory={selectCategory}
+                    selectStatus={selectStatus}
+                    onCategoryChange={setSelectCategory}
+                    onStatusChange={setSelectStatus}
+                    categoryOptions={[...new Set(item.map(i => i.productCat).filter(Boolean))]}
+                    statusOptions={[...new Set(item.map(i => i.productStatusName).filter(Boolean))]}
+                />
+            )}
             <table className="report-check-table">
                 <colgroup>
                     <col style={{ width: "10%" }} />  {/* 사용자 번호 */}
@@ -164,39 +267,34 @@ function TableTab({tabType}){
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>{tabType === 'report'?'게시글 번호' :'이름'} </th>
-                    <th>{tabType === 'report'?'분류' :'분류'}</th>
-                    <th>{tabType === 'report'?'신고내용' :'사업자명'}</th>
-                    <th>{tabType === 'report'?'제목' :'이메일'}</th>
-                    <th>{tabType === 'report'?'사업자명' :'상태'}</th>
-                    <th>
-                        <input
-                            type="checkbox"
-                            onChange={handleSelectAll}
-                            checked={item.length > 0 && item.every((i) => i.checked)}
-                        />
-                    </th>
-                    {[...Array(6)].map((_,i) => (
-                        <th key={`head-pad-${i}`}></th>
+                    {(theadConfig[tabType] || []).map((text, idx) => (
+                        <th key={`th-${idx}`}>
+                            {text || (
+                                <input
+                                    type="checkbox"
+                                    onChange={handleSelectAll}
+                                    checked={item.length > 0 && item.every((i) => i.checked)}
+                                />
+                            )}
+                        </th>
+                    ))}
+                    {[...Array(6)].map((_, i) => (
+                        <th key={`head-pad-${i}`}></th> // td 12줄 유지
                     ))}
                 </tr>
                 </thead>
                 <tbody>
-                    {item
-                        .filter((i) => i && (i.reportId || i.memberId))
-                        .filter((i)=>
-                            tabType === 'member'
-                                ? (selectRole === '전체' || i.memberRoleName === selectRole) &&
-                                (selectStatus === '전체' || i.memberStatusName === selectStatus)
-                                : true
-                        )
-                        .slice((page -1)*10, page * 10)
-                        .map(renderDataRow)}
+                    {pageData.map((row, idx) => renderDataRow(row, idx))}
                     {renderEmptyRows()}
                 </tbody>
             </table>
             <div className="pagination-wrapper">
-                <CustomPagination defaultCurrent={page} total={item.length} pageSize={10} onChange={(p) => setPage(p)}/>
+                <CustomPagination
+                    defaultCurrent={page}
+                    total={filteredItem.length}
+                    pageSize={10}
+                    onChange={(p) => setPage(p)}
+                />
             </div>
             <Button color="error" onClick={handleDelete} className="delete-btn">삭제</Button>
         </div>

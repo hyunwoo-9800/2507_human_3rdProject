@@ -110,6 +110,9 @@
     border-bottom: 1px solid #ccc;
     word-wrap: break-word;
     cursor: pointer;
+    white-space: nowrap;        /* 줄바꿈 방지 */
+    overflow: hidden;           /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis;    /* ... 표시 */
 }
 .report-check-table tbody tr:nth-child(even) td {
     background-color: #f5f5f5; /* 짝수 줄은 약간 더 밝게 */
@@ -128,7 +131,9 @@
 .report-check-table th:nth-child(3) {
     width: 20%; /* 적당히 늘려주기 */
     min-width: 200px;
-    white-space: normal; /* 줄바꿈 허용 */
+    white-space: nowrap; /* 줄바꿈 막기 */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .report-check-table td:nth-child(2),
 .report-check-table th:nth-child(2){

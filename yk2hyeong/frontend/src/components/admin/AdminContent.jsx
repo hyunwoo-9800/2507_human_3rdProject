@@ -15,6 +15,8 @@ const AdminContent = ({ activeItem }) => {
         tabType = 'member';
     }else if(activeItem === '신고확인'){
         tabType = 'report';
+    }else if(activeItem === '상품관리'){
+        tabType = 'products';
     }
 
     return (
