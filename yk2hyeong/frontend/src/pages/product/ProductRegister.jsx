@@ -145,21 +145,21 @@ export default function ProductRegister() {
             formData.append("productName", cleanedForm.productName);
             formData.append("startDate", dayjs(cleanedForm.startDate).format("YYYY-MM-DD"));
             formData.append("endDate", dayjs(cleanedForm.endDate).format("YYYY-MM-DD"));
-            formData.append("productPrice", cleanedForm.productPrice);
+            formData.append("productPrice", String(cleanedForm.productPrice));
             formData.append("detailCodeId", cleanedForm.detailCodeId);
             formData.append("orderType", cleanedForm.orderType);
-            formData.append("saleQuantity", cleanedForm.saleQuantity);
-            formData.append("minSaleUnit", cleanedForm.minSaleUnit);
-            formData.append("selectedCategory", cleanedForm.selectedCategory);
-            formData.append("selectedSubCategory", cleanedForm.selectedSubCategory);
+            formData.append("saleQuantity", String(cleanedForm.saleQuantity));
+            formData.append("minSaleUnit", String(cleanedForm.minSaleUnit));
+            // formData.append("selectedCategory", cleanedForm.selectedCategory);
+            // formData.append("selectedSubCategory", cleanedForm.selectedSubCategory);
             formData.append("descriptionText", descriptionText);
 
             // 사용자 정보
             formData.append("memberId", userInfo.memberId);
-            formData.append("memberEmail", userInfo.memberEmail);
-            formData.append("memberName", userInfo.memberName);
-            formData.append("memberBname", userInfo.memberBname);
-            formData.append("memberBnum", userInfo.memberBnum);
+            // formData.append("memberEmail", userInfo.memberEmail);
+            // formData.append("memberName", userInfo.memberName);
+            // formData.append("memberBname", userInfo.memberBname);
+            // formData.append("memberBnum", userInfo.memberBnum);
 
             // 썸네일
             formData.append("thumbnail", thumbnail);

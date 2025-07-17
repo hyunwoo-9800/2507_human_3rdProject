@@ -6,9 +6,13 @@ import fs.human.yk2hyeong.product.vo.CategoryVO;
 import fs.human.yk2hyeong.product.vo.ProductRegisterDTO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -71,10 +75,37 @@ public class ProductController {
     }
 
     // 상품 등록 - multipart/form-data 요청 처리
-    @PostMapping("/products/register")
-    public ResponseEntity<String> registerProduct(@ModelAttribute ProductRegisterDTO dto) {
-        System.out.println("thumbnail: " + dto.getThumbnail());
-        System.out.println("detailImages: " + dto.getDetailImages());
+    @PostMapping(value = "/products/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> registerProduct(
+            @RequestPart("productName") String productName,
+            @RequestPart("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+            @RequestPart("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
+            @RequestPart("productPrice") double productPrice,
+            @RequestPart("detailCodeId") String detailCodeId,
+            @RequestPart("orderType") String orderType,
+            @RequestPart("saleQuantity") int saleQuantity,
+            @RequestPart("minSaleUnit") int minSaleUnit,
+            @RequestPart("descriptionText") String descriptionText,
+            @RequestPart("memberId") String memberId,
+
+            @RequestPart("thumbnail") MultipartFile thumbnail,
+            @RequestPart("detailImages") List<MultipartFile> detailImages
+    ) {
+        ProductRegisterDTO dto = new ProductRegisterDTO();
+        dto.setProductName(productName);
+        dto.setStartDate(startDate);
+        dto.setEndDate(endDate);
+        dto.setProductPrice(productPrice);
+        dto.setDetailCodeId(detailCodeId);
+        dto.setOrderType(orderType);
+        dto.setSaleQuantity(saleQuantity);
+        dto.setMinSaleUnit(minSaleUnit);
+        dto.setDescriptionText(descriptionText);
+        dto.setMemberId(memberId);
+        dto.setThumbnail(thumbnail);
+        dto.setDetailImages(detailImages);
+
+        // 서비스 호출
         try {
             productService.registerProduct(dto);
             return ResponseEntity.ok("상품 등록 성공");
