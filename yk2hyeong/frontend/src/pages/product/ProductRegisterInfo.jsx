@@ -86,7 +86,7 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
     }
 
     const RequiredLabel = ({ children }) => (
-        <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 14 }}>
+        <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 20 }}>
             {children} <span style={{ color: 'red' }}>*</span>
         </label>
     );

@@ -114,39 +114,77 @@ export default function ProductRegister() {
     };
 
     // 최종 제출 핸들러
-    const handleFinalSubmit = () => {
-        if (!isBasicInfoValid(productForm) || !isDescriptionValid()) {
-            alert("모든 필수 항목을 입력해주세요.");
-            return;
-        }
-
+    const handleFinalSubmit = async () => {
         if (!userInfo) {
-            alert("로그인 정보가 확인되지 않았습니다.");
+            alert("로그인이 필요합니다.");
             return;
         }
 
-        // categoryData 필드 제거
-        const { categoryData, ...cleanedForm } = productForm;
+        if (!isBasicInfoValid(productForm)) {
+            alert("기본 정보를 모두 입력해주세요.");
+            return;
+        }
 
-        const submitData = {
-            ...cleanedForm,
-            descriptionText,
-            thumbnail,
-            detailImages,
-            memberId: userInfo.memberId,
-            memberEmail: userInfo.memberEmail,
-            memberName: userInfo.memberName,
-            memberBname: userInfo.memberBname,
-            memberBnum: userInfo.memberBnum
-        };
+        if (!isDescriptionValid()) {
+            alert("상세 설명을 입력해주세요.");
+            return;
+        }
 
-        console.log("✅ 최종 제출 데이터:", submitData);
+        if (!window.confirm("상품을 등록하시겠습니까?")) return;
 
-        // 실제 제출 예시
-        // axios.post("/api/products", submitData)
-        //     .then(res => console.log(res))
-        //     .catch(err => console.error(err));
+        try {
+            const { categoryData, ...cleanedForm } = productForm;
+            const formData = new FormData();
+
+            // 텍스트 데이터
+            formData.append("productName", cleanedForm.productName);
+            formData.append("startDate", cleanedForm.startDate);
+            formData.append("endDate", cleanedForm.endDate);
+            formData.append("productPrice", cleanedForm.productPrice);
+            formData.append("detailCodeId", cleanedForm.detailCodeId);
+            formData.append("orderType", cleanedForm.orderType);
+            formData.append("saleQuantity", cleanedForm.saleQuantity);
+            formData.append("minSaleUnit", cleanedForm.minSaleUnit);
+            formData.append("selectedCategory", cleanedForm.selectedCategory);
+            formData.append("selectedSubCategory", cleanedForm.selectedSubCategory);
+            formData.append("descriptionText", descriptionText);
+
+            // 사용자 정보
+            formData.append("memberId", userInfo.memberId);
+            formData.append("memberEmail", userInfo.memberEmail);
+            formData.append("memberName", userInfo.memberName);
+            formData.append("memberBname", userInfo.memberBname);
+            formData.append("memberBnum", userInfo.memberBnum);
+
+            // 썸네일
+            formData.append("thumbnail", thumbnail);
+
+            // 상세 이미지들
+            detailImages.forEach((img, index) => {
+                formData.append("detailImages", img); // 백엔드에서 MultipartFile[]로 받을 경우 이렇게 한 이름으로 반복
+            });
+
+            // 전송
+            const response = await fetch("http://localhost:8080/api/products", {
+                method: "POST",
+                body: formData,
+                credentials: "include" // 세션 유지용
+            });
+
+            if (!response.ok) {
+                throw new Error("상품 등록 실패");
+            }
+
+            const result = await response.json();
+            console.log("🎉 상품 등록 성공:", result);
+            alert("상품이 성공적으로 등록되었습니다!");
+            // 필요 시 리디렉션 or 초기화
+        } catch (err) {
+            console.error("🔥 에러:", err);
+            alert("상품 등록 중 오류가 발생했습니다.");
+        }
     };
+
 
     // 현재 탭에 따라 콘텐츠 렌더링
     const renderContent = () => {
