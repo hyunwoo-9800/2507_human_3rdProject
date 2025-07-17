@@ -9,11 +9,29 @@ export default function ProductRegister() {
     const [activeItem, setActiveItem] = useState("1");            // 현재 활성 탭 키
     const [guideConfirmed, setGuideConfirmed] = useState(false);  // 안내사항 체크 여부
     const [showWarning, setShowWarning] = useState(false);        // 경고창 표시 여부
+    const [userInfo, setUserInfo] = useState(null);               // 사용자 정보 상태
 
-    // 체크박스 상태 (안내사항 체크박스)
+    // 로그인 사용자 정보 가져오기
+    useEffect(() => {
+        fetch("http://localhost:8080/auth/me", {
+            credentials: "include" // 쿠키 기반 인증 시 필요
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("인증 정보 불러오기 실패");
+                return res.json();
+            })
+            .then(data => {
+                setUserInfo(data);
+            })
+            .catch(err => {
+                console.error("유저 정보 불러오기 실패:", err);
+            });
+    }, []);
+
+    // 안내사항 체크박스 상태
     const [guideChecked, setGuideChecked] = useState(false);
 
-    // 기본정보 상태 관리
+    // 기본정보 상태
     const [productForm, setProductForm] = useState({
         productName: '',
         startDate: null,
@@ -25,7 +43,7 @@ export default function ProductRegister() {
         minSaleUnit: 10,
         selectedCategory: null,
         selectedSubCategory: null,
-        categoryData: {},
+        categoryData: {}, // 이 항목은 제출 시 제외될 것
         showDateWarning: false,
     });
 
@@ -34,7 +52,7 @@ export default function ProductRegister() {
     const [thumbnail, setThumbnail] = useState(null);
     const [detailImages, setDetailImages] = useState([]);
 
-    // 기본정보 유효성 검사 함수
+    // 기본정보 유효성 검사
     const isBasicInfoValid = (form) => {
         return (
             form.productName?.trim() !== '' &&
@@ -48,19 +66,17 @@ export default function ProductRegister() {
         );
     };
 
-    // 상품소개 유효성 검사 함수
+    // 상품소개 유효성 검사
     const isDescriptionValid = () => {
-        return (
-            thumbnail !== null
-        );
+        return thumbnail !== null;
     };
 
-    // 사이드바 라벨에 완료 표시 붙이기
+    // 완료된 항목 라벨에 체크 표시
     const getLabelWithStatus = (label, isComplete) => {
         return isComplete ? `${label} ✅` : label;
     };
 
-    // 메뉴 아이템 정의
+    // 사이드바 메뉴 항목
     const menuItems = [
         {
             key: 'sub1',
@@ -73,7 +89,7 @@ export default function ProductRegister() {
         }
     ];
 
-    // guideConfirmed가 true가 되면 showWarning을 자동으로 false로 설정해 경고창 숨김
+    // 안내사항 체크 시 경고창 자동 숨김
     useEffect(() => {
         if (guideConfirmed) {
             setShowWarning(false);
@@ -82,45 +98,57 @@ export default function ProductRegister() {
 
     // 사이드바 탭 클릭 핸들러
     const handleMenuSelect = (info) => {
-        console.log('선택된 key:', info.key);  // 선택된 key 확인용 로그
-
-        setShowWarning(false);  // 탭 클릭 시 기본적으로 경고 숨기기
+        setShowWarning(false);  // 경고 초기화
 
         if (info.key === '1') {
-            // 첫번째 탭(안내사항)은 항상 이동 가능
             setActiveItem('1');
             return;
         }
 
-        // 안내사항 확인 안 됐으면 경고 표시하고 이동 차단
         if (!guideConfirmed) {
-            setShowWarning(true);
+            setShowWarning(true); // 안내사항 체크 안 되어 있으면 경고
             return;
         }
 
-        // 정상적으로 선택된 탭으로 이동
-        setActiveItem(info.key);
+        setActiveItem(info.key); // 정상 이동
     };
 
-    // 최종 제출 버튼 클릭 핸들러
+    // 최종 제출 핸들러
     const handleFinalSubmit = () => {
         if (!isBasicInfoValid(productForm) || !isDescriptionValid()) {
             alert("모든 필수 항목을 입력해주세요.");
             return;
         }
 
+        if (!userInfo) {
+            alert("로그인 정보가 확인되지 않았습니다.");
+            return;
+        }
+
+        // categoryData 필드 제거
+        const { categoryData, ...cleanedForm } = productForm;
+
         const submitData = {
-            ...productForm,
+            ...cleanedForm,
             descriptionText,
             thumbnail,
-            detailImages
+            detailImages,
+            memberId: userInfo.memberId,
+            memberEmail: userInfo.memberEmail,
+            memberName: userInfo.memberName,
+            memberBname: userInfo.memberBname,
+            memberBnum: userInfo.memberBnum
         };
 
         console.log("✅ 최종 제출 데이터:", submitData);
-        // 실제 제출 시 axios 등으로 API 호출 가능
+
+        // 실제 제출 예시
+        // axios.post("/api/products", submitData)
+        //     .then(res => console.log(res))
+        //     .catch(err => console.error(err));
     };
 
-    // 활성 탭에 따라 다른 컴포넌트 렌더링
+    // 현재 탭에 따라 콘텐츠 렌더링
     const renderContent = () => {
         switch (activeItem) {
             case '1':
@@ -129,8 +157,8 @@ export default function ProductRegister() {
                         checked={guideChecked}
                         onChangeChecked={setGuideChecked}
                         onNext={() => {
-                            setGuideConfirmed(true);  // 체크 후 안내사항 확인 완료 상태로 변경
-                            setActiveItem('2');       // 기본정보 탭으로 이동
+                            setGuideConfirmed(true);
+                            setActiveItem('2');
                         }}
                     />
                 );
@@ -158,13 +186,14 @@ export default function ProductRegister() {
                         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 30 }}>
                             <button
                                 onClick={handleFinalSubmit}
+                                disabled={!userInfo}
                                 style={{
                                     padding: '10px 20px',
-                                    backgroundColor: '#00a43c',
+                                    backgroundColor: userInfo ? '#00a43c' : 'gray',
                                     color: '#fff',
                                     border: 'none',
                                     borderRadius: '4px',
-                                    cursor: 'pointer',
+                                    cursor: userInfo ? 'pointer' : 'not-allowed',
                                     transition: 'all 0.2s ease-in-out'
                                 }}
                             >
@@ -189,7 +218,7 @@ export default function ProductRegister() {
                 />
             </div>
             <div style={{ flex: 1, padding: 20 }}>
-                {/* 경고창 표시 */}
+                {/* 경고창 */}
                 {showWarning && (
                     <CustomAlert
                         type="warning"
