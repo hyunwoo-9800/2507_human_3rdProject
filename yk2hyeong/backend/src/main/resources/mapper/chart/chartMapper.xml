@@ -6,11 +6,11 @@
 
 <mapper namespace="fs.human.yk2hyeong.chart.dao.chartDAO">
 
-    <!--  주간 데이터 조회  -->
+    <!-- 주간 데이터 조회  -->
     <select id="getUnitPriceWeek" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
         SELECT
             B.LOW_CODE_NAME,
-            SUM(A.RECORDED_UNIT_PRICE) AS RECORDED_UNIT_PRICE,
+            AVG(A.RECORDED_UNIT_PRICE) AS RECORDED_UNIT_PRICE,
             A.RECORDED_DATE
         FROM
             TB_PRICE_API_HISTORY A
@@ -26,7 +26,30 @@
             A.RECORDED_DATE
     </select>
 
-    <!--  월간 데이터 조회  -->
+    <!-- 주간 예측 데이터 조회  -->
+    <select id="getUnitPriceWeekPredictor" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
+        SELECT
+            B.LOW_CODE_NAME,
+            AVG(A.PREDICTED_UNIT_PRICE) AS PREDICTED_UNIT_PRICE,
+            A.PREDICT_DATE
+        FROM
+            TB_PRICE_PREDICTION A
+                LEFT JOIN TB_CODE_DETAIL B
+                    ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
+        WHERE
+            A.DETAIL_CODE_ID = #{detailCodeId}
+          <![CDATA[
+            AND A.PREDICT_DATE >= TRUNC(SYSDATE) - 7
+            AND A.PREDICT_DATE < TRUNC(SYSDATE) + 1
+            ]]>
+        GROUP BY
+            B.LOW_CODE_NAME,
+            A.PREDICT_DATE
+        ORDER BY
+            A.PREDICT_DATE
+    </select>
+
+    <!-- 월간 데이터 조회  -->
     <select id="getUnitPriceMonth" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
         SELECT
             B.LOW_CODE_NAME,
@@ -47,7 +70,29 @@
             TO_CHAR(A.RECORDED_DATE, 'YYYY/MM')
     </select>
 
-    <!--  년간 데이터 조회  -->
+    <!-- 월간 예측 데이터 조회  -->
+    <select id="getUnitPriceMonthPredictor" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
+        SELECT
+            B.LOW_CODE_NAME,
+            AVG(A.PREDICTED_UNIT_PRICE) AS PREDICTED_UNIT_PRICE,
+            TO_DATE(TO_CHAR(A.PREDICT_DATE, 'YYYY/MM'), 'YYYY/MM') AS PREDICT_DATE
+        FROM
+            TB_PRICE_PREDICTION A
+                LEFT JOIN TB_CODE_DETAIL B
+                    ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
+        WHERE
+            <![CDATA[
+            A.DETAIL_CODE_ID = #{detailCodeId}
+            AND A.PREDICT_DATE <= ADD_MONTHS(TRUNC(SYSDATE, 'MM'), 6)
+        ]]>
+        GROUP BY
+            B.LOW_CODE_NAME,
+            TO_CHAR(A.PREDICT_DATE, 'YYYY/MM')
+        ORDER BY
+            TO_CHAR(A.PREDICT_DATE, 'YYYY/MM')
+    </select>
+
+    <!-- 년간 데이터 조회  -->
     <select id="getUnitPriceYear" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
         SELECT
             B.LOW_CODE_NAME,
@@ -65,6 +110,26 @@
             TO_CHAR(A.RECORDED_DATE, 'YYYY')
         ORDER BY
             TO_CHAR(A.RECORDED_DATE, 'YYYY')
+    </select>
+
+    <!-- 년간 예측 데이터 조회  -->
+    <select id="getUnitPriceYearPredictor" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
+        SELECT
+            B.LOW_CODE_NAME,
+            AVG(A.PREDICTED_UNIT_PRICE) AS PREDICTED_UNIT_PRICE,
+            TO_DATE(TO_CHAR(A.PREDICT_DATE, 'YYYY'), 'YYYY') AS PREDICT_DATE
+        FROM
+            TB_PRICE_PREDICTION A
+                LEFT JOIN TB_CODE_DETAIL B
+                          ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
+        WHERE
+            A.DETAIL_CODE_ID = '111'
+          AND A.PREDICT_DATE >= ADD_MONTHS(SYSDATE, -12)
+        GROUP BY
+            B.LOW_CODE_NAME,
+            TO_CHAR(A.PREDICT_DATE, 'YYYY')
+        ORDER BY
+            TO_CHAR(A.PREDICT_DATE, 'YYYY')
     </select>
 
 </mapper>

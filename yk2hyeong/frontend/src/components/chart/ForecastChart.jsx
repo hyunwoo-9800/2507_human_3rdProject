@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {Bar} from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import CustomLoading from '../../components/common/CustomLoading';
 
 import {
@@ -30,90 +30,109 @@ ChartJS.register(
     PointElement
 );
 
-const ForecastChart = ({detailCodeId, timeFrame}) => {
+const ForecastChart = ({ detailCodeId, timeFrame }) => {
     const [chartData, setChartData] = useState(null);
 
     useEffect(() => {
         if (!detailCodeId || !timeFrame) return;
 
-        axios.get('/chart/price', {
+        const fetchPastData = axios.get('/chart/price/past', {
             params: {
                 detailCodeId,
-                timeFrame,
+                timeFrame, // 과거 데이터만
             }
-        }).then(res => {
-            const data = res.data;
-            //
-            // const labels = data.map(d => d.recordedDate);
-            // const actualPrices = data.map(d => d.recordedUnitPrice);
-            // const predictedPrices = data.map(d => d.predictedUnitPrice || null); // 예측값이 있다면
+        });
 
+        const fetchFutureData = axios.get('/chart/price/future', {
+            params: {
+                detailCodeId,
+                timeFrame, // 예측된 미래 데이터
+            }
+        });
+
+        Promise.all([fetchPastData, fetchFutureData]).then(([pastRes, futureRes]) => {
+            const pastData = pastRes.data;
+            const futureData = futureRes.data;
+
+            // 날짜 범위 설정
             const labels = [];
             const today = new Date();
 
-            // 날짜 범위 설정
-            let dateRange = [];
-
-            // 날짜 범위 설정 (주간, 월간, 연간)
             if (timeFrame === 'week') {
-                // 최근 7일
-                for (let i = 6; i >= 0; i--) {
+                // 과거 7일, 미래 7일
+                for (let i = 7; i >= 0; i--) {
                     const date = new Date(today);
-                    date.setDate(today.getDate() - i); // 7일 전부터 오늘까지
-                    labels.push(date.toISOString().slice(0, 10));  // 'YYYY-MM-DD' 형태로 저장
+                    date.setDate(today.getDate() - i);
+                    labels.push(date.toISOString().slice(0, 10));  // 'YYYY-MM-DD'
+                }
+                for (let i = 1; i <= 7; i++) {
+                    const date = new Date(today);
+                    date.setDate(today.getDate() + i);
+                    labels.push(date.toISOString().slice(0, 10));  // 'YYYY-MM-DD'
                 }
             } else if (timeFrame === 'month') {
-                // 최근 5개월
-                for (let i = 4; i >= 0; i--) {
+                // 과거 6개월, 미래 3개월
+                for (let i = 5; i >= 0; i--) {
                     const date = new Date(today);
-                    date.setMonth(today.getMonth() - i); // 5개월 전부터 오늘까지
-                    labels.push(date.toISOString().slice(0, 7)); // 'YYYY-MM' 형태로 저장
+                    date.setMonth(today.getMonth() - i);
+                    labels.push(date.toISOString().slice(0, 7)); // 'YYYY-MM'
+                }
+                for (let i = 1; i <= 3; i++) {
+                    const date = new Date(today);
+                    date.setMonth(today.getMonth() + i);
+                    labels.push(date.toISOString().slice(0, 7)); // 'YYYY-MM'
                 }
             } else if (timeFrame === 'year') {
-                // 최근 5년
+                // 과거 5년, 미래 1년
                 for (let i = 4; i >= 0; i--) {
                     const date = new Date(today);
-                    date.setFullYear(today.getFullYear() - i); // 5년 전부터 오늘까지
-                    labels.push(date.getFullYear().toString()); // 'YYYY' 형태로 저장
+                    date.setFullYear(today.getFullYear() - i);
+                    labels.push(date.getFullYear().toString()); // 'YYYY'
+                }
+                for (let i = 1; i <= 1; i++) {
+                    const date = new Date(today);
+                    date.setFullYear(today.getFullYear() + i);
+                    labels.push(date.getFullYear().toString()); // 'YYYY'
                 }
             }
 
-            // 실제 가격 데이터 매핑 (없으면 0으로 처리)
-            const actualPrices = labels.map(date => {
-                const found = data.find(d => {
-                    // 월간/연간 데이터는 'YYYY-MM' 또는 'YYYY' 형식으로 비교
-                    if (timeFrame === 'month') {
-                        return d.recordedDate.slice(0, 7) === date; // 'YYYY-MM' 형식으로 비교
-                    } else if (timeFrame === 'year') {
-                        return d.recordedDate.slice(0, 4) === date; // 'YYYY' 형식으로 비교
-                    } else {
-                        return d.recordedDate === date; // 주간은 'YYYY-MM-DD' 형식으로 그대로 비교
-                    }
-                });
-                return found ? found.recordedUnitPrice : 0;  // 데이터가 없으면 0
+            // 과거 데이터 매핑 (실제 가격)
+            const pastPriceMap = pastData.reduce((acc, d) => {
+                const dateKey = timeFrame === 'month' ? d.recordedDate.slice(0, 7) : (timeFrame === 'year' ? d.recordedDate.slice(0, 4) : d.recordedDate);
+                acc[dateKey] = acc[dateKey] || { recorded: 0 };
+                if (d.recordedUnitPrice) acc[dateKey].recorded = d.recordedUnitPrice;
+                return acc;
+            }, {});
+
+            // 미래 데이터 매핑 (예측 가격)
+            const futurePriceMap = futureData.reduce((acc, d) => {
+                const dateKey = timeFrame === 'month' ? d.predictDate.slice(0, 7) : (timeFrame === 'year' ? d.predictDate.slice(0, 4) : d.predictDate);
+                acc[dateKey] = acc[dateKey] || { predicted: 0 };
+                if (d.predictedUnitPrice) acc[dateKey].predicted = d.predictedUnitPrice;
+                return acc;
+            }, {});
+
+            // 실제 가격 및 예측 가격 배열로 변환
+            const actualPrices = [];
+            const predictedPrices = [];
+            const filteredLabels = [];
+
+            labels.forEach(date => {
+                if (pastPriceMap[date]?.recorded || futurePriceMap[date]?.predicted) {
+                    filteredLabels.push(date);
+                    actualPrices.push(pastPriceMap[date]?.recorded || 0);
+                    predictedPrices.push(futurePriceMap[date]?.predicted || 0);
+                }
             });
 
-            // 예측 가격 데이터 매핑 (없으면 null로 처리)
-            const predictedPrices = labels.map(date => {
-                const found = data.find(d => {
-                    if (timeFrame === 'month') {
-                        return d.recordedDate.slice(0, 7) === date; // 'YYYY-MM' 형식으로 비교
-                    } else if (timeFrame === 'year') {
-                        return d.recordedDate.slice(0, 4) === date; // 'YYYY' 형식으로 비교
-                    } else {
-                        return d.recordedDate === date; // 주간은 'YYYY-MM-DD' 형식으로 그대로 비교
-                    }
-                });
-                return found ? found.predictedUnitPrice : null;  // 예측값이 없으면 null
-            });
-
+            // 차트 데이터 설정
             setChartData({
-                labels,
+                labels: filteredLabels,
                 datasets: [
                     {
                         type: 'bar',
                         label: '실제 단가',
-                        data: actualPrices, // 값 없으면 0
+                        data: actualPrices,
                         backgroundColor: 'rgba(75, 192, 192, 0.6)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
@@ -138,15 +157,22 @@ const ForecastChart = ({detailCodeId, timeFrame}) => {
             {chartData ? (
                 <Bar data={chartData} options={{
                     responsive: true,
+                    scales: {
+                        y: {
+                            min: 0, // y축 최소값 설정 (0부터 시작)
+                            max: Math.max(...chartData.datasets[0].data, ...chartData.datasets[1].data) * 1.2, // y축 최대값 설정 (가장 큰 값의 120%)
+                        }
+                    },
                     plugins: {
-                        legend: {position: 'top'},
-                        title: {display: true, text: '시세 추이 (실제 vs 예측)'}
+                        legend: { position: 'top' },
+                        title: { display: true, text: '시세 추이 (실제 vs 예측)' }
                     }
-                }}/>
+                }} />
             ) : (
-                <CustomLoading/>
+                <CustomLoading />
             )}
         </div>
     );
 };
+
 export default ForecastChart;
