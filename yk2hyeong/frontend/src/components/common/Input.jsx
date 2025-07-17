@@ -25,6 +25,8 @@ function Input({
                    required = false,
                    size = 'md',
                    className = '',
+                   minLength,
+                   maxLength,
                    ...rest
                }) {
     // 크기별 클래스명 추가
@@ -50,6 +52,8 @@ function Input({
                 disabled={disabled}
                 required={required}
                 className={classes}
+                minLength={minLength}
+                maxLength={maxLength}
                 {...rest}
             />
         </div>
@@ -66,6 +70,8 @@ Input.propTypes = {
     required: PropTypes.bool,
     size: PropTypes.oneOf(['sm', 'md', 'lg']),
     className: PropTypes.string,
+    minLength: PropTypes.number,
+    maxLength: PropTypes.number,
 };
 
 export default Input;

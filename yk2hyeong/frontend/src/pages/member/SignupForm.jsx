@@ -219,6 +219,7 @@ function SignupForm({ role }) {
             onChange={handleChange}
             placeholder="이메일"
             type="email"
+            maxLength={50}
             required
           />
           {emailMessage && (
@@ -254,6 +255,7 @@ function SignupForm({ role }) {
               value={userInputCode}
               onChange={(e) => setUserInputCode(e.target.value)}
               size="sm"
+              maxLength={6}
             />
             <Button type="button" size="sm" onClick={verifyCode}>
               인증 확인
@@ -279,6 +281,7 @@ function SignupForm({ role }) {
           onChange={handleChange}
           placeholder="비밀번호"
           type="password"
+          maxLength={20}
           required
         />
         <Input
@@ -287,6 +290,7 @@ function SignupForm({ role }) {
           value={form.memberName}
           onChange={handleChange}
           placeholder="이름"
+          maxLength={30}
           required
         />
         <Input
@@ -295,6 +299,7 @@ function SignupForm({ role }) {
           value={form.memberTel}
           onChange={handleChange}
           placeholder="연락처"
+          maxLength={13}
           required
         />
 
@@ -338,6 +343,7 @@ function SignupForm({ role }) {
           value={form.memberDetailAddr}
           onChange={handleChange}
           placeholder="상세주소"
+          maxLength={100}
         />
         <Input
           label="사업자명"
@@ -345,6 +351,7 @@ function SignupForm({ role }) {
           value={form.memberBname}
           onChange={handleChange}
           placeholder="사업자명"
+          maxLength={60}
           required
         />
         <Input
@@ -353,6 +360,7 @@ function SignupForm({ role }) {
           value={form.memberBnum}
           onChange={handleChange}
           placeholder="사업자등록번호"
+          maxLength={30}
           required
         />
 
@@ -384,6 +392,7 @@ function SignupForm({ role }) {
           value={form.memberAccountNum}
           onChange={handleChange}
           placeholder="계좌번호"
+          maxLength={30}
           required
         />
 
