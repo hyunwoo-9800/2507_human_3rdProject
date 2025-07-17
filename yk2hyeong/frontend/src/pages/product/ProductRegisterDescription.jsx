@@ -31,15 +31,17 @@ export default function ProductRegisterDescription({
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
 
+            const cropSize = 270;
             canvas.width = cropSize;
             canvas.height = cropSize;
 
-            // 비율 유지하며 cropSize 이상이 되도록 scale 계산
-            const scale = Math.max(cropSize / img.width, cropSize / img.height) * 0.8;  // 0.8배 크기로 줄임
+            // 작은 면이 cropSize 이상이 되도록 scale 계산 (비율 유지)
+            const scale = cropSize / Math.min(img.width, img.height);
+
             const resizedWidth = img.width * scale;
             const resizedHeight = img.height * scale;
 
-            // 리사이즈용 임시 캔버스
+            // 리사이즈용 임시 캔버스 생성
             const resizeCanvas = document.createElement("canvas");
             resizeCanvas.width = resizedWidth;
             resizeCanvas.height = resizedHeight;
@@ -48,14 +50,14 @@ export default function ProductRegisterDescription({
             // 이미지 리사이징
             resizeCtx.drawImage(img, 0, 0, resizedWidth, resizedHeight);
 
-            // 중앙 크롭 좌표
+            // 중앙 크롭 좌표 계산
             const sx = (resizedWidth - cropSize) / 2;
             const sy = (resizedHeight - cropSize) / 2;
 
-            // 최종 캔버스에 중앙 270x270 크롭
+            // 중앙 270x270 크롭하여 최종 캔버스에 그림
             ctx.drawImage(resizeCanvas, sx, sy, cropSize, cropSize, 0, 0, cropSize, cropSize);
 
-            // Blob 생성 후 File 생성
+            // Blob 생성 후 File 생성 및 상태 업데이트
             canvas.toBlob(
                 (blob) => {
                     if (blob) {
@@ -84,14 +86,45 @@ export default function ProductRegisterDescription({
     };
 
     // detail 이미지 여러 장 선택 핸들러
-    const handleDetailImagesChange = (e) => {
-        const files = Array.from(e.target.files);
+    const resizeDetailImage = (file, maxWidth = 600) => {
+        return new Promise((resolve) => {
+            const img = new Image();
+            const url = URL.createObjectURL(file);
+            img.onload = () => {
+                const scale = Math.min(1, maxWidth / img.width);
+                const canvas = document.createElement("canvas");
+                canvas.width = img.width * scale;
+                canvas.height = img.height * scale;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(
+                    (blob) => {
+                        if (blob) {
+                            const resizedFile = new File([blob], file.name, { type: file.type });
+                            resolve(resizedFile);
+                        }
+                        URL.revokeObjectURL(url);
+                    },
+                    file.type,
+                    0.9
+                );
+            };
+            img.src = url;
+        });
+    };
+
+// handleDetailImagesChange 예시에서 사용
+    const handleDetailImagesChange = async (e) => {
+        let files = Array.from(e.target.files);
         if (files.length > 3) {
             alert("최대 3장까지 첨부할 수 있습니다.");
             return;
         }
-        setDetailImages(files);
+        // 리사이징 처리 (비동기)
+        const resizedFiles = await Promise.all(files.map(file => resizeDetailImage(file, 600)));
+        setDetailImages(resizedFiles);
     };
+
 
     // detailImages가 변경되면 미리보기 URL 생성
     useEffect(() => {

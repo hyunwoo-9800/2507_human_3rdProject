@@ -4,6 +4,7 @@ import ProductRegisterGuide from "./ProductRegisterGuide";
 import ProductRegisterDescription from "./ProductRegisterDescription";
 import CustomAlert from "../../components/common/CustomAlert";
 import ProductSidebarMenu from "./ProductSidebarMenu";
+import dayjs from "dayjs";
 
 export default function ProductRegister() {
     const [activeItem, setActiveItem] = useState("1");            // 현재 활성 탭 키
@@ -115,6 +116,7 @@ export default function ProductRegister() {
 
     // 최종 제출 핸들러
     const handleFinalSubmit = async () => {
+
         if (!userInfo) {
             alert("로그인이 필요합니다.");
             return;
@@ -132,14 +134,17 @@ export default function ProductRegister() {
 
         if (!window.confirm("상품을 등록하시겠습니까?")) return;
 
+        console.log("thumbnail is File?", thumbnail instanceof File);
+        console.log("all detailImages are File?", detailImages.every(img => img instanceof File));
+
         try {
             const { categoryData, ...cleanedForm } = productForm;
             const formData = new FormData();
 
             // 텍스트 데이터
             formData.append("productName", cleanedForm.productName);
-            formData.append("startDate", cleanedForm.startDate);
-            formData.append("endDate", cleanedForm.endDate);
+            formData.append("startDate", dayjs(cleanedForm.startDate).format("YYYY-MM-DD"));
+            formData.append("endDate", dayjs(cleanedForm.endDate).format("YYYY-MM-DD"));
             formData.append("productPrice", cleanedForm.productPrice);
             formData.append("detailCodeId", cleanedForm.detailCodeId);
             formData.append("orderType", cleanedForm.orderType);
@@ -164,8 +169,13 @@ export default function ProductRegister() {
                 formData.append("detailImages", img); // 백엔드에서 MultipartFile[]로 받을 경우 이렇게 한 이름으로 반복
             });
 
+            for (const [key, value] of formData.entries()) {
+                console.log(key, value, value instanceof File);
+            }
+
+
             // 전송
-            const response = await fetch("http://localhost:8080/api/products", {
+            const response = await fetch("http://localhost:8080/api/products/register", {
                 method: "POST",
                 body: formData,
                 credentials: "include" // 세션 유지용

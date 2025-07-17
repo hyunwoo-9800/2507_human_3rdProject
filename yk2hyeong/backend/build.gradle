@@ -73,6 +73,8 @@ dependencies {
 
 	// 이미지 리사이징 (썸네일 생성 등)
 	implementation 'net.coobird:thumbnailator:0.4.20'
+	implementation 'commons-fileupload:commons-fileupload:1.5'
+
 
 }
 
@@ -89,8 +91,8 @@ task buildReact(type: Exec) {
 
 // React 이미지 자동 복사
 task copyReactImages(type: Copy) {
-	from "$rootDir/frontend/public/images" // React 빌드 폴더의 이미지 파일을
-	into "$projectDir/src/main/resources/static/images" // Spring 프로젝트의 static/images 폴더로 복사
+	from "$rootDir/frontend/public/images/**" // React 빌드 폴더의 이미지 파일을
+	into "$projectDir/src/main/resources/static/images/**" // Spring 프로젝트의 static/images 폴더로 복사
 }
 
 // 프론트엔드 정적 파일 빌드 결과 복사

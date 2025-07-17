@@ -73,6 +73,8 @@ public class ProductController {
     // 상품 등록 - multipart/form-data 요청 처리
     @PostMapping("/products/register")
     public ResponseEntity<String> registerProduct(@ModelAttribute ProductRegisterDTO dto) {
+        System.out.println("thumbnail: " + dto.getThumbnail());
+        System.out.println("detailImages: " + dto.getDetailImages());
         try {
             productService.registerProduct(dto);
             return ResponseEntity.ok("상품 등록 성공");

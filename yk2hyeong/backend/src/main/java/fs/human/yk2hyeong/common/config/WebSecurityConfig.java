@@ -43,7 +43,8 @@ public class WebSecurityConfig {
                                 "/admin/**",            //관리자페이지
                                 "/api/main/**",         //메인페이지 관련 API
                                 "/**/**/**",             //메인페이지 관련 API
-                                "/api/product/**"        //관리자페이지 상품 관련 API
+                                "/api/product/**",        //관리자페이지 상품 관련 API
+                                "/api/products" //상품 등록 POST 요청
 
                         ).permitAll() // 위 경로는 인증 없이 접근 허용
 

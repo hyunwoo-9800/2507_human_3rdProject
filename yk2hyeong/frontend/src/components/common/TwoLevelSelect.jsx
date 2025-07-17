@@ -4,40 +4,33 @@ import './common.css';  // 기존 스타일링 파일을 참조
 
 const TwoLevelSelect = ({
                             categoryData,
-                            value,
+                            value, // [category, subCategoryName, detailCodeId]
                             onChange,
                             size = 'md',
                             className = '',
                         }) => {
     const categoryList = Object.keys(categoryData);
-    const defaultCategory = value && value[0] ? value[0] : categoryList[0];
-    const [selectedCategory, setSelectedCategory] = useState(defaultCategory);
 
-    // 선택된 서브카테고리는 객체 형태로 변경
-    const defaultSub = value && value[1]
-        ? value[1]
-        : categoryData[defaultCategory][0];
+    const selectedCategory = value?.[0] || categoryList[0];
+    const subList = categoryData[selectedCategory] || [];
+    const selectedSub = subList.find(sub => sub.lowCodeName === value?.[1]) || subList[0];
 
-    const [selectedSub, setSelectedSub] = useState(defaultSub);
-
-    useEffect(() => {
-        if (onChange) onChange([selectedCategory, selectedSub.lowCodeName, selectedSub.detailCodeId]);
-    }, [selectedCategory, selectedSub, onChange]);
+    const selectClass = `input input-${size} ${className}`.trim();
 
     const handleCategoryChange = (e) => {
-        const category = e.target.value;
-        setSelectedCategory(category);
-        setSelectedSub(categoryData[category][0]);
+        const newCategory = e.target.value;
+        const firstSub = categoryData[newCategory][0];
+        onChange?.([newCategory, firstSub.lowCodeName, firstSub.detailCodeId]);
     };
 
     const handleSubChange = (e) => {
-        const sub = categoryData[selectedCategory].find(
+        const newSub = categoryData[selectedCategory].find(
             (item) => item.lowCodeName === e.target.value
         );
-        setSelectedSub(sub);
+        if (newSub) {
+            onChange?.([selectedCategory, newSub.lowCodeName, newSub.detailCodeId]);
+        }
     };
-
-    const selectClass = `input input-${size} ${className}`.trim();
 
     return (
         <div style={{ display: 'flex', gap: '10px' }}>
@@ -49,8 +42,12 @@ const TwoLevelSelect = ({
                 ))}
             </select>
 
-            <select className={selectClass} value={selectedSub.lowCodeName} onChange={handleSubChange}>
-                {categoryData[selectedCategory].map((sub) => (
+            <select
+                className={selectClass}
+                value={selectedSub?.lowCodeName || ''}
+                onChange={handleSubChange}
+            >
+                {subList.map((sub) => (
                     <option key={sub.lowCodeName} value={sub.lowCodeName}>
                         {sub.lowCodeName}
                     </option>

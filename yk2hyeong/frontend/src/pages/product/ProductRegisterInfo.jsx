@@ -22,18 +22,20 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
     };
 
     const handleStartDateChange = (date) => {
+        const formattedDate = date ? date.format('YYYY-MM-DD') : '';
         setForm(prev => ({
             ...prev,
-            startDate: date,
-            showDateWarning: !isValidDateRange(date, form.endDate)
+            startDate: formattedDate,
+            showDateWarning: !isValidDateRange(formattedDate, form.endDate)
         }));
     };
 
     const handleEndDateChange = (date) => {
+        const formattedDate = date ? date.format('YYYY-MM-DD') : '';
         setForm(prev => ({
             ...prev,
-            endDate: date,
-            showDateWarning: !isValidDateRange(form.startDate, date)
+            endDate: formattedDate,
+            showDateWarning: !isValidDateRange(form.startDate, formattedDate)
         }));
     };
 
@@ -49,6 +51,7 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
     };
 
     const handleCategoryChange = ([category, subCategory, detailCodeId]) => {
+        console.log("카테고리 변경", category, subCategory, detailCodeId);
         setForm(prev => ({
             ...prev,
             selectedCategory: category,
@@ -120,6 +123,7 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
                 <RequiredLabel>상품 카테고리를 선택해주세요.</RequiredLabel>
                 <TwoLevelSelect
                     categoryData={form.categoryData}
+                    value={[form.selectedCategory, form.selectedSubCategory, form.detailCodeId]}
                     onChange={handleCategoryChange}
                 />
             </div>
@@ -168,7 +172,7 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
                 <CustomDatePicker
                     style={{ marginLeft: '13px' }}
                     onChange={handleStartDateChange}
-                    value={form.startDate}
+                    value={form.startDate ? dayjs(form.startDate) : null}
                     needConfirm={true}
                     format="YYYY-MM-DD"
                 />
@@ -179,7 +183,7 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
                 <CustomDatePicker
                     style={{ marginLeft: '13px' }}
                     onChange={handleEndDateChange}
-                    value={form.endDate}
+                    value={form.endDate ? dayjs(form.endDate) : null}
                     needConfirm={true}
                     format="YYYY-MM-DD"
                 />
