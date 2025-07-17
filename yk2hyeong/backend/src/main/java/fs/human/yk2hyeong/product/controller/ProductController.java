@@ -3,31 +3,25 @@ package fs.human.yk2hyeong.product.controller;
 import fs.human.yk2hyeong.admin.service.AdminService;
 import fs.human.yk2hyeong.product.service.ProductService;
 import fs.human.yk2hyeong.product.vo.CategoryVO;
+import fs.human.yk2hyeong.product.vo.ProductRegisterDTO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
-
 // 상품관련 컨트롤러
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
     private final AdminService adminService;
 
-    @Autowired
-    public ProductController(ProductService productService, AdminService adminService) {
-        this.productService = productService;
-        this.adminService = adminService;
-    }
-
     // 상품 목록 조회
-
     @GetMapping("/products")
     public List<ProductVO> getAllProducts() {
         return productService.getAllProducts();
@@ -76,4 +70,15 @@ public class ProductController {
         return ResponseEntity.ok(productService.getCategoryHierarchy());
     }
 
+    // 상품 등록 - multipart/form-data 요청 처리
+    @PostMapping("/products/register")
+    public ResponseEntity<String> registerProduct(@ModelAttribute ProductRegisterDTO dto) {
+        try {
+            productService.registerProduct(dto);
+            return ResponseEntity.ok("상품 등록 성공");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("상품 등록 실패: " + e.getMessage());
+        }
+    }
 }

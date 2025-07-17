@@ -1,6 +1,7 @@
 package fs.human.yk2hyeong.product.service;
 
 import fs.human.yk2hyeong.product.vo.CategoryVO;
+import fs.human.yk2hyeong.product.vo.ProductRegisterDTO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
 
 import java.util.List;
@@ -22,5 +23,8 @@ public interface ProductService {
 
     // 카테고리 리스트 조회
     List<CategoryVO> getCategoryHierarchy();
+
+    // 상품 등록
+    void registerProduct(ProductRegisterDTO dto);
 
 }

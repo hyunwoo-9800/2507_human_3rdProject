@@ -22,6 +22,7 @@ public class ProductVO {
     private String productStatus;
     private String createdId;
     private String createdDate;
+    private String updatedId;
 
     private String productCat;
     private String productCodeName;

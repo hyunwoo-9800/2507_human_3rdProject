@@ -20,4 +20,10 @@ public interface ProductDAO {
 
     // 카테고리 상세 목록 (중위/하위코드 모두 포함)
     List<CategoryDetailVO> selectCategoryDetails();
+
+    // 상품 등록
+    void insertProduct(ProductVO product);
+
+    void insertImage(String imageId, String imagePath, String imageName, String imageType, String memberId, String productId);
+
 }
