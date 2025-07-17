@@ -10,82 +10,94 @@ export default function ProductRegisterDescription({
                                                        setDetailImages,
                                                        onBack,
                                                    }) {
-    const [thumbnailPreview, setThumbnailPreview] = useState(null); // 썸네일 미리보기 URL (blob URL)
-    const [detailPreviews, setDetailPreviews] = useState([]); // 상세 이미지 미리보기 URLs
     const cropSize = 270; // 크롭 크기
 
-    // textarea 내용 변경 핸들러
-    const handleTextareaChange = (e) => {
-        setText(e.target.value);
-    };
+    const [thumbnailPreview, setThumbnailPreview] = useState(null);
+    const [detailPreviews, setDetailPreviews] = useState([]);
 
-    // 썸네일 이미지 선택 핸들러 (리사이징 + 중앙 크롭 자동 처리)
+    // textarea 내용 변경 핸들러
+    const handleTextareaChange = (e) => setText(e.target.value);
+
+    // 썸네일 이미지 선택 핸들러 (리사이징 + 중앙 크롭)
     const handleThumbnailChange = (e) => {
         const file = e.target.files[0];
-        if (!file) return;
+        if (!file) return; // 파일이 없으면 처리 중단
 
+        // 원본 이미지 파일을 미리보기 및 크롭용으로 사용하기 위해 URL 객체 생성
         const url = URL.createObjectURL(file);
         const img = new Image();
 
+        // 이미지가 로드되었을 때 실행
         img.onload = () => {
+            // 크롭할 캔버스 생성 (270x270)
             const canvas = document.createElement("canvas");
             const ctx = canvas.getContext("2d");
-
-            const cropSize = 270;
             canvas.width = cropSize;
             canvas.height = cropSize;
 
-            // 작은 면이 cropSize 이상이 되도록 scale 계산 (비율 유지)
+            // 원본 이미지에서 가장 짧은 변 기준으로 cropSize에 맞게 스케일 계산
             const scale = cropSize / Math.min(img.width, img.height);
 
+            // 스케일을 적용한 리사이즈 크기 계산
             const resizedWidth = img.width * scale;
             const resizedHeight = img.height * scale;
 
-            // 리사이즈용 임시 캔버스 생성
+            // 먼저 이미지 전체를 리사이즈 할 임시 캔버스 생성
             const resizeCanvas = document.createElement("canvas");
             resizeCanvas.width = resizedWidth;
             resizeCanvas.height = resizedHeight;
             const resizeCtx = resizeCanvas.getContext("2d");
 
-            // 이미지 리사이징
+            // 원본 이미지를 리사이즈 캔버스에 그림
             resizeCtx.drawImage(img, 0, 0, resizedWidth, resizedHeight);
 
-            // 중앙 크롭 좌표 계산
+            // 리사이즈된 이미지에서 중앙 270x270 영역을 자르기 위한 좌표 계산
             const sx = (resizedWidth - cropSize) / 2;
             const sy = (resizedHeight - cropSize) / 2;
 
-            // 중앙 270x270 크롭하여 최종 캔버스에 그림
+            // 최종 캔버스에 리사이즈 캔버스에서 중앙 부분만 잘라 그리기 (크롭)
             ctx.drawImage(resizeCanvas, sx, sy, cropSize, cropSize, 0, 0, cropSize, cropSize);
 
-            // Blob 생성 후 File 생성 및 상태 업데이트
+            // 캔버스를 Blob으로 변환 (이미지 데이터 생성)
             canvas.toBlob(
                 (blob) => {
                     if (blob) {
-                        const croppedFile = new File([blob], file.name, { type: file.type });
-                        setThumbnail(croppedFile);
+                        // 기존 미리보기 URL이 있으면 해제 (메모리 누수 방지)
+                        if (thumbnailPreview) URL.revokeObjectURL(thumbnailPreview);
 
-                        // 미리보기 URL 설정
+                        // Blob을 다시 URL로 만들어 미리보기 이미지로 사용
                         const previewUrl = URL.createObjectURL(blob);
                         setThumbnailPreview(previewUrl);
+
+                        // Blob을 File 객체로 변환해서 상태에 저장 (서버 전송용)
+                        // 원본 파일명이 유지되며, 타입도 원본 타입으로 설정
+                        const croppedFile = new File([blob], file.name, { type: file.type });
+                        setThumbnail(croppedFile);
                     } else {
                         alert("이미지를 처리하는 데 실패했습니다.");
                     }
+
+                    // 원본 이미지 URL 해제 (메모리 누수 방지)
                     URL.revokeObjectURL(url);
                 },
-                file.type || "image/jpeg",
-                1
+                file.type || "image/jpeg", // 이미지 MIME 타입 지정 (원본 파일 타입 또는 기본 jpeg)
+                1 // 이미지 품질 (1 = 최고 품질)
             );
         };
 
+        // 이미지 로드 실패 시 실행
         img.onerror = () => {
             alert("이미지 로드에 실패했습니다.");
-            URL.revokeObjectURL(url);
+            URL.revokeObjectURL(url); // URL 해제
         };
 
+        // 이미지 src 설정 (로드 시작)
         img.src = url;
     };
 
-    // detail 이미지 여러 장 선택 핸들러
+
+
+    // 상세 이미지 리사이징 함수
     const resizeDetailImage = (file, maxWidth = 600) => {
         return new Promise((resolve) => {
             const img = new Image();
@@ -113,45 +125,45 @@ export default function ProductRegisterDescription({
         });
     };
 
-// handleDetailImagesChange 예시에서 사용
+    // 상세 이미지 선택 핸들러
     const handleDetailImagesChange = async (e) => {
-        let files = Array.from(e.target.files);
+        const files = Array.from(e.target.files);
         if (files.length > 3) {
             alert("최대 3장까지 첨부할 수 있습니다.");
             return;
         }
-        // 리사이징 처리 (비동기)
-        const resizedFiles = await Promise.all(files.map(file => resizeDetailImage(file, 600)));
+        const resizedFiles = await Promise.all(files.map((file) => resizeDetailImage(file, 600)));
         setDetailImages(resizedFiles);
     };
 
-
-    // detailImages가 변경되면 미리보기 URL 생성
+    // 상세 이미지 미리보기 URL 생성 및 해제
     useEffect(() => {
+        if (detailPreviews.length) {
+            detailPreviews.forEach((url) => URL.revokeObjectURL(url));
+        }
         if (detailImages.length === 0) {
             setDetailPreviews([]);
             return;
         }
         const objectUrls = detailImages.map((file) => URL.createObjectURL(file));
         setDetailPreviews(objectUrls);
+
         return () => {
             objectUrls.forEach((url) => URL.revokeObjectURL(url));
         };
     }, [detailImages]);
 
-    // thumbnailPreview가 바뀔 때 디버깅용 콘솔 출력
+    // 디버깅용
     useEffect(() => {
         console.log("thumbnailPreview:", thumbnailPreview);
     }, [thumbnailPreview]);
 
-    // 필수 표시가 있는 레이블 컴포넌트
     const RequiredLabel = ({ children }) => (
         <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 20 }}>
             {children} <span style={{ color: "red" }}>*</span>
         </label>
     );
 
-    // 일반 레이블 컴포넌트
     const Label = ({ children }) => (
         <label style={{ display: "block", marginBottom: 6, fontWeight: 600, fontSize: 20 }}>
             {children}
@@ -163,25 +175,24 @@ export default function ProductRegisterDescription({
             <h2>3. 상품 소개</h2>
 
             {/* 상품 소개 텍스트 영역 */}
-            <div style={{ marginTop: "20px" }}>
+            <div style={{ marginTop: 20 }}>
                 <Label>상품소개를 적어주세요. (선택)</Label>
-                <div style={{ marginLeft: "13px" }}>
+                <div style={{ marginLeft: 13 }}>
                     <Textarea
                         value={text}
                         onChange={handleTextareaChange}
                         placeholder="상품에 대한 간단한 설명을 입력해주세요."
-                        style={{ width: "100%", height: "300px", resize: "vertical" }}
+                        style={{ width: "100%", height: 300, resize: "vertical" }}
                     />
                 </div>
             </div>
 
             {/* 썸네일 이미지 첨부 */}
-            <div style={{ marginTop: "20px" }}>
+            <div style={{ marginTop: 20 }}>
                 <RequiredLabel>썸네일 사진 첨부 (1장)</RequiredLabel>
                 <p style={{ color: "red" }}>!! 썸네일 사진은 업로드한 사진의 중앙이 크롭되어 등록됩니다 !!</p>
-                <div style={{ marginLeft: "13px" }}>
+                <div style={{ marginLeft: 13 }}>
                     <input type="file" accept="image/*" onChange={handleThumbnailChange} />
-                    {/* 썸네일 미리보기 */}
                     {thumbnailPreview && (
                         <div style={{ marginTop: 8 }}>
                             <img
@@ -195,14 +206,13 @@ export default function ProductRegisterDescription({
             </div>
 
             {/* 상세 이미지 첨부 */}
-            <div style={{ marginTop: "50px" }}>
+            <div style={{ marginTop: 50 }}>
                 <Label>제품 상세 사진 첨부 (0~3장)</Label>
                 <p style={{ color: "red" }}>!! 가로가 긴 사진을 권장합니다 !!</p>
-                <div style={{ marginLeft: "13px" }}>
+                <div style={{ marginLeft: 13 }}>
                     <input type="file" accept="image/*" multiple onChange={handleDetailImagesChange} />
-                    {/* 상세 이미지 미리보기 */}
                     {detailPreviews.length > 0 && (
-                        <div style={{ marginTop: 8, display: "flex", gap: "10px" }}>
+                        <div style={{ marginTop: 8, display: "flex", gap: 10 }}>
                             {detailPreviews.map((src, idx) => (
                                 <img
                                     key={idx}
@@ -225,7 +235,7 @@ export default function ProductRegisterDescription({
                         backgroundColor: "#888",
                         color: "#fff",
                         border: "none",
-                        borderRadius: "4px",
+                        borderRadius: 4,
                         cursor: "pointer",
                         transition: "all 0.2s ease-in-out",
                     }}

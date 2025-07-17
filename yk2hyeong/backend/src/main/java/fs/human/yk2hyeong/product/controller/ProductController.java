@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -74,27 +75,54 @@ public class ProductController {
         return ResponseEntity.ok(productService.getCategoryHierarchy());
     }
 
-    // 상품 등록 - multipart/form-data 요청 처리
-    @PostMapping(value = "/products/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> registerProduct(
-            @RequestPart("productName") String productName,
-            @RequestPart("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-            @RequestPart("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
-            @RequestPart("productPrice") double productPrice,
-            @RequestPart("detailCodeId") String detailCodeId,
-            @RequestPart("orderType") String orderType,
-            @RequestPart("saleQuantity") int saleQuantity,
-            @RequestPart("minSaleUnit") int minSaleUnit,
-            @RequestPart("descriptionText") String descriptionText,
-            @RequestPart("memberId") String memberId,
+    @PostMapping("/products/register")
+    public ResponseEntity<?> registerProduct(
+            @RequestParam String productName,
+            @RequestParam String startDate,
+            @RequestParam String endDate,
+            @RequestParam BigDecimal productPrice,
+            @RequestParam String detailCodeId,
+            @RequestParam String orderType,
+            @RequestParam int saleQuantity,
+            @RequestParam int minSaleUnit,
+            @RequestParam String descriptionText,
+            @RequestParam String memberId,
 
-            @RequestPart("thumbnail") MultipartFile thumbnail,
-            @RequestPart("detailImages") List<MultipartFile> detailImages
+            @RequestPart MultipartFile thumbnail,
+            @RequestPart(required = false) List<MultipartFile> detailImages
     ) {
+        // 현재 실행 경로 및 저장 경로 출력
+        String basePath = System.getProperty("user.dir");
+        String thumbnailDir = java.nio.file.Paths.get(basePath, "frontend", "public", "static", "images", "thumbnail").toString();
+        String detailImageDir = java.nio.file.Paths.get(basePath, "frontend", "public", "static", "images", "detailimages").toString();
+
+        System.out.println("🗂 현재 작업 디렉토리: " + basePath);
+        System.out.println("🖼 썸네일 저장 경로: " + thumbnailDir);
+        System.out.println("📸 상세이미지 저장 경로: " + detailImageDir);
+
+
+        System.out.println("✅ productName: " + productName);
+        System.out.println("✅ startDate: " + startDate);
+        System.out.println("✅ endDate: " + endDate);
+        System.out.println("✅ productPrice: " + productPrice);
+        System.out.println("✅ detailCodeId: " + detailCodeId);
+        System.out.println("✅ orderType: " + orderType);
+        System.out.println("✅ saleQuantity: " + saleQuantity);
+        System.out.println("✅ minSaleUnit: " + minSaleUnit);
+        System.out.println("✅ descriptionText: " + descriptionText);
+        System.out.println("✅ memberId: " + memberId);
+        System.out.println("✅ thumbnail file name: " + thumbnail.getOriginalFilename());
+
+        if (detailImages != null) {
+            for (MultipartFile file : detailImages) {
+                System.out.println("📷 detail image: " + file.getOriginalFilename());
+            }
+        }
+
         ProductRegisterDTO dto = new ProductRegisterDTO();
         dto.setProductName(productName);
-        dto.setStartDate(startDate);
-        dto.setEndDate(endDate);
+        dto.setStartDate(LocalDate.parse(startDate));
+        dto.setEndDate(LocalDate.parse(endDate));
         dto.setProductPrice(productPrice);
         dto.setDetailCodeId(detailCodeId);
         dto.setOrderType(orderType);
@@ -105,13 +133,8 @@ public class ProductController {
         dto.setThumbnail(thumbnail);
         dto.setDetailImages(detailImages);
 
-        // 서비스 호출
-        try {
-            productService.registerProduct(dto);
-            return ResponseEntity.ok("상품 등록 성공");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).body("상품 등록 실패: " + e.getMessage());
-        }
+        productService.registerProduct(dto);
+
+        return ResponseEntity.ok("상품 등록 성공");
     }
 }

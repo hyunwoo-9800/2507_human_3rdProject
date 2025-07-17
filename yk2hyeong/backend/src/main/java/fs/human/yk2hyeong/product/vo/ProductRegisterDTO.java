@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +19,7 @@ public class ProductRegisterDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate; // PRODUCT_REV_END
 
-    private double productPrice; // PRODUCT_UNIT_PRICE
+    private BigDecimal productPrice; // PRODUCT_UNIT_PRICE
     private String detailCodeId; // PRODUCT_CODE
     private String orderType; // PRODUCT_TYPE
     private int saleQuantity; // PRODUCT_STOCK_QTY

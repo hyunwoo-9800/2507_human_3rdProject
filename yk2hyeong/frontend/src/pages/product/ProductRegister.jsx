@@ -185,9 +185,9 @@ export default function ProductRegister() {
                 throw new Error("상품 등록 실패");
             }
 
-            const result = await response.json();
-            console.log("🎉 상품 등록 성공:", result);
-            alert("상품이 성공적으로 등록되었습니다!");
+            const text = await response.text();
+            console.log("🎉 상품 등록 성공 메시지:", text);
+            alert(text);
             // 필요 시 리디렉션 or 초기화
         } catch (err) {
             console.error("🔥 에러:", err);

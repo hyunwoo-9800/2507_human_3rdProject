@@ -14,7 +14,7 @@ public class TomcatCustomizerConfig {
         return factory -> factory.addConnectorCustomizers((Connector connector) -> {
             connector.setMaxParameterCount(10000);
             connector.setProperty("maxSwallowSize", "-1");
-            connector.setProperty("fileCountMax", "10"); // 파일 개수 제한
+            connector.setProperty("fileCountMax", "200"); // 파일 개수 제한
         });
     }
 }

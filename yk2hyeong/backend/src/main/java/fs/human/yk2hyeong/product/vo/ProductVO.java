@@ -2,6 +2,7 @@ package fs.human.yk2hyeong.product.vo;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 // 상품관련 VO
@@ -12,7 +13,7 @@ public class ProductVO {
     private String productName;
     private String productDescription;
     private int productStockQty;
-    private double productUnitPrice;
+    private BigDecimal productUnitPrice;
     private String sellMemberId;
     private String productType;
     private int productMinQtr;
