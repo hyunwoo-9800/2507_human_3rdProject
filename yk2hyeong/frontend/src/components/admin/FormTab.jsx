@@ -104,12 +104,13 @@ function FormTab({tabType}){
                         : <UserForm user={selectItem}/>}
                 </div>
             </div>
-            {tabType ==='product' ? (
-                <ButtonGroup tabType={tabType} selectItem={selectItem}/>
-            ):(
-                <UserApproveButton user={selectItem}/>
-            )}
-
+            <div className="form-button-group">
+                {tabType ==='product' ? (
+                    <ButtonGroup tabType={tabType} selectItem={selectItem}/>
+                ):(
+                    <UserApproveButton user={selectItem}/>
+                )}
+            </div>
         </div>
     );
 }

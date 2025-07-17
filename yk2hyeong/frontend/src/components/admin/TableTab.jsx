@@ -4,6 +4,7 @@ import Button from "../common/Button";
 import CustomPagination from "../common/CustomPagination";
 import DropboxGroup from "./DropboxGroup";
 import ProductsDropboxGroup from "./ProductsDropboxGroup";
+import ProductsDetailModal from "./ProductsDetailModal";
 
 function TableTab({tabType}){
     const [selectItem, setSelectItem] = useState(null);
@@ -308,6 +309,13 @@ function TableTab({tabType}){
                 />
             </div>
             <Button color="error" onClick={handleDelete} className="delete-btn">삭제</Button>
+
+            {/*상품관리일때만 열리는 상세모달창*/}
+            <ProductsDetailModal
+                visible={tabType === 'products' && selectItem !== null}
+                onClose={() => setSelectItem(null)}
+                product={selectItem}
+            />
         </div>
     )
 }
