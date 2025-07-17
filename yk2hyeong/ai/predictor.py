@@ -23,7 +23,7 @@ for detail_code, group in df.groupby('DETAIL_CODE_ID'):
     group['RECORDED_DATE'] = pd.to_datetime(group['RECORDED_DATE'])
     group.set_index('RECORDED_DATE', inplace=True)
 
-    if len(group) < 70:
+    if len(group) < 1:
         print(f"[SKIP] {detail_code}: 데이터 부족 ({len(group)}개)")
         continue
 
