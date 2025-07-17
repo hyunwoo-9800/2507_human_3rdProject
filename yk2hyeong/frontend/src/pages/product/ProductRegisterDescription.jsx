@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Textarea from "../../components/common/Textarea";
-import Button from "../../components/common/Button";
 
 export default function ProductRegisterDescription({
                                                        text,
