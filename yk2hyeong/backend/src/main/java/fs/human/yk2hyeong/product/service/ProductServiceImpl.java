@@ -7,6 +7,7 @@ import fs.human.yk2hyeong.product.vo.ProductRegisterDTO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
 import jakarta.annotation.PostConstruct;
 import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -145,69 +146,68 @@ public class ProductServiceImpl implements ProductService {
 
         MultipartFile thumbnail = dto.getThumbnail();
         if (thumbnail != null && !thumbnail.isEmpty()) {
-            saveImageFile(thumbnail, productId, "200", thumbnailDir, dto.getMemberId());
+            // 썸네일 270x270 (imageType 200)
+            String thumb270Name = productId + "_200.jpg";
+            String thumb270Id = UUID.randomUUID().toString();
+            saveImageFile(thumbnail, thumb270Name, thumb270Id, "200", thumbnailDir, dto.getMemberId(), 270, 270, productId);
+
+            // 썸네일 600x510 (imageType 400)
+            String thumb610Name = productId + "_400.jpg";
+            String thumb610Id = UUID.randomUUID().toString();
+            saveImageFile(thumbnail, thumb610Name, thumb610Id, "400", thumbnailDir, dto.getMemberId(), 600, 510, productId);
         }
 
         if (dto.getDetailImages() != null) {
             for (int i = 0; i < dto.getDetailImages().size(); i++) {
                 MultipartFile detailImage = dto.getDetailImages().get(i);
                 if (detailImage != null && !detailImage.isEmpty()) {
-                    saveDetailImageFile(detailImage, productId, "300", detailImageDir, dto.getMemberId(), i + 1);
+                    String orderStr = String.format("%03d", i + 1);
+                    String detailName = productId + "_" + orderStr + "_300.jpg";
+                    String detailId = UUID.randomUUID().toString();
+                    saveDetailImageFile(detailImage, detailName, detailId, "300", detailImageDir, dto.getMemberId(), productId);
                 }
             }
         }
     }
 
-    private void saveImageFile(MultipartFile file, String productId, String imageType, String uploadDir, String memberId) {
+    private void saveImageFile(MultipartFile file, String fileName, String imageId, String imageType, String uploadDir, String memberId, int width, int height, String productId) {
         try {
-            String originalFilename = file.getOriginalFilename();
-            String ext = (originalFilename != null && originalFilename.contains("."))
-                    ? originalFilename.substring(originalFilename.lastIndexOf("."))
-                    : "";
-
-            String imageId = UUID.randomUUID().toString();
-            String newFileName = imageId + ext;
-
             File dir = new File(uploadDir);
             if (!dir.exists()) dir.mkdirs();
 
-            File destFile = new File(dir, newFileName);
+            File destFile = new File(dir, fileName);
 
-            file.transferTo(destFile);
+            Thumbnails.of(file.getInputStream())
+                    .size(width, height)
+                    .crop(Positions.CENTER)
+                    .outputFormat("jpg")
+                    .toFile(destFile);
 
-            productDAO.insertImage(imageId, uploadDir, newFileName, imageType, memberId, productId);
+            productDAO.insertImage(imageId, uploadDir, fileName, imageType, memberId, productId);
         } catch (IOException e) {
             throw new RuntimeException("이미지 저장 실패: " + e.getMessage(), e);
         }
     }
 
-    private void saveDetailImageFile(MultipartFile file, String productId, String imageType, String uploadDir, String memberId, int order) {
+    private void saveDetailImageFile(MultipartFile file, String fileName, String imageId, String imageType, String uploadDir, String memberId, String productId) {
         try {
-            String originalFilename = file.getOriginalFilename();
-            String ext = (originalFilename != null && originalFilename.contains("."))
-                    ? originalFilename.substring(originalFilename.lastIndexOf("."))
-                    : "";
-
-            String imageId = UUID.randomUUID().toString();
-            String orderStr = String.format("%03d", order);
-            String newFileName = productId + "_" + orderStr + ext;
-
             File dir = new File(uploadDir);
             if (!dir.exists()) dir.mkdirs();
 
-            File destFile = new File(dir, newFileName);
+            File destFile = new File(dir, fileName);
 
             Thumbnails.of(file.getInputStream())
-                    .size(1000, 9999)
+                    .size(1125, 9999)
                     .keepAspectRatio(true)
+                    .outputFormat("jpg")
                     .toFile(destFile);
 
-            productDAO.insertImage(imageId, uploadDir, newFileName, imageType, memberId, productId);
+            productDAO.insertImage(imageId, uploadDir, fileName, imageType, memberId, productId);
         } catch (IOException e) {
             throw new RuntimeException("상세 이미지 저장 실패: " + e.getMessage(), e);
         }
     }
-//    memberId로 상품목록 조회
+
     @Override
     public List<ProductVO> getProductsByMemberId(String memberId) {
         return productDAO.selectProductsByMemberId(memberId);

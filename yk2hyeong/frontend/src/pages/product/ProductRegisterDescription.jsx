@@ -591,6 +591,10 @@ export default function ProductRegisterDescription({
               </div>
 
               <p>상품 설명</p>
+              {/* 상품설명 미리보기 */}
+              {text && (
+                <div style={{ margin: '32px 0', fontSize: 18, whiteSpace: 'pre-line' }}>{text}</div>
+              )}
 
               <p style={{ color: 'red' }}>!! 상세이미지는 드래그하여 순서를 바꿀 수 있습니다 !!</p>
               {/* 상세이미지 세로 미리보기 */}

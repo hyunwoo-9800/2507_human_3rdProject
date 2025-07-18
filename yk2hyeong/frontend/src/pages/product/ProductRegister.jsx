@@ -190,6 +190,7 @@ export default function ProductRegister() {
       console.log('🎉 상품 등록 성공 메시지:', text)
       alert(text)
       // 필요 시 리디렉션 or 초기화
+      window.location.href = '/mypage'
     } catch (err) {
       console.error('🔥 에러:', err)
       alert('상품 등록 중 오류가 발생했습니다.')
