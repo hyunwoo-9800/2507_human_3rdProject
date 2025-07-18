@@ -4,6 +4,7 @@ import CustomTabs from '../../components/common/CustomTabs'
 import CustomCard from '../../components/common/CustomCard'
 import { Row, Col, Empty, Spin } from 'antd'
 import { useNavigate } from 'react-router-dom'
+import './ProductList.css'
 
 export default function ProductList() {
   const [products, setProducts] = useState([])
@@ -131,7 +132,7 @@ export default function ProductList() {
                   id={product.productId}
                   image={
                     product.imagePath && product.imageName
-                      ? `/static${product.imagePath}/thumbnail/${product.imageName}`
+                      ? `/static/images/thumbnail/${product.imageName}`
                       : '/static/images/thumbnail/no-image.png'
                   }
                   company={product.sellerCompany}
@@ -146,9 +147,7 @@ export default function ProductList() {
                   onFavoriteToggle={() => toggleFavorite(product.productId)}
                   onClick={() => navigate(`/product/${product.productId}`)}
                   onImageError={(e) => {
-                    // UUID 형태의 파일명이 실패하면 실제 파일명으로 재시도
                     if (product.imageName && product.imageName.includes('-')) {
-                      // UUID 형태의 파일명을 실제 파일명으로 매핑
                       const productName = product.productName || ''
                       const mappedFileName = `product_thumb_${productName
                         .toLowerCase()
@@ -157,8 +156,38 @@ export default function ProductList() {
                       console.log('매핑된 파일명으로 재시도:', mappedFileName)
                     }
                   }}
-                  style={{ width: '280px' }}
-                />
+                  style={{
+                    width: '280px',
+                    height: '420px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {/* ===== 카드 상단: 회사명 + 상품명 영역 ===== */}
+                  <div style={{ minHeight: 68, maxHeight: 68, marginBottom: 8 }}>
+                    {/* 회사명 (한 줄) */}
+                    {product.sellerCompany && (
+                      <div
+                        style={{
+                          fontSize: 14,
+                          color: '#888',
+                          marginBottom: 2,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {product.sellerCompany}
+                      </div>
+                    )}
+                    {/* 상품명 (2줄 고정, 넘치면 ... 처리) */}
+                    <div className="product-name-fixed">{product.productName}</div>
+                  </div>
+                  {/* ===== 카드 중단: 가격/라벨 영역 ===== */}
+                  {/* (이 영역은 CustomCard 내부에서 이미 처리됨) */}
+                  {/* ===== 카드 하단: 최소구매수량 영역 ===== */}
+                  {/* (이 영역도 CustomCard 내부에서 이미 처리됨) */}
+                </CustomCard>
               </Col>
             ))
           ) : (
