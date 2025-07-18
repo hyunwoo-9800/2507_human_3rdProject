@@ -18,6 +18,7 @@ const CustomCard = ({
   isFavorite = false,
   onFavoriteToggle,
   onClick,
+  children,
   ...rest
 }) => {
   const isRow = layout === 'row'
@@ -77,11 +78,14 @@ const CustomCard = ({
           )}
         </div>
 
-        {/* 회사명 + 상품명 */}
+        {/* 회사명 + 상품명
         <div style={{ fontSize: 16, fontWeight: 'bold', lineHeight: 1.4 }}>
           {company && <div>{company}</div>}
           {productName && <div>{productName}</div>}
-        </div>
+        </div> */}
+
+        {/* children 영역 추가 */}
+        {children}
 
         {/* 가격 + 라벨 */}
         <div
