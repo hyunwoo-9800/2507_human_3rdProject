@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fs.human.yk2hyeong.mypage.dao.MypageDAO">
+    <resultMap id="purchasedMap" type="fs.human.yk2hyeong.mypage.vo.MypageVO">
+        <result property="buyId" column="buyId"/>
+        <result property="productId" column="productId"/>
+        <result property="memberId" column="memberId"/>
+        <result property="buyQty" column="buyQty"/>
+        <result property="buyUnitPrice" column="buyUnitPrice"/>
+        <result property="buyTotalPrice" column="buyTotalPrice"/>
+        <result property="buyDeliveryDate" column="buyDeliveryDate"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="productName" column="productName"/>
+        <result property="productDescription" column="productDescription"/>
+        <result property="productUnitPrice" column="productUnitPrice"/>
+        <result property="productMinQtr" column="productMinQtr"/>
+        <result property="sellMemberId" column="sellMemberId"/>
+        <result property="imageName" column="imageName"/>
+    </resultMap>
+
+    <select id="selectPurchasedProducts" resultMap="purchasedMap">
+        SELECT
+            pb.BUY_ID AS buyId,
+            pb.PRODUCT_ID AS productId,
+            pb.MEMBER_ID AS memberId,
+            pb.BUY_QTY AS buyQty,
+            pb.BUY_UNIT_PRICE AS buyUnitPrice,
+            pb.BUY_TOTAL_PRICE AS buyTotalPrice,
+            pb.BUY_DELIVERY_DATE AS buyDeliveryDate,
+            pb.CREATED_DATE AS createdDate,
+            p.PRODUCT_NAME AS productName,
+            p.PRODUCT_DESCRIPTION AS productDescription,
+            p.PRODUCT_UNIT_PRICE AS productUnitPrice,
+            p.PRODUCT_MIN_QTR AS productMinQtr,
+            p.SELL_MEMBER_ID AS sellMemberId,
+            i.IMAGE_NAME AS imageName
+        FROM
+            TB_PRODUCT_BUY pb
+                JOIN TB_PRODUCT p ON pb.PRODUCT_ID = p.PRODUCT_ID
+                LEFT JOIN TB_IMAGES i ON p.PRODUCT_ID = i.PRODUCT_ID AND i.IMAGE_TYPE = '200'
+        WHERE
+            pb.MEMBER_ID = #{memberId}
+    </select>
+</mapper>
