@@ -86,6 +86,29 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
       })
   }, [setForm])
 
+  useEffect(() => {
+    if (
+      form.categoryData &&
+      Object.keys(form.categoryData).length > 0 &&
+      (!form.selectedCategory || !form.selectedSubCategory || !form.detailCodeId)
+    ) {
+      const firstCategory = Object.keys(form.categoryData)[0]
+      const firstSub = form.categoryData[firstCategory][0]
+      setForm((prev) => ({
+        ...prev,
+        selectedCategory: firstCategory,
+        selectedSubCategory: firstSub.lowCodeName,
+        detailCodeId: firstSub.detailCodeId,
+      }))
+    }
+  }, [
+    form.categoryData,
+    form.selectedCategory,
+    form.selectedSubCategory,
+    form.detailCodeId,
+    setForm,
+  ])
+
   if (!form.categoryData || Object.keys(form.categoryData).length === 0) {
     return <div>카테고리 데이터를 불러오는 중입니다...</div>
   }
