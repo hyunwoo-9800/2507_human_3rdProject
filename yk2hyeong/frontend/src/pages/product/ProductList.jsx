@@ -131,8 +131,8 @@ export default function ProductList() {
                   id={product.productId}
                   image={
                     product.imagePath && product.imageName
-                      ? `/static/${product.imagePath}/thumbnail/${product.imageName}`
-                      : '/static/images/no-image.png'
+                      ? `/static${product.imagePath}/thumbnail/${product.imageName}`
+                      : '/static/images/thumbnail/no-image.png'
                   }
                   company={product.sellerCompany}
                   productName={product.productName}
@@ -145,6 +145,18 @@ export default function ProductList() {
                   isFavorite={favoriteProductIds.includes(product.productId)}
                   onFavoriteToggle={() => toggleFavorite(product.productId)}
                   onClick={() => navigate(`/product/${product.productId}`)}
+                  onImageError={(e) => {
+                    // UUID 형태의 파일명이 실패하면 실제 파일명으로 재시도
+                    if (product.imageName && product.imageName.includes('-')) {
+                      // UUID 형태의 파일명을 실제 파일명으로 매핑
+                      const productName = product.productName || ''
+                      const mappedFileName = `product_thumb_${productName
+                        .toLowerCase()
+                        .replace(/\s+/g, '')}.png`
+                      e.target.src = `/static/images/thumbnail/${mappedFileName}`
+                      console.log('매핑된 파일명으로 재시도:', mappedFileName)
+                    }
+                  }}
                   style={{ width: '280px' }}
                 />
               </Col>
