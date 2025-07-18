@@ -1,70 +1,99 @@
-import React from "react";
-import Pagination from "../common/Pagination";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import CustomPagination from "../common/CustomPagination";
 
-function RegisteredProduct(){
+function RegisteredProduct() {
+    const [products, setProducts] = useState([]);
+    // 페이지네이션
+    const [page, setPage] = useState([]);
+    const pageSize = 4;
+
+    useEffect(() => {
+        const memberId = localStorage.getItem("memberId");
+        console.log("memberId from localStorage: ", memberId);
+
+        axios.get(`/api/products?memberId=${memberId}`)
+            .then((res) => {
+                const raw = res.data;
+
+                // productId 기준 중복 제거
+                const uniqueProducts = raw.filter(
+                    (item, index, self) =>
+                        index === self.findIndex((t) => t.productId === item.productId)
+                );
+
+                const cardData = uniqueProducts.map(product => {
+                    return {
+                        sellerCompany: product.sellerCompany,
+                        productName: product.productName,
+                        productDescription: product.productDescription,
+                        productMinQty: product.productMinQty,
+                        productUnitPrice: product.productUnitPrice,
+                        createdDate: formatDate(product.createdDate),
+                        imageType: product.imageType,
+                        imagePath: product.imageType === 200 ? product.imagePath : null // 200일 때만 출력
+                    };
+                });
+
+                setProducts(cardData);
+            })
+            .catch((err) => {
+                console.error("상품 데이터 로딩 실패:", err);
+            });
+    }, []);
+
+    const formatDate = (dateStr) => {
+        if (!dateStr) return "";
+        const date = new Date(dateStr);
+        return date.toISOString().split('T')[0]; // yyyy-mm-dd
+    };
+
+    const getImageSrc = (path) => {
+        if (!path) return "/detailimages/images/no-image.png";
+        return `/images/detailimages/${path}`;
+    };
+
+    // 페이지네이션
+    const handlePageChange = (newPage) => {
+        setPage(newPage);
+    };
+    //현재 페이지의 상품 4개만 추출
+    const paginatedProducts  = products.slice(
+        (page - 1) * pageSize,
+        page * pageSize
+    );
+
     return (
         <div className="card-list">
-            <div className="card">
-                <img src="/static/images/product2.jpg" alt="product"/>
-                <div className="card-content">
-                    <p>
-                        <strong className="item-label">출하자</strong>
-                        <span>천안청과(주)</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">상품명</strong>
-                        <span>스테비아 방울토마토</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">단위/포장</strong>
-                        <span>2kg 상자</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">단위 당 가격</strong>
-                        <span>10,500원</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">최소구매수량</strong>
-                        <span>100</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">등록일자</strong>
-                        <span>yyyy/mm/dd</span>
-                    </p>
+            {products.map((p, idx) => (
+                <div className="card" key={idx}>
+                    <img
+                        src={getImageSrc(p.imagePath)}
+                        alt="product"
+                        onError={(e) => {
+                            if (e.target.src.includes("no-image.png")) return;
+                            e.target.onerror = null;
+                            e.target.src = "/images/no-image.png";
+                        }}
+                    />
+                    <div className="card-content">
+                        <p><strong className="item-label">출하자</strong><span>{p.sellerCompany}</span></p>
+                        <p><strong className="item-label">상품명</strong><span>{p.productName}</span></p>
+                        <p><strong className="item-label">단위/포장</strong><span>{p.productDescription}</span></p>
+                        <p><strong className="item-label">단위 당 가격</strong><span>{Number(p.productUnitPrice).toLocaleString()}원</span></p>
+                        <p><strong className="item-label">최소구매수량</strong><span>{p.productMinQty}kg</span></p>
+                        <p><strong className="item-label">등록일자</strong><span>{p.createdDate}</span></p>
+                    </div>
                 </div>
-            </div>
-            <div className="card">
-                <img src="/static/images/product2.jpg" alt="product"/>
-                <div className="card-content">
-                    <p>
-                        <strong className="item-label">출하자</strong>
-                        <span>천안청과(주)</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">상품명</strong>
-                        <span>스테비아 방울토마토</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">단위/포장</strong>
-                        <span>2kg 상자</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">단위 당 가격</strong>
-                        <span>10,500원</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">최소구매수량</strong>
-                        <span>100</span>
-                    </p>
-                    <p>
-                        <strong className="item-label">등록일자</strong>
-                        <span>yyyy/mm/dd</span>
-                    </p>
-                </div>
-            </div>
-            <Pagination/>
+            ))}
+            <CustomPagination
+                defaultCurrent={page}
+                total={products.length}
+                pageSize={pageSize}
+                onChange={handlePageChange}
+            />
         </div>
-    )
+    );
 }
 
 export default RegisteredProduct;

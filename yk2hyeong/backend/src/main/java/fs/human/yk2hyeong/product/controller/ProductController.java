@@ -28,7 +28,11 @@ public class ProductController {
 
     // 상품 목록 조회
     @GetMapping("/products")
-    public List<ProductVO> getAllProducts() {
+    public List<ProductVO> getAllProducts(@RequestParam(required = false) String memberId) {
+        if(memberId != null && !memberId.isEmpty()){
+            return productService.getProductsByMemberId(memberId);
+        }
+
         return productService.getAllProducts();
     }
 

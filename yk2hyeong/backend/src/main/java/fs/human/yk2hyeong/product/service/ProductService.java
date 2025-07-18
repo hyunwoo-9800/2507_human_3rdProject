@@ -12,6 +12,9 @@ public interface ProductService {
     // 상품 전체 목록 조회
     List<ProductVO> getAllProducts();
 
+    // memberId로 상품 목록 조회
+    List<ProductVO> getProductsByMemberId(String memberId);
+
     // 즐겨찾기 등록
     void insertFavorite(String memberId, String productId);
 

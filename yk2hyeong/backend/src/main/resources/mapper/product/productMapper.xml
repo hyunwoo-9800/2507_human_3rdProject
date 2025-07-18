@@ -61,6 +61,58 @@
 
         ORDER BY p.CREATED_DATE DESC
     </select>
+<!--    memberId로 상품 목록 불러오기-->
+    <select id="selectProductsByMemberId" resultType="fs.human.yk2hyeong.product.vo.ProductVO">
+        SELECT
+            -- 상품 정보
+            p.PRODUCT_ID,
+            p.PRODUCT_CODE,
+            p.PRODUCT_NAME,
+            p.PRODUCT_DESCRIPTION,
+            p.PRODUCT_STOCK_QTY,
+            p.PRODUCT_UNIT_PRICE,
+            p.SELL_MEMBER_ID,
+            p.PRODUCT_TYPE,
+            p.PRODUCT_MIN_QTR,
+            p.PRODUCT_REV_START,
+            p.PRODUCT_REV_END,
+            p.PRODUCT_DISPLAY_FLAG,
+            p.PRODUCT_STATUS,
+            p.CREATED_ID AS createdId,
+            p.CREATED_DATE AS createdDate,
+
+            -- 코드명 (카테고리명, 상태명)
+            cd1.MID_CODE_NAME AS PRODUCT_CAT,
+            cd1.LOW_CODE_NAME AS PRODUCT_CODE_NAME,
+            cd2.LOW_CODE_NAME AS PRODUCT_STATUS_NAME,
+
+            -- 판매자 정보
+            m.MEMBER_NAME AS SELLER_NAME,
+            m.MEMBER_EMAIL AS SELLER_EMAIL,
+            m.MEMBER_BNAME AS SELLER_COMPANY,
+
+            -- 상품 유형 및 표시 여부
+            cd3.LOW_CODE_NAME AS PRODUCT_SELL_TYPE,
+            cd4.LOW_CODE_NAME AS PRODUCT_DISPLAY_TYPE,
+
+            img.IMAGE_ID AS IMAGE_ID,
+            img.IMAGE_PATH AS IMAGE_PATH,
+            img.IMAGE_NAME AS IMAGE_NAME,
+            img.IMAGE_TYPE AS IMAGE_TYPE,
+            img.MEMBER_ID AS MEMBER_ID
+
+        FROM TB_PRODUCT p
+                 LEFT JOIN TB_CODE_DETAIL cd1 ON p.PRODUCT_CODE = cd1.DETAIL_CODE_ID
+                 LEFT JOIN TB_CODE_DETAIL cd2 ON p.PRODUCT_STATUS = cd2.DETAIL_CODE_ID
+                 LEFT JOIN TB_MEMBER m ON p.SELL_MEMBER_ID = m.MEMBER_ID
+                 LEFT JOIN TB_CODE_DETAIL cd3 ON p.PRODUCT_TYPE = cd3.DETAIL_CODE_ID
+                 LEFT JOIN TB_CODE_DETAIL cd4 ON p.PRODUCT_DISPLAY_FLAG = cd4.DETAIL_CODE_ID
+                 LEFT JOIN TB_IMAGES img ON p.PRODUCT_ID = img.PRODUCT_ID
+
+        WHERE p.SELL_MEMBER_ID = #{memberId}
+        ORDER BY p.CREATED_DATE DESC
+    </select>
+
 
     <!-- 즐겨찾기 등록 -->
     <insert id="insertFavorite">

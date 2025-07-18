@@ -3,6 +3,7 @@ package fs.human.yk2hyeong.product.dao;
 import fs.human.yk2hyeong.product.vo.ProductVO;
 import fs.human.yk2hyeong.product.vo.CategoryDetailVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,6 +13,9 @@ public interface ProductDAO {
 
     // 상품 목록 조회
     List<ProductVO> getAllProducts();
+
+    //memberId로 상품 목록 조회
+    List<ProductVO> selectProductsByMemberId(@Param("memberId")String memberId);
 
     // 즐겨찾기 등록/삭제/조회
     void insertFavorite(String memberId, String productId);
