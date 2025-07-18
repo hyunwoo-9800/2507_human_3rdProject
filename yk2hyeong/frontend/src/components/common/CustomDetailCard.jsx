@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CustomInputNumber from './CustomInputNumber'
 import { StarFilled, StarOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import CustomRadio from './CustomRadio'
@@ -36,14 +36,30 @@ const CustomDetailCard = ({
   const [isFavorite, setIsFavorite] = useState(favorite)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
+  // minOrder, quantity가 바뀔 때 orderQuantity를 경계값에 맞게 동기화
+  useEffect(() => {
+    setOrderQuantity((q) => {
+      let next = q
+      if (next < minOrder) next = minOrder
+      if (next > quantity) next = quantity
+      return next
+    })
+  }, [minOrder, quantity])
+
   const handleOrderTypeChange = (value) => {
     setOrderType(value)
     onOrderTypeChange(value)
   }
 
   const handleQuantityChange = (value) => {
-    setOrderQuantity(value)
-    onQuantityChange(value)
+    // value가 null/undefined/NaN이면 최소값으로 보정
+    if (value === null || value === undefined || isNaN(value)) {
+      setOrderQuantity(minOrder)
+      onQuantityChange(minOrder)
+    } else {
+      setOrderQuantity(value)
+      onQuantityChange(value)
+    }
   }
 
   const toggleFavorite = () => {
@@ -227,7 +243,7 @@ const CustomDetailCard = ({
             <div>수량 (최소구매수량 {minOrder}개)</div>
             <div>
               <CustomInputNumber
-                defaultValue={defaultQuantity}
+                value={orderQuantity}
                 min={minOrder}
                 max={quantity}
                 step={1}

@@ -9,10 +9,12 @@ import ProductNoticeTab from '../../components/product/ProductNoticeTab'
 import DeliveryInfoTab from '../../components/product/DeliveryInfoTab'
 import './productDetail.css'
 import '../../components/product/productTabs.css'
+import dayjs from 'dayjs'
 
 export default function ProductDetail() {
   const { productId } = useParams()
   const [product, setProduct] = useState(null)
+  const [orderType, setOrderType] = useState('immediate') // 즉시구매 기본값
 
   useEffect(() => {
     axios.get(`/api/products`).then((res) => {
@@ -49,19 +51,37 @@ export default function ProductDetail() {
     }
   }
 
+  // 출하예정일 계산 함수
+  function getReleaseDate(product, orderType) {
+    if (orderType === 'reservation') {
+      if (product.productRevEnd) {
+        return dayjs(product.productRevEnd).add(2, 'day').format('YYYY-MM-DD')
+      }
+      return ''
+    } else {
+      const now = dayjs()
+      const hour = now.hour()
+      if (hour < 11) {
+        return now.add(1, 'day').format('YYYY-MM-DD')
+      } else {
+        return now.add(2, 'day').format('YYYY-MM-DD')
+      }
+    }
+  }
+
   return (
     <div>
       <CustomDetailCard
         productName={product.productName || '스테비아 방울토마토'}
         productCode={product.productCode || 'P250703-000121'}
-        quantity={product.productStockQty || 239994}
+        quantity={product.productStockQty || 1} // 남은수량(최대값)
         shippingRegion={product.sellerCompany || '(주)천안청과'}
-        availableDate={product.productRevStart || '판매자 문의'}
+        availableDate={product.productRevEnd || '판매자 문의'} // 판매종료일자
         price={product.productUnitPrice || 10500}
-        releaseDate={product.productRevStart || '2026년 7월 4일'}
-        minOrder={product.productMinQtr || 100}
-        defaultQuantity={100}
-        defaultOrderType="immediate"
+        releaseDate={getReleaseDate(product, orderType)} // 동적으로 계산
+        minOrder={product.productMinQtr || 1} // 최소구매수량
+        defaultQuantity={product.productMinQtr || 1}
+        defaultOrderType={orderType}
         images={[thumbnailImage || '/static/images/tomato.png']}
         imageStyle={{
           width: '100%',
@@ -75,7 +95,7 @@ export default function ProductDetail() {
           reserveRate: 30,
         }}
         onQuantityChange={(q) => console.log('변경된 수량:', q)}
-        onOrderTypeChange={(t) => console.log('선택된 타입:', t)}
+        onOrderTypeChange={(t) => setOrderType(t)}
         onOrder={(info) => console.log('주문 정보:', info)}
       />
       {/* CustomTabs - 위쪽 마진과 가운데 정렬 */}

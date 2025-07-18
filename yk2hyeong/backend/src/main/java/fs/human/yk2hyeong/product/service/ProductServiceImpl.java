@@ -172,18 +172,24 @@ public class ProductServiceImpl implements ProductService {
 
     private void saveImageFile(MultipartFile file, String fileName, String imageId, String imageType, String uploadDir, String memberId, int width, int height, String productId) {
         try {
+            // [로컬에 실제 파일 저장]
+            // 1. 저장할 디렉토리 없으면 생성
             File dir = new File(uploadDir);
             if (!dir.exists()) dir.mkdirs();
 
+            // 2. 저장할 파일 객체 생성
             File destFile = new File(dir, fileName);
 
+            // 3. 이미지 리사이즈/크롭 후 파일로 저장 (ex: 썸네일 270x270, 600x510)
             Thumbnails.of(file.getInputStream())
                     .size(width, height)
                     .crop(Positions.CENTER)
                     .outputFormat("jpg")
                     .toFile(destFile);
 
-            productDAO.insertImage(imageId, uploadDir, fileName, imageType, memberId, productId);
+            // 4. DB에는 상대경로만 저장 (images/thumbnail)
+            String dbImagePath = "images/thumbnail";
+            productDAO.insertImage(imageId, dbImagePath, fileName, imageType, memberId, productId);
         } catch (IOException e) {
             throw new RuntimeException("이미지 저장 실패: " + e.getMessage(), e);
         }
@@ -191,18 +197,24 @@ public class ProductServiceImpl implements ProductService {
 
     private void saveDetailImageFile(MultipartFile file, String fileName, String imageId, String imageType, String uploadDir, String memberId, String productId) {
         try {
+            // [로컬에 실제 파일 저장]
+            // 1. 저장할 디렉토리 없으면 생성
             File dir = new File(uploadDir);
             if (!dir.exists()) dir.mkdirs();
 
+            // 2. 저장할 파일 객체 생성
             File destFile = new File(dir, fileName);
 
+            // 3. 이미지 리사이즈(가로 1125px, 세로 비율유지) 후 파일로 저장
             Thumbnails.of(file.getInputStream())
                     .size(1125, 9999)
                     .keepAspectRatio(true)
                     .outputFormat("jpg")
                     .toFile(destFile);
 
-            productDAO.insertImage(imageId, uploadDir, fileName, imageType, memberId, productId);
+            // 4. DB에는 상대경로만 저장 (images/detailimages)
+            String dbImagePath = "images/detailimages";
+            productDAO.insertImage(imageId, dbImagePath, fileName, imageType, memberId, productId);
         } catch (IOException e) {
             throw new RuntimeException("상세 이미지 저장 실패: " + e.getMessage(), e);
         }
