@@ -6,7 +6,7 @@ function RegisteredProduct() {
     const [products, setProducts] = useState([]);
     // 페이지네이션
     const [page, setPage] = useState(1);
-    const pageSize = 4;
+    const pageSize = 5;
 
     useEffect(() => {
         const memberId = localStorage.getItem("memberId");
