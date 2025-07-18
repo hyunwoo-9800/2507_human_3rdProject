@@ -4,11 +4,17 @@ import './productTabs.css'
 export default function ProductDetailTab({ product }) {
   if (!product) return <div>상품 정보를 불러오는 중...</div>
 
-  // imageType이 '300'인 상세이미지들만 추출 후 파일명 오름차순 정렬
+  // imageType이 '300'인 상세이미지들만 추출 후 001_300, 002_300, 003_300 순서로 정렬
   const detailImages = Array.isArray(product.images)
     ? product.images
         .filter((img) => img.imageType === '300')
-        .sort((a, b) => a.imageName.localeCompare(b.imageName))
+        .sort((a, b) => {
+          const getNum = (name) => {
+            const match = name.match(/_(\d{3})_300/)
+            return match ? parseInt(match[1], 10) : 0
+          }
+          return getNum(a.imageName) - getNum(b.imageName)
+        })
     : []
 
   return (
@@ -30,7 +36,7 @@ export default function ProductDetailTab({ product }) {
             detailImages.map((img) => (
               <img
                 key={img.imageId || img.imageName}
-                src={`/static${img.imagePath}/${img.imageName}`}
+                src={`/static/${img.imagePath}/${img.imageName}`}
                 alt={product.productName}
                 style={{
                   width: '100%',

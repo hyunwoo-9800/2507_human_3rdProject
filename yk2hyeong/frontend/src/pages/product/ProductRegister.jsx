@@ -61,8 +61,8 @@ export default function ProductRegister() {
       form.startDate !== null &&
       form.endDate !== null &&
       form.detailCodeId !== null &&
-      form.saleQuantity > 0 &&
-      form.minSaleUnit > 0 &&
+      Number(form.saleQuantity) > 0 &&
+      Number(form.minSaleUnit) > 0 &&
       !form.showDateWarning
     )
   }

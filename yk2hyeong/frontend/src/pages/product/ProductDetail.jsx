@@ -42,14 +42,30 @@ export default function ProductDetail() {
 
   if (!product) return <div>Loading...</div>
 
-  // imageType이 '200'인 썸네일 이미지 추출
+  // imageType이 '400'인 썸네일 이미지 추출
   let thumbnailImage = null
   if (Array.isArray(product.images)) {
-    const thumb = product.images.find((img) => img.imageType === '200')
+    const thumb = product.images.find((img) => img.imageType === '400')
     if (thumb) {
-      thumbnailImage = `/static${thumb.imagePath}/${thumb.imageName}`
+      thumbnailImage = `/static/${thumb.imagePath}/${thumb.imageName}`
     }
   }
+
+  //   // 상세이미지(300) - 001_300, 002_300, 003_300 순서대로
+  //   let detailImages = []
+  //   if (Array.isArray(product.images)) {
+  //     detailImages = product.images
+  //       .filter((img) => img.imageType === '300')
+  //       .sort((a, b) => {
+  //         // 파일명에서 001_300, 002_300, 003_300 숫자 추출하여 정렬
+  //         const getNum = (name) => {
+  //           const match = name.match(/_(\d{3})_300/)
+  //           return match ? parseInt(match[1], 10) : 0
+  //         }
+  //         return getNum(a.imageName) - getNum(b.imageName)
+  //       })
+  //       .map((img) => `/static/${img.imagePath}/${img.imageName}`)
+  //   }
 
   // 출하예정일 계산 함수
   function getReleaseDate(product, orderType) {
@@ -98,6 +114,28 @@ export default function ProductDetail() {
         onOrderTypeChange={(t) => setOrderType(t)}
         onOrder={(info) => console.log('주문 정보:', info)}
       />
+
+      {/* 상세이미지 영역
+      <div style={{ margin: '24px 0' }}>
+        <h3>상세 이미지</h3>
+        {detailImages.length > 0 ? (
+          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            {detailImages.map((src, idx) => (
+              <img
+                key={idx}
+                src={src}
+                alt={`상세 이미지 ${idx + 1}`}
+                style={{ maxWidth: 300, borderRadius: 8, border: '1px solid #eee' }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div style={{ color: '#888', fontSize: 16, padding: '16px 0' }}>
+            상세 이미지가 없습니다
+          </div>
+        )}
+      </div> */}
+
       {/* CustomTabs - 위쪽 마진과 가운데 정렬 */}
       <div
         style={{

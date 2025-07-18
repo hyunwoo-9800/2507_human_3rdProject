@@ -141,7 +141,7 @@ export default function ProductList() {
                   id={product.productId}
                   image={
                     product.imagePath && product.imageName
-                      ? `/static/images/thumbnail/${product.imageName}`
+                      ? `/static/${product.imagePath}/${product.imageName}`
                       : '/static/images/thumbnail/no-image.png'
                   }
                   company={product.sellerCompany}
