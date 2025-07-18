@@ -31,6 +31,15 @@ export default function ProductDetail() {
           if (!groupByProductId[item.productId].productCodeName && item.productCodeName) {
             groupByProductId[item.productId].productCodeName = item.productCodeName
           }
+          if (!groupByProductId[item.productId].sellerCompany && item.sellerCompany) {
+            groupByProductId[item.productId].sellerCompany = item.sellerCompany
+          }
+          if (!groupByProductId[item.productId].sellerTel && item.sellerTel) {
+            groupByProductId[item.productId].sellerTel = item.sellerTel
+          }
+          if (!groupByProductId[item.productId].sellerEmail && item.sellerEmail) {
+            groupByProductId[item.productId].sellerEmail = item.sellerEmail
+          }
         }
         // 이미지 정보만 추출해서 배열에 push
         groupByProductId[item.productId].images.push({
@@ -76,16 +85,16 @@ export default function ProductDetail() {
   function getReleaseDate(product, orderType) {
     if (orderType === 'reservation') {
       if (product.productRevEnd) {
-        return dayjs(product.productRevEnd).add(2, 'day').format('YYYY-MM-DD')
+        return dayjs(product.productRevEnd).add(1, 'day').format('YYYY-MM-DD') // 1일 뒤
       }
       return ''
     } else {
       const now = dayjs()
       const hour = now.hour()
       if (hour < 11) {
-        return now.add(1, 'day').format('YYYY-MM-DD')
+        return now.add(0, 'day').format('YYYY-MM-DD') // 당일
       } else {
-        return now.add(2, 'day').format('YYYY-MM-DD')
+        return now.add(1, 'day').format('YYYY-MM-DD') // 1일 뒤
       }
     }
   }
@@ -116,10 +125,10 @@ export default function ProductDetail() {
     <div>
       <CustomDetailCard
         productName={product.productName || '스테비아 방울토마토'}
-        productCodeName={product.productCodeName || 'P250703-000121'}
+        productCodeName={product.productCodeName || '쌀'}
         quantity={product.productStockQty || 1} // 남은수량(최대값)
         shippingRegion={product.sellerCompany || '(주)천안청과'}
-        availableDate={product.productRevEnd || '판매자 문의'} // 판매종료일자
+        availableDate={product.productRevEnd || '2025-07-31'} // 판매종료일자
         price={product.productUnitPrice || 10500}
         releaseDate={getReleaseDate(product, orderType)} // 동적으로 계산
         minOrder={product.productMinQtr || 1} // 최소구매수량

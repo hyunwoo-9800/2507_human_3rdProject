@@ -31,6 +31,7 @@
             cd2.LOW_CODE_NAME AS PRODUCT_STATUS_NAME, -- 판매중, 판매종료 등
 
             -- 판매자 정보
+            m.MEMBER_TEL AS SELLER_TEL, -- 판매자 전화번호
             m.MEMBER_NAME AS SELLER_NAME, -- 판매자 이름
             m.MEMBER_EMAIL AS SELLER_EMAIL, -- 판매자 이메일
             m.MEMBER_BNAME AS SELLER_COMPANY, --상호명
@@ -87,6 +88,7 @@
             cd2.LOW_CODE_NAME AS PRODUCT_STATUS_NAME,
 
             -- 판매자 정보
+            m.MEMBER_TEL AS SELLER_TEL,
             m.MEMBER_NAME AS SELLER_NAME,
             m.MEMBER_EMAIL AS SELLER_EMAIL,
             m.MEMBER_BNAME AS SELLER_COMPANY,

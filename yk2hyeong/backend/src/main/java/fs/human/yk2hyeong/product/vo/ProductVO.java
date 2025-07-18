@@ -29,6 +29,7 @@ public class ProductVO {
     private String productCodeName;
     private String productStatusName;
 
+    private String sellerTel;
     private String sellerName;
     private String sellerEmail;
     private String sellerCompany;
