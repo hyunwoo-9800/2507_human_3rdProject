@@ -83,12 +83,14 @@ function WishlistProduct() {
                     </div>
                 </div>
             ))}
-            <CustomPagination
-                defaultCurrent={page}
-                total={products.length}
-                pageSize={pageSize}
-                onChange={handlePageChange}
-            />
+            <div className="pagination-box">
+                <CustomPagination
+                    defaultCurrent={page}
+                    total={products.length}
+                    pageSize={pageSize}
+                    onChange={handlePageChange}
+                />
+            </div>
         </div>
     );
 }
