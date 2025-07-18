@@ -41,4 +41,8 @@ public interface AdminDAO {
 
 //    회원가입승인
     void updateMemberStatusToApprove(String memberId);
+
+//    회원등록승인 이미지 다운받기
+    List<String> selectMemberImageUrls(String memberId);
+
 }

@@ -33,4 +33,7 @@ public interface AdminService {
 //    회원가입승인
     void approveMember(String memberId);
 
+
+
+
 }

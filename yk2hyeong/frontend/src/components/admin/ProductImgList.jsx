@@ -30,13 +30,23 @@ function ProductImgList({images}){
                         return (
                             <div key={index} className="image-box" onClick={() => setModalImg(img)}>
                                 <img
-                                    src={`/static/images/${img.imageName}`}
+                                    src={`/images/detailimages/${img.imageName}`}
                                     alt="상품이미지"
                                     onError={(e) => {
-                                        e.target.onerror = null;
-                                        e.target.src = '/images/no-image.png';
+                                        const currentRetry = e.target.dataset.retry;
+
+                                        if (!currentRetry) {
+                                            e.target.dataset.retry = 'thumbnail';
+                                            e.target.src = `/static/images/thumbnail/${img.imageName}`;
+                                        } else if (currentRetry === 'thumbnail') {
+                                            e.target.dataset.retry = 'fallback';
+                                            e.target.src = `/static/images/detailimages/no-image.png`;
+                                        }else {
+                                            e.target.onerror = null;
+                                        }
                                     }}
                                 />
+
                             </div>
                         );
                     })
@@ -50,11 +60,20 @@ function ProductImgList({images}){
                 <div className="modal-overlay" onClick={() => setModalImg(null)}>
                     <img
                         className="modal-image"
-                        src={`/static/images/${modalImg.imageName}`}
+                        src={`/static/images/detailimages/${modalImg.imageName}`}
                         alt="확대 이미지"
-                        onError={(e) =>{
-                            e.target.onerror = null;
-                            e.target.src = '/static/images/no-image.png'; //기본이미지경로
+                        onError={(e) => {
+                            const currentRetry = e.target.dataset.retry;
+
+                            if (!currentRetry) {
+                                e.target.dataset.retry = 'thumbnail';
+                                e.target.src = `/images/thumbnail/${modalImg.imageName}`;
+                            } else if (currentRetry === 'thumbnail') {
+                                e.target.dataset.retry = 'fallback';
+                                e.target.src = `/static/images/detailimages/no-image.png`;
+                            }else {
+                                e.target.onerror = null;
+                            }
                         }}
                     />
                     <button className="close-btn" onClick={() => setModalImg(null)}>X</button>

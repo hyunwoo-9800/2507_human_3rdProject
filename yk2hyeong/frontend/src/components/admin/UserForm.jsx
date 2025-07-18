@@ -13,16 +13,59 @@ function UserForm({user}){
         memberTel: "",
         memberAddr: "",
         memberDetailAddr: "",
-        memberBankCode: "",
+        memberBankCode: "", //실제 응답 시 low_code_name 값으로
         memberAccountNum: "",
-        memberRole: "",
+        memberRole: "", //실제 응답 시 low_code_name 값으로
         memberStatus: "",
-        createdDate: ""
+        createdDate: "",
+        businessFileUrl:"", //사업자등록증파일
+        bankFileUrl:"" //통장 사본 파일 링크
     })
 
     useEffect(() => {
-        if(user){
-            setForm(user);
+        if (user) {
+            setForm({
+                memberId: user.memberId,
+                memberEmail: user.memberEmail,
+                memberPwd: user.memberPwd,
+                memberName: user.memberName,
+                memberBname: user.memberBname,
+                memberBnum: user.memberBnum,
+                memberShipperName: user.memberShipperName,
+                memberTel: user.memberTel,
+                memberAddr: user.memberAddr,
+                memberDetailAddr: user.memberDetailAddr,
+                memberBankCode: user.memberBankCodeName,
+                memberAccountNum: user.memberAccountNum,
+                memberRole: user.memberRoleName,
+                memberStatus: user.memberStatus,
+                createdDate: user.createdDate,
+                businessFileUrl: user.businessFileUrl,
+                bankFileUrl: user.bankFileUrl,
+                memberFileUrls: [user.businessFileUrl, user.bankFileUrl].filter(Boolean),
+            });
+        }
+    }, [user]);
+    useEffect(() => {
+        if (user) {
+            setForm({
+                memberId: user.memberId || "",
+                memberEmail: user.memberEmail || "",
+                memberPwd: user.memberPwd || "",
+                memberName: user.memberName || "",
+                memberBname: user.memberBname || "",
+                memberBnum: user.memberBnum || "",
+                memberShipperName: user.memberShipperName || "",
+                memberTel: user.memberTel || "",
+                memberAddr: user.memberAddr || "",
+                memberDetailAddr: user.memberDetailAddr || "",
+                memberBankCode: user.memberBankCodeName || "",
+                memberAccountNum: user.memberAccountNum || "",
+                memberRole: user.memberRoleName || "",
+                memberStatus: user.memberStatus || "",
+                createdDate: user.createdDate || "",
+                memberFileUrls: user.memberFileUrls || []
+            });
         }
     }, [user]);
     return(
@@ -75,6 +118,24 @@ function UserForm({user}){
                 <span>등록일:</span>
                 <input type="text" value={form.createdDate} readOnly />
             </label>
+            {form.memberFileUrls?.length > 0 && (
+                <label>
+                    <span>첨부파일:</span>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            form.memberFileUrls.forEach((url) => {
+                                const filename = url.split('/').pop(); // 파일명만 추출
+                                const apiUrl = `${window.location.origin}/api/image/${filename}`;
+                                window.open(apiUrl, '_blank');
+                            });
+                        }}
+                    >
+                        다운로드
+                    </button>
+                </label>
+            )}
+
         </form>
     )
 }

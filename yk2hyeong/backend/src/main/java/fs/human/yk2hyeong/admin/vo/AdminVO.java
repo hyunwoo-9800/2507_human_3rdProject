@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 // 관리자 VO
 @Data
@@ -30,6 +31,9 @@ public class AdminVO {
     private String memberStatus;
     private String createdId;
     private Date createdDate;
+    private String memberBankCodeName;
+    private List<String> memberFileUrls;
+
 
     private String reportId;         // 신고 고유 ID
     private String reporterId;       // 신고자 ID

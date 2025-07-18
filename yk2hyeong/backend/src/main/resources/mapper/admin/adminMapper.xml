@@ -63,6 +63,7 @@
         <result property="createdDate" column="createdDate"/>
         <result property="memberRoleName" column="memberRoleName"/>
         <result property="memberStatusName" column="memberStatusName"/>
+        <result property="memberBankCodeName" column="memberBankCodeName"/>
     </resultMap>
     <select id="selectPendingMember" resultMap="memberMap">
         SELECT
@@ -77,14 +78,34 @@
             M.MEMBER_ADDR AS memberAddr,
             M.MEMBER_DETAIL_ADDR AS memberDetailAddr,
             M.MEMBER_BANK_CODE AS memberBankCode,
+            BANK_DETAIL.LOW_CODE_NAME AS memberBankCodeName,       -- 은행 이름
             M.MEMBER_ACCOUNTNUM AS memberAccountNum,
             M.MEMBER_ROLE AS memberRole,
+            ROLE_DETAIL.LOW_CODE_NAME AS memberRoleName,           -- 역할 이름
             M.MEMBER_STATUS AS memberStatus,
             M.CREATED_ID AS createdId,
             M.CREATED_DATE AS createdDate
         FROM YH.TB_MEMBER M
-                 JOIN TB_CODE_DETAIL D ON M.MEMBER_STATUS = D.LOW_CODE_VALUE
-        WHERE D.LOW_CODE_NAME = '미승인'
+                 JOIN TB_CODE_DETAIL STATUS_DETAIL
+                      ON M.MEMBER_STATUS = STATUS_DETAIL.LOW_CODE_VALUE
+                 LEFT JOIN TB_CODE_DETAIL ROLE_DETAIL
+                           ON M.MEMBER_ROLE = ROLE_DETAIL.LOW_CODE_VALUE
+                               AND ROLE_DETAIL.CODE_ID = (
+                                   SELECT CODE_ID FROM TB_CODE WHERE TOP_CODE_NAME = 'ROLE'
+                               )
+                 LEFT JOIN TB_CODE_DETAIL BANK_DETAIL
+                           ON M.MEMBER_BANK_CODE = BANK_DETAIL.LOW_CODE_VALUE
+                               AND BANK_DETAIL.CODE_ID = (
+                                   SELECT CODE_ID FROM TB_CODE WHERE TOP_CODE_NAME = 'BANK'
+                               )
+        WHERE STATUS_DETAIL.LOW_CODE_NAME = '미승인'
+    </select>
+<!--회원가입등록 때 저장한 이미지 모두 불러오기-->
+    <select id="selectMemberImageUrls" resultType="string">
+        SELECT IMAGE_PATH || '/' || IMAGE_NAME AS imageUrl
+        FROM TB_IMAGES
+        WHERE MEMBER_ID = #{memberId}
+          AND IMAGE_TYPE = '001'
     </select>
     <!--유저관리 페이지 유저 정보 불러오기-->
     <select id="selectMember" resultMap="memberMap">

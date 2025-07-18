@@ -3,7 +3,7 @@ import React from "react";
 function PopularItem(){
     return(
         <div className="brand-leader">
-            <h1>인기품목</h1>
+            <h1>일일 최다판매품목</h1>
             <div className="brand-leader-content">
                 <ul>
                     <li>스테비아 방울토마토 2kg</li>

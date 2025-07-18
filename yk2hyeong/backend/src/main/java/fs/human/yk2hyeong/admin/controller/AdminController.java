@@ -4,11 +4,16 @@ import fs.human.yk2hyeong.admin.service.AdminService;
 import fs.human.yk2hyeong.admin.vo.AdminVO;
 import fs.human.yk2hyeong.product.vo.ProductImageVO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.UUID;
 
@@ -136,5 +141,35 @@ public ResponseEntity<String> approveProduct(@RequestBody AdminVO adminVO) {
         adminService.approveMember(memberId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/image/{filename:.+}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String filename) {
+        try {
+            // 1. 실제 로컬 경로 구성 (경로는 그대로 유지)
+            File file = new File("C:/yk2hyeong/member_images/" + filename);
+
+            if (!file.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 2. 파일을 byte로 읽기
+            byte[] imageBytes = Files.readAllBytes(file.toPath());
+
+            // 3. MIME 타입 자동 판별
+            String mimeType = Files.probeContentType(file.toPath());
+            if (mimeType == null) {
+                mimeType = "application/octet-stream"; // 기본값
+            }
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType(mimeType));
+
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
 }

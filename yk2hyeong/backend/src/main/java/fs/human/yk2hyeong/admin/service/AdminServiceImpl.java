@@ -49,6 +49,10 @@ public class AdminServiceImpl implements AdminService {
             System.out.println("[AdminServiceImpl] 조회된 유저 수: " + list.size());
             for (AdminVO item : list) {
                 System.out.println("상품명: " + item.getMemberName());
+
+                //이미지 리스트 조회해서 세팅 추가
+                List<String> imageUrls = adminDAO.selectMemberImageUrls(item.getMemberId());
+                item.setMemberFileUrls(imageUrls);
             }
         }
         return list;
@@ -156,6 +160,7 @@ public class AdminServiceImpl implements AdminService {
     public void approveMember(String memberId) {
         adminDAO.updateMemberStatusToApprove(memberId);
     }
+
 
 
 }
