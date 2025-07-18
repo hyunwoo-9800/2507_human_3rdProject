@@ -182,7 +182,7 @@ export default function ProductDetail() {
               {
                 key: 'notice',
                 label: '상품공지',
-                children: <ProductNoticeTab product={product} />,
+                children: <ProductNoticeTab product={product} memberId={memberId} />,
               },
               {
                 key: 'delivery',

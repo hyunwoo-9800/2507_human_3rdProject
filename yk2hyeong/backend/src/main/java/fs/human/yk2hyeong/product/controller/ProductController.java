@@ -2,9 +2,11 @@ package fs.human.yk2hyeong.product.controller;
 
 import fs.human.yk2hyeong.admin.service.AdminService;
 import fs.human.yk2hyeong.product.service.ProductService;
+import fs.human.yk2hyeong.product.service.ProductNoticeService;
 import fs.human.yk2hyeong.product.vo.CategoryVO;
 import fs.human.yk2hyeong.product.vo.ProductRegisterDTO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
+import fs.human.yk2hyeong.product.vo.ProductNoticeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
@@ -25,6 +27,7 @@ public class ProductController {
 
     private final ProductService productService;
     private final AdminService adminService;
+    private final ProductNoticeService productNoticeService;
 
     // 상품 목록 조회
     @GetMapping("/products")
@@ -140,5 +143,58 @@ public class ProductController {
         productService.registerProduct(dto);
 
         return ResponseEntity.ok("상품 등록 성공");
+    }
+
+    // 상품별 공지사항 목록 조회
+    @GetMapping("/products/{productId}/notices")
+    public List<ProductNoticeVO> getProductNotices(@PathVariable String productId) {
+        return productNoticeService.getNotices(productId);
+    }
+
+    // 상품 공지사항 등록
+    @PostMapping("/products/{productId}/notices")
+    public ResponseEntity<?> createProductNotice(
+            @PathVariable String productId,
+            @RequestBody Map<String, String> body,
+            @RequestHeader("memberid") String memberId
+    ) {
+        ProductNoticeVO notice = new ProductNoticeVO();
+        notice.setProductId(productId);
+        notice.setTitle(body.get("title"));
+        notice.setProductNoticeContent(body.get("content"));
+        notice.setProductNoticeType(body.get("type"));
+        notice.setMemberId(memberId);
+        productNoticeService.createNotice(notice);
+        return ResponseEntity.ok().build();
+    }
+
+    // 상품 공지사항 수정
+    @PutMapping("/products/{productId}/notices/{noticeId}")
+    public ResponseEntity<?> updateProductNotice(
+            @PathVariable String productId,
+            @PathVariable String noticeId,
+            @RequestBody Map<String, String> body,
+            @RequestHeader("memberid") String memberId
+    ) {
+        ProductNoticeVO notice = new ProductNoticeVO();
+        notice.setProductNoticeId(noticeId);
+        notice.setProductId(productId);
+        notice.setTitle(body.get("title"));
+        notice.setProductNoticeContent(body.get("content"));
+        notice.setProductNoticeType(body.get("type"));
+        notice.setMemberId(memberId);
+        productNoticeService.updateNotice(notice);
+        return ResponseEntity.ok().build();
+    }
+
+    // 상품 공지사항 삭제
+    @DeleteMapping("/products/{productId}/notices/{noticeId}")
+    public ResponseEntity<?> deleteProductNotice(
+            @PathVariable String productId,
+            @PathVariable String noticeId,
+            @RequestHeader("memberid") String memberId
+    ) {
+        productNoticeService.deleteNotice(noticeId, memberId);
+        return ResponseEntity.ok().build();
     }
 }
