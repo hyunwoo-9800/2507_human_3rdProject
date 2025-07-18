@@ -5,7 +5,7 @@ import CustomPagination from "../common/CustomPagination";
 function RegisteredProduct() {
     const [products, setProducts] = useState([]);
     // 페이지네이션
-    const [page, setPage] = useState([]);
+    const [page, setPage] = useState(1);
     const pageSize = 4;
 
     useEffect(() => {
@@ -27,11 +27,12 @@ function RegisteredProduct() {
                         sellerCompany: product.sellerCompany,
                         productName: product.productName,
                         productDescription: product.productDescription,
-                        productMinQty: product.productMinQty,
+                        productMinQtr: product.productMinQtr,
                         productUnitPrice: product.productUnitPrice,
                         createdDate: formatDate(product.createdDate),
                         imageType: product.imageType,
-                        imagePath: product.imageType === 200 ? product.imagePath : null // 200일 때만 출력
+                        imagePath: product.imageType === 200 ? product.imagePath : null, // 200일 때만 출력
+                        imageName: product.imageName
                     };
                 });
 
@@ -48,9 +49,9 @@ function RegisteredProduct() {
         return date.toISOString().split('T')[0]; // yyyy-mm-dd
     };
 
-    const getImageSrc = (path) => {
-        if (!path) return "/detailimages/images/no-image.png";
-        return `/images/detailimages/${path}`;
+    const getImageSrc = (imageName) => {
+        if (!imageName) return "/static/images/thumbnail/no-image.png";
+        return `/static/images/thumbnail/${imageName}`;
     };
 
     // 페이지네이션
@@ -65,23 +66,23 @@ function RegisteredProduct() {
 
     return (
         <div className="card-list">
-            {products.map((p, idx) => (
+            {paginatedProducts.map((p, idx) => (
                 <div className="card" key={idx}>
                     <img
-                        src={getImageSrc(p.imagePath)}
+                        src={getImageSrc(p.imageName)}
                         alt="product"
                         onError={(e) => {
                             if (e.target.src.includes("no-image.png")) return;
                             e.target.onerror = null;
-                            e.target.src = "/images/no-image.png";
+                            e.target.src = "/static/images/thumbnail/no-image.png";
                         }}
                     />
                     <div className="card-content">
                         <p><strong className="item-label">출하자</strong><span>{p.sellerCompany}</span></p>
                         <p><strong className="item-label">상품명</strong><span>{p.productName}</span></p>
-                        <p><strong className="item-label">단위/포장</strong><span>{p.productDescription}</span></p>
+                        <p><strong className="item-label">상품설명</strong><span>{p.productDescription}</span></p>
                         <p><strong className="item-label">단위 당 가격</strong><span>{Number(p.productUnitPrice).toLocaleString()}원</span></p>
-                        <p><strong className="item-label">최소구매수량</strong><span>{p.productMinQty}kg</span></p>
+                        <p><strong className="item-label">최소구매수량</strong><span>{p.productMinQtr}kg</span></p>
                         <p><strong className="item-label">등록일자</strong><span>{p.createdDate}</span></p>
                     </div>
                 </div>

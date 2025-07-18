@@ -115,7 +115,7 @@
 
 .trendy-price {
     position: relative;
-    min-height: 300px;
+    min-height: 400px;
     background-color: #E6F9D5;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -143,7 +143,7 @@
     background-color: #fff;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
-    height: 280px;
+    height: 300px;
     border-top: 2px solid #cfcfcf;
 }
 
