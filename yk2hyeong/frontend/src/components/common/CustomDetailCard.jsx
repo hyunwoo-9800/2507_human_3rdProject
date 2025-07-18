@@ -28,6 +28,7 @@ const CustomDetailCard = ({
   favoriteProductIds = [],
   setFavoriteProductIds = () => {},
   productId = '',
+  productCodeName = '',
 }) => {
   const [orderType, setOrderType] = useState(() => {
     if (defaultOrderType && orderOptions[defaultOrderType]) {
@@ -192,8 +193,8 @@ const CustomDetailCard = ({
 
         <div style={{ width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>상품번호:</span>
-            <span>{productCode}</span>
+            <span>상품카테고리:</span>
+            <span>{productCodeName}</span>
           </div>
         </div>
         <div style={{ width: '100%' }}>

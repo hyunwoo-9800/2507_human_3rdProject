@@ -26,6 +26,11 @@ export default function ProductDetail() {
         if (!groupByProductId[item.productId]) {
           // 상품 정보 복사, images 배열 추가
           groupByProductId[item.productId] = { ...item, images: [] }
+        } else {
+          // productCodeName 등 주요 정보가 없으면 새로 들어온 item에서 값 복사
+          if (!groupByProductId[item.productId].productCodeName && item.productCodeName) {
+            groupByProductId[item.productId].productCodeName = item.productCodeName
+          }
         }
         // 이미지 정보만 추출해서 배열에 push
         groupByProductId[item.productId].images.push({
@@ -111,7 +116,7 @@ export default function ProductDetail() {
     <div>
       <CustomDetailCard
         productName={product.productName || '스테비아 방울토마토'}
-        productCode={product.productId || 'P250703-000121'}
+        productCodeName={product.productCodeName || 'P250703-000121'}
         quantity={product.productStockQty || 1} // 남은수량(최대값)
         shippingRegion={product.sellerCompany || '(주)천안청과'}
         availableDate={product.productRevEnd || '판매자 문의'} // 판매종료일자
