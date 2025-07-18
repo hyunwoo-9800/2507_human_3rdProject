@@ -231,7 +231,7 @@ export default function ProductRegister() {
               setDetailImages={setDetailImages}
               onBack={() => setActiveItem('2')}
               productName={productForm.productName}
-              sellerCompany={userInfo?.memberBname || ''}
+              sellerCompany={userInfo?.memberBname || ''} // 출하자명(회사명)
               productUnitPrice={parseInt(productForm.productPrice) || 0}
               productMinQtr={productForm.minSaleUnit || 0}
               productSellType={

@@ -14,7 +14,7 @@ export default function ProductRegisterDescription({
   onBack,
   // ProductRegisterInfo에서 전달받을 props들
   productName = '',
-  sellerCompany = '',
+  sellerCompany = '', // 출하자명(회사명)
   productUnitPrice = 0,
   productMinQtr = 0,
   productSellType = '',
@@ -211,15 +211,6 @@ export default function ProductRegisterDescription({
         </p>
         <div style={{ marginLeft: 13 }}>
           <input type="file" accept="image/*" onChange={handleThumbnailChange} />
-          {thumbnailPreview && (
-            <div style={{ marginTop: 8 }}>
-              <img
-                src={thumbnailPreview}
-                alt="썸네일 미리보기"
-                style={{ width: cropSize, height: cropSize, borderRadius: 4, objectFit: 'cover' }}
-              />
-            </div>
-          )}
         </div>
       </div>
 
