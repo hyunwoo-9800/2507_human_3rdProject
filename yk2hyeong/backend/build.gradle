@@ -91,7 +91,7 @@ task buildReact(type: Exec) {
 
 // React 이미지 자동 복사
 task copyReactImages(type: Copy) {
-	from "$rootDir/frontend/public/images/**" // React 빌드 폴더의 이미지 파일을
+	from "$rootDir/frontend/public/static/images/**" // React 빌드 폴더의 이미지 파일을
 	into "$projectDir/src/main/resources/static/images/**" // Spring 프로젝트의 static/images 폴더로 복사
 }
 

@@ -22,8 +22,17 @@ export default function ProductDetailTab({ product }) {
       <div className="detail-section">
         <h4>상품 설명</h4>
         <p>
-          {product.productDescription ||
-            '신선하고 맛있는 스테비아 방울토마토입니다. 엄선된 품질로 제공되며, 최고의 신선도를 보장합니다.'}
+          {(
+            product.productDescription ||
+            '신선하고 맛있는 스테비아 방울토마토입니다. 엄선된 품질로 제공되며, 최고의 신선도를 보장합니다.'
+          )
+            .split('\n')
+            .map((line, idx, arr) => (
+              <React.Fragment key={idx}>
+                {line}
+                {idx < arr.length - 1 && <br />}
+              </React.Fragment>
+            ))}
         </p>
       </div>
 

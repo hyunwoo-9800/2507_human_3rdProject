@@ -161,7 +161,18 @@ export default function ProductNoticeTab({ product, memberId }) {
 
       {isOwner && (
         <div style={{ marginBottom: 16 }}>
-          <button onClick={() => openForm('create')} style={{ padding: '6px 16px', fontSize: 16 }}>
+          <button
+            onClick={() => openForm('create')}
+            style={{
+              padding: '6px 16px',
+              fontSize: 16,
+              backgroundColor: '#04a43c',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+            }}
+          >
             공지 등록
           </button>
         </div>
@@ -210,10 +221,34 @@ export default function ProductNoticeTab({ product, memberId }) {
               placeholder="공지 내용을 입력하세요"
             />
           </div>
-          <button type="submit" style={{ marginRight: 8, padding: '6px 16px', fontSize: 16 }}>
+          <button
+            type="submit"
+            style={{
+              marginRight: 8,
+              padding: '6px 16px',
+              fontSize: 16,
+              backgroundColor: formType === 'create' ? '#04a43c' : '#ffdd1a',
+              color: formType === 'create' ? '#fff' : '#222',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+            }}
+          >
             {formType === 'create' ? '등록' : '수정'}
           </button>
-          <button type="button" onClick={closeForm} style={{ padding: '6px 16px', fontSize: 16 }}>
+          <button
+            type="button"
+            onClick={closeForm}
+            style={{
+              padding: '6px 16px',
+              fontSize: 16,
+              backgroundColor: '#f82833',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 4,
+              cursor: 'pointer',
+            }}
+          >
             취소
           </button>
         </form>
@@ -253,10 +288,34 @@ export default function ProductNoticeTab({ product, memberId }) {
                 </span>
                 {isOwner && (
                   <>
-                    <button style={{ marginLeft: 8 }} onClick={() => openForm('edit', notice)}>
+                    <button
+                      style={{
+                        marginLeft: 8,
+                        padding: '4px 12px',
+                        fontSize: 15,
+                        backgroundColor: '#ffdd1a',
+                        color: '#222',
+                        border: 'none',
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => openForm('edit', notice)}
+                    >
                       수정
                     </button>
-                    <button style={{ marginLeft: 4 }} onClick={() => handleDelete(notice.id)}>
+                    <button
+                      style={{
+                        marginLeft: 4,
+                        padding: '4px 12px',
+                        fontSize: 15,
+                        backgroundColor: '#f82833',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: 4,
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => handleDelete(notice.id)}
+                    >
                       삭제
                     </button>
                   </>
