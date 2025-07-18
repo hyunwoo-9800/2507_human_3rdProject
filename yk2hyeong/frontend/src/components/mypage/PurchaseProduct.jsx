@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import Pagination from "../common/Pagination";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import CustomPagination from "../common/CustomPagination";
 
@@ -8,6 +8,9 @@ function PurchaseProduct(){
     // 페이지네이션
     const [page, setPage] = useState(1);
     const pageSize = 5;
+
+    // 상품탭으로 고고링
+    const navigate = useNavigate();
 
     useEffect(() => {
         const memberId = localStorage.getItem("memberId");
@@ -68,33 +71,49 @@ function PurchaseProduct(){
 
     return (
         <div className="card-list">
-            {paginatedProducts.map((p, idx) => (
-                <div className="card" key={idx}>
-                    <img
-                        src={getImageSrc(p.imageName)}
-                        alt="product"
-                        onError={(e) => {
-                            if (e.target.src.includes("no-image.png")) return;
-                            e.target.onerror = null;
-                            e.target.src = "/static/images/thumbnail/no-image.png";
-                        }}
-                    />
-                    <div className="card-content">
-                        <p><strong className="item-label">상품명</strong><span>{p.productName}</span></p>
-                        <p><strong className="item-label">상품설명</strong><span>{p.productDescription}</span></p>
-                        <p><strong className="item-label">구매수량</strong><span>{p.buyQty}</span></p>
-                        <p><strong className="item-label">구매금액</strong><span>{Number(p.buyTotalPrice).toLocaleString()}원</span></p>
-                        <p><strong className="item-label">구매일자</strong><span>{p.createdDate}</span></p>
-                        <p><strong className="item-label">배송예정일</strong><span>{p.buyDeliveryDate}</span></p>
-                    </div>
+            {products.length === 0 ? (
+                <div className="no-purchased-products">
+                    <h3>구매한 상품이 없습니다</h3>
+                    <button
+                        onClick={()=> navigate("/productlist")}
+                    >
+                        상품 목록으로 이동
+                    </button>
                 </div>
-            ))}
-            <CustomPagination
-                defaultCurrent={page}
-                total={products.length}
-                pageSize={pageSize}
-                onChange={handlePageChange}
-            />
+            ) : (
+                <>
+                    {paginatedProducts.map((p, idx) => (
+                        <div className="card" key={idx}>
+                            <img
+                                src={getImageSrc(p.imageName)}
+                                alt="product"
+                                onError={(e) => {
+                                    if (e.target.src.includes("no-image.png")) return;
+                                    e.target.onerror = null;
+                                    e.target.src = "/static/images/thumbnail/no-image.png";
+                                }}
+                            />
+                            <div className="card-content">
+                                <p><strong className="item-label">상품명</strong><span>{p.productName}</span></p>
+                                <p><strong className="item-label">상품설명</strong><span>{p.productDescription}</span></p>
+                                <p><strong className="item-label">구매수량</strong><span>{p.buyQty}</span></p>
+                                <p><strong className="item-label">구매금액</strong><span>{Number(p.buyTotalPrice).toLocaleString()}원</span></p>
+                                <p><strong className="item-label">구매일자</strong><span>{p.createdDate}</span></p>
+                                <p><strong className="item-label">배송예정일</strong><span>{p.buyDeliveryDate}</span></p>
+                            </div>
+                        </div>
+                    ))}
+                </>
+            )}
+            <div className="pagination-box">
+                <CustomPagination
+                    defaultCurrent={page}
+                    total={products.length}
+                    pageSize={pageSize}
+                    onChange={handlePageChange}
+                />
+            </div>
+
         </div>
     );
 }
