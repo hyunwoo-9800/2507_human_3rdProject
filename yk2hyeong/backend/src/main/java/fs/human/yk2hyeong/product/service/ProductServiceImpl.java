@@ -149,9 +149,10 @@ public class ProductServiceImpl implements ProductService {
         }
 
         if (dto.getDetailImages() != null) {
-            for (MultipartFile detailImage : dto.getDetailImages()) {
+            for (int i = 0; i < dto.getDetailImages().size(); i++) {
+                MultipartFile detailImage = dto.getDetailImages().get(i);
                 if (detailImage != null && !detailImage.isEmpty()) {
-                    saveDetailImageFile(detailImage, productId, "300", detailImageDir, dto.getMemberId());
+                    saveDetailImageFile(detailImage, productId, "300", detailImageDir, dto.getMemberId(), i + 1);
                 }
             }
         }
@@ -180,7 +181,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private void saveDetailImageFile(MultipartFile file, String productId, String imageType, String uploadDir, String memberId) {
+    private void saveDetailImageFile(MultipartFile file, String productId, String imageType, String uploadDir, String memberId, int order) {
         try {
             String originalFilename = file.getOriginalFilename();
             String ext = (originalFilename != null && originalFilename.contains("."))
@@ -188,7 +189,8 @@ public class ProductServiceImpl implements ProductService {
                     : "";
 
             String imageId = UUID.randomUUID().toString();
-            String newFileName = imageId + ext;
+            String orderStr = String.format("%03d", order);
+            String newFileName = productId + "_" + orderStr + ext;
 
             File dir = new File(uploadDir);
             if (!dir.exists()) dir.mkdirs();

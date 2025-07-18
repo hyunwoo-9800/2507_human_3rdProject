@@ -160,7 +160,7 @@ export default function ProductRegister() {
       formData.append('memberId', userInfo.memberId)
       // formData.append("memberEmail", userInfo.memberEmail);
       // formData.append("memberName", userInfo.memberName);
-      // formData.append("memberBname", userInfo.memberBname);
+      formData.append('memberBname', userInfo.memberBname)
       // formData.append("memberBnum", userInfo.memberBnum);
 
       // 썸네일
@@ -230,6 +230,17 @@ export default function ProductRegister() {
               detailImages={detailImages}
               setDetailImages={setDetailImages}
               onBack={() => setActiveItem('2')}
+              productName={productForm.productName}
+              sellerCompany={userInfo?.memberBname || ''}
+              productUnitPrice={parseInt(productForm.productPrice) || 0}
+              productMinQtr={productForm.minSaleUnit || 0}
+              productSellType={
+                productForm.orderType === 'immediate/reservation'
+                  ? '즉시/예약'
+                  : productForm.orderType === 'immediate'
+                  ? '즉시 구매 상품'
+                  : '예약 상품'
+              }
             />
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 30 }}>
               <button

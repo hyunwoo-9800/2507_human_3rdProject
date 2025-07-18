@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Textarea from '../../components/common/Textarea'
+import CustomCard from '../../components/common/CustomCard'
+import { Row, Col } from 'antd'
+import '../product/ProductList.css'
 
 export default function ProductRegisterDescription({
   text,
@@ -9,6 +12,12 @@ export default function ProductRegisterDescription({
   detailImages,
   setDetailImages,
   onBack,
+  // ProductRegisterInfo에서 전달받을 props들
+  productName = '',
+  sellerCompany = '',
+  productUnitPrice = 0,
+  productMinQtr = 0,
+  productSellType = '',
 }) {
   const cropSize = 270 // 크롭 크기
 
@@ -168,6 +177,15 @@ export default function ProductRegisterDescription({
     </label>
   )
 
+  // 판매 유형에 따른 라벨 계산
+  const getSellTypeLabels = () => {
+    const immediatePurchase = ['즉시 구매 상품', '즉시/예약'].includes(productSellType)
+    const reservationPurchase = ['예약 상품', '즉시/예약'].includes(productSellType)
+    return { immediatePurchase, reservationPurchase }
+  }
+
+  const { immediatePurchase, reservationPurchase } = getSellTypeLabels()
+
   return (
     <div>
       <h2>3. 상품 소개</h2>
@@ -204,6 +222,60 @@ export default function ProductRegisterDescription({
           )}
         </div>
       </div>
+
+      {/* 카드 미리보기 */}
+      {thumbnailPreview && (
+        <div style={{ marginTop: 30 }}>
+          <Label>상품 카드 미리보기</Label>
+          <div style={{ marginLeft: 13 }}>
+            <Row gutter={[16, 16]}>
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <CustomCard
+                  id="preview"
+                  image={thumbnailPreview}
+                  company={sellerCompany}
+                  productName={productName}
+                  price={productUnitPrice}
+                  minQuantity={productMinQtr}
+                  immediatePurchase={immediatePurchase}
+                  reservationPurchase={reservationPurchase}
+                  style={{
+                    width: '280px',
+                    height: '420px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  {/* ===== 카드 상단: 회사명 + 상품명 영역 ===== */}
+                  <div style={{ minHeight: 68, maxHeight: 68, marginBottom: 8 }}>
+                    {/* 회사명 (한 줄) */}
+                    {sellerCompany && (
+                      <div
+                        style={{
+                          fontSize: 14,
+                          color: '#888',
+                          marginBottom: 2,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {sellerCompany}
+                      </div>
+                    )}
+                    {/* 상품명 (2줄 고정, 넘치면 ... 처리) */}
+                    <div className="product-name-fixed">{productName}</div>
+                  </div>
+                  {/* ===== 카드 중단: 가격/라벨 영역 ===== */}
+                  {/* (이 영역은 CustomCard 내부에서 이미 처리됨) */}
+                  {/* ===== 카드 하단: 최소구매수량 영역 ===== */}
+                  {/* (이 영역도 CustomCard 내부에서 이미 처리됨) */}
+                </CustomCard>
+              </Col>
+            </Row>
+          </div>
+        </div>
+      )}
 
       {/* 상세 이미지 첨부 */}
       <div style={{ marginTop: 50 }}>

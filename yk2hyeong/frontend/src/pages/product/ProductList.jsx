@@ -28,13 +28,22 @@ export default function ProductList() {
     try {
       const response = await axios.get('/api/products')
       const filtered = response.data.filter((p) => p.imageType !== '003')
-      const seen = new Map()
+
+      // productId별로 그룹핑하여 썸네일(200) 우선 선택
+      const productMap = new Map()
       filtered.forEach((p) => {
-        if (!seen.has(p.productId)) {
-          seen.set(p.productId, p)
+        if (!productMap.has(p.productId)) {
+          productMap.set(p.productId, p)
+        } else {
+          // 이미 있는 상품이면, 썸네일(200)을 우선적으로 선택
+          const existing = productMap.get(p.productId)
+          if (p.imageType === '200' && existing.imageType !== '200') {
+            productMap.set(p.productId, p)
+          }
         }
       })
-      setProducts(Array.from(seen.values()))
+
+      setProducts(Array.from(productMap.values()))
     } catch (error) {
       console.error('상품 목록 불러오기 실패:', error)
     } finally {

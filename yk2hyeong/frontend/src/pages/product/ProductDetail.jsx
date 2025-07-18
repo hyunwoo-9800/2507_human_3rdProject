@@ -3,37 +3,66 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import CustomDetailCard from '../../components/common/CustomDetailCard'
 import CustomTabs from '../../components/common/CustomTabs'
+import ProductDetailTab from '../../components/product/ProductDetailTab'
+import PriceChartTab from '../../components/product/PriceChartTab'
+import ProductNoticeTab from '../../components/product/ProductNoticeTab'
+import DeliveryInfoTab from '../../components/product/DeliveryInfoTab'
 import './productDetail.css'
+import '../../components/product/productTabs.css'
 
 export default function ProductDetail() {
   const { productId } = useParams()
   const [product, setProduct] = useState(null)
 
   useEffect(() => {
-    axios
-      .get(`/api/products`) // 또는 `/api/products/${productId}` 라우터 있으면 단건 조회
-      .then((res) => {
-        const found = res.data.find((p) => p.productId === productId)
-        setProduct(found)
+    axios.get(`/api/products`).then((res) => {
+      // productId별로 그룹핑하여 images 배열로 묶기
+      const groupByProductId = {}
+      res.data.forEach((item) => {
+        if (!groupByProductId[item.productId]) {
+          // 상품 정보 복사, images 배열 추가
+          groupByProductId[item.productId] = { ...item, images: [] }
+        }
+        // 이미지 정보만 추출해서 배열에 push
+        groupByProductId[item.productId].images.push({
+          imageId: item.imageId,
+          imagePath: item.imagePath,
+          imageName: item.imageName,
+          imageType: item.imageType,
+        })
       })
+      // 원하는 상품 찾기
+      const found = groupByProductId[productId]
+      setProduct(found)
+      console.log('product:', found)
+    })
   }, [productId])
 
   if (!product) return <div>Loading...</div>
 
+  // imageType이 '200'인 썸네일 이미지 추출
+  let thumbnailImage = null
+  if (Array.isArray(product.images)) {
+    const thumb = product.images.find((img) => img.imageType === '200')
+    if (thumb) {
+      thumbnailImage = `/static${thumb.imagePath}/${thumb.imageName}`
+    }
+  }
+
   return (
     <div>
       <CustomDetailCard
-        productName="스테비아 방울토마토"
-        productCode="P250703-000121"
-        quantity={239994}
-        shippingRegion="(주)천안청과"
-        availableDate="판매자 문의"
-        price={10500}
-        releaseDate="2026년 7월 4일"
-        minOrder={100}
+        productName={product.productName || '스테비아 방울토마토'}
+        productCode={product.productCode || 'P250703-000121'}
+        quantity={product.productStockQty || 239994}
+        shippingRegion={product.sellerCompany || '(주)천안청과'}
+        availableDate={product.productRevStart || '판매자 문의'}
+        price={product.productUnitPrice || 10500}
+        releaseDate={product.productRevStart || '2026년 7월 4일'}
+        minOrder={product.productMinQtr || 100}
         defaultQuantity={100}
         defaultOrderType="immediate"
-        images={['/static/images/tomato.png']}
+        images={[thumbnailImage || '/static/images/tomato.png']}
         imageStyle={{
           width: '100%',
           objectFit: 'cover',
@@ -65,13 +94,21 @@ export default function ProductDetail() {
         >
           <CustomTabs
             items={[
-              { key: 'detail', label: '상품소개', children: <div>상세 정보 탭 내용</div> },
-              { key: 'price', label: '시세추이', children: <div>시세추이 탭 내용</div> },
-              { key: 'notice', label: '상품공지', children: <div>상품공지 탭 내용</div> },
+              {
+                key: 'detail',
+                label: '상품소개',
+                children: <ProductDetailTab product={product} />,
+              },
+              { key: 'price', label: '시세추이', children: <PriceChartTab product={product} /> },
+              {
+                key: 'notice',
+                label: '상품공지',
+                children: <ProductNoticeTab product={product} />,
+              },
               {
                 key: 'delivery',
                 label: '배송/반품정보',
-                children: <div>배송/반품정보 탭 내용</div>,
+                children: <DeliveryInfoTab product={product} />,
               },
             ]}
             type="card"
@@ -81,11 +118,6 @@ export default function ProductDetail() {
           />
         </div>
       </div>
-      <h1>{product.productName}</h1>
-      <img src={`/static${product.imagePath}/${product.imageName}`} alt={product.productName} />
-      <p>판매처: {product.sellerCompany}</p>
-      <p>가격: {product.productUnitPrice}원</p>
-      <p>최소 주문 수량: {product.productMinQtr}</p>
     </div>
   )
 }
