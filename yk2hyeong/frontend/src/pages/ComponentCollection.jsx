@@ -1372,18 +1372,14 @@ favorite={false} />
                 productName="스테비아 방울토마토"
                 productCode="P250703-000121"
                 quantity={239994}
-                shippingRegion="전체"
+                shippingRegion="(주)천안청과"
                 availableDate="판매자 문의"
                 price={10500}
                 releaseDate="2026년 7월 4일"
                 minOrder={100}
                 defaultQuantity={100}
                 defaultOrderType="immediate"
-                images={[
-                  '/static/images/tomato.png',
-                  '/static/images/potato.png',
-                  '/static/images/carrot.png',
-                ]}
+                images={['/static/images/tomato.png']}
                 orderOptions={{
                   immediate: true,
                   reservation: true,
@@ -1410,7 +1406,7 @@ favorite={false} />
 productName="스테비아 방울토마토"
 productCode="P250703-000121"
 quantity={239994}
-shippingRegion="전체"
+shippingRegion="(주)천안청과"
 availableDate="판매자 문의"
 price={10500}
 releaseDate="2026년 7월 4일"
@@ -1419,8 +1415,6 @@ defaultQuantity={100}
 defaultOrderType="immediate"
 images={[
     '/static/images/tomato.png',
-    '/static/images/potato.png',
-    '/static/images/carrot.png'
 ]}
 orderOptions={{
     immediate: true,

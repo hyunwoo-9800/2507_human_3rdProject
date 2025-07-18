@@ -155,7 +155,7 @@ const CustomDetailCard = ({
         {/* </div> */}
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>배송가능지역:</span>
+            <span>출하자:</span>
             <span>{shippingRegion}</span>
           </div>
         </div>
@@ -184,9 +184,10 @@ const CustomDetailCard = ({
             <span>{releaseDate}</span>
           </div>
         </div>
+        <hr style={{ margin: '20px 0' }} />
 
         {/* 주문방식 */}
-        <div style={{ marginTop: 12 }}>
+        <div style={{ marginTop: 12, textAlign: 'center' }}>
           <CustomRadio
             value={orderType}
             onChange={handleOrderTypeChange}
@@ -195,46 +196,84 @@ const CustomDetailCard = ({
           />
         </div>
 
-        {/* 수량 선택 */}
-        <div style={{ marginTop: 16, fontSize: 16 }}>
-          <div>수량 (최소구매수량 {minOrder}개)</div>
-          <div style={{ marginTop: 8 }}>
-            <CustomInputNumber
-              defaultValue={defaultQuantity}
-              min={minOrder}
-              max={quantity}
-              step={1}
-              onChange={handleQuantityChange}
-            />
-          </div>
-        </div>
-
-        {/* 가격 정보 */}
-        <div style={{ marginTop: 16 }}>
-          {orderType === 'reservation' && (
-            <div style={{ color: 'blue', fontSize: 20 }}>
-              예약금액 ({orderOptions.reserveRate}%) {reservePrice.toLocaleString()}원
-            </div>
-          )}
-          <div style={{ color: 'red', fontSize: 24, fontWeight: 'bold' }}>
-            총금액 {totalPrice.toLocaleString()}원
-          </div>
-        </div>
-
-        <button
-          onClick={() => onOrder({ orderType, orderQuantity })}
+        <div
           style={{
-            marginTop: 20,
-            backgroundColor: '#666',
-            color: 'white',
-            fontSize: 18,
-            padding: '10px 20px',
+            flex: 1,
+            backgroundColor: '#f5f5f5',
             borderRadius: 8,
-            width: '100%',
+            padding: 10,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+            marginLeft: 'auto', // 오른쪽 끝으로 위치
+            marginTop: 10,
           }}
         >
-          {orderType === 'reservation' ? '예약하기' : '구매하기'}
-        </button>
+          {/* 수량 선택 - 좌우 배치 */}
+          <div
+            style={{
+              fontSize: 16,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <div>수량 (최소구매수량 {minOrder}개)</div>
+            <div>
+              <CustomInputNumber
+                defaultValue={defaultQuantity}
+                min={minOrder}
+                max={quantity}
+                step={1}
+                onChange={handleQuantityChange}
+              />
+            </div>
+          </div>
+          {/* 가격 정보 - 좌우 배치 */}
+          <div style={{ marginTop: 16, width: '100%' }}>
+            {orderType === 'reservation' && (
+              <div
+                style={{
+                  color: 'blue',
+                  fontSize: 20,
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <span>예약금액 ({orderOptions.reserveRate}%)</span>
+                <span>{reservePrice.toLocaleString()}원</span>
+              </div>
+            )}
+            <div
+              style={{
+                color: 'red',
+                fontSize: 24,
+                fontWeight: 'bold',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <span>총금액</span>
+              <span>{totalPrice.toLocaleString()}원</span>
+            </div>
+          </div>
+
+          <button
+            onClick={() => onOrder({ orderType, orderQuantity })}
+            style={{
+              marginTop: 20,
+              backgroundColor: '#666',
+              color: 'white',
+              fontSize: 18,
+              padding: '10px 20px',
+              borderRadius: 8,
+              width: '100%',
+            }}
+          >
+            {orderType === 'reservation' ? '예약하기' : '구매하기'}
+          </button>
+        </div>
       </div>
     </div>
   )
