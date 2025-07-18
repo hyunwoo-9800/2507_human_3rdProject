@@ -207,4 +207,9 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException("상세 이미지 저장 실패: " + e.getMessage(), e);
         }
     }
+//    memberId로 상품목록 조회
+    @Override
+    public List<ProductVO> getProductsByMemberId(String memberId) {
+        return productDAO.selectProductsByMemberId(memberId);
+    }
 }

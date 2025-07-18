@@ -36,20 +36,26 @@ function FormTab({tabType}){
     };
 
     const handleItemCheck = (id) => {
-        setItem(prev =>
-            prev.map(item =>
+        setItem(prev => {
+            const updated = prev.map(item =>
                 item[idKey] === id ? { ...item, checked: !item.checked } : item
-            )
-        );
+            );
+
+            const selected = updated.find(item => item[idKey] === id);
+            setSelectItem({ ...selected }); // ← 여기 추가!
+
+            return updated;
+        });
     };
 
     // ✅ tr 클릭 시 체크박스도 같이 토글되도록
     const handleRowClick = (clickedItem) => {
-        setSelectItem(clickedItem);
+        const updatedChecked = !clickedItem.checked;
+        setSelectItem({ ...clickedItem, checked: updatedChecked }); // <- checked 값 반영
         setItem(prev =>
             prev.map(item =>
                 item[idKey] === clickedItem[idKey]
-                    ? { ...item, checked: !item.checked }
+                    ? { ...item, checked: updatedChecked }
                     : item
             )
         );

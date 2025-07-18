@@ -3,8 +3,9 @@ import CustomModal from "../common/CustomModal";
 import Button from "../common/Button";
 import axios from "axios";
 
-function ButtonGroup({productId}) {
+function ButtonGroup({selectItem}) {
     const [reason, setReason] = useState("");
+    const productId = selectItem?.productId;
 
     const handleRegister = async () => {
         if (!productId) {
