@@ -35,6 +35,9 @@ export default function ProductRegisterDescription({
   const [thumbnailPreview, setThumbnailPreview] = useState(null)
   const [detailPreviews, setDetailPreviews] = useState([])
 
+  // 드래그&드롭 순서 변경용 상태
+  const [draggedIdx, setDraggedIdx] = useState(null)
+
   // textarea 내용 변경 핸들러
   const handleTextareaChange = (e) => setText(e.target.value)
 
@@ -193,6 +196,23 @@ export default function ProductRegisterDescription({
     }
   }, [thumbnail])
 
+  // 상세 이미지 순서 변경 함수
+  const handleDragStart = (idx) => setDraggedIdx(idx)
+  const handleDragOver = (e) => e.preventDefault()
+  const handleDrop = (idx) => {
+    if (draggedIdx === null || draggedIdx === idx) return
+    // detailImages, detailPreviews 모두 순서 변경
+    const newImages = [...detailImages]
+    const newPreviews = [...detailPreviews]
+    const [img] = newImages.splice(draggedIdx, 1)
+    const [prev] = newPreviews.splice(draggedIdx, 1)
+    newImages.splice(idx, 0, img)
+    newPreviews.splice(idx, 0, prev)
+    setDetailImages(newImages)
+    setDetailPreviews(newPreviews)
+    setDraggedIdx(null)
+  }
+
   const RequiredLabel = ({ children }) => (
     <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 20 }}>
       {children} <span style={{ color: 'red' }}>*</span>
@@ -303,7 +323,9 @@ export default function ProductRegisterDescription({
       {/* 상세 이미지 첨부 */}
       <div style={{ marginTop: 50 }}>
         <RequiredLabel>제품 상세 사진 첨부 (1~3장)</RequiredLabel>
-        <p style={{ color: 'red' }}>!! 첨부한 순서대로 상품 상세 페이지에 표시됩니다 !!</p>
+        <p style={{ color: 'red' }}>
+          !! 미리보기에 보이는 순서대로 상품 상세 페이지에 표시됩니다 !!
+        </p>
         <div style={{ marginLeft: 13 }}>
           <input type="file" accept="image/*" multiple onChange={handleDetailImagesChange} />
         </div>
@@ -311,7 +333,7 @@ export default function ProductRegisterDescription({
 
       {/* 상품 상세 페이지 미리보기 */}
       {(thumbnailPreview || detailPreviews.length > 0) && (
-        <div style={{ marginTop: 30 }}>
+        <div style={{ marginTop: 70 }}>
           <Label>상품 상세 페이지 미리보기</Label>
           <div style={{ marginLeft: 13 }}>
             <div
@@ -567,6 +589,10 @@ export default function ProductRegisterDescription({
                   </div>
                 </div>
               </div>
+
+              <p>상품 설명</p>
+
+              <p style={{ color: 'red' }}>!! 상세이미지는 드래그하여 순서를 바꿀 수 있습니다 !!</p>
               {/* 상세이미지 세로 미리보기 */}
               {detailPreviews.length > 0 && (
                 <div style={{ marginTop: 30, display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -575,7 +601,16 @@ export default function ProductRegisterDescription({
                       key={idx}
                       src={src}
                       alt={`상세사진 미리보기 ${idx + 1}`}
-                      style={{ width: 890, borderRadius: 4 }}
+                      style={{
+                        width: 890,
+                        borderRadius: 4,
+                        cursor: 'grab',
+                        opacity: draggedIdx === idx ? 0.5 : 1,
+                      }}
+                      draggable
+                      onDragStart={() => handleDragStart(idx)}
+                      onDragOver={handleDragOver}
+                      onDrop={() => handleDrop(idx)}
                     />
                   ))}
                 </div>
