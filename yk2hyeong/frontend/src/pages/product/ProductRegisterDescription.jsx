@@ -116,7 +116,7 @@ export default function ProductRegisterDescription({
   }
 
   // 상세 이미지 리사이징 함수
-  const resizeDetailImage = (file, maxWidth = 600) => {
+  const resizeDetailImage = (file, maxWidth = 890) => {
     return new Promise((resolve) => {
       const img = new Image()
       const url = URL.createObjectURL(file)
@@ -150,7 +150,7 @@ export default function ProductRegisterDescription({
       alert('최대 3장까지 첨부할 수 있습니다.')
       return
     }
-    const resizedFiles = await Promise.all(files.map((file) => resizeDetailImage(file, 600)))
+    const resizedFiles = await Promise.all(files.map((file) => resizeDetailImage(file, 890)))
     setDetailImages(resizedFiles)
   }
 
@@ -246,7 +246,7 @@ export default function ProductRegisterDescription({
         </div>
       </div>
 
-      {/* 카드 미리보기 */}
+      {/* 상품 카드 미리보기 */}
       {thumbnailPreview && (
         <div style={{ marginTop: 30 }}>
           <Label>상품 카드 미리보기</Label>
@@ -300,8 +300,17 @@ export default function ProductRegisterDescription({
         </div>
       )}
 
-      {/* 상품 상세 미리보기 */}
-      {thumbnailPreview && (
+      {/* 상세 이미지 첨부 */}
+      <div style={{ marginTop: 50 }}>
+        <RequiredLabel>제품 상세 사진 첨부 (1~3장)</RequiredLabel>
+        <p style={{ color: 'red' }}>!! 첨부한 순서대로 상품 상세 페이지에 표시됩니다 !!</p>
+        <div style={{ marginLeft: 13 }}>
+          <input type="file" accept="image/*" multiple onChange={handleDetailImagesChange} />
+        </div>
+      </div>
+
+      {/* 상품 상세 페이지 미리보기 */}
+      {(thumbnailPreview || detailPreviews.length > 0) && (
         <div style={{ marginTop: 30 }}>
           <Label>상품 상세 페이지 미리보기</Label>
           <div style={{ marginLeft: 13 }}>
@@ -318,11 +327,11 @@ export default function ProductRegisterDescription({
                   transformOrigin: 'top left',
                   width: '153.85%', // scale(0.65)의 역수
                   marginBottom: '-20%',
-                  // ProductDetail과 동일한 비율 유지
                   display: 'flex',
                   flexDirection: 'row',
                 }}
               >
+                {/* 썸네일 CustomDetailCard */}
                 <div
                   style={{
                     display: 'flex',
@@ -558,31 +567,23 @@ export default function ProductRegisterDescription({
                   </div>
                 </div>
               </div>
+              {/* 상세이미지 세로 미리보기 */}
+              {detailPreviews.length > 0 && (
+                <div style={{ marginTop: 30, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  {detailPreviews.map((src, idx) => (
+                    <img
+                      key={idx}
+                      src={src}
+                      alt={`상세사진 미리보기 ${idx + 1}`}
+                      style={{ width: 890, borderRadius: 4 }}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
       )}
-
-      {/* 상세 이미지 첨부 */}
-      <div style={{ marginTop: 50 }}>
-        <RequiredLabel>제품 상세 사진 첨부 (1~3장)</RequiredLabel>
-        <p style={{ color: 'red' }}>!! 첨부한 순서대로 상품 상세 페이지에 표시됩니다 !!</p>
-        <div style={{ marginLeft: 13 }}>
-          <input type="file" accept="image/*" multiple onChange={handleDetailImagesChange} />
-          {detailPreviews.length > 0 && (
-            <div style={{ marginTop: 8, display: 'flex', gap: 10 }}>
-              {detailPreviews.map((src, idx) => (
-                <img
-                  key={idx}
-                  src={src}
-                  alt={`상세사진 미리보기 ${idx + 1}`}
-                  style={{ width: 150, height: 'auto', borderRadius: 4 }}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
 
       {/* 이전 버튼 */}
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: 30 }}>
