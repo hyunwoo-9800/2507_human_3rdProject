@@ -3,6 +3,7 @@ import CustomInputNumber from './CustomInputNumber'
 import { StarFilled, StarOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import CustomRadio from './CustomRadio'
 import CustomModal from './CustomModal'
+import axios from 'axios'
 
 const CustomDetailCard = ({
   productName = '',
@@ -13,7 +14,7 @@ const CustomDetailCard = ({
   price = 0,
   releaseDate = '',
   minOrder = 100,
-  favorite = false,
+  isFavorite = false,
   orderOptions = { immediate: false, reservation: false, reserveRate: 30 },
   defaultQuantity = 100,
   defaultOrderType = '',
@@ -22,6 +23,11 @@ const CustomDetailCard = ({
   onOrder = () => {},
   images = [],
   imageStyle = {},
+  onFavoriteToggle = () => {},
+  memberId = '',
+  favoriteProductIds = [],
+  setFavoriteProductIds = () => {},
+  productId = '',
 }) => {
   const [orderType, setOrderType] = useState(() => {
     if (defaultOrderType && orderOptions[defaultOrderType]) {
@@ -33,7 +39,6 @@ const CustomDetailCard = ({
   })
 
   const [orderQuantity, setOrderQuantity] = useState(defaultQuantity)
-  const [isFavorite, setIsFavorite] = useState(favorite)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
   // minOrder, quantity가 바뀔 때 orderQuantity를 경계값에 맞게 동기화
@@ -62,10 +67,6 @@ const CustomDetailCard = ({
     }
   }
 
-  const toggleFavorite = () => {
-    setIsFavorite((prev) => !prev)
-  }
-
   const totalPrice = price * orderQuantity
   const reservePrice = Math.floor((totalPrice * (orderOptions.reserveRate || 30)) / 100)
 
@@ -82,6 +83,24 @@ const CustomDetailCard = ({
   }
 
   const mergedImageStyle = { ...defaultImageStyle, ...imageStyle }
+
+  const toggleFavorite = async () => {
+    if (!memberId) {
+      alert('로그인이 필요합니다.')
+      return
+    }
+    try {
+      if (!isFavorite) {
+        await axios.post('/api/favorites', { memberId, productId })
+        setFavoriteProductIds([...favoriteProductIds, productId])
+      } else {
+        await axios.delete('/api/favorites', { data: { memberId, productId } })
+        setFavoriteProductIds(favoriteProductIds.filter((id) => id !== productId))
+      }
+    } catch (e) {
+      alert('즐겨찾기 처리 중 오류가 발생했습니다.')
+    }
+  }
 
   return (
     <div
