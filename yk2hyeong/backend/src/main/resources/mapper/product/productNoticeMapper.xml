@@ -38,8 +38,8 @@
     <!-- 상품별 공지사항 조회 -->
     <select id="selectProductNotices" resultType="fs.human.yk2hyeong.product.vo.ProductNoticeVO">
         SELECT PRODUCT_NOTICE_ID, PRODUCT_ID, TITLE, PRODUCT_NOTICE_CONTENT, MEMBER_ID, PRODUCT_NOTICE_TYPE,
-               CREATED_ID, TO_CHAR(CREATED_DATE, 'YYYY-MM-DD') AS createdDate,
-               UPDATED_ID, TO_CHAR(UPDATED_DATE, 'YYYY-MM-DD') AS updatedDate
+               CREATED_ID, TO_CHAR(CREATED_DATE, 'YYYY-MM-DD HH24:MI') AS createdDate,
+               UPDATED_ID, TO_CHAR(UPDATED_DATE, 'YYYY-MM-DD HH24:MI') AS updatedDate
         FROM TB_PRODUCT_NOTICE
         WHERE PRODUCT_ID = #{productId}
         ORDER BY CREATED_DATE DESC

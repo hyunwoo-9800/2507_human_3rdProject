@@ -3,7 +3,7 @@ import axios from 'axios'
 import './productTabs.css'
 import dayjs from 'dayjs'
 import Input from '../common/Input'
-import Radio from '../common/Radio'
+import CustomRadio from '../common/CustomRadio'
 
 export default function ProductNoticeTab({ product, memberId }) {
   const [notices, setNotices] = useState([])
@@ -175,19 +175,14 @@ export default function ProductNoticeTab({ product, memberId }) {
         >
           <div style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 16 }}>
             <span style={{ fontWeight: 600, marginRight: 8 }}>타입</span>
-            <Radio
+            <CustomRadio
               name="noticeType"
-              value="NOTICE"
-              checked={noticeType === 'NOTICE'}
-              onChange={() => setNoticeType('NOTICE')}
-              label="공지"
-            />
-            <Radio
-              name="noticeType"
-              value="WARNING"
-              checked={noticeType === 'WARNING'}
-              onChange={() => setNoticeType('WARNING')}
-              label="중요"
+              value={noticeType}
+              onChange={setNoticeType}
+              options={[
+                { label: '공지', value: 'NOTICE' },
+                { label: '중요', value: 'WARNING' },
+              ]}
             />
           </div>
           <div style={{ marginBottom: 8 }}>
@@ -200,14 +195,17 @@ export default function ProductNoticeTab({ product, memberId }) {
               maxLength={100}
               required
               size="md"
+              style={{ width: 1100, fontSize: 16 }}
             />
           </div>
           <div style={{ marginBottom: 8 }}>
-            <label style={{ marginRight: 8, verticalAlign: 'top' }}>내용</label>
+            <label style={{ marginRight: 8, verticalAlign: 'top', fontWeight: 600 }}>
+              내용 <span style={{ color: 'red' }}>*</span>
+            </label>
             <textarea
               value={noticeContent}
               onChange={(e) => setNoticeContent(e.target.value)}
-              style={{ width: 400, height: 80, fontSize: 16 }}
+              style={{ width: 1100, height: 80, fontSize: 16, marginLeft: 13 }}
               maxLength={1000}
               placeholder="공지 내용을 입력하세요"
             />
@@ -265,7 +263,16 @@ export default function ProductNoticeTab({ product, memberId }) {
                 )}
               </div>
               <div className="notice-content">
-                <p>{notice.content}</p>
+                <p>
+                  {notice.content
+                    ? notice.content.split('\n').map((line, idx, arr) => (
+                        <React.Fragment key={idx}>
+                          {line}
+                          {idx < arr.length - 1 && <br />}
+                        </React.Fragment>
+                      ))
+                    : ''}
+                </p>
               </div>
             </div>
           ))
