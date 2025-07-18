@@ -241,6 +241,9 @@ export default function ProductRegister() {
                   ? '즉시 구매 상품'
                   : '예약 상품'
               }
+              saleQuantity={productForm.saleQuantity || 0}
+              startDate={productForm.startDate || ''}
+              endDate={productForm.endDate || ''}
             />
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 30 }}>
               <button

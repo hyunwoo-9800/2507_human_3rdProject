@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Textarea from '../../components/common/Textarea'
 import CustomCard from '../../components/common/CustomCard'
+import CustomDetailCard from '../../components/common/CustomDetailCard'
+import CustomRadio from '../../components/common/CustomRadio'
+import CustomInputNumber from '../../components/common/CustomInputNumber'
+import CustomModal from '../../components/common/CustomModal'
 import { Row, Col } from 'antd'
+import { StarFilled, StarOutlined } from '@ant-design/icons'
 import '../product/ProductList.css'
 
 export default function ProductRegisterDescription({
@@ -18,7 +23,13 @@ export default function ProductRegisterDescription({
   productUnitPrice = 0,
   productMinQtr = 0,
   productSellType = '',
+  // 추가 데이터
+  saleQuantity = 0,
+  startDate = '',
+  endDate = '',
 }) {
+  const [orderType, setOrderType] = useState('immediate')
+  const [orderQuantity, setOrderQuantity] = useState(productMinQtr)
   const cropSize = 270 // 크롭 크기
 
   const [thumbnailPreview, setThumbnailPreview] = useState(null)
@@ -165,6 +176,23 @@ export default function ProductRegisterDescription({
     console.log('thumbnailPreview:', thumbnailPreview)
   }, [thumbnailPreview])
 
+  useEffect(() => {
+    if (radioOptions.length === 1) {
+      setOrderType(radioOptions[0].value)
+    }
+  }, [productSellType])
+
+  // 썸네일 파일이 바뀌면 미리보기 URL을 다시 생성 (탭 전환 시에도 유지)
+  useEffect(() => {
+    if (thumbnail) {
+      const url = URL.createObjectURL(thumbnail)
+      setThumbnailPreview(url)
+      return () => URL.revokeObjectURL(url)
+    } else {
+      setThumbnailPreview(null)
+    }
+  }, [thumbnail])
+
   const RequiredLabel = ({ children }) => (
     <label style={{ display: 'block', marginBottom: 6, fontWeight: 600, fontSize: 20 }}>
       {children} <span style={{ color: 'red' }}>*</span>
@@ -177,14 +205,18 @@ export default function ProductRegisterDescription({
     </label>
   )
 
-  // 판매 유형에 따른 라벨 계산
-  const getSellTypeLabels = () => {
-    const immediatePurchase = ['즉시 구매 상품', '즉시/예약'].includes(productSellType)
-    const reservationPurchase = ['예약 상품', '즉시/예약'].includes(productSellType)
-    return { immediatePurchase, reservationPurchase }
+  // 거래유형에 따라 라디오 옵션 동적 생성
+  let radioOptions = []
+  if (productSellType === '즉시/예약') {
+    radioOptions = [
+      { label: '즉시 구매', value: 'immediate' },
+      { label: '예약 구매', value: 'reservation' },
+    ]
+  } else if (productSellType === '즉시 구매 상품') {
+    radioOptions = [{ label: '즉시 구매', value: 'immediate' }]
+  } else if (productSellType === '예약 상품') {
+    radioOptions = [{ label: '예약 구매', value: 'reservation' }]
   }
-
-  const { immediatePurchase, reservationPurchase } = getSellTypeLabels()
 
   return (
     <div>
@@ -228,8 +260,8 @@ export default function ProductRegisterDescription({
                   productName={productName}
                   price={productUnitPrice}
                   minQuantity={productMinQtr}
-                  immediatePurchase={immediatePurchase}
-                  reservationPurchase={reservationPurchase}
+                  immediatePurchase={productSellType === '즉시 구매 상품'}
+                  reservationPurchase={productSellType === '예약 상품'}
                   style={{
                     width: '280px',
                     height: '420px',
@@ -264,6 +296,269 @@ export default function ProductRegisterDescription({
                 </CustomCard>
               </Col>
             </Row>
+          </div>
+        </div>
+      )}
+
+      {/* 상품 상세 미리보기 */}
+      {thumbnailPreview && (
+        <div style={{ marginTop: 30 }}>
+          <Label>상품 상세 페이지 미리보기</Label>
+          <div style={{ marginLeft: 13 }}>
+            <div
+              style={{
+                width: '100%',
+                maxWidth: '890px',
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                style={{
+                  transform: 'scale(0.65)',
+                  transformOrigin: 'top left',
+                  width: '153.85%', // scale(0.65)의 역수
+                  marginBottom: '-20%',
+                  // ProductDetail과 동일한 비율 유지
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    background: '#f5f5f5',
+                    borderRadius: 16,
+                    padding: 24,
+                    width: '100%',
+                    margin: '0 auto',
+                    position: 'relative',
+                  }}
+                >
+                  {/* 이미지 영역 - ProductDetail과 동일한 비율 */}
+                  <div style={{ width: '600px', marginRight: 20 }}>
+                    <img
+                      src={thumbnailPreview}
+                      alt="상품 이미지"
+                      style={{
+                        width: '100%',
+                        borderRadius: 8,
+                        border: '1px solid black',
+                        height: '510px',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </div>
+
+                  {/* 상품정보 영역 - ProductDetail과 동일한 비율 */}
+                  <div
+                    style={{
+                      flex: 1,
+                      backgroundColor: 'white',
+                      borderRadius: 8,
+                      padding: 20,
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      height: '509px',
+                      minHeight: '509px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: 4,
+                        width: '100%',
+                      }}
+                    >
+                      <div style={{ fontSize: 20, fontWeight: 'bold' }}>{productName}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <CustomModal
+                          type="warning"
+                          title="상품 신고"
+                          content={
+                            <div>
+                              <p>
+                                <strong>신고 사유를 선택해주세요:</strong>
+                              </p>
+                              <ul style={{ marginTop: 10, paddingLeft: 20 }}>
+                                <li>부정확한 상품 정보</li>
+                                <li>부적절한 상품 이미지</li>
+                                <li>허위 광고</li>
+                                <li>가격 조작 의심</li>
+                                <li>기타</li>
+                              </ul>
+                              <p style={{ marginTop: 15, color: '#666', fontSize: '14px' }}>
+                                신고 내용은 검토 후 처리됩니다. 신고하신 내용이 확인되면 해당 상품이
+                                조치될 수 있습니다.
+                              </p>
+                            </div>
+                          }
+                          buttonLabel="신고하기"
+                          buttonColor="warning"
+                          buttonSize="sm"
+                          successMessage="신고가 접수되었습니다. 검토 후 처리하겠습니다."
+                          onOk={() => {
+                            console.log('상품 신고 처리:', '미정')
+                          }}
+                        />
+                        <div
+                          style={{
+                            fontSize: 28,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          <StarOutlined style={{ color: '#aaa' }} />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ width: '100%' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>상품번호:</span>
+                        <span>미정</span>
+                      </div>
+                    </div>
+                    <div style={{ width: '100%' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>출하자:</span>
+                        <span>{sellerCompany}</span>
+                      </div>
+                    </div>
+                    <div style={{ width: '100%' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>남은수량:</span>
+                        <span>{saleQuantity.toLocaleString()}개</span>
+                      </div>
+                    </div>
+                    <div style={{ width: '100%' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>판매종료일자:</span>
+                        <span>{endDate}</span>
+                      </div>
+                    </div>
+                    <div style={{ width: '100%' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>단가:</span>
+                        <span>{productUnitPrice.toLocaleString()}원</span>
+                      </div>
+                    </div>
+                    <div style={{ color: 'red', fontWeight: 'bold', width: '100%' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span>출하예정일:</span>
+                        <span>{startDate}</span>
+                      </div>
+                    </div>
+                    <hr style={{ margin: '20px 0', width: '100%' }} />
+
+                    {/* 구매 옵션 라디오버튼 */}
+                    <div style={{ width: '100%', textAlign: 'center' }}>
+                      <CustomRadio
+                        value={orderType}
+                        onChange={(value) => setOrderType(value)}
+                        options={radioOptions}
+                        name="orderType"
+                      />
+                    </div>
+
+                    {/* 수량 및 주문 영역 */}
+                    <div
+                      style={{
+                        flex: 1,
+                        backgroundColor: '#f5f5f5',
+                        borderRadius: 8,
+                        padding: 15,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        marginLeft: 'auto',
+                        marginTop: 15,
+                        width: '100%',
+                        minHeight: '200px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: 16,
+                          width: '100%',
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <div>수량 (최소구매수량 {productMinQtr}개)</div>
+                        <div>
+                          <CustomInputNumber
+                            defaultValue={productMinQtr}
+                            min={productMinQtr}
+                            max={saleQuantity}
+                            step={1}
+                            value={orderQuantity}
+                            onChange={(value) => setOrderQuantity(value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ width: '100%' }}>
+                        {/* 예약금액 영역 */}
+                        <div
+                          style={{
+                            color: 'blue',
+                            fontSize: 20,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            width: '100%',
+                            height: '40px',
+                            visibility: orderType === 'reservation' ? 'visible' : 'hidden',
+                          }}
+                        >
+                          <span>예약금액 (30%)</span>
+                          <span>
+                            {Math.floor(productUnitPrice * orderQuantity * 0.3).toLocaleString()}원
+                          </span>
+                        </div>
+
+                        {/* 총금액 영역 */}
+                        <div
+                          style={{
+                            color: 'red',
+                            fontSize: 24,
+                            fontWeight: 'bold',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            width: '100%',
+                            marginBottom: 20,
+                          }}
+                        >
+                          <span>총금액</span>
+                          <span>{(productUnitPrice * orderQuantity).toLocaleString()}원</span>
+                        </div>
+                      </div>
+
+                      <button
+                        style={{
+                          backgroundColor: '#666',
+                          color: 'white',
+                          fontSize: 18,
+                          padding: '10px 20px',
+                          borderRadius: 8,
+                          width: '100%',
+                          height: '50px',
+                          border: 'none',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        구매하기
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
