@@ -196,7 +196,7 @@ public class ProductServiceImpl implements ProductService {
             File destFile = new File(dir, newFileName);
 
             Thumbnails.of(file.getInputStream())
-                    .size(DETAIL_IMAGE_MAX_WIDTH, DETAIL_IMAGE_MAX_WIDTH)
+                    .size(1000, 9999)
                     .keepAspectRatio(true)
                     .toFile(destFile);
 
