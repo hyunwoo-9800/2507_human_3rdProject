@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import CustomDetailCard from '../../components/common/CustomDetailCard'
 import CustomTabs from '../../components/common/CustomTabs'
+import './productDetail.css'
 
 export default function ProductDetail() {
   const { productId } = useParams()
@@ -25,18 +26,20 @@ export default function ProductDetail() {
         productName="스테비아 방울토마토"
         productCode="P250703-000121"
         quantity={239994}
-        shippingRegion="전체"
+        shippingRegion="(주)천안청과"
         availableDate="판매자 문의"
         price={10500}
         releaseDate="2026년 7월 4일"
         minOrder={100}
         defaultQuantity={100}
         defaultOrderType="immediate"
-        images={[
-          '/static/images/tomato.png',
-          '/static/images/potato.png',
-          '/static/images/carrot.png',
-        ]}
+        images={['/static/images/tomato.png']}
+        imageStyle={{
+          width: '100%',
+          objectFit: 'cover',
+          borderRadius: 8,
+          border: '1px solid #ddd',
+        }}
         orderOptions={{
           immediate: true,
           reservation: true,
@@ -46,19 +49,38 @@ export default function ProductDetail() {
         onOrderTypeChange={(t) => console.log('선택된 타입:', t)}
         onOrder={(info) => console.log('주문 정보:', info)}
       />
-      {/* CustomTabs 관련 오류 수정: tabItems와 handleTabChange 정의 */}
-      <CustomTabs
-        items={[
-          { key: 'detail', label: '상품소개', children: <div>상세 정보 탭 내용</div> },
-          { key: 'price', label: '시세추이', children: <div>시세추이 탭 내용</div> },
-          { key: 'notice', label: '상품공지', children: <div>상품공지 탭 내용</div> },
-          { key: 'delivery', label: '배송/반품정보', children: <div>배송/반품정보 탭 내용</div> },
-        ]}
-        type="card"
-        onChange={(key) => {
-          console.log('선택된 탭:', key)
+      {/* CustomTabs - 위쪽 마진과 가운데 정렬 */}
+      <div
+        style={{
+          marginTop: 40, // 위쪽 마진
+          display: 'flex',
+          justifyContent: 'center', // 가운데 정렬
+          width: '100%',
         }}
-      />
+      >
+        <div
+          style={{
+            width: '100%', // 탭 컨테이너 너비
+          }}
+        >
+          <CustomTabs
+            items={[
+              { key: 'detail', label: '상품소개', children: <div>상세 정보 탭 내용</div> },
+              { key: 'price', label: '시세추이', children: <div>시세추이 탭 내용</div> },
+              { key: 'notice', label: '상품공지', children: <div>상품공지 탭 내용</div> },
+              {
+                key: 'delivery',
+                label: '배송/반품정보',
+                children: <div>배송/반품정보 탭 내용</div>,
+              },
+            ]}
+            type="card"
+            onChange={(key) => {
+              console.log('선택된 탭:', key)
+            }}
+          />
+        </div>
+      </div>
       <h1>{product.productName}</h1>
       <img src={`/static${product.imagePath}/${product.imageName}`} alt={product.productName} />
       <p>판매처: {product.sellerCompany}</p>
