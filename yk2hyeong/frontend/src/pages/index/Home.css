@@ -110,13 +110,12 @@
 .trendy-price-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin: 0 10px;
+    align-items: end;
 }
 
 .trendy-price {
     position: relative;
-    min-height: 400px;
+    min-height: 300px;
     background-color: #E6F9D5;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -135,18 +134,16 @@
 
 .trendy-price p {
     float: right;
-    margin-right: 10px;
     font-size: 16px;
     line-height: 40px;
 }
 
 .trendy-price-content {
     clear: both;
-    margin-top: 8px;
     background-color: #fff;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
-    height: 300px;
+    height: 280px;
     border-top: 2px solid #cfcfcf;
 }
 

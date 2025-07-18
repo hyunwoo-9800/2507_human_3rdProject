@@ -6,14 +6,12 @@ import PurchaseProduct from "../../components/mypage/PurchaseProduct";
 import RegisteredProduct from "../../components/mypage/RegisteredProduct";
 import WishlistProduct from "../../components/mypage/WishlistProduct";
 import SelectGroup from "../../components/mypage/SelectGroup";
-import Pagination from "../../components/common/Pagination";
 import RadioGroup from "../../components/mypage/RadioGroup";
 import "./Mypage.css";
 
 function Mypage(){
 
     const [menuTab,setMenuTab] = useState("regist");
-    const [currentPage, setCurrentPage] = useState(1);
     return(
         <div>
             <main>
@@ -46,12 +44,6 @@ function Mypage(){
                     {menuTab === "wishlist" && <WishlistProduct/>}
                     {menuTab === "notification" && <Notification/>}
                 </div>
-                {/* Pagination */}
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={5}
-                    onPageChange={(page) => setCurrentPage(page)}
-                />
             </main>
         </div>
     )
