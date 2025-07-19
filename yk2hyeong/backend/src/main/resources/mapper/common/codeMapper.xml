@@ -125,5 +125,48 @@
             A.LOW_CODE_VALUE
     </select>
 
+    <!-- 알림 미승인 코드 조회 -->
+    <select id="getRejectAlarmCode" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.DETAIL_CODE_ID,
+            A.CODE_ID,
+            A.MID_CODE_VALUE,
+            A.MID_CODE_NAME,
+            A.LOW_CODE_VALUE,
+            A.LOW_CODE_NAME,
+            A.SORT_ORDER,
+            A.CREATED_ID,
+            A.CREATED_DATE,
+            A.UPDATED_ID,
+            A.UPDATED_DATE
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                          ON A.CODE_ID = B.CODE_ID
+        WHERE B.TOP_CODE_NAME = 'STATUS'
+              AND A.LOW_CODE_VALUE = '012'
+    </select>
+
+    <!-- 알림 승인 코드 조회 -->
+    <select id="getApprovalAlarmCode" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.DETAIL_CODE_ID,
+            A.CODE_ID,
+            A.MID_CODE_VALUE,
+            A.MID_CODE_NAME,
+            A.LOW_CODE_VALUE,
+            A.LOW_CODE_NAME,
+            A.SORT_ORDER,
+            A.CREATED_ID,
+            A.CREATED_DATE,
+            A.UPDATED_ID,
+            A.UPDATED_DATE
+        FROM
+        TB_CODE_DETAIL A
+        LEFT JOIN TB_CODE B
+        ON A.CODE_ID = B.CODE_ID
+        WHERE B.TOP_CODE_NAME = 'STATUS'
+        AND A.LOW_CODE_VALUE = '011'
+    </select>
 
 </mapper>

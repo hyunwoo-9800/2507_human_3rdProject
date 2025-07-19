@@ -2,8 +2,10 @@ package fs.human.yk2hyeong.admin.controller;
 
 import fs.human.yk2hyeong.admin.service.AdminService;
 import fs.human.yk2hyeong.admin.vo.AdminVO;
+import fs.human.yk2hyeong.common.code.service.CodeService;
 import fs.human.yk2hyeong.product.vo.ProductImageVO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,14 +22,17 @@ import java.util.UUID;
 // 관리자 페이지 컨트롤러
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class AdminController {
 
     private final AdminService adminService;
 
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
+    private final CodeService codeService;
+
+//     public AdminController(AdminService adminService) {
+//         this.adminService = adminService;
+//     }
 
     @GetMapping("/product/pending")
     public List<ProductVO> getPendingProduct() {
@@ -36,16 +41,19 @@ public class AdminController {
         System.out.println("[AdminController] getPendingProduct() 호출됨");
         return adminService.getPendingProduct();
     }
+
     @GetMapping("/member/pending")
     public List<AdminVO> getPendingMember() {
         System.out.println("[AdminController] getPendingMember() 호출됨");
         return adminService.getPendingMember();
     }
+
     @GetMapping("/report")
     public List<AdminVO> getReport() {
         System.out.println("[AdminController] getReport() 호출됨");
         return adminService.getReport();
     }
+
     @GetMapping("/member")
     public List<AdminVO> getMember() {
         System.out.println("[AdminController] getMember() 호출됨");
@@ -59,82 +67,107 @@ public class AdminController {
         return adminService.getProductImages(productId);
     }
 
-//    게시글 삭제
+    //    게시글 삭제
     @PostMapping("/member/delete")
     public void deleteMember(@RequestParam List<String> memberId) {
         adminService.deleteMember(memberId);
     }
+
     @PostMapping("/report/delete")
     public void deleteReport(@RequestParam List<String> reportId) {
         adminService.deleteReport(reportId);
     }
 
-//    회원가입승인/거부
-@PostMapping("/alarm/reject")
-public ResponseEntity<String> insertAlarm(@RequestBody AdminVO adminVO) {
-    System.out.println("[AdminController] insertAlarm 호출");
-    try {
-        adminVO.setAlarmId(UUID.randomUUID().toString());
+    //    회원가입승인/거부
+    @PostMapping("/alarm/reject")
+    public ResponseEntity<String> insertAlarm(@RequestBody AdminVO adminVO) {
+        System.out.println("[AdminController] insertAlarm 호출");
+        try {
+            adminVO.setAlarmId(UUID.randomUUID().toString());
 
-        if (adminVO.getReceiverId() == null) {
-            adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
+            if (adminVO.getReceiverId() == null) {
+//             adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
+                adminVO.setReceiverId("SYSTEM");
+            }
+            if (adminVO.getCreatedId() == null) {
+                adminVO.setCreatedId("SYSTEM");
+            }
+
+            // 알림 등록
+            adminService.insertAlarm(adminVO);
+
+            // 상태 업데이트 (거부: D4539D86D99B43B68BCAF17EA011E67B)
+            if (adminVO.getProductId() != null && !adminVO.getProductId().isEmpty()) {
+
+                String rejectCode = codeService.getRejectAlarmCode();
+
+                //           adminService.updateProductStatus(adminVO.getProductId(), "D4539D86D99B43B68BCAF17EA011E67B");
+                adminService.updateProductStatus(adminVO.getProductId(), rejectCode);
+
+            }
+
+            return ResponseEntity.ok("알림 및 상품 상태 업데이트 완료");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("처리 실패");
         }
-        if (adminVO.getCreatedId() == null) {
-            adminVO.setCreatedId("SYSTEM");
+    }
+
+    //회원가입승인 / 승인
+    @PostMapping("/alarm/approve")
+    public ResponseEntity<String> approveProduct(@RequestBody AdminVO adminVO) throws Exception {
+
+        System.out.println("[AdminController] approveProduct 호출");
+
+        adminService.updateProductStatus(adminVO.getProductId(), "E79E6C1F58604795AD30CCDDD37115FF");
+        adminService.updateProductFlag(adminVO.getProductId(), "B57FCB1CA009426E9D3EF7FC335F7DCA");
+
+        if (adminVO.getAlarmId() == null || adminVO.getAlarmId().isEmpty()) {
+
+            adminVO.setAlarmId(UUID.randomUUID().toString());
+
         }
 
-        // 알림 등록
+        // 알림 승인 코드
+        String AlarmType = codeService.getApprovalAlarmCode();
+
+        adminVO.setAlarmType(AlarmType);
+        adminVO.setAlarmContent(" ");                              // DB에는 NULL을 넣지 않도록 수정(공백으로 수정)
+        adminVO.setReceiverId("SYSTEM");                           // 관리자 UUID도 변경될 수 있으니 SYSTEM 고정
+        adminVO.setCreatedId("SYSTEM");
+
+//        adminVO.setAlarmType("011");
+//        adminVO.setAlarmContent(null);
+//        adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
+//        adminVO.setCreatedId("SYSTEM");
+
         adminService.insertAlarm(adminVO);
 
-        // 상태 업데이트 (거부: D4539D86D99B43B68BCAF17EA011E67B)
-        if (adminVO.getProductId() != null && !adminVO.getProductId().isEmpty()) {
-            adminService.updateProductStatus(adminVO.getProductId(), "D4539D86D99B43B68BCAF17EA011E67B");
-        }
-
-        return ResponseEntity.ok("알림 및 상품 상태 업데이트 완료");
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("처리 실패");
+        return ResponseEntity.ok("상품 승인 및 알림 전송 완료");
     }
-}
-//회원가입승인 / 승인
-@PostMapping("/alarm/approve")
-public ResponseEntity<String> approveProduct(@RequestBody AdminVO adminVO) {
-    System.out.println("[AdminController] approveProduct 호출");
-    adminService.updateProductStatus(adminVO.getProductId(), "E79E6C1F58604795AD30CCDDD37115FF");
-    adminService.updateProductFlag(adminVO.getProductId(), "B57FCB1CA009426E9D3EF7FC335F7DCA");
 
-    if (adminVO.getAlarmId() == null || adminVO.getAlarmId().isEmpty()) {
-        adminVO.setAlarmId(UUID.randomUUID().toString());
-    }
-    adminVO.setAlarmType("011");
-    adminVO.setAlarmContent(null);
-    adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
-    adminVO.setCreatedId("SYSTEM");
-
-    adminService.insertAlarm(adminVO);
-
-    return ResponseEntity.ok("상품 승인 및 알림 전송 완료");
-}
-//상품관리 삭제버튼
+    //상품관리 삭제버튼
     @PostMapping("/products/reject")
     public ResponseEntity<?> rejectProduct(@RequestBody List<String> productId) {
         adminService.rejectProduct(productId);
         return ResponseEntity.ok().build();
     }
-//유저관리 삭제버튼
+
+    //유저관리 삭제버튼
     @PostMapping("/member/reject")
     public ResponseEntity<?> rejectMember(@RequestBody List<String> memberId) {
         adminService.rejectMember(memberId);
         return ResponseEntity.ok().build();
     }
-//신고관리 삭제버튼
+
+    //신고관리 삭제버튼
     @PostMapping("/report/resolve")
     public ResponseEntity<String> resolveReport(@RequestBody List<String> productId) {
         adminService.rejectProduct(productId); //재사용
         return ResponseEntity.ok().build();
     }
+
     //    회원가입 승인
     @PutMapping("/member/{memberId}/approve")
     public ResponseEntity<?> approveMember(@PathVariable String memberId) {

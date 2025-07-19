@@ -26,6 +26,12 @@ public interface CodeService {
     List<CodeVO> getMidList() throws Exception;
     
     // 상품 하위 목록 조회
-    List<CodeVO> getLowList(String midCodeValue) throws DataAccessException;
+    List<CodeVO> getLowList(String midCodeValue) throws Exception;
+
+    // 알림 미승인 코드 조회
+    String getRejectAlarmCode() throws Exception;
+
+    // 알림 승인 코드 조회
+    String getApprovalAlarmCode() throws Exception;
 
 }

@@ -64,9 +64,26 @@ public class CodeServiceImpl implements CodeService {
 
     // 상품 하위 목록 조회
     @Override
-    public List<CodeVO> getLowList(String midCodeValue) throws DataAccessException {
+    public List<CodeVO> getLowList(String midCodeValue) throws Exception {
 
         return codeDAO.getLowList(midCodeValue);
 
     }
+
+    // 알림 미승인 코드 조회
+    @Override
+    public String getRejectAlarmCode() throws Exception {
+
+        return codeDAO.getRejectAlarmCode();
+
+    }
+
+    // 알림 승인 코드 조회
+    @Override
+    public String getApprovalAlarmCode() throws Exception {
+
+        return codeDAO.getApprovalAlarmCode();
+
+    }
+
 }
