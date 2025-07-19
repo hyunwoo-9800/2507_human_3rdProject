@@ -112,24 +112,29 @@
             TO_CHAR(A.RECORDED_DATE, 'YYYY')
     </select>
 
-    <!-- 년간 예측 데이터 조회  -->
+    <!-- 시세 등략율 데이터 조회  -->
     <select id="getUnitPriceYearPredictor" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
         SELECT
-            B.LOW_CODE_NAME,
-            AVG(A.PREDICTED_UNIT_PRICE) AS PREDICTED_UNIT_PRICE,
-            TO_DATE(TO_CHAR(A.PREDICT_DATE, 'YYYY'), 'YYYY') AS PREDICT_DATE
+            C.LOW_CODE_NAME,
+            AVG(A.RECORDED_UNIT_PRICE) AS YESTERDAY_PRICE,
+            AVG(B.RECORDED_UNIT_PRICE) AS TODAY_PRICE
         FROM
-            TB_PRICE_PREDICTION A
-                LEFT JOIN TB_CODE_DETAIL B
-                          ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
+            TB_PRICE_API_HISTORY A
+        LEFT JOIN
+            TB_PRICE_API_HISTORY B
+            ON A.DETAIL_CODE_ID = B.DETAIL_CODE_ID
+        LEFT JOIN TB_CODE_DETAIL C
+            ON A.DETAIL_CODE_ID = C.LOW_CODE_VALUE
         WHERE
-            A.DETAIL_CODE_ID = '111'
-          AND A.PREDICT_DATE >= ADD_MONTHS(SYSDATE, -12)
+            A.RECORDED_DATE = TRUNC(SYSDATE - 1)
+            AND B.RECORDED_DATE = TRUNC(SYSDATE)
+            <![CDATA[
+                AND A.RECORDED_UNIT_PRICE <> 0
+                AND B.RECORDED_UNIT_PRICE <> 0
+                AND C.mid_code_value <> ' '
+            ]]>
         GROUP BY
-            B.LOW_CODE_NAME,
-            TO_CHAR(A.PREDICT_DATE, 'YYYY')
-        ORDER BY
-            TO_CHAR(A.PREDICT_DATE, 'YYYY')
+            C.LOW_CODE_NAME
     </select>
 
 </mapper>
