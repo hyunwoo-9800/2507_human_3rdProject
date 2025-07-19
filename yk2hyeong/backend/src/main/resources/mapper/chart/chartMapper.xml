@@ -112,8 +112,28 @@
             TO_CHAR(A.RECORDED_DATE, 'YYYY')
     </select>
 
-    <!-- 시세 등략율 데이터 조회  -->
+    <!-- 년간간 예측 데이터 조회  -->
     <select id="getUnitPriceYearPredictor" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
+        SELECT
+            B.LOW_CODE_NAME,
+            AVG(A.PREDICTED_UNIT_PRICE) AS PREDICTED_UNIT_PRICE,
+            TO_DATE(TO_CHAR(A.PREDICT_DATE, 'YYYY'), 'YYYY') AS PREDICT_DATE
+        FROM
+            TB_PRICE_PREDICTION A
+                LEFT JOIN TB_CODE_DETAIL B
+                ON A.DETAIL_CODE_ID = B.LOW_CODE_VALUE
+        WHERE
+            A.DETAIL_CODE_ID = #{detailCodeId}
+            AND A.PREDICT_DATE >= ADD_MONTHS(SYSDATE, -12)
+        GROUP BY
+            B.LOW_CODE_NAME,
+            TO_CHAR(A.PREDICT_DATE, 'YYYY')
+        ORDER BY
+            TO_CHAR(A.PREDICT_DATE, 'YYYY')
+    </select>
+
+    <!-- 시세 등략율 데이터 조회  -->
+    <select id="getTest" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
         SELECT
             C.LOW_CODE_NAME,
             AVG(A.RECORDED_UNIT_PRICE) AS YESTERDAY_PRICE,
