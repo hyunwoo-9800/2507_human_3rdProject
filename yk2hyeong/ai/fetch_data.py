@@ -2,6 +2,10 @@ import requests
 import cx_Oracle
 import datetime
 import uuid
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 
 # 인증 정보
 CERT_KEY = "9e32fc12-8533-4883-b970-b45b3599316a"
@@ -143,11 +147,14 @@ def fetch_and_insert(date_str):
 
 # 매일 데이터를 수집하도록 반복 실행
 if __name__ == "__main__":
-    current_date = datetime.date(2015, 1, 1)
-    end_date = datetime.date(2025, 12, 31)
+    from_date = sys.argv[1]  # 시작 날짜 "YYYYMMDD"
+    to_date = sys.argv[2]    # 종료 날짜 "YYYYMMDD"
+
+    current_date = datetime.datetime.strptime(from_date, "%Y%m%d").date()
+    end_date = datetime.datetime.strptime(to_date, "%Y%m%d").date()
 
     while current_date <= end_date:
         date_str = current_date.strftime("%Y%m%d")
         print(f"\n[INFO] {date_str} 데이터 수집 시작!")
-        fetch_and_insert(date_str)  # 하루 단위로 데이터 수집
-        current_date += datetime.timedelta(days=1)  # 하루씩 증가
+        fetch_and_insert(date_str)
+        current_date += datetime.timedelta(days=1)

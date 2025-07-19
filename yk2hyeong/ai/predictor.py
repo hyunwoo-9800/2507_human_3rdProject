@@ -5,6 +5,10 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense
 import matplotlib.pyplot as plt
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 
 # 1. DB 연결
 conn = cx_Oracle.connect("yh", "0000", cx_Oracle.makedsn("116.36.205.25", 1521, service_name="XEPDB1"))
