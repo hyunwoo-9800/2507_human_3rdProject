@@ -1,32 +1,40 @@
-import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CustomPagination from "../common/CustomPagination";
 
-function PurchaseProduct(){
+function PurchaseProduct({ selectedYear, selectedMonth }) {
     const [products, setProducts] = useState([]);
-    // 페이지네이션
     const [page, setPage] = useState(1);
     const pageSize = 5;
-
-    // 상품탭으로 고고링
     const navigate = useNavigate();
 
     useEffect(() => {
         const memberId = localStorage.getItem("memberId");
-        console.log("memberId from localStorage: ", memberId);
+        if (!memberId) {
+            setProducts([]);
+            return;
+        }
 
         axios.get(`/api/mypage/purchased?memberId=${memberId}`)
             .then((res) => {
                 const raw = res.data;
 
-                // productId 기준 중복 제거
                 const uniqueProducts = raw.filter(
                     (item, index, self) =>
                         index === self.findIndex((t) => t.productId === item.productId)
                 );
 
-                const cardData = raw.map(product => {
+                const filtered = uniqueProducts.filter((p) => {
+                    if (!p.createdDate) return false;
+                    const dateOnly = p.createdDate.split("T")[0];
+                    const [year, month] = dateOnly.split("-").map(Number);
+                    if (parseInt(selectedYear) !== year) return false;
+                    if (selectedMonth !== "total" && parseInt(selectedMonth) !== month) return false;
+                    return true;
+                });
+
+                const cardData = filtered.map(product => {
                     return {
                         productId: product.productId,
                         productName: product.productName,
@@ -42,16 +50,17 @@ function PurchaseProduct(){
                 });
 
                 setProducts(cardData);
+                setPage(1);
             })
             .catch((err) => {
                 console.error("구매 상품 데이터 로딩 실패:", err);
             });
-    }, []);
+    }, [selectedYear, selectedMonth]);
 
     const formatDate = (dateStr) => {
         if (!dateStr) return "";
         const date = new Date(dateStr);
-        return date.toISOString().split('T')[0]; // yyyy-mm-dd
+        return date.toISOString().split('T')[0];
     };
 
     const getImageSrc = (imageName) => {
@@ -59,12 +68,11 @@ function PurchaseProduct(){
         return `/static/images/thumbnail/${imageName}`;
     };
 
-    // 페이지네이션
     const handlePageChange = (newPage) => {
         setPage(newPage);
     };
-    //현재 페이지의 상품 4개만 추출
-    const paginatedProducts  = products.slice(
+
+    const paginatedProducts = products.slice(
         (page - 1) * pageSize,
         page * pageSize
     );
@@ -74,11 +82,7 @@ function PurchaseProduct(){
             {products.length === 0 ? (
                 <div className="no-purchased-products">
                     <h3>구매한 상품이 없습니다</h3>
-                    <button
-                        onClick={()=> navigate("/productlist")}
-                    >
-                        상품 목록으로 이동
-                    </button>
+                    <button onClick={() => navigate("/productlist")}>상품 목록으로 이동</button>
                 </div>
             ) : (
                 <>
@@ -113,7 +117,6 @@ function PurchaseProduct(){
                     onChange={handlePageChange}
                 />
             </div>
-
         </div>
     );
 }

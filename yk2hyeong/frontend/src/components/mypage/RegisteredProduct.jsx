@@ -2,27 +2,37 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CustomPagination from "../common/CustomPagination";
 
-function RegisteredProduct() {
+function RegisteredProduct({ selectedYear, selectedMonth }) {
     const [products, setProducts] = useState([]);
-    // 페이지네이션
     const [page, setPage] = useState(1);
     const pageSize = 5;
 
     useEffect(() => {
         const memberId = localStorage.getItem("memberId");
-        console.log("memberId from localStorage: ", memberId);
+        if (!memberId) {
+            setProducts([]);
+            return;
+        }
 
         axios.get(`/api/products?memberId=${memberId}`)
             .then((res) => {
                 const raw = res.data;
 
-                // productId 기준 중복 제거
                 const uniqueProducts = raw.filter(
                     (item, index, self) =>
                         index === self.findIndex((t) => t.productId === item.productId)
                 );
 
-                const cardData = uniqueProducts.map(product => {
+                const filtered = uniqueProducts.filter((p) => {
+                    if (!p.createdDate) return false;
+                    const dateOnly = p.createdDate.split("T")[0];
+                    const [year, month] = dateOnly.split("-").map(Number);
+                    if (parseInt(selectedYear) !== year) return false;
+                    if (selectedMonth !== "total" && parseInt(selectedMonth) !== month) return false;
+                    return true;
+                });
+
+                const cardData = filtered.map(product => {
                     return {
                         sellerCompany: product.sellerCompany,
                         productName: product.productName,
@@ -31,22 +41,23 @@ function RegisteredProduct() {
                         productUnitPrice: product.productUnitPrice,
                         createdDate: formatDate(product.createdDate),
                         imageType: product.imageType,
-                        imagePath: product.imageType === 200 ? product.imagePath : null, // 200일 때만 출력
+                        imagePath: product.imageType === 200 ? product.imagePath : null,
                         imageName: product.imageName
                     };
                 });
 
                 setProducts(cardData);
+                setPage(1);
             })
             .catch((err) => {
                 console.error("상품 데이터 로딩 실패:", err);
             });
-    }, []);
+    }, [selectedYear, selectedMonth]);
 
     const formatDate = (dateStr) => {
         if (!dateStr) return "";
         const date = new Date(dateStr);
-        return date.toISOString().split('T')[0]; // yyyy-mm-dd
+        return date.toISOString().split('T')[0];
     };
 
     const getImageSrc = (imageName) => {
@@ -54,12 +65,11 @@ function RegisteredProduct() {
         return `/static/images/thumbnail/${imageName}`;
     };
 
-    // 페이지네이션
     const handlePageChange = (newPage) => {
         setPage(newPage);
     };
-    //현재 페이지의 상품 4개만 추출
-    const paginatedProducts  = products.slice(
+
+    const paginatedProducts = products.slice(
         (page - 1) * pageSize,
         page * pageSize
     );

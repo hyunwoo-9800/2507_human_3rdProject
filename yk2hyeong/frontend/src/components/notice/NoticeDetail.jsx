@@ -34,7 +34,12 @@ function NoticeDetail() {
     // 데이터 렌더링
     return (
         <div className="notice-detail-container">
-            <div className="notice-detail-title">{notice.noticeTitle}</div>
+            <div className="notice-detail-title">
+                <span>{notice.noticeTitle}</span>
+                <span className="notice-detail-date">
+                    작성일 : {new Date(notice.createdDate).toLocaleDateString()}
+                </span>
+            </div>
             <div className="notice-detail-box">{notice.noticeContent}</div>
             <div className="notice-detail-actions">
                 <Button color="primary" size="sm" onClick={() => navigate("/notice")}>목록으로</Button>

@@ -39,3 +39,17 @@
     justify-content: flex-end;
     
 }
+
+.notice-detail-title {
+    /* 기존 스타일 그대로 유지 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notice-detail-date {
+    font-size: 14px;
+    color: #777;
+    margin-left: 20px;
+    white-space: nowrap;
+}
