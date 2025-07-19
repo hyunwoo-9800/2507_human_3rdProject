@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -70,25 +69,33 @@ public class AdminController {
     //    게시글 삭제
     @PostMapping("/member/delete")
     public void deleteMember(@RequestParam List<String> memberId) {
+
         adminService.deleteMember(memberId);
+
     }
 
     @PostMapping("/report/delete")
     public void deleteReport(@RequestParam List<String> reportId) {
+
         adminService.deleteReport(reportId);
+
     }
 
     //    회원가입승인/거부
     @PostMapping("/alarm/reject")
     public ResponseEntity<String> insertAlarm(@RequestBody AdminVO adminVO) {
+
         System.out.println("[AdminController] insertAlarm 호출");
+
         try {
+
             adminVO.setAlarmId(UUID.randomUUID().toString());
 
             if (adminVO.getReceiverId() == null) {
 //             adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
                 adminVO.setReceiverId("SYSTEM");
             }
+
             if (adminVO.getCreatedId() == null) {
                 adminVO.setCreatedId("SYSTEM");
             }
@@ -101,7 +108,7 @@ public class AdminController {
 
                 String rejectCode = codeService.getRejectAlarmCode();
 
-                //           adminService.updateProductStatus(adminVO.getProductId(), "D4539D86D99B43B68BCAF17EA011E67B");
+                // adminService.updateProductStatus(adminVO.getProductId(), "D4539D86D99B43B68BCAF17EA011E67B");
                 adminService.updateProductStatus(adminVO.getProductId(), rejectCode);
 
             }
@@ -120,8 +127,14 @@ public class AdminController {
 
         System.out.println("[AdminController] approveProduct 호출");
 
-        adminService.updateProductStatus(adminVO.getProductId(), "E79E6C1F58604795AD30CCDDD37115FF");
-        adminService.updateProductFlag(adminVO.getProductId(), "B57FCB1CA009426E9D3EF7FC335F7DCA");
+        String appCodeProduct = codeService.getApprovalAlarmCodeProduct();
+        String displayProduct = codeService.getDisplayProduct();
+
+//        adminService.updateProductStatus(adminVO.getProductId(), "E79E6C1F58604795AD30CCDDD37115FF");
+//        adminService.updateProductFlag(adminVO.getProductId(), "B57FCB1CA009426E9D3EF7FC335F7DCA");
+
+        adminService.updateProductStatus(adminVO.getProductId(), appCodeProduct);
+        adminService.updateProductFlag(adminVO.getProductId(), displayProduct);
 
         if (adminVO.getAlarmId() == null || adminVO.getAlarmId().isEmpty()) {
 

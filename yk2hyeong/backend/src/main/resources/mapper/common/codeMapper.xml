@@ -128,45 +128,92 @@
     <!-- 알림 미승인 코드 조회 -->
     <select id="getRejectAlarmCode" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
         SELECT
-            A.DETAIL_CODE_ID,
-            A.CODE_ID,
-            A.MID_CODE_VALUE,
-            A.MID_CODE_NAME,
-            A.LOW_CODE_VALUE,
-            A.LOW_CODE_NAME,
-            A.SORT_ORDER,
-            A.CREATED_ID,
-            A.CREATED_DATE,
-            A.UPDATED_ID,
-            A.UPDATED_DATE
+            A.DETAIL_CODE_ID
         FROM
             TB_CODE_DETAIL A
                 LEFT JOIN TB_CODE B
-                          ON A.CODE_ID = B.CODE_ID
-        WHERE B.TOP_CODE_NAME = 'STATUS'
-              AND A.LOW_CODE_VALUE = '012'
+                ON A.CODE_ID = B.CODE_ID
+        WHERE
+            B.TOP_CODE_NAME = 'STATUS'
+            AND A.LOW_CODE_VALUE = '012'
     </select>
 
     <!-- 알림 승인 코드 조회 -->
     <select id="getApprovalAlarmCode" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
         SELECT
-            A.DETAIL_CODE_ID,
-            A.CODE_ID,
-            A.MID_CODE_VALUE,
-            A.MID_CODE_NAME,
-            A.LOW_CODE_VALUE,
-            A.LOW_CODE_NAME,
-            A.SORT_ORDER,
-            A.CREATED_ID,
-            A.CREATED_DATE,
-            A.UPDATED_ID,
-            A.UPDATED_DATE
+            A.DETAIL_CODE_ID
         FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                ON A.CODE_ID = B.CODE_ID
+        WHERE
+            B.TOP_CODE_NAME = 'STATUS'
+            AND A.LOW_CODE_VALUE = '011'
+    </select>
+
+    <!-- 상품 코드 조회 -->
+    <select id="getApprovalAlarmCodeProduct" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.DETAIL_CODE_ID
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                ON A.CODE_ID = B.CODE_ID
+        WHERE
+            B.TOP_CODE_NAME = 'STATUS'
+            AND A.LOW_CODE_VALUE = '001'
+    </select>
+
+    <!-- 상품 표시 코드 조회 -->
+    <select id="getDisplayProduct" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+    SELECT
+        A.DETAIL_CODE_ID
+    FROM
         TB_CODE_DETAIL A
-        LEFT JOIN TB_CODE B
-        ON A.CODE_ID = B.CODE_ID
-        WHERE B.TOP_CODE_NAME = 'STATUS'
-        AND A.LOW_CODE_VALUE = '011'
+            LEFT JOIN TB_CODE B
+            ON A.CODE_ID = B.CODE_ID
+    WHERE
+        B.TOP_CODE_NAME = 'FLAG'
+        AND A.LOW_CODE_VALUE = '001'
+    </select>
+
+    <!-- 상품 판매중지 코드 조회 -->
+    <select id="getEndProduct" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.DETAIL_CODE_ID
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                ON A.CODE_ID = B.CODE_ID
+        WHERE
+            B.TOP_CODE_NAME = 'STATUS'
+            AND A.LOW_CODE_VALUE = '004'
+    </select>
+
+    <!-- 상품 비표시 코드 조회 -->
+    <select id="getNotDisplayProduct" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.DETAIL_CODE_ID
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                ON A.CODE_ID = B.CODE_ID
+        WHERE
+            B.TOP_CODE_NAME = 'FLAG'
+            AND A.LOW_CODE_VALUE = '002'
+    </select>
+
+    <!-- 회원 탈퇴 코드 조회 -->
+    <select id="getDeleteMemberCode" resultType="fs.human.yk2hyeong.common.code.vo.CodeVO">
+        SELECT
+            A.LOW_CODE_VALUE
+        FROM
+            TB_CODE_DETAIL A
+                LEFT JOIN TB_CODE B
+                ON A.CODE_ID = B.CODE_ID
+        WHERE
+            B.TOP_CODE_NAME = 'MEMBER_STAT'
+            AND A.LOW_CODE_NAME = '탈퇴'
     </select>
 
 </mapper>

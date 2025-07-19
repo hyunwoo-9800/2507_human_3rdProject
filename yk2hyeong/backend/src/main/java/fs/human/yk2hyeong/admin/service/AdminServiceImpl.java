@@ -2,6 +2,7 @@ package fs.human.yk2hyeong.admin.service;
 
 import fs.human.yk2hyeong.admin.dao.AdminDAO;
 import fs.human.yk2hyeong.admin.vo.AdminVO;
+import fs.human.yk2hyeong.common.code.dao.CodeDAO;
 import fs.human.yk2hyeong.product.vo.ProductImageVO;
 import fs.human.yk2hyeong.product.vo.ProductVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     private AdminDAO adminDAO;
+
+    @Autowired
+    private CodeDAO codeDAO;
 
 
     @Override
@@ -102,26 +106,35 @@ public class AdminServiceImpl implements AdminService {
 //    게시글 삭제
     @Override
     public void deleteReport(List<String> reportId){
+
         adminDAO.deleteReport(reportId);
+
     }
 
     @Override
     public void deleteMember(List<String> reportId){
+
         adminDAO.deleteReport(reportId);
+
     }
 
 //    회원가입승인
     @Override
     public void insertAlarm(AdminVO adminVO) {
+
         System.out.println("[AdminServiceImpl] insertAlarm 호출");
         System.out.println("productId: " + adminVO.getProductId());
+
         // UUID, 관리자 ID 등 보완
         if (adminVO.getAlarmId() == null || adminVO.getAlarmId().isEmpty()) {
             adminVO.setAlarmId(UUID.randomUUID().toString());
         }
+
         if (adminVO.getReceiverId() == null) {
-            adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
+//            adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
+            adminVO.setReceiverId("SYSTEM");
         }
+
         if (adminVO.getCreatedId() == null) {
             adminVO.setCreatedId("SYSTEM");
         }
@@ -141,26 +154,47 @@ public class AdminServiceImpl implements AdminService {
     @Transactional
     @Override
     public void rejectProduct(List<String> productIds) {
+
+    String productEnd = codeDAO.getEndProduct();
+    String productNotDisplay = codeDAO.getNotDisplayProduct();
+
         for (String productId : productIds) {
+
             adminDAO.updateProductStatusFlag(
                     productId,
-                    "6524D569917E4468B4B4323E4355E0B8",
-                    "C64A2EE83FBB4B0B9681227F31401EE0"
+                    productEnd,
+                    productNotDisplay
             );
+
+//            adminDAO.updateProductStatusFlag(
+//                    productId,
+//                    "6524D569917E4468B4B4323E4355E0B8",
+//                    "C64A2EE83FBB4B0B9681227F31401EE0"
+//            );
+
         }
+
     }
+
     @Override
     public void rejectMember(List<String> memberId) {
+
+        String memberDeleteCode = codeDAO.getDeleteMemberCode();
+
         for (String id : memberId){
-            adminDAO.updateMemberStatus(id, "003");
+
+            adminDAO.updateMemberStatus(id, memberDeleteCode);
+//          adminDAO.updateMemberStatus(id, "003");
+
         }
+
     }
 
 //    회원가입승인
     public void approveMember(String memberId) {
+
         adminDAO.updateMemberStatusToApprove(memberId);
+
     }
-
-
 
 }

@@ -86,4 +86,43 @@ public class CodeServiceImpl implements CodeService {
 
     }
 
+    // 알림 상품 승인 코드 조회
+    @Override
+    public String getApprovalAlarmCodeProduct() throws Exception {
+
+        return codeDAO.getApprovalAlarmCodeProduct();
+
+    }
+
+    // 상품 표시 코드 조회
+    @Override
+    public String getDisplayProduct() throws Exception {
+
+        return codeDAO.getDisplayProduct();
+
+    }
+
+    // 상품 판매중지 코드 조회
+    @Override
+    public String getEndProduct() throws Exception {
+
+        return codeDAO.getEndProduct();
+
+    }
+
+    // 상품 비표시 코드 조회
+    @Override
+    public String getNotDisplayProduct() throws Exception {
+
+        return codeDAO.getNotDisplayProduct();
+
+    }
+
+    // 회원 탈퇴 코드 조회
+    @Override
+    public String getDeleteMemberCode() throws Exception {
+
+        return codeDAO.getDeleteMemberCode();
+    }
+
 }

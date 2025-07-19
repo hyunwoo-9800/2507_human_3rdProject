@@ -30,10 +30,25 @@ public interface CodeDAO {
     // 상품 하위 목록 조회
     List<CodeVO> getLowList(String midCodeValue) throws DataAccessException;
 
-    // 알림 미승인 코드 조회
+    // 알림 회원 미승인 코드 조회
     String getRejectAlarmCode() throws DataAccessException;
 
-    // 알림 승인 코드 조회
-    String getApprovalAlarmCode() throws DataAccessException;
+    // 알림 회원 승인 코드 조회
+    String getApprovalAlarmCode() throws DataAccessException;    // 알림 승인 코드 조회
+
+    // 알림 상품 승인 코드 조회
+    String getApprovalAlarmCodeProduct() throws DataAccessException;
+
+    // 상품 표시 코드 조회
+    String getDisplayProduct() throws DataAccessException;
+
+    //  상품 판매중지 코드 조회
+    String getEndProduct() throws DataAccessException;
+
+    // 상품 비표시 코드 조회
+    String getNotDisplayProduct() throws DataAccessException;
+
+    // 회원 탈퇴 코드 조회
+    String getDeleteMemberCode() throws DataAccessException;
 
 }
