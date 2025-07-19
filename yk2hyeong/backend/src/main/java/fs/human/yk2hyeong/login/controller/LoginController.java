@@ -1,11 +1,10 @@
 package fs.human.yk2hyeong.login.controller;
 
-import fs.human.yk2hyeong.common.config.AESUtil;
-import fs.human.yk2hyeong.common.config.JwtUtil;
+import fs.human.yk2hyeong.common.config.util.AESUtil;
+import fs.human.yk2hyeong.common.config.util.JwtUtil;
 import fs.human.yk2hyeong.login.service.LoginService;
 import fs.human.yk2hyeong.member.vo.MemberVO;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;

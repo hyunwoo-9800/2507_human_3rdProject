@@ -1,7 +1,7 @@
 package fs.human.yk2hyeong.member.controller;
 
 import fs.human.yk2hyeong.common.code.service.CodeService;
-import fs.human.yk2hyeong.common.config.AESUtil;
+import fs.human.yk2hyeong.common.config.util.AESUtil;
 import fs.human.yk2hyeong.images.service.ImageService;
 import fs.human.yk2hyeong.member.service.MailService;
 import fs.human.yk2hyeong.member.service.MemberService;

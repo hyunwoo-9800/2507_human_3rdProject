@@ -1,6 +1,6 @@
 package fs.human.yk2hyeong.login.controller;
 
-import fs.human.yk2hyeong.common.config.JwtUtil;
+import fs.human.yk2hyeong.common.config.util.JwtUtil;
 import fs.human.yk2hyeong.login.service.LoginService;
 import fs.human.yk2hyeong.member.vo.MemberVO;
 import jakarta.servlet.http.HttpServletResponse;
