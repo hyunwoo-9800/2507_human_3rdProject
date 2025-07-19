@@ -135,6 +135,8 @@ const PriceChartPage = () => {
 
             <DividerLine />
 
+            <h2>등락율</h2>
+
             <PriceChangeTable />
 
             </div>

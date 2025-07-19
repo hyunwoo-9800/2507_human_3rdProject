@@ -27,6 +27,7 @@ public class ProductVO {
 
     private String productCat;
     private String productCodeName;
+    private String lowCodeValue;
     private String productStatusName;
 
     private String sellerTel;

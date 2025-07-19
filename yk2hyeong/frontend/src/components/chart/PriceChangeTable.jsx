@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import CustomTable from "../../components/common/CustomTable";
+import CustomPagination from "../../components/common/CustomPagination";
 
 const PriceChangeTable = ({ limit = null }) => {
     const [tableData, setTableData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 10; // 한 페이지당 항목 수
 
     const columns = [
         {
@@ -50,17 +53,35 @@ const PriceChangeTable = ({ limit = null }) => {
         });
     }, []);
 
-    // limit이 있으면 제한, 없으면 전체
-    const displayData = limit ? tableData.slice(0, limit) : tableData;
+    // 보여줄 데이터 계산
+    const startIdx = (currentPage - 1) * pageSize;
+    const endIdx = startIdx + pageSize;
+
+    const pagedData = tableData.slice(startIdx, endIdx);
+    const displayData = limit ? pagedData.slice(0, limit) : pagedData;
 
     return (
         <div>
             <CustomTable
                 columns={columns}
-                data={displayData.map((item, index) => ({ key: index, ...item }))}
+                data={displayData.map((item, index) => ({ key: index + startIdx, ...item }))}
                 selectionType={null}
             />
-            <p className="trendy-price-caution">※ 주말에는 최신 시세 데이터가 없어, 직전 평일(목/금)의 가격을 참고용으로 제공합니다.</p>
+
+            {/* 페이징 */}
+            {!limit && (
+                <CustomPagination
+                    defaultCurrent={currentPage}
+                    total={tableData.length}
+                    onChange={(page) => setCurrentPage(page)}
+                    className="custom-pagination"
+                />
+            )}
+
+            <p className="trendy-price-caution">
+                ※ 주말에는 최신 시세 데이터가 없어, 직전 평일(목/금)의 가격을 참고용으로 제공합니다.
+                (거래 내역이 존재하는 품목만 출력됩니다.)
+            </p>
         </div>
     );
 };

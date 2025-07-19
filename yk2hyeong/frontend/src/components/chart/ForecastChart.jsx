@@ -152,26 +152,39 @@ const ForecastChart = ({ detailCodeId, timeFrame }) => {
     }, [detailCodeId, timeFrame]);
 
     return (
-        <div>
-            <h3>실거래 + 예측 시세</h3>
-            {chartData ? (
-                <Bar data={chartData} options={{
-                    responsive: true,
-                    scales: {
-                        y: {
-                            min: 0, // y축 최소값 설정 (0부터 시작)
-                            max: Math.max(...chartData.datasets[0].data, ...chartData.datasets[1].data) * 1.2, // y축 최대값 설정 (가장 큰 값의 120%)
-                        }
-                    },
-                    plugins: {
-                        legend: { position: 'top' },
-                        title: { display: true, text: '시세 추이 (실제 vs 예측)' }
-                    }
-                }} />
-            ) : (
-                <CustomLoading />
-            )}
-        </div>
+  <div>
+    {chartData ? (
+      chartData.labels.length > 0 &&
+      (chartData.datasets[0].data.some(v => v > 0) || chartData.datasets[1].data.some(v => v > 0)) ? (
+        <Bar
+          data={chartData}
+          options={{
+            responsive: true,
+            scales: {
+              y: {
+                min: 0,
+                max:
+                  Math.max(
+                    ...chartData.datasets[0].data,
+                    ...chartData.datasets[1].data
+                  ) * 1.2,
+              },
+            },
+            plugins: {
+              legend: { position: 'top' },
+              title: { display: true, text: '시세 추이 (실제 vs 예측)' },
+            },
+          }}
+        />
+      ) : (
+        <p style={{ textAlign: 'center', padding: '1rem' }}>
+          최근 거래내역이 없습니다.
+        </p>
+      )
+    ) : (
+      <CustomLoading />
+    )}
+  </div>
     );
 };
 
