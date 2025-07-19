@@ -1,4 +1,4 @@
-package fs.human.yk2hyeong.common.config;
+package fs.human.yk2hyeong.common.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

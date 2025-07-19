@@ -1,9 +1,8 @@
-package fs.human.yk2hyeong.common.config;
+package fs.human.yk2hyeong.common.config.util;
 
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 
 import java.util.Date;

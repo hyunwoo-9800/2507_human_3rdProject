@@ -1,4 +1,4 @@
-package fs.human.yk2hyeong.common.config;
+package fs.human.yk2hyeong.common.config.server;
 
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;

@@ -1,4 +1,4 @@
-package fs.human.yk2hyeong.common.config;
+package fs.human.yk2hyeong.common.config.server;
 
 import jakarta.servlet.MultipartConfigElement;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;

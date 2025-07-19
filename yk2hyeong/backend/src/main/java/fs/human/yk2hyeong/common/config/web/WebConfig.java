@@ -1,4 +1,4 @@
-package fs.human.yk2hyeong.common.config;
+package fs.human.yk2hyeong.common.config.web;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

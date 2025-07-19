@@ -1,4 +1,4 @@
-package fs.human.yk2hyeong.common.config;
+package fs.human.yk2hyeong.common.config.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

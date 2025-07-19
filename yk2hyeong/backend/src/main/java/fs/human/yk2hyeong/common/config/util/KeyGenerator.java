@@ -1,4 +1,4 @@
-package fs.human.yk2hyeong.common.config;
+package fs.human.yk2hyeong.common.config.util;
 
 import java.security.SecureRandom;
 import java.util.Base64;

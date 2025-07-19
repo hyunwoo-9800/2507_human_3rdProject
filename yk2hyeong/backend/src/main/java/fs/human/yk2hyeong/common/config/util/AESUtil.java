@@ -1,4 +1,4 @@
-package fs.human.yk2hyeong.common.config;
+package fs.human.yk2hyeong.common.config.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
