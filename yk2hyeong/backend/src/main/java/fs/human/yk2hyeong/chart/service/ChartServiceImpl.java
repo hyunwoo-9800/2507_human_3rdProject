@@ -3,9 +3,9 @@ package fs.human.yk2hyeong.chart.service;
 import fs.human.yk2hyeong.chart.dao.chartDAO;
 import fs.human.yk2hyeong.chart.vo.ChartVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +61,7 @@ public class ChartServiceImpl implements ChartService {
 
     // 주간 예측 데이터
     @Override
-    public List<ChartVO> getUnitPriceWeekPredictor(String itemCode) throws DataAccessException {
+    public List<ChartVO> getUnitPriceWeekPredictor(String itemCode) throws Exception {
 
         return chartDAO.getUnitPriceWeekPredictor(itemCode);
 
@@ -69,7 +69,7 @@ public class ChartServiceImpl implements ChartService {
 
     // 월간 예측 데이터
     @Override
-    public List<ChartVO> getUnitPriceMonthPredictor(String itemCode) throws DataAccessException {
+    public List<ChartVO> getUnitPriceMonthPredictor(String itemCode) throws Exception {
 
         return chartDAO.getUnitPriceMonthPredictor(itemCode);
 
@@ -77,10 +77,18 @@ public class ChartServiceImpl implements ChartService {
 
     // 년간 예측 데이터
     @Override
-    public List<ChartVO> getUnitPriceYearPredictor(String itemCode) throws DataAccessException {
+    public List<ChartVO> getUnitPriceYearPredictor(String itemCode) throws Exception {
 
         return chartDAO.getUnitPriceYearPredictor(itemCode);
 
     }
-    
+
+    // 시세 등락율
+    @Override
+    public List<ChartVO> dailyPriceDiff(Date yesterday, Date today) throws Exception {
+
+        return chartDAO.dailyPriceDiff(yesterday, today);
+
+    }
+
 }

@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -63,6 +66,45 @@ public class ChartController {
         }
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/price/dailyPriceDiff")
+    public ResponseEntity<?> getDailyPriceDiff() throws Exception {
+
+        LocalDate now = LocalDate.now();
+        DayOfWeek day = now.getDayOfWeek();
+
+        LocalDate localToday;
+        LocalDate localYesterday;
+
+        switch (day) {
+
+            // 토요일
+            case SATURDAY -> {
+                localToday = now.minusDays(1);       // 금요일
+                localYesterday = now.minusDays(2);   // 목요일
+            }
+
+            // 일요일
+            case SUNDAY -> {
+                localToday = now.minusDays(2);       // 금요일
+                localYesterday = now.minusDays(3);   // 목요일
+            }
+
+            default -> {
+                localToday = now.minusDays(1);
+                localYesterday = now.minusDays(2);
+            }
+
+        }
+
+        Date today = Date.valueOf(localToday);
+        Date yesterday = Date.valueOf(localYesterday);
+
+        List<ChartVO> diffList = chartService.dailyPriceDiff(yesterday, today);
+
+        return ResponseEntity.ok(diffList);
+
     }
 
 }

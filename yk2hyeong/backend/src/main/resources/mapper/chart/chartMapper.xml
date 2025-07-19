@@ -133,7 +133,7 @@
     </select>
 
     <!-- 시세 등략율 데이터 조회  -->
-    <select id="getTest" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
+    <select id="dailyPriceDiff" resultType="fs.human.yk2hyeong.chart.vo.ChartVO">
         SELECT
             C.LOW_CODE_NAME,
             AVG(A.RECORDED_UNIT_PRICE) AS YESTERDAY_PRICE,
@@ -146,8 +146,8 @@
         LEFT JOIN TB_CODE_DETAIL C
             ON A.DETAIL_CODE_ID = C.LOW_CODE_VALUE
         WHERE
-            A.RECORDED_DATE = TRUNC(SYSDATE - 1)
-            AND B.RECORDED_DATE = TRUNC(SYSDATE)
+            TRUNC(A.RECORDED_DATE) = TRUNC(#{yesterday})
+            AND TRUNC( B.RECORDED_DATE) = TRUNC(#{today})
             <![CDATA[
                 AND A.RECORDED_UNIT_PRICE <> 0
                 AND B.RECORDED_UNIT_PRICE <> 0

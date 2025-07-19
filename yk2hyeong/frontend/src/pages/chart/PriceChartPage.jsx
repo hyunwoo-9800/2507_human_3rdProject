@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import CustomSelect from "../../components/common/CustomSelect";
 import ForecastChart from "../../components/chart/ForecastChart";
+import DividerLine from "../../components/chart/DividerLine";
+import PriceChangeTable from "../../components/chart/PriceChangeTable";
 import axios from "axios";
 
 
@@ -120,7 +122,7 @@ const PriceChartPage = () => {
                 <h2>시세 추이</h2>
 
                 {form.lowCodeValue === '' ? (
-                    <p>📌 품목을 선택하면 시세 그래프가 표시됩니다.</p>
+                    <p>품목을 선택하면 시세 그래프가 표시됩니다.</p>
                 ) : (
                     <div>
                         <h3>실거래 가격(도매)</h3>
@@ -130,6 +132,10 @@ const PriceChartPage = () => {
                         />
                     </div>
                 )}
+
+            <DividerLine />
+
+            <PriceChangeTable />
 
             </div>
 

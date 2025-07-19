@@ -4,6 +4,7 @@ import fs.human.yk2hyeong.chart.vo.ChartVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
 
+import java.sql.Date;
 import java.util.List;
 
 // 시세 데이터 매퍼
@@ -27,5 +28,8 @@ public interface chartDAO {
 
     // 년간 예측 데이터
     List<ChartVO> getUnitPriceYearPredictor(String itemCode) throws DataAccessException;
+
+    // 시세 등략율
+    List<ChartVO> dailyPriceDiff(Date yesterday, Date today) throws DataAccessException;
 
 }

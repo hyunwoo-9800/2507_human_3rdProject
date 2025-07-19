@@ -6,23 +6,18 @@ const CustomTable = ({ columns, data, selectionType = 'checkbox', onSelectionCha
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
     useEffect(() => {
-        // selectionType 변경될 때 선택 초기화
         setSelectedRowKeys([]);
         if (onSelectionChange) onSelectionChange([], []);
     }, [selectionType]);
 
-    const rowSelection = {
+    const rowSelection = selectionType ? {
         selectedRowKeys,
         onChange: (selectedKeys, selectedRows) => {
             setSelectedRowKeys(selectedKeys);
             if (onSelectionChange) onSelectionChange(selectedKeys, selectedRows);
         },
         type: selectionType,
-        getCheckboxProps: record => ({
-            disabled: record.name === 'Disabled User',
-            name: record.name,
-        }),
-    };
+    } : null;
 
     return (
         <Table
@@ -37,7 +32,7 @@ const CustomTable = ({ columns, data, selectionType = 'checkbox', onSelectionCha
 CustomTable.propTypes = {
     columns: PropTypes.array.isRequired,
     data: PropTypes.array.isRequired,
-    selectionType: PropTypes.oneOf(['checkbox', 'radio']),
+    selectionType: PropTypes.oneOf(['checkbox', 'radio', null]),
     onSelectionChange: PropTypes.func,
 };
 
