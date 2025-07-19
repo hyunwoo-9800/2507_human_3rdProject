@@ -6,6 +6,7 @@
 
 <mapper namespace="fs.human.yk2hyeong.admin.dao.AdminDAO">
 
+    <!-- 미승인 상품 조회 데이터 저장 -->
     <resultMap id="productMap" type="fs.human.yk2hyeong.product.vo.ProductVO">
         <result property="productId" column="productId"/>
         <result property="productName" column="productName"/>
@@ -24,6 +25,7 @@
         <result property="imageName" column="imageName"/>
     </resultMap>
 
+    <!-- 미승인 상품 조회 -->
     <select id="selectPendingProduct" resultMap="productMap">
         SELECT
             P.PRODUCT_ID AS productId,
@@ -40,10 +42,19 @@
             P.CREATED_DATE AS createdDate,
             P.PRODUCT_STATUS AS productStatus
         FROM YH.TB_PRODUCT P
-        WHERE PRODUCT_STATUS = 'BE710CAB879F48DCB15CD44FC2FD1C50'
+            WHERE PRODUCT_STATUS = (
+                SELECT
+                    A.DETAIL_CODE_ID
+                FROM TB_CODE_DETAIL A
+                    LEFT JOIN TB_CODE B
+                    ON A.CODE_ID = B.CODE_ID
+                WHERE
+                    B.TOP_CODE_NAME = 'STATUS'
+                    AND A.LOW_CODE_VALUE = '013'
+        )
     </select>
 
-    <!-- 회원가입승인, 유저관리 -->
+    <!-- 회원가입승인, 유저관리 저장용-->
     <resultMap id="memberMap" type="fs.human.yk2hyeong.admin.vo.AdminVO">
         <result property="memberId" column="memberId"/>
         <result property="memberEmail" column="memberEmail"/>
@@ -65,6 +76,8 @@
         <result property="memberStatusName" column="memberStatusName"/>
         <result property="memberBankCodeName" column="memberBankCodeName"/>
     </resultMap>
+
+    <!-- 회원가입승인, 유저관리-->
     <select id="selectPendingMember" resultMap="memberMap">
         SELECT
             M.MEMBER_ID AS memberId,
@@ -100,14 +113,16 @@
                                )
         WHERE STATUS_DETAIL.LOW_CODE_NAME = '미승인'
     </select>
-<!--회원가입등록 때 저장한 이미지 모두 불러오기-->
+
+    <!-- 회원가입등록 때 저장한 이미지 모두 불러오기 -->
     <select id="selectMemberImageUrls" resultType="string">
         SELECT IMAGE_PATH || '/' || IMAGE_NAME AS imageUrl
         FROM TB_IMAGES
         WHERE MEMBER_ID = #{memberId}
           AND IMAGE_TYPE = '001'
     </select>
-    <!--유저관리 페이지 유저 정보 불러오기-->
+
+    <!-- 유저관리 페이지 유저 정보 불러오기 -->
     <select id="selectMember" resultMap="memberMap">
         SELECT
             M.MEMBER_ID AS memberId,
@@ -122,32 +137,38 @@
             M.MEMBER_DETAIL_ADDR AS memberDetailAddr,
             M.MEMBER_BANK_CODE AS memberBankCode,
             M.MEMBER_ACCOUNTNUM AS memberAccountNum,
-
             M.MEMBER_ROLE AS memberRole,
             (
-                SELECT D.LOW_CODE_NAME
-                FROM TB_CODE_DETAIL D
-                WHERE D.CODE_ID = 'B553133B409D4B3BADDE089F3D9A5F15'
-                  AND TRIM(D.LOW_CODE_VALUE) = TRIM(M.MEMBER_ROLE)
-                  AND ROWNUM = 1
+                SELECT
+                    D.LOW_CODE_NAME
+                FROM
+                    TB_CODE_DETAIL D
+                        LEFT JOIN TB_CODE C
+                        ON D.CODE_ID = C.CODE_ID
+                WHERE
+                    C.TOP_CODE_NAME = 'ROLE'
+                    AND TRIM(D.LOW_CODE_VALUE) = TRIM(M.MEMBER_ROLE)
+                    AND ROWNUM = 1
             ) AS memberRoleName,
-
             M.MEMBER_STATUS AS memberStatus,
             (
-                SELECT D.LOW_CODE_NAME
-                FROM TB_CODE_DETAIL D
-                WHERE D.CODE_ID = 'AE2B0847E4464A64804343EC818DAC26'
-                  AND TRIM(D.LOW_CODE_VALUE) = TRIM(M.MEMBER_STATUS)
-                  AND ROWNUM = 1
+                SELECT
+                    D.LOW_CODE_NAME
+                FROM
+                    TB_CODE_DETAIL D
+                        LEFT JOIN TB_CODE C
+                        ON D.CODE_ID = C.CODE_ID
+                WHERE
+                    C.TOP_CODE_NAME = 'MEMBER_STAT'
+                    AND TRIM(D.LOW_CODE_VALUE) = TRIM(M.MEMBER_STATUS)
+                    AND ROWNUM = 1
             ) AS memberStatusName,
-
             M.CREATED_ID AS createdId,
             M.CREATED_DATE AS createdDate
         FROM YH.TB_MEMBER M
     </select>
 
-
-    <!-- 신고 리스트 불러오기 -->
+    <!-- 신고 리스트 저장용 -->
     <resultMap id="ReportMap" type="fs.human.yk2hyeong.admin.vo.AdminVO">
         <result property="reportId" column="reportId"/>
         <result property="reporterId" column="reporterId"/>
@@ -162,6 +183,8 @@
         <result property="updatedId" column="updatedId"/>
         <result property="updatedDate" column="updatedDate"/>
     </resultMap>
+
+    <!-- 신고 리스트 조회 -->
     <select id="selectReport" resultMap="ReportMap">
         SELECT
             R.report_id AS reportId,                -- 신고 고유 ID
@@ -177,7 +200,7 @@
             R.updated_id AS updatedId,              -- 수정자 ID
             R.updated_date AS updatedDate           -- 수정일시
         FROM
-            YH.TB_REPORT R
+            TB_REPORT R
                 JOIN
             TB_MEMBER M ON R.reporter_id = M.member_id  -- 신고자 ID와 TB_MEMBER 테이블 JOIN
                 JOIN
@@ -209,12 +232,12 @@
             MEMBER_ID,
             PRODUCT_ID
         FROM
-            YH.TB_IMAGES
+            TB_IMAGES
         WHERE
             PRODUCT_ID = #{productId}
     </select>
 
-<!--    게시글 삭제-->
+    <!-- 게시글 삭제-->
     <delete id="deleteMember">
         DELETE FROM tb_member
         WHERE member_id IN
@@ -222,6 +245,7 @@
             #{id}
         </foreach>
     </delete>
+
     <delete id="deleteReport">
         DELETE FROM tb_report
         WHERE report_id IN
@@ -230,7 +254,7 @@
         </foreach>
     </delete>
 
-<!-- 회원가입승인 거부-->
+    <!-- 회원가입승인 거부-->
     <insert id="insertAlarm" parameterType="fs.human.yk2hyeong.admin.vo.AdminVO">
         INSERT INTO tb_alarm (
             alarm_id,
@@ -242,7 +266,7 @@
             created_date
         )
         VALUES (
-                   #{alarmId},
+                   SYS_GUID(),
                    #{alarmType},
                    #{alarmContent,jdbcType = VARCHAR},
                    #{receiverId},
@@ -251,18 +275,20 @@
                    SYSDATE
                )
     </insert>
+
     <update id="updateProductStatus">
         UPDATE tb_product
-        SET product_status = #{status}
-        WHERE product_id = #{productId}
-    </update>
-    <update id="updateProductFlag">
-        UPDATE tb_product
-        SET product_display_flag = #{flag}
-        WHERE product_id = #{productId}
+            SET product_status = #{status}
+            WHERE product_id = #{productId}
     </update>
 
-<!--    상품관리 상품삭제버튼, 신고관리 신고삭제버튼-->
+    <update id="updateProductFlag">
+        UPDATE tb_product
+            SET product_display_flag = #{flag}
+            WHERE product_id = #{productId}
+    </update>
+
+    <!-- 상품관리 상품삭제버튼, 신고관리 신고삭제버튼-->
     <update id="updateProductStatusFlag">
         UPDATE tb_product
         SET product_status = #{status},
@@ -270,14 +296,16 @@
             updated_date = SYSDATE
         WHERE product_id = #{productId}
     </update>
-<!--유저 관리 유저삭제버튼-->
+
+    <!-- 유저 관리 유저삭제버튼 -->
     <update id="updateMemberStatus">
         UPDATE tb_member
         SET member_status = #{status},
             updated_date = SYSDATE
         WHERE member_id = #{memberId}
     </update>
-<!--회원가입승인-->
+
+    <!-- 회원가입승인 -->
     <update id="updateMemberStatusToApprove" parameterType="string">
         UPDATE tb_member
         SET member_status = '001'

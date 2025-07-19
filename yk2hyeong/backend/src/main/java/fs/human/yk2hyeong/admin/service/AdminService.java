@@ -8,32 +8,40 @@ import java.util.List;
 
 // 관리자 서비스 인터페이스
 public interface AdminService {
-    List<ProductVO> getPendingProduct();
-    List<ProductImageVO> getProductImages(String productId);
+    
+    // 미승인 상품 조회
+    List<ProductVO> getPendingProduct() throws Exception;
+    
+    // 상품 이미지 조회
+    List<ProductImageVO> getProductImages(String productId) throws Exception;
 
-    List<AdminVO> getPendingMember();
+    // 미승인 회원 조회
+    List<AdminVO> getPendingMember() throws Exception;
 
-    List<AdminVO> getReport();
-    List<AdminVO> getMember();
+    // 신고 리스트 조회
+    List<AdminVO> getReport() throws Exception;
 
-    void deleteMember(List<String> reportId);
-    void deleteReport(List<String> reportId);
+    // 유저 리스트 조회
+    List<AdminVO> getMember() throws Exception;
 
-//    회원가입승인 알람
+    // 게시글 삭제
+    void deleteMember(List<String> reportId) throws Exception;
+    void deleteReport(List<String> reportId) throws Exception;
+
+    // 회원가입승인 알람
     void insertAlarm(AdminVO adminVO);
-    void updateProductStatus(String productId, String status);
-    void updateProductFlag(String productId, String flag);
+    void updateProductStatus(String productId, String status) throws Exception;
+    void updateProductFlag(String productId, String flag) throws Exception;
 
-//    상품관리 상품삭제
-    void rejectProduct(List<String> productId);
-//    유저관리 유저삭제
-    void rejectMember(List<String> memberId);
-//    신고관리 신고삭제는 상품관리 상품삭제랑 기능 동일해서 재사용
+    // 상품관리 상품삭제
+    void rejectProduct(List<String> productId) throws Exception;
 
-//    회원가입승인
-    void approveMember(String memberId);
+    // 유저관리 유저삭제
+    void rejectMember(List<String> memberId) throws Exception;
 
+    // 신고관리 신고삭제는 상품관리 상품삭제랑 기능 동일해서 재사용
 
-
+    // 회원가입승인
+    void approveMember(String memberId) throws Exception;
 
 }
