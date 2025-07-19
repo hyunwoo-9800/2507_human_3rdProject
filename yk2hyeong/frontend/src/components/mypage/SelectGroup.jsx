@@ -1,24 +1,46 @@
 import React from "react";
 
-function SelectGroup(){
+function SelectGroup({ selectedYear, selectedMonth, onYearChange, onMonthChange }) {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+
+    // 최근 3개월 구하기
+    const recentMonths = [];
+    for (let i = 0; i < 3; i++) {
+        let month = currentMonth - i;
+        let year = currentYear;
+        if (month <= 0) {
+            month += 12;
+            year -= 1;
+        }
+        recentMonths.push({ year, month });
+    }
+
+    // 연도 옵션 (2020~현재)
+    const yearOptions = [];
+    for (let y = currentYear; y >= 2020; y--) {
+        yearOptions.push(y);
+    }
+
     return (
         <div className="select-group">
-            <select className="year-select">
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
+            <select className="year-select" value={selectedYear} onChange={onYearChange}>
+                {yearOptions.map((year) => (
+                    <option key={year} value={year}>{year}</option>
+                ))}
             </select>
-            <select className="month-select">
+
+            <select className="month-select" value={selectedMonth} onChange={onMonthChange}>
                 <option value="total">전체</option>
-                <option value="5">5월</option>
-                <option value="6">6월</option>
-                <option value="7">7월</option>
+                {recentMonths.map(({ year, month }) => (
+                    <option key={`${year}-${month}`} value={month}>
+                        {month}월
+                    </option>
+                ))}
             </select>
         </div>
-    )
+    );
 }
 
 export default SelectGroup;
