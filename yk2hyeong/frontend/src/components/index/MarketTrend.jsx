@@ -8,7 +8,7 @@ function MarketTrend(){
             <div className="trendy-price-header">
                 <h1>시세추이</h1>
                 <Link to="/chart">
-                    <p>더보기 <i className="fa-solid fa-plus"></i></p>
+                    <p className="trendy-price-plus">더보기 <i className="fa-solid fa-plus"></i></p>
                 </Link>
             </div>
             <div className="trendy-price-content">

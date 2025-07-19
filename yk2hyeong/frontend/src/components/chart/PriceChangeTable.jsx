@@ -60,7 +60,7 @@ const PriceChangeTable = ({ limit = null }) => {
                 data={displayData.map((item, index) => ({ key: index, ...item }))}
                 selectionType={null}
             />
-            <p>※ 주말에는 최신 시세 데이터가 없어, 직전 평일(목/금)의 가격을 참고용으로 제공합니다.</p>
+            <p className="trendy-price-caution">※ 주말에는 최신 시세 데이터가 없어, 직전 평일(목/금)의 가격을 참고용으로 제공합니다.</p>
         </div>
     );
 };

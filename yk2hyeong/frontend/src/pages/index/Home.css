@@ -40,6 +40,8 @@
 
 .banner{
     width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
     position: relative;
     height: 250px;
 }
@@ -75,14 +77,23 @@
     height: 100%;
     align-items: stretch;
     justify-content: center;
-    gap: 30px;
-    margin-top: 30px;
+    gap: 40px;
+    max-width: 1080px;
+    margin: 30px auto 0 auto;
+    padding: 0;
 }
 .left-content{
-    width: 45%;
-    height: auto;
+    width: 50%;
 }
-
+.right-content{
+    width: 50%;
+}
+.left-content,
+.rignt-content{
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
 /*시세추이*/
 .trendy-price{
     position: relative;
@@ -137,10 +148,15 @@
     line-height: 40px;
 }
 
-.trendy-price p {
+.trendy-price-plus {
     float: right;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 40px;
+}
+.trendy-price-caution{
+    font-size: 11px !important;
+    display: flex;
+    text-indent: 10px;
 }
 
 .trendy-price-content {
@@ -298,4 +314,18 @@ a {
 
 .notice-board-content a:visited {
     color: black;               /* 방문한 후에도 같은 색 유지 */
+}
+
+
+/*시세추이 테이블 css를 변경해보자*/
+.ant-table-tbody > tr > td {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+    text-align: center;
+}
+th.ant-table-cell {
+    text-align: center !important;
 }
