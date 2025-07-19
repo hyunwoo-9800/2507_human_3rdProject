@@ -23,6 +23,9 @@ main{
     transition: transform 0.2s ease, background-color 0.4s ease, color 0.4s ease;
 }
 .menu-bar button:hover{
+    color: #1c9b4a;
+}
+.menu-bar button.clicked{
     background-color: #e3f2e8;
     color: #1c9b4a;
 }
@@ -74,58 +77,80 @@ main{
 .card-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
     margin-top: 60px;
     margin-bottom: 60px;
 }
 
 .card {
-    background-color: #e6f9d5;
-    border-radius: 12px;
-    width: 85%;
-    height: 160px; /* ✅ 전체 높이 줄임 */
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    background-color: #fdfdfd;
+    border-radius: 12px;
+    padding: 16px 24px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+    width: 90%;
+    max-width: 800px;
     margin: 0 auto;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.12);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    gap: 20px;
 }
-
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+}
+.card.clicked{
+    border: 2px solid #00a43c;
+    background-color: #fbfdfa;
 }
 
 .card img {
-    margin: 12px;
-    width: 120px;  /* ✅ 줄임 */
-    height: 120px; /* ✅ 줄임 */
-    border-radius: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
     object-fit: cover;
 }
 
 .card-content {
-    flex: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 1px 16px;  /* ✅ 패딩 줄임 */
-    background-color: white;
-    margin-right: 20px; /* ✅ 여백 축소 */
-    border-radius: 12px;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 60px;
+}
+/*상품설명은 1줄 이상 넘어가면 잘리도록*/
+.description-text {
+    display: inline-block;
+    max-width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
 }
 
-.card-content p {
-    margin: 3px 0;
-    font-size: 14px;  /* ✅ 글자 크기 줄임 */
-    line-height: 1.2;
-    text-indent: 10px;
+
+/* 왼쪽 텍스트 그룹 */
+.card-content-left,
+.card-content-right {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+}
+.card-content-left{
+    padding-left: 30px;
+    border-left: 1px solid #b6b6b6;
 }
 
 .card-content span {
-    margin-left: 10px;
+    margin-left: 6px;
+    color: #333;
 }
 
+.item-label {
+    font-weight: bold;
+    color: #444;
+}
 
 /* notification 카드 추가 css */
 #delete-btn{
@@ -163,4 +188,125 @@ main{
     display: flex;
     justify-content: center;
     align-content: center;
+}
+
+
+
+/*알림탭 카드*/
+.noti-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 700px;
+    margin: 0 auto 20px;
+}
+
+/* ✅ 수정된 클래스명 반영 */
+.img-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.img-container img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* 오버레이: 이미지 전체 덮고 중앙 정렬 */
+.product-img-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.product-img-overlay i {
+    color: #4adb5a;
+    font-size: 18px;
+}
+
+.noti-card-content {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+    gap: 6px 20px;
+    font-size: 14px;
+}
+
+.noti-card-content p {
+    margin: 4px 0;
+    min-width: 45%;
+}
+
+.item-label {
+    font-weight: bold;
+    color: #333;
+    margin-right: 6px;
+}
+
+.noti-card-content span {
+    color: #555;
+}
+
+#delete-btn {
+    position: absolute;
+    top: -5px;
+    right: 0px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+    transition: transform 0.2s ease;
+}
+
+#delete-btn:hover {
+    transform: scale(1.2);
+    color: #e4402e;
+}
+
+.status-rejected i, .status-reported i{
+    color: #e4402e;
+}
+.status-expired i{
+    color: #ffb922;
+}
+.reported-message {
+    color: #e4402e;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0 0 4px 0;
+}
+.report-row{
+    flex-basis: 100%;
+}
+.rejected-reason span {
+    color: #e4402e;
+    font-weight: bold;
+}
+.reject {
+    color: #e4402e;
+    font-weight: bold;
 }

@@ -78,12 +78,16 @@ function RegisteredProduct() {
                         }}
                     />
                     <div className="card-content">
-                        <p><strong className="item-label">출하자</strong><span>{p.sellerCompany}</span></p>
-                        <p><strong className="item-label">상품명</strong><span>{p.productName}</span></p>
-                        <p><strong className="item-label">상품설명</strong><span>{p.productDescription}</span></p>
-                        <p><strong className="item-label">단위 당 가격</strong><span>{Number(p.productUnitPrice).toLocaleString()}원</span></p>
-                        <p><strong className="item-label">최소구매수량</strong><span>{p.productMinQtr}kg</span></p>
-                        <p><strong className="item-label">등록일자</strong><span>{p.createdDate}</span></p>
+                        <div className="card-content-left">
+                            <p><strong className="item-label">출하자</strong><span>{p.sellerCompany}</span></p>
+                            <p><strong className="item-label">상품명</strong><span>{p.productName}</span></p>
+                            <p><strong className="item-label">상품설명</strong><span className="description-text">{p.productDescription}</span></p>
+                        </div>
+                        <div className="card-content-right">
+                            <p><strong className="item-label">단위 당 가격</strong><span>{Number(p.productUnitPrice).toLocaleString()}원</span></p>
+                            <p><strong className="item-label">최소구매수량</strong><span>{p.productMinQtr}kg</span></p>
+                            <p><strong className="item-label">등록일자</strong><span>{p.createdDate}</span></p>
+                        </div>
                     </div>
                 </div>
             ))}
