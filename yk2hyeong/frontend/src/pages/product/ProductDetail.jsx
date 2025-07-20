@@ -134,7 +134,7 @@ export default function ProductDetail() {
         minOrder={product.productMinQtr || 1} // 최소구매수량
         defaultQuantity={product.productMinQtr || 1}
         defaultOrderType={orderType}
-        images={[thumbnailImage || '/static/images/tomato.png']}
+        images={[thumbnailImage || '/static/images/thumbnail/product_thumb_smalltomato.png']}
         imageStyle={{
           width: '100%',
           objectFit: 'cover',
