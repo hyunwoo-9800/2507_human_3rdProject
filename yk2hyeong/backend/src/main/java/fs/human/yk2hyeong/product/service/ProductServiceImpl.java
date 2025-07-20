@@ -158,11 +158,8 @@ public class ProductServiceImpl implements ProductService {
         product.setSellMemberId(dto.getMemberId());                 // 판매자 ID
         String dbProductType;                                       // 상품 타입
 
-        String productStatusPending = codeDAO.getDisProduct();
-        System.out.println("productStatusPending = " + productStatusPending);
-
-        String displayFlagHidden = codeDAO.getNotDisplayProduct();
-        System.out.println("displayFlagHidden = " + displayFlagHidden);
+        String productStatusPending = codeDAO.getDisProduct();          // 상품 미승인
+        String displayFlagHidden = codeDAO.getNotDisplayProduct();      // 상품 비표시
 
         // 상품 타입 결정
         switch (dto.getOrderType()) {
