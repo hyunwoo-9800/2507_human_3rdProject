@@ -8,10 +8,10 @@
     <!-- 공지사항 등록 -->
     <insert id="insertProductNotice" parameterType="fs.human.yk2hyeong.product.vo.ProductNoticeVO">
         INSERT INTO TB_PRODUCT_NOTICE (
-            PRODUCT_NOTICE_ID, PRODUCT_ID, TITLE, PRODUCT_NOTICE_CONTENT, MEMBER_ID, PRODUCT_NOTICE_TYPE,
+            PRODUCT_NOTICE_ID, PRODUCT_ID, PRODUCT_TITLE, PRODUCT_NOTICE_CONTENT, MEMBER_ID, PRODUCT_NOTICE_TYPE,
             CREATED_ID, CREATED_DATE, UPDATED_ID, UPDATED_DATE
         ) VALUES (
-            #{productNoticeId}, #{productId}, #{title}, #{productNoticeContent}, #{memberId}, #{productNoticeType},
+            #{productNoticeId}, #{productId}, #{productTitle}, #{productNoticeContent}, #{memberId}, #{productNoticeType},
             #{memberId}, SYSDATE, #{memberId}, SYSDATE
         )
     </insert>
@@ -19,7 +19,7 @@
     <!-- 공지사항 수정 -->
     <update id="updateProductNotice" parameterType="fs.human.yk2hyeong.product.vo.ProductNoticeVO">
         UPDATE TB_PRODUCT_NOTICE
-        SET TITLE = #{title},
+        SET PRODUCT_TITLE = #{productTitle},
             PRODUCT_NOTICE_CONTENT = #{productNoticeContent},
             PRODUCT_NOTICE_TYPE = #{productNoticeType},
             UPDATED_ID = #{memberId},
@@ -37,7 +37,7 @@
 
     <!-- 상품별 공지사항 조회 -->
     <select id="selectProductNotices" resultType="fs.human.yk2hyeong.product.vo.ProductNoticeVO">
-        SELECT PRODUCT_NOTICE_ID, PRODUCT_ID, TITLE, PRODUCT_NOTICE_CONTENT, MEMBER_ID, PRODUCT_NOTICE_TYPE,
+        SELECT PRODUCT_NOTICE_ID, PRODUCT_ID, PRODUCT_TITLE, PRODUCT_NOTICE_CONTENT, MEMBER_ID, PRODUCT_NOTICE_TYPE,
                CREATED_ID, TO_CHAR(CREATED_DATE, 'YYYY-MM-DD HH24:MI') AS createdDate,
                UPDATED_ID, TO_CHAR(UPDATED_DATE, 'YYYY-MM-DD HH24:MI') AS updatedDate
         FROM TB_PRODUCT_NOTICE

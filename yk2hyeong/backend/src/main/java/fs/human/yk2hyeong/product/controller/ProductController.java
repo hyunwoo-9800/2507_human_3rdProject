@@ -174,7 +174,7 @@ public class ProductController {
 
         ProductNoticeVO notice = new ProductNoticeVO();
         notice.setProductId(productId);
-        notice.setTitle(body.get("title"));
+        notice.setProductTitle(body.get("title"));
         notice.setProductNoticeContent(body.get("content"));
         notice.setProductNoticeType(body.get("type"));
         notice.setMemberId(memberId);
@@ -198,7 +198,7 @@ public class ProductController {
 
         notice.setProductNoticeId(noticeId);
         notice.setProductId(productId);
-        notice.setTitle(body.get("title"));
+        notice.setProductTitle(body.get("title"));
         notice.setProductNoticeContent(body.get("content"));
         notice.setProductNoticeType(body.get("type"));
         notice.setMemberId(memberId);

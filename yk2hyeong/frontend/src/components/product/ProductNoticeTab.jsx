@@ -25,7 +25,7 @@ export default function ProductNoticeTab({ product, memberId }) {
       const response = await axios.get(`/api/products/${product?.productId}/notices`)
       const mapped = response.data.map((n) => ({
         id: n.productNoticeId,
-        title: n.title,
+        title: n.productTitle,
         content: n.productNoticeContent,
         type: n.productNoticeType,
         createdDate: n.createdDate,
