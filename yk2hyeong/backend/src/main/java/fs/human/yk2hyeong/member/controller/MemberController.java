@@ -136,10 +136,19 @@ public class MemberController {
      * @param email 인증번호를 발송할 이메일
      * @return 성공 시 200 OK 응답
      */
+//    @PostMapping("/send-code")
+//    public ResponseEntity<?> sendCode(@RequestParam String email) {
+//
+//        mailService.sendCode(email); // 인증번호 발송
+//        return ResponseEntity.ok().build();
+//
+//    } 시연시에는 이거 쓸것
+
+    // 개발 테스트용
     @PostMapping("/send-code")
-    public ResponseEntity<?> sendCode(@RequestParam String email) {
-        mailService.sendCode(email); // 인증번호 발송
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Map<String, String>> sendCode(@RequestParam String email) {
+        String code = mailService.sendCode(email);  // 인증번호 반환 받기
+        return ResponseEntity.ok(Map.of("code", code));  // 테스트용 응답
     }
 
     /**

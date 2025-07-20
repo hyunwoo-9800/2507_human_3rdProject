@@ -33,6 +33,14 @@ function SignupForm({ role }) {
   const [address, setAddress] = useState('')
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false) // 주소 검색 모달 열기/닫기
 
+  // 비밀번호 유효성 상태
+  const [passwordMessage, setPasswordMessage] = useState('')
+  const [isPasswordValid, setIsPasswordValid] = useState(null)
+
+  // 이름 유효성 상태
+  const [nameMessage, setNameMessage] = useState('')
+  const [isNameValid, setIsNameValid] = useState(null)
+
   // 폼 데이터 상태
   const [form, setForm] = useState({
     memberEmail: '',
@@ -50,6 +58,32 @@ function SignupForm({ role }) {
   })
 
   const [bankOptions, setBankOptions] = useState([]) // 은행 옵션 목록
+
+  // 전화번호 표시용
+  const formatPhoneNumber = (value) => {
+    const digits = value.replace(/\D/g, '')
+
+    if (digits.length < 4) return digits
+    if (digits.length < 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`
+    if (digits.length < 11) return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`
+    return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7, 11)}`
+  }
+
+  // 사업자 등록번호 표시용
+  const formatBusinessNumber = (value) => {
+    const digits = value.replace(/\D/g, '')
+    if (digits.length < 4) return digits
+    if (digits.length < 6) return `${digits.slice(0, 3)}-${digits.slice(3)}`
+    return `${digits.slice(0, 3)}-${digits.slice(3, 5)}-${digits.slice(5, 10)}`
+  }
+
+  // 계좌번호 표시용
+  const formatAccountNumber = (value) => {
+    const digits = value.replace(/\D/g, '')
+    if (digits.length < 4) return digits
+    if (digits.length < 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`
+    return `${digits.slice(0, 3)}-${digits.slice(3, 5)}-${digits.slice(5, 11)}`
+  }
 
   // 역할 코드가 있으면 폼에 역할값 추가
   useEffect(() => {
@@ -72,7 +106,28 @@ function SignupForm({ role }) {
   // 입력 값 변경 시 폼 상태 업데이트
   const handleChange = (e) => {
     const { name, value } = e.target
-    setForm({ ...form, [name]: value })
+
+    // 숫자만 허용할 필드
+    const onlyNumberFields = ['memberTel', 'memberBnum', 'memberAccountNum']
+
+    // 이름 입력 시 특수문자, 숫자 제거
+    if (name === 'memberName') {
+      const filtered = value.replace(/[^a-zA-Z가-힣\s]/g, '')
+      setForm({ ...form, [name]: filtered })
+
+      if (value !== filtered) {
+        setNameMessage('이름은 영문 또는 한글만 입력 가능합니다.')
+        setIsNameValid(false)
+      } else {
+        setNameMessage('사용 가능한 이름입니다.')
+        setIsNameValid(true)
+      }
+    } else if (onlyNumberFields.includes(name)) {
+      const numeric = value.replace(/[^0-9]/g, '')
+      setForm({ ...form, [name]: numeric })
+    } else {
+      setForm({ ...form, [name]: value })
+    }
   }
 
   // 파일 업로드 상태 관리
@@ -99,7 +154,17 @@ function SignupForm({ role }) {
 
   // 이메일 입력값 변경 시 중복 확인
   useEffect(() => {
-    if (form.memberEmail) {
+    const email = form.memberEmail
+
+    // 이메일에 한글 포함된 경우
+    if (/[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(email)) {
+      setEmailMessage('이메일에는 한글을 포함할 수 없습니다.')
+      setIsEmailAvailable(false)
+      return
+    }
+
+    // 중복 확인
+    if (email) {
       checkEmailDuplicate()
     }
   }, [form.memberEmail])
@@ -124,8 +189,13 @@ function SignupForm({ role }) {
 
     axios
       .post('/member/send-code', null, { params: { email: form.memberEmail } })
-      .then(() => {
-        alert('인증번호가 발송되었습니다.')
+      .then((res) => {
+        if (res.data?.code) {
+          alert('[개발용 인증번호] ' + res.data.code)
+        } else {
+          alert('인증번호가 발송되었습니다.')
+        }
+
         setShowCodeInput(true)
       })
       .catch(() => {
@@ -161,6 +231,23 @@ function SignupForm({ role }) {
     }, 1000)
     return () => clearInterval(timer)
   }, [codeExpireCountdown])
+
+  // 비밀번호 유효성 검사
+  useEffect(() => {
+    if (!form.memberPwd) {
+      setPasswordMessage('')
+      setIsPasswordValid(null)
+      return
+    }
+
+    if (isValidPassword(form.memberPwd)) {
+      setPasswordMessage('사용 가능한 비밀번호입니다.')
+      setIsPasswordValid(true)
+    } else {
+      setPasswordMessage('영문 대소문자, 숫자, 특수문자를 포함하여 8자리 이상 입력해주세요.')
+      setIsPasswordValid(false)
+    }
+  }, [form.memberPwd])
 
   // 인증번호 확인 함수
   const verifyCode = () => {
@@ -284,6 +371,18 @@ function SignupForm({ role }) {
           maxLength={20}
           required
         />
+        {passwordMessage && (
+          <div
+            style={{
+              color: isPasswordValid ? 'green' : 'red',
+              fontSize: '12px',
+              marginTop: '4px',
+            }}
+          >
+            {passwordMessage}
+          </div>
+        )}
+
         <Input
           label="이름"
           name="memberName"
@@ -293,10 +392,22 @@ function SignupForm({ role }) {
           maxLength={30}
           required
         />
+        {nameMessage && (
+          <div
+            style={{
+              color: isNameValid ? 'green' : 'red',
+              fontSize: '12px',
+              marginTop: '4px',
+            }}
+          >
+            {nameMessage}
+          </div>
+        )}
+
         <Input
           label="전화번호"
           name="memberTel"
-          value={form.memberTel}
+          value={formatPhoneNumber(form.memberTel)}
           onChange={handleChange}
           placeholder="연락처"
           maxLength={13}
@@ -357,7 +468,7 @@ function SignupForm({ role }) {
         <Input
           label="사업자 등록번호"
           name="memberBnum"
-          value={form.memberBnum}
+          value={formatBusinessNumber(form.memberBnum)}
           onChange={handleChange}
           placeholder="사업자등록번호"
           maxLength={30}
@@ -389,7 +500,7 @@ function SignupForm({ role }) {
         <Input
           label="계좌번호"
           name="memberAccountNum"
-          value={form.memberAccountNum}
+          value={formatAccountNumber(form.memberAccountNum)}
           onChange={handleChange}
           placeholder="계좌번호"
           maxLength={30}
