@@ -5,12 +5,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="fs.human.yk2hyeong.index.dao.IndexDAO">
+
+    <!-- 메인화면 공지사항 표출용 -->
     <select id="getRecentNotice" parameterType="int" resultType="fs.human.yk2hyeong.notice.vo.NoticeVO">
         SELECT notice_id as noticeId,
                notice_title as noticeTitle,
                created_date as createdDate
         FROM tb_notice
-        ORDER BY created_date desc
-        FETCH FIRST 3 ROWS ONLY
+            ORDER BY created_date desc
+            FETCH FIRST 3 ROWS ONLY
     </select>
+
 </mapper>

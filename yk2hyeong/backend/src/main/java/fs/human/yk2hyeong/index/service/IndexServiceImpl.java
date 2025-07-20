@@ -12,10 +12,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class IndexServiceImpl implements IndexService {
+
     private final IndexDAO indexDAO;
 
     @Override
-    public List<NoticeVO> getRecentNotice(int count){
+    public List<NoticeVO> getRecentNotice(int count) throws Exception {
+
         return indexDAO.getRecentNotice(count);
+
     }
+
 }

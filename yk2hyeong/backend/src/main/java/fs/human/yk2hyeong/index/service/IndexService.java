@@ -6,5 +6,8 @@ import java.util.List;
 
 // 메인화면 서비스 인터페이스
 public interface IndexService {
-    List<NoticeVO> getRecentNotice(int count);
+
+    // 메인화면 공지사항 표출용
+    List<NoticeVO> getRecentNotice(int count) throws Exception;
+
 }

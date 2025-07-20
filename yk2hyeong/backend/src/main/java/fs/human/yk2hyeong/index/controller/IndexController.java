@@ -18,8 +18,12 @@ public class IndexController {
 
     private final IndexService indexService;
 
+    // 메인화면 공지사항 표출용
     @GetMapping("/api/main/notice")
-    public List<NoticeVO> getRecentNotice(){
+    public List<NoticeVO> getRecentNotice() throws Exception {
+
         return indexService.getRecentNotice(2);
+
     }
+
 }
