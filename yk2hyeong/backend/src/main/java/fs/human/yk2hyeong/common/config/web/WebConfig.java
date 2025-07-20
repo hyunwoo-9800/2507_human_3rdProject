@@ -1,6 +1,7 @@
 package fs.human.yk2hyeong.common.config.web;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -32,6 +33,20 @@ public class WebConfig implements WebMvcConfigurer {
         // 정적 리소스(images) 서빙
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/");
+
+        // CSS 파일 서빙
+        registry.addResourceHandler("/static/css/**")
+                .addResourceLocations("classpath:/static/css/");
+
+        // JavaScript 파일 서빙
+        registry.addResourceHandler("/static/js/**")
+                .addResourceLocations("classpath:/static/js/");
+
+        // static 경로의 모든 정적 파일 서빙 (이미지 포함)
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/", "file:src/main/resources/static/")
+                .setCacheControl(CacheControl.noCache())
+                .resourceChain(false);
     }
 
     // React 라우터를 위한 포워딩 설정(이미지 로딩이 되지 않아 주석처리)
