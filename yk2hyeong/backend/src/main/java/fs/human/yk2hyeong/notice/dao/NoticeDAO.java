@@ -9,7 +9,6 @@ import java.util.List;
 // 공지사항 매퍼 인터페이스: 공지사항 관련 데이터베이스 접근 기능 정의
 @Mapper
 public interface NoticeDAO {
-    // 전체 공지사항 목록
 
     // 전체 공지사항 목록 조회
     List<NoticeVO> getAllNotices() throws DataAccessException;

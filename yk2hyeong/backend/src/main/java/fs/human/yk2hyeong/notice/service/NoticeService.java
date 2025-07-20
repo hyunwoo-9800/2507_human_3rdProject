@@ -11,7 +11,6 @@ import java.util.List;
  */
 public interface NoticeService {
 
-
     // 전체 공지사항 목록 조회
     List<NoticeVO> getAllNotices() throws Exception;
 
@@ -26,6 +25,7 @@ public interface NoticeService {
 
     // 공지사항 삭제
     void deleteNotice(String noticeId) throws Exception;
+
 }
 
 
