@@ -28,9 +28,6 @@
             MEMBER_NAME,
             MEMBER_BNAME,
             MEMBER_BNUM,
-            <if test="memberShipperName != null and memberShipperName != ''">
-                MEMBER_SHIPPER_NAME,
-            </if>
             MEMBER_TEL,
             MEMBER_ADDR,
             MEMBER_DETAIL_ADDR,
@@ -50,9 +47,6 @@
             #{memberName},
             #{memberBname},
             #{memberBnum},
-            <if test="memberShipperName != null and memberShipperName != ''">
-                #{memberShipperName},
-            </if>
             #{memberTel},
             #{memberAddr},
             #{memberDetailAddr},

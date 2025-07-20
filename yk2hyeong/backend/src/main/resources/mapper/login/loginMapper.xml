@@ -20,8 +20,6 @@
                MEMBER_NAME,
                MEMBER_BNAME,
                MEMBER_BNUM,
-               MEMBER_SHIPPER_NAME,
-               MEMBER_TEL,
                MEMBER_TEL,
                MEMBER_ADDR,
                MEMBER_DETAIL_ADDR,
