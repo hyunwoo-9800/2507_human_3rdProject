@@ -28,6 +28,7 @@ public interface ProductDAO {
     // 상품 등록
     void insertProduct(ProductVO product);
 
+    // 상품 이미지 등록
     void insertImage(String imageId, String imagePath, String imageName, String imageType, String memberId, String productId);
 
 }

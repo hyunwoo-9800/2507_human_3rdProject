@@ -63,7 +63,8 @@
 
         ORDER BY p.CREATED_DATE DESC
     </select>
-<!--    memberId로 상품 목록 불러오기-->
+
+    <!-- memberId로 상품 목록 불러오기-->
     <select id="selectProductsByMemberId" resultType="fs.human.yk2hyeong.product.vo.ProductVO">
         SELECT
             -- 상품 정보
@@ -146,6 +147,7 @@
         ORDER BY MID_CODE_VALUE, SORT_ORDER
     </select>
 
+    <!-- 상품 등록 -->
     <insert id="insertProduct" parameterType="fs.human.yk2hyeong.product.vo.ProductVO">
         INSERT INTO TB_PRODUCT (
             PRODUCT_ID, PRODUCT_CODE, PRODUCT_NAME, PRODUCT_DESCRIPTION, PRODUCT_STOCK_QTY,
@@ -153,25 +155,22 @@
             PRODUCT_REV_END, PRODUCT_DISPLAY_FLAG, PRODUCT_STATUS, CREATED_ID, CREATED_DATE,
             UPDATED_ID, UPDATED_DATE
         ) VALUES (
-                     #{productId}, #{productCode}, #{productName}, #{productDescription}, #{productStockQty},
+                     SYS_GUID(), #{productCode}, #{productName}, #{productDescription}, #{productStockQty},
                      #{productUnitPrice}, #{sellMemberId}, #{productType}, #{productMinQtr}, #{productRevStart},
                      #{productRevEnd}, #{productDisplayFlag}, #{productStatus}, #{createdId}, SYSDATE,
                      #{updatedId}, SYSDATE
                  )
     </insert>
 
-
+    <!-- 이미지 등록 -->
     <insert id="insertImage">
         INSERT INTO TB_IMAGES (
             IMAGE_ID, IMAGE_PATH, IMAGE_NAME, IMAGE_TYPE, MEMBER_ID, PRODUCT_ID,
             CREATED_ID, CREATED_DATE, UPDATED_ID, UPDATED_DATE
         ) VALUES (
-                     #{imageId}, #{imagePath}, #{imageName}, #{imageType}, #{memberId}, #{productId},
+                     SYS_GUID(), #{imagePath}, #{imageName}, #{imageType}, #{memberId}, #{productId},
                      #{memberId}, SYSDATE, #{memberId}, SYSDATE
                  )
     </insert>
-
-
-
 
 </mapper>

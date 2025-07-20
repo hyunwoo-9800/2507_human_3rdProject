@@ -32,6 +32,7 @@ public class ProductController {
     // 상품 목록 조회
     @GetMapping("/products")
     public List<ProductVO> getAllProducts(@RequestParam(required = false) String memberId) {
+
         if(memberId != null && !memberId.isEmpty()){
             return productService.getProductsByMemberId(memberId);
         }
@@ -42,44 +43,55 @@ public class ProductController {
     // 즐겨찾기 등록
     @PostMapping("/favorites")
     public ResponseEntity<String> insertFavorite(@RequestBody Map<String, String> payload) {
+
         String memberId = payload.get("memberId");
         String productId = payload.get("productId");
+
         productService.insertFavorite(memberId, productId);
-        System.out.println("[즐겨찾기 등록 완료] memberId=" + memberId + ", productId=" + productId);
+
+        // System.out.println("[즐겨찾기 등록 완료] memberId=" + memberId + ", productId=" + productId);
 
         // 현재 즐겨찾기 목록 출력
         List<String> currentFavorites = productService.getFavoriteProductIds(memberId);
-        System.out.println("[현재 즐겨찾기 목록] " + currentFavorites);
+        // System.out.println("[현재 즐겨찾기 목록] " + currentFavorites);
 
         return ResponseEntity.ok("즐겨찾기 등록 완료");
+
     }
 
     // 즐겨찾기 삭제
     @DeleteMapping("/favorites")
     public ResponseEntity<String> deleteFavorite(@RequestBody Map<String, String> payload) {
+
         String memberId = payload.get("memberId");
         String productId = payload.get("productId");
         productService.deleteFavorite(memberId, productId);
-        System.out.println("[즐겨찾기 삭제 완료] memberId=" + memberId + ", productId=" + productId);
+
+        // System.out.println("[즐겨찾기 삭제 완료] memberId=" + memberId + ", productId=" + productId);
 
         // 현재 즐겨찾기 목록 출력
         List<String> currentFavorites = productService.getFavoriteProductIds(memberId);
-        System.out.println("[현재 즐겨찾기 목록] " + currentFavorites);
+        // System.out.println("[현재 즐겨찾기 목록] " + currentFavorites);
 
         return ResponseEntity.ok("즐겨찾기 삭제 완료");
+
     }
 
     // 즐겨찾기된 productId 목록 반환
     @GetMapping("/favorites")
     public ResponseEntity<List<String>> getFavorites(@RequestParam String memberId) {
+
         List<String> favorites = productService.getFavoriteProductIds(memberId);
         return ResponseEntity.ok(favorites);
+
     }
 
     // 카테고리 리스트 조회
     @GetMapping("/category")
     public ResponseEntity<List<CategoryVO>> getCategoryHierarchy() {
+
         return ResponseEntity.ok(productService.getCategoryHierarchy());
+
     }
 
     @PostMapping("/products/register")
@@ -103,22 +115,20 @@ public class ProductController {
         String thumbnailDir = java.nio.file.Paths.get(basePath, "frontend", "public", "static", "images", "thumbnail").toString();
         String detailImageDir = java.nio.file.Paths.get(basePath, "frontend", "public", "static", "images", "detailimages").toString();
 
-        System.out.println("🗂 현재 작업 디렉토리: " + basePath);
-        System.out.println("🖼 썸네일 저장 경로: " + thumbnailDir);
-        System.out.println("📸 상세이미지 저장 경로: " + detailImageDir);
-
-
-        System.out.println("✅ productName: " + productName);
-        System.out.println("✅ startDate: " + startDate);
-        System.out.println("✅ endDate: " + endDate);
-        System.out.println("✅ productPrice: " + productPrice);
-        System.out.println("✅ detailCodeId: " + detailCodeId);
-        System.out.println("✅ orderType: " + orderType);
-        System.out.println("✅ saleQuantity: " + saleQuantity);
-        System.out.println("✅ minSaleUnit: " + minSaleUnit);
-        System.out.println("✅ descriptionText: " + descriptionText);
-        System.out.println("✅ memberId: " + memberId);
-        System.out.println("✅ thumbnail file name: " + thumbnail.getOriginalFilename());
+        // System.out.println("🗂 현재 작업 디렉토리: " + basePath);
+        // System.out.println("🖼 썸네일 저장 경로: " + thumbnailDir);
+        // System.out.println("📸 상세이미지 저장 경로: " + detailImageDir);
+        // System.out.println("✅ productName: " + productName);
+        // System.out.println("✅ startDate: " + startDate);
+        // System.out.println("✅ endDate: " + endDate);
+        // System.out.println("✅ productPrice: " + productPrice);
+        // System.out.println("✅ detailCodeId: " + detailCodeId);
+        // System.out.println("✅ orderType: " + orderType);
+        // System.out.println("✅ saleQuantity: " + saleQuantity);
+        // System.out.println("✅ minSaleUnit: " + minSaleUnit);
+        // System.out.println("✅ descriptionText: " + descriptionText);
+        // System.out.println("✅ memberId: " + memberId);
+        // System.out.println("✅ thumbnail file name: " + thumbnail.getOriginalFilename());
 
         if (detailImages != null) {
             for (MultipartFile file : detailImages) {
@@ -143,12 +153,15 @@ public class ProductController {
         productService.registerProduct(dto);
 
         return ResponseEntity.ok("상품 등록 성공");
+
     }
 
     // 상품별 공지사항 목록 조회
     @GetMapping("/products/{productId}/notices")
     public List<ProductNoticeVO> getProductNotices(@PathVariable String productId) {
+
         return productNoticeService.getNotices(productId);
+
     }
 
     // 상품 공지사항 등록
@@ -158,14 +171,18 @@ public class ProductController {
             @RequestBody Map<String, String> body,
             @RequestHeader("memberid") String memberId
     ) {
+
         ProductNoticeVO notice = new ProductNoticeVO();
         notice.setProductId(productId);
         notice.setTitle(body.get("title"));
         notice.setProductNoticeContent(body.get("content"));
         notice.setProductNoticeType(body.get("type"));
         notice.setMemberId(memberId);
+
         productNoticeService.createNotice(notice);
+
         return ResponseEntity.ok().build();
+
     }
 
     // 상품 공지사항 수정
@@ -176,15 +193,20 @@ public class ProductController {
             @RequestBody Map<String, String> body,
             @RequestHeader("memberid") String memberId
     ) {
+
         ProductNoticeVO notice = new ProductNoticeVO();
+
         notice.setProductNoticeId(noticeId);
         notice.setProductId(productId);
         notice.setTitle(body.get("title"));
         notice.setProductNoticeContent(body.get("content"));
         notice.setProductNoticeType(body.get("type"));
         notice.setMemberId(memberId);
+
         productNoticeService.updateNotice(notice);
+
         return ResponseEntity.ok().build();
+
     }
 
     // 상품 공지사항 삭제
@@ -194,7 +216,11 @@ public class ProductController {
             @PathVariable String noticeId,
             @RequestHeader("memberid") String memberId
     ) {
+
         productNoticeService.deleteNotice(noticeId, memberId);
+
         return ResponseEntity.ok().build();
+
     }
+
 }

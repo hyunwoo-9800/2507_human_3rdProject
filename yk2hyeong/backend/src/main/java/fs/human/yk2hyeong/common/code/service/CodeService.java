@@ -1,6 +1,7 @@
 package fs.human.yk2hyeong.common.code.service;
 
 import fs.human.yk2hyeong.common.code.vo.CodeVO;
+import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
@@ -47,5 +48,17 @@ public interface CodeService {
 
     // 회원 탈퇴 코드 조회
     String getDeleteMemberCode() throws Exception;
+
+    // 상품 미승인 코드 조회
+    String getDisProduct() throws Exception;
+
+    // 상품 판매 코드(예약/즉시) 조회
+    String getProductCode1() throws Exception;
+
+    // 상품 판매 코드(즉시) 조회
+    String getProductCode2() throws Exception;
+
+    // 상품 판매 코드(예약) 조회
+    String getProductCode3() throws Exception;
 
 }

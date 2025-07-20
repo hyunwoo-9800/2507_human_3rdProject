@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/* 상품 공지사항 서비스 구현 */
 @Service
 public class ProductNoticeServiceImpl implements ProductNoticeService {
 
@@ -39,4 +40,5 @@ public class ProductNoticeServiceImpl implements ProductNoticeService {
     public List<ProductNoticeVO> getNotices(String productId) {
         return productNoticeDAO.selectProductNotices(productId);
     }
+
 }

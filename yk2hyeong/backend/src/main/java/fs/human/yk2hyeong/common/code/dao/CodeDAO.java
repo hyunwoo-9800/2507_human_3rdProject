@@ -51,4 +51,16 @@ public interface CodeDAO {
     // 회원 탈퇴 코드 조회
     String getDeleteMemberCode() throws DataAccessException;
 
+    // 상품 미승인 코드 조회
+    String getDisProduct() throws DataAccessException;
+
+    // 상품 판매 코드(예약/즉시) 조회
+    String getProductCode1() throws DataAccessException;
+
+    // 상품 판매 코드(즉시) 조회
+    String getProductCode2() throws DataAccessException;
+
+    // 상품 판매 코드(예약) 조회
+    String getProductCode3() throws DataAccessException;
+
 }

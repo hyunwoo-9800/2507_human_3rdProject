@@ -123,6 +123,39 @@ public class CodeServiceImpl implements CodeService {
     public String getDeleteMemberCode() throws Exception {
 
         return codeDAO.getDeleteMemberCode();
+
+    }
+
+    // 상품 미승인 코드 조회
+    @Override
+    public String getDisProduct() throws Exception {
+
+        return codeDAO.getDisProduct();
+
+    }
+
+    // 상품 판매 코드(예약/즉시) 조회
+    @Override
+    public String getProductCode1() throws Exception {
+
+        return codeDAO.getProductCode1();
+
+    }
+
+    // 상품 판매 코드(즉시) 조회
+    @Override
+    public String getProductCode2() throws Exception {
+
+        return codeDAO.getProductCode2();
+
+    }
+
+    // 상품 판매 코드(예약) 조회
+    @Override
+    public String getProductCode3() throws Exception {
+
+        return codeDAO.getProductCode3();
+
     }
 
 }

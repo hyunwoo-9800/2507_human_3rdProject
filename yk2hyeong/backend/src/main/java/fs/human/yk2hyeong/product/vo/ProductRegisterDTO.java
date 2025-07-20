@@ -11,26 +11,25 @@ import java.util.List;
 
 @Data
 public class ProductRegisterDTO {
-    private String productName; // PRODUCT_NAME
+
+    private String productName;                     // PRODUCT_NAME
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate; // PRODUCT_REV_START
+    private LocalDate startDate;                    // PRODUCT_REV_START
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate; // PRODUCT_REV_END
+    private LocalDate endDate;                      // PRODUCT_REV_END
 
-    private BigDecimal productPrice; // PRODUCT_UNIT_PRICE
-    private String detailCodeId; // PRODUCT_CODE
-    private String orderType; // PRODUCT_TYPE
-    private int saleQuantity; // PRODUCT_STOCK_QTY
-    private int minSaleUnit; // PRODUCT_MIN_QTR
-    private String descriptionText; // PRODUCT_DESCRIPTION
-    private String memberId; // SELLER_MEMBER_ID, CREATED_ID, UPDATED_ID
+    private BigDecimal productPrice;                // PRODUCT_UNIT_PRICE
+    private String detailCodeId;                    // PRODUCT_CODE
+    private String orderType;                       // PRODUCT_TYPE
+    private int saleQuantity;                       // PRODUCT_STOCK_QTY
+    private int minSaleUnit;                        // PRODUCT_MIN_QTR
+    private String descriptionText;                 // PRODUCT_DESCRIPTION
+    private String memberId;                        // SELLER_MEMBER_ID, CREATED_ID, UPDATED_ID
 
-    private MultipartFile thumbnail; // TB_IMAGES의 IMAGE_TYPE 200
-    private List<MultipartFile> detailImages; // TB_IMAGES의 IMAGE_TYPE 300
-
-
+    private MultipartFile thumbnail;                // TB_IMAGES의 IMAGE_TYPE 200
+    private List<MultipartFile> detailImages;       // TB_IMAGES의 IMAGE_TYPE 300
 
 }
 
