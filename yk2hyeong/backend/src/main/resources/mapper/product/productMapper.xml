@@ -173,4 +173,13 @@
                  )
     </insert>
 
+    <!-- 마지막에 삽입된 상품 ID 조회 -->
+    <select id="getLastInsertedProductId" resultType="string">
+        SELECT PRODUCT_ID
+        FROM TB_PRODUCT
+        WHERE SELL_MEMBER_ID = #{memberId}
+          AND PRODUCT_NAME = #{productName}
+          AND ROWNUM = 1
+        ORDER BY CREATED_DATE DESC
+    </select>
 </mapper>

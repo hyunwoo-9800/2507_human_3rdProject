@@ -31,4 +31,6 @@ public interface ProductDAO {
     // 상품 이미지 등록
     void insertImage(String imageId, String imagePath, String imageName, String imageType, String memberId, String productId);
 
+    // 마지막에 삽입된 상품 ID 조회
+    String getLastInsertedProductId(@Param("memberId") String memberId, @Param("productName") String productName);
 }

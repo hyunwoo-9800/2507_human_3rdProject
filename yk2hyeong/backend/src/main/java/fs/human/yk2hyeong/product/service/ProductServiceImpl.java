@@ -197,20 +197,24 @@ public class ProductServiceImpl implements ProductService {
         // 상품 저장
         productDAO.insertProduct(product);
 
+        // 실제 생성된 상품 ID 조회
+        String actualProductId = productDAO.getLastInsertedProductId(dto.getMemberId(), dto.getProductName());
+
+
         // 섬네일
         MultipartFile thumbnail = dto.getThumbnail();
 
         if (thumbnail != null && !thumbnail.isEmpty()) {
 
             // 썸네일 270x270 (imageType 200)
-            String thumb270Name = productId + "_200.jpg";
+            String thumb270Name = actualProductId + "_200.jpg";
             String thumb270Id = UUID.randomUUID().toString();
-            saveImageFile(thumbnail, thumb270Name, thumb270Id, "200", thumbnailDir, dto.getMemberId(), 270, 270, productId);
+            saveImageFile(thumbnail, thumb270Name, thumb270Id, "200", thumbnailDir, dto.getMemberId(), 270, 270, actualProductId);
 
             // 썸네일 600x510 (imageType 400)
-            String thumb610Name = productId + "_400.jpg";
+            String thumb610Name = actualProductId + "_400.jpg";
             String thumb610Id = UUID.randomUUID().toString();
-            saveImageFile(thumbnail, thumb610Name, thumb610Id, "400", thumbnailDir, dto.getMemberId(), 600, 510, productId);
+            saveImageFile(thumbnail, thumb610Name, thumb610Id, "400", thumbnailDir, dto.getMemberId(), 600, 510, actualProductId);
 
         }
 
@@ -223,9 +227,9 @@ public class ProductServiceImpl implements ProductService {
                 if (detailImage != null && !detailImage.isEmpty()) {
 
                     String orderStr = String.format("%03d", i + 1);
-                    String detailName = productId + "_" + orderStr + "_300.jpg";
+                    String detailName = actualProductId + "_" + orderStr + "_300.jpg";
                     String detailId = UUID.randomUUID().toString();
-                    saveDetailImageFile(detailImage, detailName, detailId, "300", detailImageDir, dto.getMemberId(), productId);
+                    saveDetailImageFile(detailImage, detailName, detailId, "300", detailImageDir, dto.getMemberId(), actualProductId);
 
                 }
 
@@ -256,6 +260,9 @@ public class ProductServiceImpl implements ProductService {
             // 4. DB에는 상대경로만 저장 (images/thumbnail)
             String dbImagePath = "images/thumbnail";
             productDAO.insertImage(imageId, dbImagePath, fileName, imageType, memberId, productId);
+
+            // 5. 백엔드 static 폴더로 이미지 복사
+            copyImageToBackend(fileName, uploadDir);
 
         } catch (IOException e) {
 
@@ -288,6 +295,9 @@ public class ProductServiceImpl implements ProductService {
             String dbImagePath = "images/detailimages";
             productDAO.insertImage(imageId, dbImagePath, fileName, imageType, memberId, productId);
 
+            // 5. 백엔드 static 폴더로 이미지 복사
+            copyDetailImageToBackend(fileName, uploadDir);
+
         } catch (IOException e) {
 
             throw new RuntimeException("상세 이미지 저장 실패: " + e.getMessage(), e);
@@ -301,6 +311,50 @@ public class ProductServiceImpl implements ProductService {
 
         return productDAO.selectProductsByMemberId(memberId);
 
+    }
+
+    // 백엔드 static 폴더로 이미지 복사
+    private void copyImageToBackend(String fileName, String sourceDir) {
+        try {
+            String backendImageDir = System.getProperty("user.dir") + "/src/main/resources/static/images/thumbnail/";
+            File backendDir = new File(backendImageDir);
+            if (!backendDir.exists()) {
+                backendDir.mkdirs();
+            }
+
+            File sourceFile = new File(sourceDir, fileName);
+            File destFile = new File(backendImageDir, fileName);
+
+            if (sourceFile.exists()) {
+                java.nio.file.Files.copy(sourceFile.toPath(), destFile.toPath(),
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            // 로그만 출력하고 예외는 던지지 않음 (이미지 복사 실패가 상품 등록을 막지 않도록)
+            System.err.println("이미지 복사 실패: " + e.getMessage());
+        }
+    }
+
+    // 백엔드 static 폴더로 상세 이미지 복사
+    private void copyDetailImageToBackend(String fileName, String sourceDir) {
+        try {
+            String backendImageDir = System.getProperty("user.dir") + "/src/main/resources/static/images/detailimages/";
+            File backendDir = new File(backendImageDir);
+            if (!backendDir.exists()) {
+                backendDir.mkdirs();
+            }
+
+            File sourceFile = new File(sourceDir, fileName);
+            File destFile = new File(backendImageDir, fileName);
+
+            if (sourceFile.exists()) {
+                java.nio.file.Files.copy(sourceFile.toPath(), destFile.toPath(),
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            // 로그만 출력하고 예외는 던지지 않음 (이미지 복사 실패가 상품 등록을 막지 않도록)
+            System.err.println("상세 이미지 복사 실패: " + e.getMessage());
+        }
     }
 
 }
