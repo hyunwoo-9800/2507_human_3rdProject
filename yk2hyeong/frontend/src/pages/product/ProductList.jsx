@@ -99,6 +99,7 @@ export default function ProductList() {
         await axios.post('/api/favorites', { memberId, productId })
         const newFavs = [...favoriteProductIds, productId]
         setFavoriteProductIds(newFavs)
+        alert('관심상품에 등록되었습니다!')
         console.log(`✅ [즐겨찾기 등록 완료] productId: ${productId}`)
         console.log('📌 현재 즐겨찾기 목록:', newFavs)
       } else {
@@ -106,6 +107,7 @@ export default function ProductList() {
         await axios.delete('/api/favorites', { data: { memberId, productId } })
         const newFavs = favoriteProductIds.filter((id) => id !== productId)
         setFavoriteProductIds(newFavs)
+        alert('관심상품에서 삭제되었습니다!')
         console.log(`🗑️ [즐겨찾기 삭제 완료] productId: ${productId}`)
         console.log('📌 현재 즐겨찾기 목록:', newFavs)
       }

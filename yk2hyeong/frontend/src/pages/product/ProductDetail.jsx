@@ -112,9 +112,11 @@ export default function ProductDetail() {
       if (!isFavorite) {
         await axios.post('/api/favorites', { memberId, productId })
         setFavoriteProductIds([...favoriteProductIds, productId])
+        alert('관심상품에 등록되었습니다!')
       } else {
         await axios.delete('/api/favorites', { data: { memberId, productId } })
         setFavoriteProductIds(favoriteProductIds.filter((id) => id !== productId))
+        alert('관심상품에서 삭제되었습니다!')
       }
     } catch (e) {
       alert('즐겨찾기 처리 중 오류가 발생했습니다.')
