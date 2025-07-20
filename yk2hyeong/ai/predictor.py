@@ -73,12 +73,11 @@ for detail_code, group in df.groupby('DETAIL_CODE_ID'):
         pred_price_float = float(pred_price[0])  # float32 → float 변환
         cursor.execute("""
             INSERT INTO TB_PRICE_PREDICTION 
-            (PREDICTION_ID, DETAIL_CODE_ID, PREDICT_DATE, PREDICT_PRICE, PREDICTED_UNIT_PRICE, PREDICT_MODEL)
-            VALUES (SYS_GUID(), :1, TO_DATE(:2, 'YYYY-MM-DD'), :3, :4, 'LSTM')
+            (PREDICTION_ID, DETAIL_CODE_ID, PREDICT_DATE, PREDICTED_UNIT_PRICE, PREDICT_MODEL)
+            VALUES (SYS_GUID(), :1, TO_DATE(:2, 'YYYY-MM-DD'), :3, 'LSTM')
         """, (
             detail_code,
             pred_date.strftime('%Y-%m-%d'),
-            pred_price_float,
             pred_price_float
         ))
 
