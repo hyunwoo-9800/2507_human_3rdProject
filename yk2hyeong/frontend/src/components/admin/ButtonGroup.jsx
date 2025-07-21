@@ -58,8 +58,8 @@ function ButtonGroup({selectItem}) {
         try{
             const response = await axios.post('/api/alarm/reject',{
                 // alarmType: type,
-                // alarmContent: content,
-                receiverId: '29E46778F8E3430D9C560B84E4861786',
+                alarmContent: content,
+                // receiverId: '29E46778F8E3430D9C560B84E4861786',
                 productId: productId,
             });
             console.log("알림 전송 성공: ", response.data);

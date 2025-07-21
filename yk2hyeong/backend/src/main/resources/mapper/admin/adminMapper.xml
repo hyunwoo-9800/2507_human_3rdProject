@@ -266,7 +266,7 @@
         VALUES (
                    SYS_GUID(),
                    #{alarmType},
-                   #{alarmContent,jdbcType = VARCHAR},
+                   #{alarmContent},
                    #{receiverId},
                    'N',
                    #{createdId},
@@ -309,5 +309,23 @@
         SET member_status = '001'
         WHERE member_id = #{memberId}
     </update>
+
+    <!-- 알림 수신자 ID 조회 -->
+    <select id="getReceiverId" resultType="String">
+        SELECT
+            SELL_MEMBER_ID
+        FROM TB_PRODUCT
+        WHERE PRODUCT_STATUS = (
+            SELECT
+                A.DETAIL_CODE_ID
+            FROM TB_CODE_DETAIL A
+                     LEFT JOIN TB_CODE B
+                               ON A.CODE_ID = B.CODE_ID
+            WHERE B.TOP_CODE_VALUE = '007'
+              AND A.LOW_CODE_VALUE = '013'
+        )
+          AND PRODUCT_ID = #{productId}
+    </select>
+
 
 </mapper>

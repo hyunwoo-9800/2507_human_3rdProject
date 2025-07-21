@@ -278,4 +278,12 @@ public class AdminServiceImpl implements AdminService {
 
     }
 
+    // 알림 수신자 ID 조회
+    @Override
+    public String getReceiverId(String productId) throws Exception {
+
+        return adminDAO.getReceiverId(productId);
+
+    }
+
 }

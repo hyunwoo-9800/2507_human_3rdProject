@@ -1,5 +1,6 @@
 package fs.human.yk2hyeong.admin.controller;
 
+import fs.human.yk2hyeong.admin.dao.AdminDAO;
 import fs.human.yk2hyeong.admin.service.AdminService;
 import fs.human.yk2hyeong.admin.vo.AdminVO;
 import fs.human.yk2hyeong.common.code.service.CodeService;
@@ -27,6 +28,7 @@ public class AdminController {
     // 관리자 서비스, 공통코드 서비스
     private final AdminService adminService;
     private final CodeService codeService;
+    private final AdminDAO adminDAO;
 
     // 미승인 상품 조회
     @GetMapping("/product/pending")
@@ -99,25 +101,35 @@ public class AdminController {
 
             // adminVO.setAlarmId(UUID.randomUUID().toString()); 오라클에서 처리함
 
-            if (adminVO.getReceiverId() == null) {
-             // adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
+            /* if (adminVO.getReceiverId() == null) {
+                adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
                 adminVO.setReceiverId("SYSTEM");
-            }
+            } */
 
             if (adminVO.getCreatedId() == null) {
                 adminVO.setCreatedId("SYSTEM");
             }
 
             String alarmType = codeService.getRejectAlarmCode();        // 승인 거부 코드
-            String alarmContent;
+            String alarmContent = adminVO.getAlarmContent();            // 알림 내용
+
+            // 알림 수신자 ID 조회
+            String receiverId = adminDAO.getReceiverId(adminVO.getProductId());
 
             if (adminVO.getAlarmContent() == null || adminVO.getAlarmContent().equals("")) {
 
                 adminVO.setAlarmContent(" ");
 
+            } else {
+
+                adminVO.setAlarmContent(alarmContent);
+
             }
 
+            adminVO.setReceiverId(receiverId);
             adminVO.setAlarmType(alarmType);
+
+            System.out.println("값좀 보자 = " + adminVO);
 
             // 알림 등록
             adminService.insertAlarm(adminVO);
@@ -170,9 +182,15 @@ public class AdminController {
         // 알림 승인 코드
         String alarmType = codeService.getApprovalAlarmCode();
 
+        // 알림 수신자 ID 조회
+        String receiverId = adminDAO.getReceiverId(adminVO.getProductId());
+
+        System.out.println("관리자 = " + adminVO.toString());
+        System.out.println("알림 수신자 = " + receiverId);
+
         adminVO.setAlarmType(alarmType);
         adminVO.setAlarmContent(" ");                              // DB에는 NULL을 넣지 않도록 수정(공백으로 수정)
-        adminVO.setReceiverId("SYSTEM");                           // 관리자 UUID도 변경될 수 있으니 SYSTEM 고정
+        adminVO.setReceiverId(receiverId);                         // 관리자 UUID도 변경될 수 있으니 SYSTEM 고정
         adminVO.setCreatedId("SYSTEM");
 
 //        adminVO.setAlarmType("011");
@@ -185,7 +203,7 @@ public class AdminController {
         return ResponseEntity.ok("상품 승인 및 알림 전송 완료");
     }
 
-    //상품관리 삭제버튼
+    // 상품관리 삭제버튼
     @PostMapping("/products/reject")
     public ResponseEntity<?> rejectProduct(@RequestBody List<String> productId) throws Exception {
 
@@ -194,7 +212,7 @@ public class AdminController {
 
     }
 
-    //유저관리 삭제버튼
+    // 유저관리 삭제버튼
     @PostMapping("/member/reject")
     public ResponseEntity<?> rejectMember(@RequestBody List<String> memberId) throws Exception {
 
@@ -203,7 +221,7 @@ public class AdminController {
 
     }
 
-    //신고관리 삭제버튼
+    // 신고관리 삭제버튼
     @PostMapping("/report/resolve")
     public ResponseEntity<String> resolveReport(@RequestBody List<String> productId) throws Exception {
 
@@ -212,7 +230,7 @@ public class AdminController {
 
     }
 
-    //    회원가입 승인
+    // 회원가입 승인
     @PutMapping("/member/{memberId}/approve")
     public ResponseEntity<?> approveMember(@PathVariable String memberId) throws Exception {
 

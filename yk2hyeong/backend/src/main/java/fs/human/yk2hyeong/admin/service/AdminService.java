@@ -44,4 +44,7 @@ public interface AdminService {
     // 회원가입승인
     void approveMember(String memberId) throws Exception;
 
+    // 알림 수신자 ID 조회
+    String getReceiverId(String productId) throws Exception;
+
 }

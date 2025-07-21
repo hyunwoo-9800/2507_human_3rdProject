@@ -53,4 +53,7 @@ public interface AdminDAO {
     // 회원등록승인 이미지 다운받기
     List<String> selectMemberImageUrls(String memberId) throws DataAccessException;
 
+    // 알림 수신자 ID 조회
+    String getReceiverId(String productId) throws DataAccessException;
+
 }
