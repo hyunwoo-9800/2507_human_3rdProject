@@ -4,6 +4,7 @@ import ForecastChart from "../../components/chart/ForecastChart";
 import DividerLine from "../../components/chart/DividerLine";
 import PriceChangeTable from "../../components/chart/PriceChangeTable";
 import axios from "axios";
+import ReportDownloadButton from "../../components/chart/ReportDownloadButton";
 
 
 const PriceChartPage = () => {
@@ -116,6 +117,7 @@ const PriceChartPage = () => {
                         {value: 'year', label: '연간'},
                     ]}
                 />
+                <ReportDownloadButton form={form}></ReportDownloadButton>
             </div>
 
             <div className="viewChart">
