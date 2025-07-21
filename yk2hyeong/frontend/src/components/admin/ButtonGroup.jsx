@@ -34,7 +34,7 @@ function ButtonGroup({selectItem}) {
 
         try {
             await sendAlarm({
-                type: '012',
+                // type: '012',
                 content: reason,
                 productId: productId ?? "",  // 없으면 빈 문자열로
             });
@@ -57,8 +57,8 @@ function ButtonGroup({selectItem}) {
     const sendAlarm = async({type, content}) => {
         try{
             const response = await axios.post('/api/alarm/reject',{
-                alarmType: type,
-                alarmContent: content,
+                // alarmType: type,
+                // alarmContent: content,
                 receiverId: '29E46778F8E3430D9C560B84E4861786',
                 productId: productId,
             });

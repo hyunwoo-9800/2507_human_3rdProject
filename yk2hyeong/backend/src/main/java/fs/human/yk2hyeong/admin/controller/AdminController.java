@@ -108,6 +108,17 @@ public class AdminController {
                 adminVO.setCreatedId("SYSTEM");
             }
 
+            String alarmType = codeService.getRejectAlarmCode();        // 승인 거부 코드
+            String alarmContent;
+
+            if (adminVO.getAlarmContent() == null || adminVO.getAlarmContent().equals("")) {
+
+                adminVO.setAlarmContent(" ");
+
+            }
+
+            adminVO.setAlarmType(alarmType);
+
             // 알림 등록
             adminService.insertAlarm(adminVO);
 
@@ -157,9 +168,9 @@ public class AdminController {
         }  오라클에서 처리함 */
 
         // 알림 승인 코드
-        String AlarmType = codeService.getApprovalAlarmCode();
+        String alarmType = codeService.getApprovalAlarmCode();
 
-        adminVO.setAlarmType(AlarmType);
+        adminVO.setAlarmType(alarmType);
         adminVO.setAlarmContent(" ");                              // DB에는 NULL을 넣지 않도록 수정(공백으로 수정)
         adminVO.setReceiverId("SYSTEM");                           // 관리자 UUID도 변경될 수 있으니 SYSTEM 고정
         adminVO.setCreatedId("SYSTEM");
