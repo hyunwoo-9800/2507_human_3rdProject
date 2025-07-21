@@ -2,6 +2,7 @@ from fastapi import FastAPI, Query
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from generate_report import generate_excel_report
+from urllib.parse import quote
 import os
 import uvicorn
 
@@ -20,11 +21,17 @@ app.add_middleware(
 def download_report(lowCodeValue: str, timeFrame: str):
     file_path = generate_excel_report(lowCodeValue, timeFrame)
     filename = os.path.basename(file_path)
+
+    encoded_filename = quote(filename)
+
     return FileResponse(
         path=file_path,
         filename=filename,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        headers={"Access-Control-Allow-Origin": "*"}  # 수동 CORS 허용
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Content-Disposition": f"attachment; filename*=UTF-8''{encoded_filename}"
+        }
     )
 
 if __name__ == "__main__":

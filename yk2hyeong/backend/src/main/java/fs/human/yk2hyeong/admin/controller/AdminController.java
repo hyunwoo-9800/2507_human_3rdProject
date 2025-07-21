@@ -129,8 +129,6 @@ public class AdminController {
             adminVO.setReceiverId(receiverId);
             adminVO.setAlarmType(alarmType);
 
-            System.out.println("값좀 보자 = " + adminVO);
-
             // 알림 등록
             adminService.insertAlarm(adminVO);
 
@@ -184,9 +182,6 @@ public class AdminController {
 
         // 알림 수신자 ID 조회
         String receiverId = adminDAO.getReceiverId(adminVO.getProductId());
-
-        System.out.println("관리자 = " + adminVO.toString());
-        System.out.println("알림 수신자 = " + receiverId);
 
         adminVO.setAlarmType(alarmType);
         adminVO.setAlarmContent(" ");                              // DB에는 NULL을 넣지 않도록 수정(공백으로 수정)

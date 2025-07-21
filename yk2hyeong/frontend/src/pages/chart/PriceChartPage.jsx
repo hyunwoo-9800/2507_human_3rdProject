@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import CustomSelect from "../../components/common/CustomSelect";
+import CustomRadio from "../../components/common/CustomRadio";
 import ForecastChart from "../../components/chart/ForecastChart";
 import DividerLine from "../../components/chart/DividerLine";
 import PriceChangeTable from "../../components/chart/PriceChangeTable";
@@ -24,9 +25,14 @@ const PriceChartPage = () => {
     }
 
     // 품목 선택 처리
-    const handlelowCodeSelect = (value) => {
-        setForm((prev) => ({...prev, lowCodeValue: value}))
-    }
+    const handlelowCodeSelect = (selectedOption) => {
+        const selectedItem = lowItems.find(item => item.value === selectedOption);
+        setForm((prev) => ({
+            ...prev,
+            lowCodeValue: selectedOption,
+            lowCodeName: selectedItem ? selectedItem.label : '',
+        }));
+    };
 
     // 기간 선택 처리
     const handlePeriodChange = (value) => {
@@ -62,8 +68,7 @@ const PriceChartPage = () => {
 
         if (!form.midCodeValue) {
             return
-        }
-        ;
+        };
 
         axios.get(`/common/lowList?midCodeValue=${form.midCodeValue}`).then((res) => {
 
@@ -107,14 +112,13 @@ const PriceChartPage = () => {
                 <label htmlFor="selectedPeriod" className="input-label">
                     기간
                 </label>
-                <CustomSelect
-                    placeholder="검색 기간을 선택하세요"
+                <CustomRadio
+                    value={form.timeFrame}
                     onChange={handlePeriodChange}
-                    defaultValue="week"
                     options={[
-                        {value: 'week', label: '주간'},
-                        {value: 'month', label: '월간'},
-                        {value: 'year', label: '연간'},
+                        { value: 'week', label: '주간' },
+                        { value: 'month', label: '월간' },
+                        { value: 'year', label: '연간' },
                     ]}
                 />
                 <ReportDownloadButton form={form}></ReportDownloadButton>
