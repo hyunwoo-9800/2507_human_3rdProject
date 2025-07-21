@@ -177,9 +177,11 @@ const ForecastChart = ({ detailCodeId, timeFrame }) => {
           }}
         />
       ) : (
-        <p style={{ textAlign: 'center', padding: '1rem' }}>
-          최근 거래내역이 없습니다.
-        </p>
+          <p style={{ textAlign: 'center', padding: '1rem' }}>
+              {chartData?.labels?.length > 0
+                  ? `[${chartData.labels[0]} ~ ${chartData.labels.at(-1)}] 기간에는 거래된 시세 정보가 없어 차트를 표시할 수 없습니다.`
+                  : `선택된 기간에 시세 데이터가 없습니다.`}
+          </p>
       )
     ) : (
       <CustomLoading />

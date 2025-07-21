@@ -33,8 +33,8 @@ public class KamisScheduler {
     @Scheduled(cron = "0 0 0 * * *")
     public void fetchToday() {
 
-        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        runPythonWithDate(today, today);
+        String yesterday = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        runPythonWithDate(yesterday, yesterday);
 
     }
 

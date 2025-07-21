@@ -15,13 +15,13 @@ const PriceChangeTable = ({ limit = null }) => {
             key: 'lowCodeName',
         },
         {
-            title: '어제 평균가 (원)',
+            title: '그제 평균가 (원)',
             dataIndex: 'yesterdayPrice',
             key: 'yesterdayPrice',
             render: (price) => price?.toLocaleString(),
         },
         {
-            title: '오늘 평균가 (원)',
+            title: '어제 평균가 (원)',
             dataIndex: 'todayPrice',
             key: 'todayPrice',
             render: (price) => price?.toLocaleString(),
@@ -79,8 +79,9 @@ const PriceChangeTable = ({ limit = null }) => {
             )}
 
             <p className="trendy-price-caution">
-                ※ 주말에는 최신 시세 데이터가 없어, 직전 평일(목/금)의 가격을 참고용으로 제공합니다.
-                (거래 내역이 존재하는 품목만 출력됩니다.)
+                ※ 주말에는 최신 시세 데이터가 제공되지 않아, 가장 최근 평일(목요일 또는 금요일)의 가격을 참고용으로 표시합니다.
+                <br></br>
+                ※ 시세 추이는 어제와 그제의 가격을 비교하여 산출되며, 거래 내역이 있는 품목만 출력됩니다.
             </p>
         </div>
     );

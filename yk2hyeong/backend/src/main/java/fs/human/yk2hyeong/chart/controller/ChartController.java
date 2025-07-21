@@ -74,34 +74,41 @@ public class ChartController {
         LocalDate now = LocalDate.now();
         DayOfWeek day = now.getDayOfWeek();
 
-        LocalDate localToday;
         LocalDate localYesterday;
+        LocalDate localDayBefore;
 
         switch (day) {
 
-            // 토요일
-            case SATURDAY -> {
-                localToday = now.minusDays(1);       // 금요일
-                localYesterday = now.minusDays(2);   // 목요일
+            // 월요일 → 금/목
+            case MONDAY -> {
+                localYesterday = now.minusDays(3);      // 금요일
+                localDayBefore = now.minusDays(4);      // 목요일
             }
 
-            // 일요일
+            // 일요일 → 금/목
             case SUNDAY -> {
-                localToday = now.minusDays(2);       // 금요일
-                localYesterday = now.minusDays(3);   // 목요일
+                localYesterday = now.minusDays(2);      // 금요일
+                localDayBefore = now.minusDays(3);      // 목요일
             }
 
+            // 토요일 → 금/목
+            case SATURDAY -> {
+                localYesterday = now.minusDays(1);      // 금요일
+                localDayBefore = now.minusDays(2);      // 목요일
+            }
+
+            // 평일 → 어제/그제
             default -> {
-                localToday = now.minusDays(1);
-                localYesterday = now.minusDays(2);
+                localYesterday = now.minusDays(1);
+                localDayBefore = now.minusDays(2);
             }
 
         }
 
-        Date today = Date.valueOf(localToday);
         Date yesterday = Date.valueOf(localYesterday);
+        Date dayBefore = Date.valueOf(localDayBefore);
 
-        List<ChartVO> diffList = chartService.dailyPriceDiff(yesterday, today);
+        List<ChartVO> diffList = chartService.dailyPriceDiff(dayBefore, yesterday);
 
         return ResponseEntity.ok(diffList);
 
