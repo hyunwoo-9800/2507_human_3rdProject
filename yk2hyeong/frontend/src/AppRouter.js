@@ -13,6 +13,7 @@ import SignupRoleSelect from './pages/member/SignupRoleSelect' // 회원가입 �
 import SellerTerms from './pages/member/SellerTerms' // 판매자 약관 페이지
 import BuyerTerms from './pages/member/BuyerTerms' // 구매자 약관 페이지
 import SignupForm from './pages/member/SignupForm' // 회원가입 폼 페이지
+import EditMember from "./components/mypage/EditMember";
 import FindId from './pages/login/FindId'
 import FindPassword from './pages/login/FindPassword'
 import ResetPassword from './pages/login/ResetPassword'
@@ -89,6 +90,9 @@ export default function AppRouter() {
 
             {/* 상품등록 페이지 */}
             <Route path="/product/register" element={<ProductRegister/>}/>
+
+            {/* 상품등록 페이지 */}
+            <Route path="/EditMember" element={<EditMember/>}/>
 
         </Routes>
     )

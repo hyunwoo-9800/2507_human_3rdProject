@@ -42,4 +42,6 @@ public interface MemberService {
 
     void updatePassword(@Param("email") String email, @Param("newPassword") String newPassword) throws Exception;
 
+    /* 회원정보 수정 */
+    void updateMemberInfo(MemberVO member) throws Exception;
 }

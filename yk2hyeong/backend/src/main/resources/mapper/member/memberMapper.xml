@@ -78,4 +78,22 @@
         WHERE MEMBER_EMAIL = #{email}
     </update>
 
+
+    <!-- 회원정보 수정 -->
+    <update id="updateMemberInfo" parameterType="fs.human.yk2hyeong.member.vo.MemberVO">
+        UPDATE TB_MEMBER
+        SET
+            MEMBER_NAME = #{memberName},
+            MEMBER_TEL = #{memberTel},
+            MEMBER_ADDR = #{memberAddr},
+            MEMBER_DETAIL_ADDR = #{memberDetailAddr},
+            MEMBER_BNAME = #{memberBname},
+            MEMBER_BNUM = #{memberBnum},
+            MEMBER_SHIPPER_NAME = #{memberShipperName},
+            MEMBER_BANK_CODE = #{memberBankCode},
+            MEMBER_ACCOUNTNUM = #{memberAccountNum},
+            UPDATED_ID = #{updatedId},
+            UPDATED_DATE = SYSDATE
+        WHERE MEMBER_ID = #{memberId}
+    </update>
 </mapper>

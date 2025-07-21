@@ -56,7 +56,7 @@ export default function Header() {
                                     마이페이지
                                 </Link>
                             )}
-                            <Link to="/mypage" className="dropdown-item" style={dropdownItemStyle}>
+                            <Link to="/EditMember" className="dropdown-item" style={dropdownItemStyle}>
                                 회원정보 수정
                             </Link>
                             <button

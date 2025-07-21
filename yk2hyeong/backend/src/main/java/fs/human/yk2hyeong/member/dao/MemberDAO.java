@@ -46,4 +46,6 @@ public interface MemberDAO {
 
     void updatePassword(@Param("email") String email, @Param("newPassword") String newPassword) throws DataAccessException;
 
+    /* 회원정보 수정 */
+    void updateMemberInfo(MemberVO member) throws DataAccessException;
 }

@@ -254,4 +254,28 @@ public class MemberController {
         }
     }
 
+    /**
+     * 회원정보 수정 API
+     *
+     * 회원의 기본 정보(이름, 연락처, 주소 등)를 수정하는 API입니다.
+     *
+     * @param id 수정할 회원의 ID
+     * @param member 수정할 정보가 담긴 객체 (비밀번호 제외)
+     * @return 수정 성공 여부 응답
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateMember(@PathVariable Long id, @RequestBody MemberVO member) {
+        try {
+            member.setMemberId(String.valueOf(id)); // String으로 변환
+            member.setUpdatedId("SYSTEM");
+
+            memberService.updateMemberInfo(member);
+            return ResponseEntity.ok(Map.of("message", "회원정보 수정 완료"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "회원정보 수정 중 오류 발생"));
+        }
+    }
+
+
 }

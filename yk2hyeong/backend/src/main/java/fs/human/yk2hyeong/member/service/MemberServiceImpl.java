@@ -78,4 +78,10 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    /* 회원정보 수정 구현 */
+    @Override
+    public void updateMemberInfo(MemberVO member) throws Exception {
+        memberDAO.updateMemberInfo(member);
+    }
+
 }
