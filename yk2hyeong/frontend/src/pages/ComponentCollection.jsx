@@ -35,6 +35,7 @@ import CustomAlert from '../components/common/CustomAlert' // 알람
 import RollingAlert from '../components/common/RollingAlert' // 롤링알람
 import CustomLoading from '../components/common/CustomLoading' // 로딩바
 import CustomDetailCard from '../components/common/CustomDetailCard' // 상품상세
+import DancingYHLoader from '../components/common/DancingYHLoader' // 영근이 형이 춤을 추는 중...
 
 function ComponentCollection() {
   // 상태 변수 정의
@@ -2367,6 +2368,26 @@ buttonLabel="삭제"/>`}
     type="info"
   />
 </CustomLoading>`}
+              </pre>
+            </div>
+
+            {/* 댄싱영근 */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', marginTop: 20 }}>
+              <DancingYHLoader />
+
+              <pre
+                style={{
+                  marginLeft: 20,
+                  backgroundColor: '#f4f4f4',
+                  padding: '10px',
+                  borderRadius: '5px',
+                  fontSize: '14px',
+                  whiteSpace: 'pre-wrap',
+                  wordWrap: 'break-word',
+                  overflowX: 'auto',
+                }}
+              >
+                {`<DancingYHLoader/>`}
               </pre>
             </div>
           </div>
