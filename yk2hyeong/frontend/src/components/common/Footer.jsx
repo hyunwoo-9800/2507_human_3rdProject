@@ -30,7 +30,7 @@ export default function Footer() {
             <CustomFloatButton
                 icon={<FontAwesomeIcon icon={faRobot} style={{ fontSize: '18px' }} />}
                 tooltip="AI 챗봇"
-                onClick={() => alert('챗봇 버튼 클릭')}
+                onClick={() => window.open("http://192.168.56.1:5000/", "_blank")}
             />
         </footer>
     );
