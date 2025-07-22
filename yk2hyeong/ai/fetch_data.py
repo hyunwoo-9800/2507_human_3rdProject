@@ -4,6 +4,7 @@ import datetime
 import uuid
 import sys
 import io
+import re
 
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 
@@ -23,9 +24,8 @@ ITEM_CATEGORY_CODES = ["100", "200", "300", "400"]  # 식량, 채소, 특용, �
 def fetch_and_insert(date_str):
     print(f"\n[{date_str}] 데이터 수집 중...")
     try:
-        # DB 연결을 함수 내에서 열기
         conn = cx_Oracle.connect(DB_USER, DB_PASS, DB_DSN, encoding="UTF-8")
-        conn.autocommit = True  # Oracle 자동 커밋
+        conn.autocommit = True
         cursor = conn.cursor()
 
         cursor.execute("SELECT SYS_CONTEXT('USERENV', 'CURRENT_USER') FROM DUAL")
@@ -50,111 +50,104 @@ def fetch_and_insert(date_str):
                 res = requests.get(url)
                 res.raise_for_status()
                 json_data = res.json()
-                print(f"[DEBUG] API 응답 데이터: {json_data}")
+                print(f"[DEBUG] API 응답 데이터 수신 성공")
             except Exception as e:
-                print(f"[ERROR] {date_str} {item_category_code} JSON 파싱 실패 또는 요청 에러:\n{e}")
+                print(f"[ERROR] {date_str} {item_category_code} 요청 실패: {e}")
                 continue
 
-            # 응답에서 item 리스트 추출
             raw_data = json_data.get("data", {})
             if isinstance(raw_data, dict):
                 if raw_data.get("error_code") == "001":
-                    print(f"[SKIP] {item_category_code} → KAMIS: 데이터 없음 응답 (001)")
+                    print(f"[SKIP] {item_category_code} → KAMIS: 데이터 없음")
                     continue
                 data = raw_data.get("item", [])
             else:
-                print(f"[SKIP] {item_category_code} → 예상치 못한 data 구조: {type(raw_data)}")
+                print(f"[SKIP] {item_category_code} → 예상치 못한 data 구조")
                 continue
 
             if not isinstance(data, list):
-                print(f"[SKIP] {item_category_code} → item 필드가 list 아님: {type(data)}")
+                print(f"[SKIP] {item_category_code} → item 필드가 리스트가 아님")
                 continue
 
             valid_items = [item for item in data if isinstance(item, dict)]
-            print(f"[DEBUG] {item_category_code} 유효한 항목 수: {len(valid_items)}")
+            print(f"[DEBUG] {item_category_code} 항목 수: {len(valid_items)}")
 
             for item in valid_items:
-                item_code = item.get("item_code", "").strip()
+                low_code_value = item.get("item_code", "").strip()
                 item_name = item.get("item_name", "").strip()
                 price_str = item.get("dpr1", "").replace(",", "").strip()
 
-                # 잘못된 가격 정보 처리
                 if price_str == "-" or not price_str:
-                    print(f"[SKIP] 잘못된 가격 정보: {item_name} / code: {item_code}")
+                    print(f"[SKIP] 가격 정보 없음: {item_name} / {low_code_value}")
                     continue
 
-                recorded_date = date_str  # 안전하게 요청 날짜 기준으로 저장
+                recorded_date = date_str
 
                 try:
                     price = float(price_str)
-                    price = round(price, 2)  # 소수점 둘째 자리로 반올림
+                    price = round(price, 2)
                 except ValueError:
-                    print(f"[SKIP] 숫자 변환 실패: {price_str} (item: {item_name} / {item_code})")
-                    price = 0  # 유효하지 않은 가격은 0으로 처리
-
-                # 1kg당 가격 계산 (단가)
-                recorded_unit_price = price  # 기본 가격이 1kg당 가격인 경우
-                unit = item.get('unit', ' ')
-                print(f"[DEBUG] 단위 값 확인: {unit}")
-
-                if 'kg' in unit:  # 만약 단위가 'kg'이라면
-                    try:
-                        quantity = float(unit.replace('kg', ''))  # kg 단위로 수량 추출
-                        recorded_unit_price = price / quantity  # 가격을 수량으로 나누어 1kg당 단가 계산
-                        recorded_unit_price = round(recorded_unit_price, 2)  # 소수점 둘째 자리로 반올림
-                    except ValueError:
-                        print(f"[SKIP] 단위 변환 실패: {unit} (item: {item_name} / {item_code})")
-                        continue
-
-                print(f"[DEBUG] 1kg당 단가 계산: {recorded_unit_price}원")
-
-                # 값이 너무 크지 않도록 제한
-                if recorded_unit_price > 99999999.99:
-                    print(f"[SKIP] 가격 너무 큼: {recorded_unit_price} (item: {item_name} / {item_code})")
+                    print(f"[SKIP] 숫자 변환 실패: {price_str} (item: {item_name})")
                     continue
 
-                # `DETAIL_CODE_ID`와 `RECORDED_UNIT` 수정
-                detail_code_id = item_code  # `item_code`를 `DETAIL_CODE_ID`로 사용
-                recorded_unit = unit.replace("kg", "")  # 단위 값 그대로 사용
+                unit = item.get('unit', ' ').strip()
+                recorded_unit_price = price
+                
+               # 단위 숫자만 추출 (예: '100개' → '100')
+                recorded_unit = re.sub(r'\D', '', unit)
 
-                # 데이터 확인
-                print(f"[DEBUG] INSERT 데이터 확인: {detail_code_id}, {price}, {recorded_date}, {recorded_unit}, {recorded_unit_price}")
+                if 'kg' in unit:
+                    try:
+                        quantity = float(unit.replace('kg', '').strip())
+                        recorded_unit_price = round(price / quantity, 2)
+                    except ValueError:
+                        print(f"[SKIP] 단위 변환 실패: {unit} (item: {item_name})")
+                        continue
+                elif not recorded_unit.isdigit():
+                    print(f"[SKIP] 유효하지 않은 단위: {unit} → 숫자 아님")
+                    continue
+
+                if recorded_unit_price > 99999999.99:
+                    print(f"[SKIP] 가격 너무 큼: {recorded_unit_price} (item: {item_name})")
+                    continue
+
+                print(f"[DEBUG] 저장 대상: {low_code_value}, {price}, {recorded_unit_price}, {recorded_date}, {recorded_unit}")
 
                 try:
                     cursor.execute("""
                         INSERT INTO TB_PRICE_API_HISTORY (
-                            HISTORY_PRICE_ID, DETAIL_CODE_ID, RECORDED_PRICE, RECORDED_DATE,
+                            HISTORY_PRICE_ID, LOW_CODE_VALUE, RECORDED_PRICE, RECORDED_DATE,
                             RECORDED_UNIT, RECORDED_UNIT_PRICE, CREATED_ID, UPDATED_ID
                         ) VALUES (
                             :1, :2, :3, TO_DATE(:4, 'YYYY-MM-DD'),
                             :5, :6, :7, :8
                         )
                     """, (
-                        str(uuid.uuid4()), detail_code_id, price, recorded_date,
+                        str(uuid.uuid4()), low_code_value, price, recorded_date,
                         recorded_unit, recorded_unit_price, "system", "system"
                     ))
-                    print(f"[INSERT SUCCESS] {item_name} - {item_code} 저장 완료")
+                    print(f"[INSERT] {item_name} 저장 완료")
                 except Exception as e:
-                    print(f"[ERROR] INSERT 실패: {e} - 데이터: {price}, {recorded_unit_price}, {recorded_date}, {unit}")
+                    print(f"[ERROR] DB INSERT 실패: {e}")
 
             print(f"[OK] {item_category_code} 저장 완료")
 
-        cursor.close()  # 커서 종료
-        conn.close()  # 연결 종료
+        cursor.close()
+        conn.close()
 
     except Exception as e:
         print(f"[ERROR] DB 연결 오류: {e}")
 
-# 매일 데이터를 수집하도록 반복 실행
+
 if __name__ == "__main__":
-    from_date = sys.argv[1]  # 시작 날짜 "YYYYMMDD"
-    to_date = sys.argv[2]    # 종료 날짜 "YYYYMMDD"
+    from_date = sys.argv[1]  # "YYYYMMDD"
+    to_date = sys.argv[2]
 
     current_date = datetime.datetime.strptime(from_date, "%Y%m%d").date()
     end_date = datetime.datetime.strptime(to_date, "%Y%m%d").date()
 
     while current_date <= end_date:
         date_str = current_date.strftime("%Y%m%d")
-        print(f"\n[INFO] {date_str} 데이터 수집 시작!")
+        print(f"\n[INFO] {date_str} 데이터 수집 시작")
         fetch_and_insert(date_str)
         current_date += datetime.timedelta(days=1)
