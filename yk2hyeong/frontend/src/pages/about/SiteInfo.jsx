@@ -1,8 +1,17 @@
 import React from "react";
+import SiteIntroduction from "../../components/about/SiteIntroduction";
+import KeyFeatures from "../../components/about/KeyFeatures";
+import DistributionItem from "../../components/about/DistributionItem";
 
 function SiteInfo(){
     return(
-        <h1>asd</h1>
+        <div>
+            <h1>사이트소개페이지</h1>
+
+            <SiteIntroduction/>
+            <KeyFeatures/>
+            <DistributionItem/>
+        </div>
     )
 }
 

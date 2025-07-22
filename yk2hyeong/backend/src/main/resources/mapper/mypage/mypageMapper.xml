@@ -44,4 +44,86 @@
         WHERE
             pb.MEMBER_ID = #{memberId}
     </select>
+
+<!--    알람탭 데이터 불러오기-->
+    <resultMap id="NotificationMap" type="fs.human.yk2hyeong.mypage.vo.MypageVO">
+        <result property="alarmId" column="ALARM_ID"/>
+        <result property="alarmContent" column="ALARM_CONTENT"/>
+        <result property="receiverId" column="RECEIVER_ID"/>
+        <result property="isRead" column="IS_READ"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <result property="status" column="STATUS"/>
+        <result property="productId" column="PRODUCT_ID"/>
+        <result property="imageName" column="IMAGE_NAME"/>
+    </resultMap>
+    <select id="selectNotification" resultMap="NotificationMap">
+        SELECT
+            A.ALARM_ID,
+            A.ALARM_CONTENT,
+            A.RECEIVER_ID,
+            A.IS_READ,
+            TO_CHAR(A.CREATED_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATED_DATE,
+            A.PRODUCT_ID,
+            I.IMAGE_NAME,
+            CASE D.LOW_CODE_VALUE
+                WHEN '007' THEN 'purchased'
+                WHEN '008' THEN 'sold'
+                WHEN '009' THEN 'expired'
+                WHEN '010' THEN 'reported'
+                WHEN '011' THEN 'approved'
+                WHEN '012' THEN 'rejected'
+                ELSE 'unknown'
+                END AS STATUS
+        FROM
+            TB_ALARM A
+                JOIN TB_CODE_DETAIL D ON A.ALARM_TYPE = D.DETAIL_CODE_ID
+                JOIN TB_CODE C ON D.CODE_ID = C.CODE_ID
+                LEFT JOIN TB_PRODUCT P ON A.PRODUCT_ID = P.PRODUCT_ID
+                LEFT JOIN TB_IMAGES I ON P.PRODUCT_ID = I.PRODUCT_ID AND I.IMAGE_TYPE = '200'
+        WHERE
+            C.TOP_CODE_NAME = 'STATUS'
+          AND A.RECEIVER_ID = #{receiverId}
+        ORDER BY A.CREATED_DATE DESC
+    </select>
+
+    <!-- 판매완료(sold) 전용 -->
+    <resultMap id="SoldNotificationMap" type="fs.human.yk2hyeong.mypage.vo.MypageVO">
+        <result property="productId" column="PRODUCT_ID"/>
+        <result property="productName" column="PRODUCT_NAME"/>
+        <result property="productUnitPrice" column="PRODUCT_UNIT_PRICE"/>
+        <result property="createdDate" column="CREATED_DATE"/>
+        <result property="sellerName" column="SELLER_NAME"/>
+        <result property="buyerName" column="BUYER_NAME"/>
+        <result property="memberAddr" column="MEMBER_ADDR"/>
+        <result property="memberDetailAddr" column="MEMBER_DETAIL_ADDR"/>
+        <result property="deliveryDate" column="DELIVERY_DATE"/>
+    </resultMap>
+    <select id="selectSoldNotification" resultMap="SoldNotificationMap">
+        SELECT
+            P.PRODUCT_ID,
+            P.PRODUCT_NAME,
+            P.PRODUCT_UNIT_PRICE,
+            TO_CHAR(P.CREATED_DATE, 'YYYY-MM-DD') AS CREATED_DATE,
+
+            SELLER.MEMBER_NAME AS SELLER_NAME,
+            BUYER.MEMBER_NAME AS BUYER_NAME,
+            BUYER.MEMBER_ADDR,
+            BUYER.MEMBER_DETAIL_ADDR,
+            TO_CHAR(B.BUY_DELIVERY_DATE, 'YYYY-MM-DD') AS DELIVERY_DATE
+
+        FROM TB_PRODUCT_BUY B
+                 JOIN TB_PRODUCT P ON B.PRODUCT_ID = P.PRODUCT_ID
+                 JOIN TB_MEMBER SELLER ON P.SELL_MEMBER_ID = SELLER.MEMBER_ID
+                 JOIN TB_MEMBER BUYER ON B.MEMBER_ID = BUYER.MEMBER_ID
+
+        WHERE SELLER.MEMBER_ID = #{memberId}
+        ORDER BY B.BUY_DELIVERY_DATE DESC
+    </select>
+
+<!--    카드 읽음 처리-->
+    <update id="updateIsRead" parameterType="String">
+        UPDATE TB_ALARM
+        SET IS_READ = 'Y'
+        WHERE ALARM_ID = #{alarmId}
+    </update>
 </mapper>

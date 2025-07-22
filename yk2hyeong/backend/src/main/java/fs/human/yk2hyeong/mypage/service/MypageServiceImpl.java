@@ -16,4 +16,20 @@ public class MypageServiceImpl implements MypageService {
     public List<MypageVO> getPurchasedProducts(String memberId){
         return mypageDAO.selectPurchasedProducts(memberId);
     }
+
+    @Override
+    public List<MypageVO> selectNotification(String receiverId) {
+        return mypageDAO.selectNotification(receiverId);
+    }
+
+    @Override
+    public List<MypageVO> selectSoldNotification(String receiverId) {
+        return mypageDAO.selectSoldNotification(receiverId);
+    }
+
+//    카드 읽음 처리
+    @Override
+    public void updateIsRead(String alarmId){
+        mypageDAO.updateIsRead(alarmId);
+    }
 }

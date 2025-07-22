@@ -44,12 +44,19 @@ const CustomModal = ({
                          showOk,
                          showCancel,
                          useInputMode = false, //admin 페이지 input요소 전용
+                         showOnMount = false,
                      }) => {
     const [modal, contextHolder] = Modal.useModal();
     //admin 페이지 input요소 적용
     const [isOpen, setIsOpen] = useState(false);
 
     const resolvedButtonColor = buttonColor || type;
+
+    useEffect(()=>{
+        if (showOnMount) {
+            showModal();
+        }
+    }, [showOnMount]);
 
     // 외부 버튼 색상 스타일 (무조건 colorMap 색상과 맞춤)
     const externalButtonStyle = {
@@ -75,8 +82,6 @@ const CustomModal = ({
         const IconComponent = iconMap[type] || InfoCircleOutlined;
         const iconColor = iconColorMap[type] || colorMap.info;
         const iconElement = <IconComponent style={{ color: iconColor }} />;
-
-
 
 
         // 기본 버튼 노출 여부 결정
@@ -145,13 +150,16 @@ const CustomModal = ({
 
     return (
         <>
-            <Button
-                style={externalButtonStyle}
-                size={buttonSize}
-                onClick={showModal}
-            >
-                {buttonLabel || type}
-            </Button>
+            {/* showOnMount가 아닐 때만 버튼 출력 */}
+            {!showOnMount && (
+                <Button
+                    style={externalButtonStyle}
+                    size={buttonSize}
+                    onClick={showModal}
+                >
+                    {buttonLabel || type}
+                </Button>
+            )}
 
             {/*useInputMode가 true일 때 별도 모달(input 요소 추가*/}
             {useInputMode && (

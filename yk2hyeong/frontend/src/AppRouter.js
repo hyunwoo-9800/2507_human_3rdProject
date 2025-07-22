@@ -21,12 +21,16 @@ import ProductList from "./pages/product/ProductList";
 import PriceChartPage from "./pages/chart/PriceChartPage";
 import ProductDetail from "./pages/product/ProductDetail";
 import ProductRegister from "./pages/product/ProductRegister";
+import SiteInfo from "./pages/about/SiteInfo";
 
 export default function AppRouter() {
     return (
         <Routes>
             {/* 기본 홈 페이지 */}
             <Route path="/" element={<Home/>}/>
+
+            {/*사이트소개 페이지*/}
+            <Route path="/siteinfo" element={<SiteInfo/>}/>
 
             {/* 관리자 페이지 */}
             <Route path="/admin" element={<Admin/>}/>

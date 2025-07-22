@@ -6,4 +6,11 @@ import java.util.List;
 
 public interface MypageService {
     List<MypageVO> getPurchasedProducts(String memberId);
+
+    List<MypageVO> selectNotification(String receiverId);
+
+    List<MypageVO> selectSoldNotification(String receiverId);
+
+//    알림탭 카드 읽음
+    void updateIsRead(String alarmId);
 }

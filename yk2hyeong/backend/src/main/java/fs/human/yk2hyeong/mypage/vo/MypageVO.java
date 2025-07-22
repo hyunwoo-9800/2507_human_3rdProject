@@ -19,4 +19,17 @@ public class MypageVO {
     private int productMinQtr;
     private String sellMemberId;
     private String imageName;
+
+    private String alarmId;
+    private String alarmContent;
+    private String receiverId;
+    private String isRead;
+    private String status;
+
+    // 판매완료(sold) 전용
+    private String sellerName;
+    private String buyerName;
+    private String memberAddr;
+    private String memberDetailAddr;
+    private String deliveryDate;
 }
