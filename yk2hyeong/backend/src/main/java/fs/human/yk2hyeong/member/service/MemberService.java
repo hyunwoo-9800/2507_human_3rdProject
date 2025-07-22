@@ -44,4 +44,5 @@ public interface MemberService {
 
     /* 회원정보 수정 */
     void updateMemberInfo(MemberVO member) throws Exception;
+    MemberVO selectByEmail(String email) throws Exception;
 }

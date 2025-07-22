@@ -264,7 +264,7 @@ public class MemberController {
      * @return 수정 성공 여부 응답
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateMember(@PathVariable Long id, @RequestBody MemberVO member) {
+    public ResponseEntity<?> updateMember(@PathVariable String id, @RequestBody MemberVO member) {
         try {
             member.setMemberId(String.valueOf(id)); // String으로 변환
             member.setUpdatedId("SYSTEM");
@@ -276,6 +276,5 @@ public class MemberController {
                     .body(Map.of("error", "회원정보 수정 중 오류 발생"));
         }
     }
-
 
 }

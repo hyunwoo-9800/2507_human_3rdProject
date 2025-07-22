@@ -48,4 +48,5 @@ public interface MemberDAO {
 
     /* 회원정보 수정 */
     void updateMemberInfo(MemberVO member) throws DataAccessException;
+    MemberVO selectByEmail(String email) throws DataAccessException;
 }

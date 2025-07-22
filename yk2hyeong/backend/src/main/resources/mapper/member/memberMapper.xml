@@ -89,11 +89,35 @@
             MEMBER_DETAIL_ADDR = #{memberDetailAddr},
             MEMBER_BNAME = #{memberBname},
             MEMBER_BNUM = #{memberBnum},
-            MEMBER_SHIPPER_NAME = #{memberShipperName},
             MEMBER_BANK_CODE = #{memberBankCode},
             MEMBER_ACCOUNTNUM = #{memberAccountNum},
             UPDATED_ID = #{updatedId},
             UPDATED_DATE = SYSDATE
         WHERE MEMBER_ID = #{memberId}
     </update>
+
+    <!-- 정보수정할때 이메일로 회원 정보 조회 -->
+    <select id="selectByEmail" resultType="fs.human.yk2hyeong.member.vo.MemberVO">
+        SELECT
+            MEMBER_ID,
+            MEMBER_EMAIL,
+            MEMBER_NAME,
+            MEMBER_TEL,
+            MEMBER_ADDR,
+            MEMBER_DETAIL_ADDR,
+            MEMBER_BNAME,
+            MEMBER_BNUM,
+            MEMBER_BANK_CODE,
+            MEMBER_ACCOUNTNUM,
+            MEMBER_ROLE,
+            MEMBER_STATUS,
+            CREATED_ID,
+            CREATED_DATE,
+            UPDATED_ID,
+            UPDATED_DATE
+        FROM TB_MEMBER
+        WHERE MEMBER_EMAIL = #{email}
+    </select>
+
+
 </mapper>

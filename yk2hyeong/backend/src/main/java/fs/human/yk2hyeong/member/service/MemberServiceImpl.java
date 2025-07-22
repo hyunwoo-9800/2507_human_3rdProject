@@ -84,4 +84,10 @@ public class MemberServiceImpl implements MemberService {
         memberDAO.updateMemberInfo(member);
     }
 
+    @Override
+    public MemberVO selectByEmail(String email) throws Exception {
+        return memberDAO.selectByEmail(email);
+    }
+
+
 }

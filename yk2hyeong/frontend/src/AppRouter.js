@@ -92,7 +92,7 @@ export default function AppRouter() {
             {/* 상품등록 페이지 */}
             <Route path="/product/register" element={<ProductRegister/>}/>
 
-            {/* 상품등록 페이지 */}
+            {/* 회원정보수정 페이지 */}
             <Route path="/EditMember" element={<EditMember/>}/>
 
             <Route path="/payment/success" element={<PaymentSuccessPage/>}/>
