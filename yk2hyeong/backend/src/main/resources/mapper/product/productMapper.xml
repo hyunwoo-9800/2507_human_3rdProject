@@ -194,7 +194,7 @@
     </select>
 
     <!-- 상품 결제(즉시 구매) -->
-    <insert id="callPurchaseProcedure" parameterType="com.example.dto.PaymentCompleteDTO">
+    <insert id="callPurchaseProcedure" parameterType="fs.human.yk2hyeong.product.vo.PaymentCompleteDTO">
         CALL PROC_HANDLE_PURCHASE (
             #{orderNumber, jdbcType=VARCHAR},
             #{productId, jdbcType=VARCHAR},
