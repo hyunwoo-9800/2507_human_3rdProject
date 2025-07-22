@@ -24,7 +24,6 @@ export default function Footer() {
                         src={process.env.PUBLIC_URL + '/static/images/logo.png'}
                         alt="로고"
                         className="logo-img"
-                        style={{ backgroundColor: '#dff1dd' }}
                     />
                 </Link>
             </div>
