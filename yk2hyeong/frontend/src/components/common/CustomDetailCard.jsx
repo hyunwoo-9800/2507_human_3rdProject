@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import CustomInputNumber from './CustomInputNumber'
-import { StarFilled, StarOutlined } from '@ant-design/icons'
+import {StarFilled, StarOutlined} from '@ant-design/icons'
 import CustomRadio from './CustomRadio'
-import CustomModal from './CustomModal'
 import axios from 'axios'
 
 const CustomDetailCard = ({
@@ -15,17 +14,23 @@ const CustomDetailCard = ({
                               releaseDate = '',
                               minOrder = 100,
                               isFavorite = false,
-                              orderOptions = { immediate: false, reservation: false, reserveRate: 30 },
+                              orderOptions = {immediate: false, reservation: false, reserveRate: 30},
                               defaultQuantity = 100,
                               defaultOrderType = '',
-                              onQuantityChange = () => {},
-                              onOrderTypeChange = () => {},
+                              onQuantityChange = () => {
+                              },
+                              onOrderTypeChange = () => {
+                              },
+                              onOrder = () => {
+                              },
                               images = [],
                               imageStyle = {},
-                              onFavoriteToggle = () => {},
+                              onFavoriteToggle = () => {
+                              },
                               memberId = '',
                               favoriteProductIds = [],
-                              setFavoriteProductIds = () => {},
+                              setFavoriteProductIds = () => {
+                              },
                               productId = '',
                               productCodeName = '',
                           }) => {
@@ -41,6 +46,7 @@ const CustomDetailCard = ({
     const [orderQuantity, setOrderQuantity] = useState(defaultQuantity)
     const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
+    // 수량 경계값 동기화
     useEffect(() => {
         setOrderQuantity((q) => {
             let next = q
@@ -65,34 +71,19 @@ const CustomDetailCard = ({
         }
     }
 
-    const totalPrice = price * orderQuantity
-    const reservePrice = Math.floor((totalPrice * (orderOptions.reserveRate || 30)) / 100)
-
-    const radioOptions = []
-    if (orderOptions.immediate) radioOptions.push({ label: '즉시 구매', value: 'immediate' })
-    if (orderOptions.reservation) radioOptions.push({ label: '예약 구매', value: 'reservation' })
-
-    const mergedImageStyle = {
-        width: '100%',
-        borderRadius: 8,
-        border: '1px solid black',
-        height: '510px',
-        objectFit: 'cover',
-        ...imageStyle,
-    }
-
     const toggleFavorite = async () => {
         if (!memberId) {
             alert('로그인이 필요합니다.')
             return
         }
+
         try {
             if (!isFavorite) {
-                await axios.post('/api/favorites', { memberId, productId })
+                await axios.post('/api/favorites', {memberId, productId})
                 setFavoriteProductIds([...favoriteProductIds, productId])
                 alert('관심상품에 등록되었습니다!')
             } else {
-                await axios.delete('/api/favorites', { data: { memberId, productId } })
+                await axios.delete('/api/favorites', {data: {memberId, productId}})
                 setFavoriteProductIds(favoriteProductIds.filter((id) => id !== productId))
                 alert('관심상품에서 삭제되었습니다!')
             }
@@ -128,69 +119,219 @@ const CustomDetailCard = ({
         }
     }
 
+    const totalPrice = price * orderQuantity
+    const reservePrice = Math.floor((totalPrice * (orderOptions.reserveRate || 30)) / 100)
+
+    const radioOptions = []
+    if (orderOptions.immediate) radioOptions.push({label: '즉시 구매', value: 'immediate'})
+    if (orderOptions.reservation) radioOptions.push({label: '예약 구매', value: 'reservation'})
+
+    const defaultImageStyle = {
+        width: '100%',
+        borderRadius: 8,
+        border: '1px solid black',
+        height: '510px',
+        objectFit: 'cover',
+    }
+
+    const mergedImageStyle = {...defaultImageStyle, ...imageStyle}
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', background: '#f5f5f5', borderRadius: 16, padding: 24, width: '100%', margin: '0 auto' }}>
-            <div style={{ width: '600px', marginRight: 20 }}>
-                <img src={images[selectedImageIndex]} alt="상품 이미지" style={mergedImageStyle} />
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                background: '#f5f5f5',
+                borderRadius: 16,
+                padding: 24,
+                width: '100%',
+                margin: '0 auto',
+                position: 'relative',
+            }}
+        >
+            <div style={{width: '600px', marginRight: 20}}>
+                <img src={images[selectedImageIndex]} alt="상품 이미지" style={mergedImageStyle}/>
             </div>
 
-            <div style={{ flex: 1, backgroundColor: 'white', borderRadius: 8, padding: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-                <div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>{productName}</div>
-
-                <div style={{ marginBottom: 10 }}>
-                    <div>카테고리: {productCodeName}</div>
-                    <div>출하자: {shippingRegion}</div>
-                    <div>남은 수량: {quantity.toLocaleString()}개</div>
-                    <div>판매 종료일: {availableDate}</div>
-                    <div>단가: {price.toLocaleString()}원</div>
-                    <div style={{ color: 'red', fontWeight: 'bold' }}>출하 예정일: {releaseDate}</div>
+            <div
+                style={{
+                    flex: 1,
+                    backgroundColor: 'white',
+                    borderRadius: 8,
+                    padding: 20,
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '509px',
+                    minHeight: '509px',
+                }}
+            >
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: 4,
+                        width: '100%',
+                    }}
+                >
+                    <div style={{fontSize: 20, fontWeight: 'bold'}}>{productName}</div>
+                    <div style={{display: 'flex', alignItems: 'center', gap: 10}}>
+                        <div
+                            onClick={toggleFavorite}
+                            style={{
+                                fontSize: 28,
+                                cursor: 'pointer',
+                            }}
+                        >
+                            {isFavorite ? (
+                                <StarFilled style={{color: '#faad14'}}/>
+                            ) : (
+                                <StarOutlined style={{color: '#aaa'}}/>
+                            )}
+                        </div>
+                    </div>
                 </div>
 
-                <CustomRadio
-                    value={orderType}
-                    onChange={handleOrderTypeChange}
-                    options={radioOptions}
-                    name="orderType"
-                />
+                <div style={{width: '100%'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <span>상품카테고리:</span>
+                        <span>{productCodeName}</span>
+                    </div>
+                </div>
+                <div style={{width: '100%'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <span>출하자:</span>
+                        <span>{shippingRegion}</span>
+                    </div>
+                </div>
+                <div style={{width: '100%'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <span>남은수량:</span>
+                        <span>{quantity.toLocaleString()}개</span>
+                    </div>
+                </div>
+                <div style={{width: '100%'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <span>판매종료일자:</span>
+                        <span>{availableDate}</span>
+                    </div>
+                </div>
+                <div style={{width: '100%'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <span>단가:</span>
+                        <span>{price.toLocaleString()}원</span>
+                    </div>
+                </div>
+                <div style={{color: 'red', fontWeight: 'bold', width: '100%'}}>
+                    <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                        <span>출하예정일:</span>
+                        <span>{releaseDate}</span>
+                    </div>
+                </div>
+                <hr style={{margin: '20px 0', width: '100%'}}/>
 
-                <div style={{ marginTop: 15 }}>
-                    <div style={{ marginBottom: 10 }}>수량 (최소 {minOrder}개)</div>
-                    <CustomInputNumber
-                        value={orderQuantity}
-                        min={minOrder}
-                        max={quantity}
-                        step={1}
-                        onChange={handleQuantityChange}
+                <div style={{width: '100%', textAlign: 'center'}}>
+                    <CustomRadio
+                        value={orderType}
+                        onChange={handleOrderTypeChange}
+                        options={radioOptions}
+                        name="orderType"
                     />
                 </div>
 
-                {orderType === 'reservation' && (
-                    <div style={{ color: 'blue', fontSize: 18, marginTop: 15 }}>
-                        예약금액 ({orderOptions.reserveRate}%): {reservePrice.toLocaleString()}원
-                    </div>
-                )}
-
-                <div style={{ color: 'red', fontSize: 20, fontWeight: 'bold', marginTop: 10 }}>
-                    총금액: {totalPrice.toLocaleString()}원
-                </div>
-
-                <button
-                    onClick={handleOrder}
+                <div
                     style={{
-                        marginTop: 20,
-                        backgroundColor: '#666',
-                        color: 'white',
-                        fontSize: 18,
-                        padding: '10px 20px',
+                        flex: 1,
+                        backgroundColor: '#f5f5f5',
                         borderRadius: 8,
+                        padding: 15,
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                        marginLeft: 'auto',
+                        marginTop: 15,
                         width: '100%',
-                        height: '50px',
-                        border: 'none',
-                        cursor: 'pointer',
+                        minHeight: '200px',
                     }}
                 >
-                    {orderType === 'reservation' ? '예약하기' : '구매하기'}
-                </button>
+                    <div
+                        style={{
+                            fontSize: 16,
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <div>수량 (최소구매수량 {minOrder}개)</div>
+                        <div>
+                            <CustomInputNumber
+                                value={orderQuantity}
+                                min={minOrder}
+                                max={quantity}
+                                step={1}
+                                onChange={handleQuantityChange}
+                            />
+                        </div>
+                    </div>
+
+                    <div style={{width: '100%'}}>
+                        {/* 예약금액 영역 */}
+                        <div
+                            style={{
+                                color: 'blue',
+                                fontSize: 20,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                width: '100%',
+                                height: '40px',
+                                visibility: orderType === 'reservation' ? 'visible' : 'hidden',
+                            }}
+                        >
+                            <span>예약금액 ({orderOptions.reserveRate}%)</span>
+                            <span>{reservePrice.toLocaleString()}원</span>
+                        </div>
+
+                        {/* 총금액 영역 */}
+                        <div
+                            style={{
+                                color: 'red',
+                                fontSize: 24,
+                                fontWeight: 'bold',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                width: '100%',
+                                marginBottom: 20,
+                            }}
+                        >
+                            <span>총금액</span>
+                            <span>{totalPrice.toLocaleString()}원</span>
+                        </div>
+                    </div>
+
+                    <button
+                        onClick={() => {
+                            onOrder({orderType, orderQuantity})  // 필요하면 유지
+                            handleOrder()                           // 결제 요청
+                        }}
+                        style={{
+                            backgroundColor: '#666',
+                            color: 'white',
+                            fontSize: 18,
+                            padding: '10px 20px',
+                            borderRadius: 8,
+                            width: '100%',
+                            height: '50px',
+                            border: 'none',
+                            cursor: 'pointer',
+                        }}
+                    >
+                        {orderType === 'reservation' ? '예약하기' : '구매하기'}
+                    </button>
+                </div>
             </div>
         </div>
     )

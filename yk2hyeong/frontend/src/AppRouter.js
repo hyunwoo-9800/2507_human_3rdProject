@@ -1,7 +1,6 @@
 import {Routes, Route} from 'react-router-dom'
 import Home from './pages/index/Home' // 홈 페이지
 import Admin from './pages/admin/Admin' // 관리자 페이지
-import Product from './pages/product/Product' // 제품 페이지
 import Mypage from './pages/mypage/Mypage' // 마이 페이지
 import NoticePage from './pages/notice/NoticePage' // 공지사항 목록 페이지
 import NoticeDetail from './components/notice/NoticeDetail' // 공지사항 상세 페이지
@@ -34,9 +33,6 @@ export default function AppRouter() {
 
             {/* 관리자 페이지 */}
             <Route path="/admin" element={<Admin/>}/>
-
-            {/* 제품 페이지 */}
-            <Route path="/product" element={<Product/>}/>
 
             {/* 마이 페이지 */}
             <Route path="/mypage" element={<Mypage/>}/>

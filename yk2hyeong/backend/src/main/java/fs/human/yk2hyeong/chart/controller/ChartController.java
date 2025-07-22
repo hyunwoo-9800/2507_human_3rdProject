@@ -84,6 +84,12 @@ public class ChartController {
                 localYesterday = now.minusDays(3);      // 금요일
                 localDayBefore = now.minusDays(4);      // 목요일
             }
+            
+            // 화요일 -> 월/금
+            case TUESDAY -> {
+                localYesterday = now.minusDays(1);      // 월요일
+                localDayBefore = now.minusDays(4);      // 금요일
+            }
 
             // 일요일 → 금/목
             case SUNDAY -> {

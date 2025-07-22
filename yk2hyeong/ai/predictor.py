@@ -14,21 +14,21 @@ sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 conn = cx_Oracle.connect("yh", "0000", cx_Oracle.makedsn("116.36.205.25", 1521, service_name="XEPDB1"))
 cursor = conn.cursor()
 
-# 2. 예측 대상 전체 불러오기 (DETAIL_CODE_ID 포함)
+# 2. 예측 대상 전체 불러오기 (LOW_CODE_VALUE 포함)
 df = pd.read_sql("""
-    SELECT RECORDED_DATE, RECORDED_UNIT_PRICE, DETAIL_CODE_ID
+    SELECT RECORDED_DATE, RECORDED_UNIT_PRICE, LOW_CODE_VALUE
     FROM TB_PRICE_API_HISTORY
-    ORDER BY DETAIL_CODE_ID, RECORDED_DATE
+    ORDER BY LOW_CODE_VALUE, RECORDED_DATE
 """, conn)
 
-# 3. DETAIL_CODE_ID별로 예측 수행
-for detail_code, group in df.groupby('DETAIL_CODE_ID'):
+# 3. LOW_CODE_VALUE별로 예측 수행
+for low_code_value, group in df.groupby('LOW_CODE_VALUE'):
     group = group.dropna(subset=['RECORDED_UNIT_PRICE'])
     group['RECORDED_DATE'] = pd.to_datetime(group['RECORDED_DATE'])
     group.set_index('RECORDED_DATE', inplace=True)
 
     if len(group) < 1:
-        print(f"[SKIP] {detail_code}: 데이터 부족 ({len(group)}개)")
+        print(f"[SKIP] {low_code_value}: 데이터 부족 ({len(group)}개)")
         continue
 
     # 정규화
@@ -73,18 +73,18 @@ for detail_code, group in df.groupby('DETAIL_CODE_ID'):
         pred_price_float = float(pred_price[0])  # float32 → float 변환
         cursor.execute("""
             INSERT INTO TB_PRICE_PREDICTION 
-            (PREDICTION_ID, DETAIL_CODE_ID, PREDICT_DATE, PREDICTED_UNIT_PRICE, PREDICT_MODEL)
+            (PREDICTION_ID, LOW_CODE_VALUE, PREDICT_DATE, PREDICTED_UNIT_PRICE, PREDICT_MODEL)
             VALUES (SYS_GUID(), :1, TO_DATE(:2, 'YYYY-MM-DD'), :3, 'LSTM')
         """, (
-            detail_code,
+            low_code_value,
             pred_date.strftime('%Y-%m-%d'),
             pred_price_float
         ))
 
-    print(f"[DONE] {detail_code}: 365일 예측 저장 완료")
+    print(f"[DONE] {low_code_value}: 365일 예측 저장 완료")
 
 # 마무리
 conn.commit()
 cursor.close()
 conn.close()
-print("[FINISH] 모든 DETAIL_CODE_ID에 대한 예측 완료 및 저장 완료")
+print("[FINISH] 모든 LOW_CODE_VALUE에 대한 예측 완료 및 저장 완료")
