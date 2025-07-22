@@ -60,6 +60,7 @@ const ProductSidebarMenu = ({
                 expandIcon={null}
                 onOpenChange={() => {}}
             />
+
         </div>
     );
 };
