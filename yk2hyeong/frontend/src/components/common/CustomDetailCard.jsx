@@ -95,8 +95,11 @@ const CustomDetailCard = ({
     const handleOrder = async () => {
         const orderId = `order-${Date.now()}`
         const orderName = `${productName} (${orderQuantity}개)`
-        const amount = price * orderQuantity
-        const customerName = memberId || '비회원'
+        const unitPrice = price // 단가
+        const totalPrice = price * orderQuantity // 총액
+        const deliveryDate = releaseDate // 출하 예정일
+        const amount = totalPrice
+        const customerName = memberId
 
         if (!window.TossPayments) {
             alert('TossPayments SDK 로드 실패')
@@ -110,7 +113,16 @@ const CustomDetailCard = ({
                 amount,
                 orderId,
                 orderName,
-                successUrl: `${window.location.origin}/payment/success?orderId=${orderId}&orderType=${orderType}&productId=${productId}&quantity=${orderQuantity}`,
+                successUrl: `${window.location.origin}/payment/success`
+                    + `?orderNumber=${orderId}`
+                    + `&orderType=${orderType}`
+                    + `&productId=${productId}`
+                    + `&memberId=${memberId}`
+                    + `&buyQty=${orderQuantity}`
+                    + `&buyUnitPrice=${unitPrice}`
+                    + `&buyTotalPrice=${totalPrice}`
+                    + `&buyDeliveryDate=${deliveryDate}`
+                    + `&createdId=${memberId}`,
                 failUrl: `${window.location.origin}/payment/fail`,
                 customerName,
             })

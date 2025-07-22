@@ -182,4 +182,28 @@
           AND ROWNUM = 1
         ORDER BY CREATED_DATE DESC
     </select>
+
+    <!-- 금일 결제 건수 조회 -->
+    <select id="selectTodayBuyCount" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            TB_PRODUCT_BUY
+        WHERE
+            CREATED_DATE = SYSDATE
+    </select>
+
+    <!-- 상품 결제(즉시 구매) -->
+    <insert id="callPurchaseProcedure" parameterType="com.example.dto.PaymentCompleteDTO">
+        CALL PROC_HANDLE_PURCHASE (
+            #{orderNumber, jdbcType=VARCHAR},
+            #{productId, jdbcType=VARCHAR},
+            #{memberId, jdbcType=VARCHAR},
+            #{buyQty, jdbcType=NUMERIC},
+            #{buyUnitPrice, jdbcType=NUMERIC},
+            #{buyTotalPrice, jdbcType=NUMERIC},
+            #{buyDeliveryDate, jdbcType=DATE},
+            #{createdId, jdbcType=VARCHAR}
+            )
+    </insert>
 </mapper>

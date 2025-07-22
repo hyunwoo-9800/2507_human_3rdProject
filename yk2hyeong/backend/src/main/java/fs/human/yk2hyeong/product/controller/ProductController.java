@@ -3,12 +3,10 @@ package fs.human.yk2hyeong.product.controller;
 import fs.human.yk2hyeong.admin.service.AdminService;
 import fs.human.yk2hyeong.product.service.ProductService;
 import fs.human.yk2hyeong.product.service.ProductNoticeService;
-import fs.human.yk2hyeong.product.vo.CategoryVO;
-import fs.human.yk2hyeong.product.vo.ProductRegisterDTO;
-import fs.human.yk2hyeong.product.vo.ProductVO;
-import fs.human.yk2hyeong.product.vo.ProductNoticeVO;
+import fs.human.yk2hyeong.product.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +30,7 @@ public class ProductController {
 
     // 상품 목록 조회
     @GetMapping("/products")
-    public List<ProductVO> getAllProducts(@RequestParam(required = false) String memberId) {
+    public List<ProductVO> getAllProducts(@RequestParam(required = false) String memberId) throws Exception {
 
         if(memberId != null && !memberId.isEmpty()){
             return productService.getProductsByMemberId(memberId);
@@ -42,7 +41,7 @@ public class ProductController {
 
     // 즐겨찾기 등록
     @PostMapping("/favorites")
-    public ResponseEntity<String> insertFavorite(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> insertFavorite(@RequestBody Map<String, String> payload) throws Exception {
 
         String memberId = payload.get("memberId");
         String productId = payload.get("productId");
@@ -61,7 +60,7 @@ public class ProductController {
 
     // 즐겨찾기 삭제
     @DeleteMapping("/favorites")
-    public ResponseEntity<String> deleteFavorite(@RequestBody Map<String, String> payload) {
+    public ResponseEntity<String> deleteFavorite(@RequestBody Map<String, String> payload) throws Exception {
 
         String memberId = payload.get("memberId");
         String productId = payload.get("productId");
@@ -79,7 +78,7 @@ public class ProductController {
 
     // 즐겨찾기된 productId 목록 반환
     @GetMapping("/favorites")
-    public ResponseEntity<List<String>> getFavorites(@RequestParam String memberId) {
+    public ResponseEntity<List<String>> getFavorites(@RequestParam String memberId) throws Exception {
 
         List<String> favorites = productService.getFavoriteProductIds(memberId);
         return ResponseEntity.ok(favorites);
@@ -88,7 +87,7 @@ public class ProductController {
 
     // 카테고리 리스트 조회
     @GetMapping("/category")
-    public ResponseEntity<List<CategoryVO>> getCategoryHierarchy() {
+    public ResponseEntity<List<CategoryVO>> getCategoryHierarchy() throws Exception {
 
         return ResponseEntity.ok(productService.getCategoryHierarchy());
 
@@ -109,7 +108,7 @@ public class ProductController {
 
             @RequestPart MultipartFile thumbnail,
             @RequestPart(required = false) List<MultipartFile> detailImages
-    ) {
+    ) throws Exception {
         // 현재 실행 경로 및 저장 경로 출력
         String basePath = System.getProperty("user.dir");
         String thumbnailDir = java.nio.file.Paths.get(basePath, "frontend", "public", "static", "images", "thumbnail").toString();
@@ -223,4 +222,41 @@ public class ProductController {
 
     }
 
+    // 상품 결제(즉시 구매)
+    @PostMapping("/payment/complete")
+    public ResponseEntity<?> completePayment(@RequestBody PaymentCompleteDTO dto) throws Exception {
+
+        try {
+            // 주문번호 생성
+            String orderNum = generateOrderNumber();
+            dto.setOrderNumber(orderNum);
+            dto.setCreatedId(dto.getMemberId()); // created_id에도 memberId 사용
+
+            productService.callPurchaseProcedure(dto); // 프로시저 호출
+
+            return ResponseEntity.ok().body("결제 완료");
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("결제 처리 실패");
+
+        }
+
+    }
+
+    public String generateOrderNumber() throws Exception {
+        LocalDate today = LocalDate.now();
+        String datePart = today.format(DateTimeFormatter.BASIC_ISO_DATE); // 예: 20250721
+
+        // 오늘 날짜 주문 수 조회
+        int todayOrderCount = productService.selectTodayBuyCount();
+
+        // 주문번호 조립
+        String orderNum = "ORD" + datePart + "-" + String.format("%04d", todayOrderCount + 1);
+
+        return orderNum;
+    }
+
 }
+

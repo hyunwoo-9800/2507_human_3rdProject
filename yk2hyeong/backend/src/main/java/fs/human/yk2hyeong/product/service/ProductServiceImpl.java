@@ -3,10 +3,7 @@ package fs.human.yk2hyeong.product.service;
 import fs.human.yk2hyeong.common.code.dao.CodeDAO;
 import fs.human.yk2hyeong.common.code.vo.CodeVO;
 import fs.human.yk2hyeong.product.dao.ProductDAO;
-import fs.human.yk2hyeong.product.vo.CategoryDetailVO;
-import fs.human.yk2hyeong.product.vo.CategoryVO;
-import fs.human.yk2hyeong.product.vo.ProductRegisterDTO;
-import fs.human.yk2hyeong.product.vo.ProductVO;
+import fs.human.yk2hyeong.product.vo.*;
 import jakarta.annotation.PostConstruct;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.geometry.Positions;
@@ -355,6 +352,22 @@ public class ProductServiceImpl implements ProductService {
             // 로그만 출력하고 예외는 던지지 않음 (이미지 복사 실패가 상품 등록을 막지 않도록)
             System.err.println("상세 이미지 복사 실패: " + e.getMessage());
         }
+    }
+
+    // 금일 결제 건수 조회
+        @Override
+    public int selectTodayBuyCount() throws Exception {
+
+        return productDAO.selectTodayBuyCount();
+
+    }
+
+    // 상품 결제(즉시 구매)
+    @Override
+    public void callPurchaseProcedure(PaymentCompleteDTO dto) throws Exception {
+
+        productDAO.callPurchaseProcedure(dto);
+
     }
 
 }

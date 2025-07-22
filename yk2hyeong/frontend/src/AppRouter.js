@@ -21,6 +21,7 @@ import PriceChartPage from "./pages/chart/PriceChartPage";
 import ProductDetail from "./pages/product/ProductDetail";
 import ProductRegister from "./pages/product/ProductRegister";
 import SiteInfo from "./pages/about/SiteInfo";
+import PaymentSuccessPage from "./pages/product/PaymentSuccessPage";
 
 export default function AppRouter() {
     return (
@@ -93,6 +94,10 @@ export default function AppRouter() {
 
             {/* 상품등록 페이지 */}
             <Route path="/EditMember" element={<EditMember/>}/>
+
+            <Route path="/payment/success" element={<PaymentSuccessPage/>}/>
+
+            {/*<Route path="/payment/fail" element={<PaymentFailPage/>}/>*/}
 
         </Routes>
     )
