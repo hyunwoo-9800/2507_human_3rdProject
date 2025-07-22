@@ -4,7 +4,7 @@ import CustomPagination from "../common/CustomPagination";
 import {useNavigate} from "react-router-dom";
 import CustomModal from "../common/CustomModal";
 
-function Notification({memberId}) {
+function Notification({memberId, readStatus}) {
     const [notifications, setNotifications] = useState([]);
     const [page, setPage] = useState(1);
     const pageSize = 5;
@@ -13,6 +13,13 @@ function Notification({memberId}) {
 
     const [products, setProducts] = useState([]);
     const [soldExtraData, setSoldExtraData] = useState([]);
+
+    // 데이터 필터링
+    const filterNotifications = notifications.filter((noti) => {
+        if(readStatus === "read") return noti.isRead === "Y";
+        if(readStatus === "unread") return noti.isRead ==="N";
+        return true;
+    });
 
     const statusInfo = {
         purchased: {
@@ -79,7 +86,7 @@ function Notification({memberId}) {
             .catch(err => console.error("sold 알림 오류:", err));
     }, [memberId]);
     // 페이지네이션
-    const paginatedNotifications = notifications.slice(
+    const paginatedNotifications = filterNotifications.slice(
         (page - 1)*pageSize,
         page * pageSize
     );
@@ -148,7 +155,7 @@ function Notification({memberId}) {
 
     return (
         <div className="card-list">
-            {notifications.length === 0 ? (
+            {filterNotifications.length === 0 ? (
                 <p>알림이 없습니다.</p>
             ) : (
                 <>
@@ -258,7 +265,7 @@ function Notification({memberId}) {
                     <div className="pagination-box">
                         <CustomPagination
                             defaultCurrent={page}
-                            total={notifications.length}
+                            total={filterNotifications.length}
                             pageSize={pageSize}
                             onChange={handlePageChange}
                         />

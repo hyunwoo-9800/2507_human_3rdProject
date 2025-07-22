@@ -14,6 +14,8 @@ function Mypage() {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedMonth, setSelectedMonth] = useState("total");
 
+    const [readStatus, setReadStatus] = useState("total");
+
     return (
         <div>
             <main>
@@ -33,7 +35,10 @@ function Mypage() {
                 </div>
 
                 {menuTab === "notification" ? (
-                    <RadioGroup />
+                    <RadioGroup
+                        readStatus={readStatus}
+                        setReadStatus={setReadStatus}
+                    />
                 ) : (
                     <SelectGroup
                         selectedYear={selectedYear}
@@ -62,7 +67,7 @@ function Mypage() {
                             selectedMonth={selectedMonth}
                         />
                     )}
-                    {menuTab === "notification" && <Notification />}
+                    {menuTab === "notification" && <Notification readStatus={readStatus}/>}
                 </div>
             </main>
         </div>

@@ -1,8 +1,6 @@
 import React,{useState} from "react";
 
-function RadioGroup(){
-    // 라디오버튼 상태 제어
-    const [readStatus, setReadStatus] = useState("total")
+function RadioGroup({readStatus,setReadStatus}){
     const handleChange = (e) => {
         setReadStatus(e.target.value);
     };
