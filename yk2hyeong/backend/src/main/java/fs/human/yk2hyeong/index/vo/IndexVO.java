@@ -5,4 +5,8 @@ import lombok.Data;
 // 메인화면 VO
 @Data
 public class IndexVO {
+
+    private String popular;         // 인기상품
+    private String productName;    // 상품명
+
 }

@@ -1,5 +1,6 @@
 package fs.human.yk2hyeong.index.dao;
 
+import fs.human.yk2hyeong.index.vo.IndexVO;
 import fs.human.yk2hyeong.notice.vo.NoticeVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
@@ -13,4 +14,6 @@ public interface IndexDAO {
     // 메인화면 공지사항 표출용
     List<NoticeVO> getRecentNotice(int count) throws DataAccessException;
 
+    // 메인화면 일일 최다판매품목
+    List<IndexVO> bestSell() throws DataAccessException;
 }

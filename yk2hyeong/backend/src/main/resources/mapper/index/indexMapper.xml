@@ -16,4 +16,21 @@
             FETCH FIRST 3 ROWS ONLY
     </select>
 
+    <!-- 메인화면 일일 최다판매품목 -->
+    <select id="bestSell" resultType="fs.human.yk2hyeong.index.vo.IndexVO">
+        SELECT
+            COUNT(A.PRODUCT_ID) AS "POPULAR",
+            B.PRODUCT_NAME
+        FROM TB_PRODUCT_BUY A
+                 LEFT JOIN TB_PRODUCT B
+                           ON A.PRODUCT_ID = B.PRODUCT_ID
+        WHERE
+            TRUNC(A.CREATED_DATE) = TRUNC(SYSDATE)
+        GROUP BY
+            A.PRODUCT_ID,
+            B.PRODUCT_NAME
+        ORDER BY "POPULAR" DESC
+            FETCH FIRST 4 ROWS ONLY
+    </select>
+
 </mapper>

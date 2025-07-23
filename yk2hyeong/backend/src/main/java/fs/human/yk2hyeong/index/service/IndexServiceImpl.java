@@ -1,6 +1,7 @@
 package fs.human.yk2hyeong.index.service;
 
 import fs.human.yk2hyeong.index.dao.IndexDAO;
+import fs.human.yk2hyeong.index.vo.IndexVO;
 import fs.human.yk2hyeong.notice.service.NoticeService;
 import fs.human.yk2hyeong.notice.vo.NoticeVO;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,14 @@ public class IndexServiceImpl implements IndexService {
     public List<NoticeVO> getRecentNotice(int count) throws Exception {
 
         return indexDAO.getRecentNotice(count);
+
+    }
+
+    // 메인화면 일일 최다판매품목
+    @Override
+    public List<IndexVO> bestSell() throws Exception {
+
+        return indexDAO.bestSell();
 
     }
 
