@@ -190,12 +190,13 @@
         FROM
             TB_PRODUCT_BUY
         WHERE
-            CREATED_DATE = SYSDATE
+            TRUNC(CREATED_DATE) = TRUNC(SYSDATE)
     </select>
 
-    <!-- 상품 결제(즉시 구매) -->
+    <!-- 상품 결제 -->
     <insert id="callPurchaseProcedure" parameterType="fs.human.yk2hyeong.product.vo.PaymentCompleteDTO">
         CALL PROC_HANDLE_PURCHASE (
+            #{orderType, jdbcType=VARCHAR},
             #{orderNumber, jdbcType=VARCHAR},
             #{productId, jdbcType=VARCHAR},
             #{memberId, jdbcType=VARCHAR},

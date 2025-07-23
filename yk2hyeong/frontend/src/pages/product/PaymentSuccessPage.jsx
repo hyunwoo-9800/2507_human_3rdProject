@@ -8,7 +8,7 @@ const PaymentSuccessPage = () => {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const orderNumber = searchParams.get('orderNumber') // ✅ 명칭 주의!
+        const orderNumber = searchParams.get('orderNumber')
         const orderType = searchParams.get('orderType')
         const productId = searchParams.get('productId')
         const memberId = searchParams.get('memberId')
@@ -17,6 +17,7 @@ const PaymentSuccessPage = () => {
         const buyTotalPrice = Number(searchParams.get('buyTotalPrice'))
         const buyDeliveryDate = searchParams.get('buyDeliveryDate')
         const createdId = searchParams.get('createdId')
+
 
         axios.post('/api/payment/complete', {
             orderNumber,
@@ -34,7 +35,7 @@ const PaymentSuccessPage = () => {
                 navigate(`/product/${productId}`)
             })
             .catch(() => {
-                alert('결제는 완료됐지만 주문 처리 중 오류가 발생했습니다.')
+                alert('결제 처리 중 오류가 발생했습니다.')
                 navigate('/')
             })
             .finally(() => setLoading(false))

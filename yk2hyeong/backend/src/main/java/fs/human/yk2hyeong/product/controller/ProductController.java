@@ -227,18 +227,20 @@ public class ProductController {
     public ResponseEntity<?> completePayment(@RequestBody PaymentCompleteDTO dto) throws Exception {
 
         try {
-            // 주문번호 생성
-            String orderNum = generateOrderNumber();
-            dto.setOrderNumber(orderNum);
-            dto.setCreatedId(dto.getMemberId()); // created_id에도 memberId 사용
+            
+            
+            String orderNum = generateOrderNumber();    // 주문번호 생성
+            
+            dto.setOrderType(dto.getOrderType());       // 결제 타입
+            dto.setOrderNumber(orderNum);               // 주문번호
+            dto.setCreatedId(dto.getMemberId());        // created_id에도 memberId 사용
 
-            productService.callPurchaseProcedure(dto); // 프로시저 호출
+            productService.callPurchaseProcedure(dto);  // 프로시저 호출
 
             return ResponseEntity.ok().body("결제 완료");
 
         } catch (Exception e) {
 
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("결제 처리 실패");
 
         }
