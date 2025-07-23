@@ -5,6 +5,7 @@ import CustomCard from '../../components/common/CustomCard'
 import { Row, Col, Empty, Spin } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import './ProductList.css'
+import CustomLoading from '../../components/common/CustomLoading'
 
 export default function ProductList() {
   const [products, setProducts] = useState([])
@@ -214,7 +215,11 @@ export default function ProductList() {
   return (
     <div>
       <h2>온라인 상품 목록</h2>
-      <CustomTabs items={tabItems} type="card" onChange={handleTabChange} />
+      {loading ? (
+        <CustomLoading size="large" />
+      ) : (
+        <CustomTabs items={tabItems} type="card" onChange={handleTabChange} />
+      )}
     </div>
   )
 }

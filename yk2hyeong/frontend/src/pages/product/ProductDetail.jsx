@@ -10,6 +10,7 @@ import DeliveryInfoTab from '../../components/product/DeliveryInfoTab'
 import './productDetail.css'
 import '../../components/product/productTabs.css'
 import dayjs from 'dayjs'
+import CustomLoading from '../../components/common/CustomLoading'
 
 export default function ProductDetail() {
   const { productId } = useParams()
@@ -63,7 +64,7 @@ export default function ProductDetail() {
       })
   }, [productId])
 
-  if (!product) return <div>Loading...</div>
+  if (!product) return <CustomLoading size="large" />
 
   let thumbnailImage = null
   if (Array.isArray(product.images)) {
