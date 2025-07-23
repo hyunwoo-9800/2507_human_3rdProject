@@ -19,6 +19,7 @@
     <!-- 메인화면 일일 최다판매품목 -->
     <select id="bestSell" resultType="fs.human.yk2hyeong.index.vo.IndexVO">
         SELECT
+            A.PRODUCT_ID,
             COUNT(A.PRODUCT_ID) AS "POPULAR",
             B.PRODUCT_NAME
         FROM TB_PRODUCT_BUY A

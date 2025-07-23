@@ -6,7 +6,8 @@ import lombok.Data;
 @Data
 public class IndexVO {
 
-    private String popular;         // 인기상품
+    private String productId;      // 상품 ID
+    private String popular;        // 인기상품
     private String productName;    // 상품명
 
 }
