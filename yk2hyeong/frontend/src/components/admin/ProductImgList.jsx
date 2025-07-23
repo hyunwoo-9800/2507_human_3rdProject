@@ -30,24 +30,22 @@ function ProductImgList({ images }) {
       <div className="image-scroll-container" ref={scrollRef}>
         {Array.isArray(images) && images.length > 0 ? (
           images.map((img, index) => {
-            console.log('imageName 확인:', img.imageName) // ← 여기 콘솔 추가
+            // 썸네일: imageType 200, 400 / 상세: 300
+            const isThumbnail = img.imageType === '200' || img.imageType === '400'
+            const imgSrc = isThumbnail
+              ? `/static/images/thumbnail/${img.imageName}`
+              : `/static/images/detailimages/${img.imageName}`
+            const noImgSrc = isThumbnail
+              ? '/static/images/thumbnail/no-image.png'
+              : '/static/images/detailimages/no-image.png'
             return (
               <div key={index} className="image-box" onClick={() => setModalImg(img)}>
                 <img
-                  src={`/images/detailimages/${img.imageName}`}
+                  src={imgSrc}
                   alt="상품이미지"
                   onError={(e) => {
-                    const currentRetry = e.target.dataset.retry
-
-                    if (!currentRetry) {
-                      e.target.dataset.retry = 'thumbnail'
-                      e.target.src = `/static/images/thumbnail/${img.imageName}`
-                    } else if (currentRetry === 'thumbnail') {
-                      e.target.dataset.retry = 'fallback'
-                      e.target.src = `/static/images/detailimages/no-image.png`
-                    } else {
-                      e.target.onerror = null
-                    }
+                    e.target.onerror = null
+                    e.target.src = noImgSrc
                   }}
                 />
               </div>
@@ -63,24 +61,26 @@ function ProductImgList({ images }) {
 
       {modalImg && (
         <div className="modal-overlay" onClick={() => setModalImg(null)}>
-          <img
-            className="modal-image"
-            src={`/static/images/detailimages/${modalImg.imageName}`}
-            alt="확대 이미지"
-            onError={(e) => {
-              const currentRetry = e.target.dataset.retry
-
-              if (!currentRetry) {
-                e.target.dataset.retry = 'thumbnail'
-                e.target.src = `/images/thumbnail/${modalImg.imageName}`
-              } else if (currentRetry === 'thumbnail') {
-                e.target.dataset.retry = 'fallback'
-                e.target.src = `/static/images/detailimages/no-image.png`
-              } else {
-                e.target.onerror = null
-              }
-            }}
-          />
+          {(() => {
+            const isThumbnail = modalImg.imageType === '200' || modalImg.imageType === '400'
+            const imgSrc = isThumbnail
+              ? `/static/images/thumbnail/${modalImg.imageName}`
+              : `/static/images/detailimages/${modalImg.imageName}`
+            const noImgSrc = isThumbnail
+              ? '/static/images/thumbnail/no-image.png'
+              : '/static/images/detailimages/no-image.png'
+            return (
+              <img
+                className="modal-image"
+                src={imgSrc}
+                alt="확대 이미지"
+                onError={(e) => {
+                  e.target.onerror = null
+                  e.target.src = noImgSrc
+                }}
+              />
+            )
+          })()}
           <button className="close-btn" onClick={() => setModalImg(null)}>
             X
           </button>
