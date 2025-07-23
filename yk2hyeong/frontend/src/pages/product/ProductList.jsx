@@ -6,6 +6,7 @@ import { Row, Col, Empty, Spin } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import './ProductList.css'
 import CustomLoading from '../../components/common/CustomLoading'
+import CustomPagination from '../../components/common/CustomPagination'
 
 export default function ProductList() {
   const [products, setProducts] = useState([])
@@ -13,6 +14,8 @@ export default function ProductList() {
   const [activeKey, setActiveKey] = useState('all')
   const [memberId, setMemberId] = useState(null)
   const [favoriteProductIds, setFavoriteProductIds] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 12 // 한 페이지에 12개 카드(4x3)
 
   // 상품 카테고리 탭 정의
   const productTypes = [
@@ -119,7 +122,10 @@ export default function ProductList() {
   }
 
   // 탭 변경 핸들러
-  const handleTabChange = (key) => setActiveKey(key)
+  const handleTabChange = (key) => {
+    setActiveKey(key)
+    setCurrentPage(1) // 탭 변경 시 페이지를 1로 초기화
+  }
 
   // 각 탭에 해당하는 상품 렌더링 정의
   const tabItems = productTypes.map((type) => {
@@ -128,86 +134,106 @@ export default function ProductList() {
         ? products.filter((p) => p.productDisplayType === '표시')
         : products.filter((p) => p.productDisplayType === '표시' && p.productCat === type.key)
 
+    // 페이지네이션 적용
+    const startIdx = (currentPage - 1) * pageSize
+    const endIdx = startIdx + pageSize
+    const pagedProducts = filteredProducts.slice(startIdx, endIdx)
+
     return {
       label: type.label,
       key: type.key,
       children: loading ? (
         <div style={{ textAlign: 'center', padding: '50px 0' }}>
-          <Spin size="large" />
+          <CustomLoading size="large" />
         </div>
       ) : (
-        <Row gutter={[16, 16]}>
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <Col key={product.productId} xs={24} sm={12} md={6} lg={6}>
-                <CustomCard
-                  id={product.productId}
-                  image={
-                    product.imagePath && product.imageName
-                      ? `/static/${product.imagePath}/${product.imageName}`
-                      : '/static/images/thumbnail/no-image.png'
-                  }
-                  company={product.sellerCompany}
-                  productName={product.productName}
-                  price={product.productUnitPrice}
-                  minQuantity={product.productMinQtr}
-                  immediatePurchase={['즉시 구매 상품', '즉시/예약'].includes(
-                    product.productSellType
-                  )}
-                  reservationPurchase={['예약 상품', '즉시/예약'].includes(product.productSellType)}
-                  isFavorite={favoriteProductIds.includes(product.productId)}
-                  onFavoriteToggle={() => toggleFavorite(product.productId)}
-                  onClick={() => navigate(`/product/${product.productId}`)}
-                  onImageError={(e) => {
-                    if (product.imageName && product.imageName.includes('-')) {
-                      const productName = product.productName || ''
-                      const mappedFileName = `product_thumb_${productName
-                        .toLowerCase()
-                        .replace(/\s+/g, '')}.png`
-                      e.target.src = `/static/images/thumbnail/${mappedFileName}`
-                      console.log('매핑된 파일명으로 재시도:', mappedFileName)
+        <>
+          <Row gutter={[16, 16]}>
+            {pagedProducts.length > 0 ? (
+              pagedProducts.map((product) => (
+                <Col key={product.productId} xs={24} sm={12} md={6} lg={6}>
+                  <CustomCard
+                    id={product.productId}
+                    image={
+                      product.imagePath && product.imageName
+                        ? `/static/${product.imagePath}/${product.imageName}`
+                        : '/static/images/thumbnail/no-image.png'
                     }
-                  }}
-                  style={{
-                    width: '280px',
-                    height: '420px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  {/* ===== 카드 상단: 회사명 + 상품명 영역 ===== */}
-                  <div style={{ minHeight: 68, maxHeight: 68, marginBottom: 8 }}>
-                    {/* 회사명 (한 줄) */}
-                    {product.sellerCompany && (
-                      <div
-                        style={{
-                          fontSize: 14,
-                          color: '#888',
-                          marginBottom: 2,
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                        }}
-                      >
-                        {product.sellerCompany}
-                      </div>
+                    company={product.sellerCompany}
+                    productName={product.productName}
+                    price={product.productUnitPrice}
+                    minQuantity={product.productMinQtr}
+                    immediatePurchase={['즉시 구매 상품', '즉시/예약'].includes(
+                      product.productSellType
                     )}
-                    {/* 상품명 (2줄 고정, 넘치면 ... 처리) */}
-                    <div className="product-name-fixed">{product.productName}</div>
-                  </div>
-                  {/* ===== 카드 중단: 가격/라벨 영역 ===== */}
-                  {/* (이 영역은 CustomCard 내부에서 이미 처리됨) */}
-                  {/* ===== 카드 하단: 최소구매수량 영역 ===== */}
-                  {/* (이 영역도 CustomCard 내부에서 이미 처리됨) */}
-                </CustomCard>
+                    reservationPurchase={['예약 상품', '즉시/예약'].includes(
+                      product.productSellType
+                    )}
+                    isFavorite={favoriteProductIds.includes(product.productId)}
+                    onFavoriteToggle={() => toggleFavorite(product.productId)}
+                    onClick={() => navigate(`/product/${product.productId}`)}
+                    onImageError={(e) => {
+                      if (product.imageName && product.imageName.includes('-')) {
+                        const productName = product.productName || ''
+                        const mappedFileName = `product_thumb_${productName
+                          .toLowerCase()
+                          .replace(/\s+/g, '')}.png`
+                        e.target.src = `/static/images/thumbnail/${mappedFileName}`
+                        console.log('매핑된 파일명으로 재시도:', mappedFileName)
+                      }
+                    }}
+                    style={{
+                      width: '280px',
+                      height: '420px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    {/* ===== 카드 상단: 회사명 + 상품명 영역 ===== */}
+                    <div style={{ minHeight: 68, maxHeight: 68, marginBottom: 8 }}>
+                      {/* 회사명 (한 줄) */}
+                      {product.sellerCompany && (
+                        <div
+                          style={{
+                            fontSize: 14,
+                            color: '#888',
+                            marginBottom: 2,
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {product.sellerCompany}
+                        </div>
+                      )}
+                      {/* 상품명 (2줄 고정, 넘치면 ... 처리) */}
+                      <div className="product-name-fixed">{product.productName}</div>
+                    </div>
+                    {/* ===== 카드 중단: 가격/라벨 영역 ===== */}
+                    {/* (이 영역은 CustomCard 내부에서 이미 처리됨) */}
+                    {/* ===== 카드 하단: 최소구매수량 영역 ===== */}
+                    {/* (이 영역도 CustomCard 내부에서 이미 처리됨) */}
+                  </CustomCard>
+                </Col>
+              ))
+            ) : (
+              <Col span={24}>
+                <Empty description="상품이 없습니다." />
               </Col>
-            ))
-          ) : (
-            <Col span={24}>
-              <Empty description="상품이 없습니다." />
-            </Col>
+            )}
+          </Row>
+          {/* 페이지네이션 */}
+          {filteredProducts.length > pageSize && (
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 32 }}>
+              <CustomPagination
+                current={currentPage}
+                total={filteredProducts.length}
+                onChange={(page) => setCurrentPage(page)}
+                pageSize={pageSize}
+              />
+            </div>
           )}
-        </Row>
+        </>
       ),
     }
   })
