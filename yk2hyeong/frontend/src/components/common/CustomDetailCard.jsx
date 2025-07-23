@@ -222,7 +222,7 @@ const CustomDetailCard = ({
                 <div style={{width: '100%'}}>
                     <div style={{display: 'flex', justifyContent: 'space-between'}}>
                         <span>남은수량:</span>
-                        <span>{quantity.toLocaleString()}개</span>
+                        <span>{quantity.toLocaleString()}kg</span>
                     </div>
                 </div>
                 <div style={{width: '100%'}}>
