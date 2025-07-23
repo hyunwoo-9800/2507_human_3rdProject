@@ -119,5 +119,12 @@
         WHERE MEMBER_EMAIL = #{email}
     </select>
 
+    <!-- 회원 탈퇴 처리 -->
+    <update id="deleteMemberById" parameterType="String">
+        UPDATE TB_MEMBER
+            SET MEMBER_STATUS = '003'
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
 
 </mapper>

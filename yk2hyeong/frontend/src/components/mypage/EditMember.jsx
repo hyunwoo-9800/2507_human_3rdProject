@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
 import Input from '../../components/common/Input'
 import Button from '../../components/common/Button'
 import CustomSelect from '../../components/common/CustomSelect'
@@ -44,7 +44,7 @@ function EditMember() {
     const [isNameValid, setIsNameValid] = useState(true)
 
     useEffect(() => {
-        axios.get('/auth/me', { withCredentials: true }).then((res) => {
+        axios.get('/auth/me', {withCredentials: true}).then((res) => {
             const data = res.data
             setForm({
                 memberId: data.memberId,
@@ -73,11 +73,11 @@ function EditMember() {
     }, [])
 
     const handleChange = (e) => {
-        const { name, value } = e.target
+        const {name, value} = e.target
         const onlyNumberFields = ['memberTel', 'memberBnum', 'memberAccountNum']
 
         if (name === 'memberName') {
-            setForm((prev) => ({ ...prev, [name]: value }))
+            setForm((prev) => ({...prev, [name]: value}))
 
             if (isValidName(value)) {
                 setNameMessage('사용 가능한 이름입니다.')
@@ -88,14 +88,14 @@ function EditMember() {
             }
         } else if (onlyNumberFields.includes(name)) {
             const numeric = value.replace(/[^0-9]/g, '')
-            setForm((prev) => ({ ...prev, [name]: numeric }))
+            setForm((prev) => ({...prev, [name]: numeric}))
         } else {
-            setForm((prev) => ({ ...prev, [name]: value }))
+            setForm((prev) => ({...prev, [name]: value}))
         }
     }
 
     const handleBankSelect = (value) => {
-        setForm((prev) => ({ ...prev, memberBankCode: value }))
+        setForm((prev) => ({...prev, memberBankCode: value}))
     }
 
     const handleSubmit = async (e) => {
@@ -120,11 +120,45 @@ function EditMember() {
         }
     }
 
+    const deleteMember = async (e) => {
+
+        const confirmed = window.confirm('정말 탈퇴하시겠습니까? 탈퇴 시 복구할 수 없습니다.')
+
+        if (!confirmed) return;
+
+        try {
+
+            await axios.post(`/member/withdraw`, {
+
+                memberId: form.memberId,
+
+            }, {
+
+                withCredentials: true,
+
+            });
+
+            alert('탈퇴 처리 되었습니다.')
+            await axios.post('/auth/logout', {}, {
+                withCredentials: true
+            });
+
+            window.location.href = '/';
+
+        } catch (err) {
+
+            console.error(err)
+            alert('탈퇴 실패')
+
+        }
+
+    }
+
     return (
         <div className="editmember-form-container">
             <h2>회원정보 수정</h2>
             <form onSubmit={handleSubmit} className="editmember-form">
-                <Input label="이메일" name="memberEmail" value={form.memberEmail} disabled />
+                <Input label="이메일" name="memberEmail" value={form.memberEmail} disabled/>
                 <Input
                     label="이름"
                     name="memberName"
@@ -173,7 +207,7 @@ function EditMember() {
                         onClose={() => setIsAddressModalOpen(false)}
                         onComplete={(selectedAddress) => {
                             setAddress(selectedAddress)
-                            setForm((prev) => ({ ...prev, memberAddr: selectedAddress }))
+                            setForm((prev) => ({...prev, memberAddr: selectedAddress}))
                             setIsAddressModalOpen(false)
                         }}
                     />
@@ -225,7 +259,7 @@ function EditMember() {
                 <div className="editmember-btn-row">
                     <Button type="button" size="md" color="secondary" onClick={() => navigate('/')}>취소하기</Button>
                     <Button type="submit" size="md" color="primary">수정하기</Button>
-                    <Button type="button" size="md" color="error" >탈퇴하기</Button>
+                    <Button type="button" size="md" color="error" onClick={deleteMember}>탈퇴하기</Button>
                 </div>
             </form>
         </div>

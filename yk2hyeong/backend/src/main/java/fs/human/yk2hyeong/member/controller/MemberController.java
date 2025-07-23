@@ -277,4 +277,27 @@ public class MemberController {
         }
     }
 
+    @PostMapping("/withdraw")
+    public ResponseEntity<?> withdrawMember(@RequestBody MemberVO vo) {
+
+        try {
+
+            String memberId = vo.getMemberId();
+
+            vo.setMemberId(memberId);
+            vo.setUpdatedId("SYSTEM");
+
+            memberService.deleteMemberById(memberId);
+
+            return ResponseEntity.ok(Map.of("message", "회원정보 탈퇴 완료"));
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "회원탈퇴 중 오류 발생"));
+
+        }
+
+    }
+
 }

@@ -89,5 +89,12 @@ public class MemberServiceImpl implements MemberService {
         return memberDAO.selectByEmail(email);
     }
 
+    // 회원 탈퇴
+    @Override
+    public void deleteMemberById(String memberId) throws Exception {
+
+        memberDAO.deleteMemberById(memberId);
+
+    }
 
 }

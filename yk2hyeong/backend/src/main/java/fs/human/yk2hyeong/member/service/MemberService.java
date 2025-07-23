@@ -45,4 +45,7 @@ public interface MemberService {
     /* 회원정보 수정 */
     void updateMemberInfo(MemberVO member) throws Exception;
     MemberVO selectByEmail(String email) throws Exception;
+
+    // 회원 탈퇴
+    void deleteMemberById(String memberId) throws Exception;
 }
