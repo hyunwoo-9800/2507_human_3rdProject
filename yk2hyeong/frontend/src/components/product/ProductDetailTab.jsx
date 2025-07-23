@@ -24,7 +24,7 @@ export default function ProductDetailTab({ product }) {
         <p>
           {(
             product.productDescription ||
-            '신선하고 맛있는 스테비아 방울토마토입니다. 엄선된 품질로 제공되며, 최고의 신선도를 보장합니다.'
+            '등록된 상품 설명이 없습니다.'
           )
             .split('\n')
             .map((line, idx, arr) => (
