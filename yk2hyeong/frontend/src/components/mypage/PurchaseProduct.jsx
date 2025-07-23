@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import CustomPagination from "../common/CustomPagination";
 import CustomLoading from "../common/CustomLoading";
 
-function PurchaseProduct({ selectedYear, selectedMonth }) {
+function PurchaseProduct({selectedYear, selectedMonth}) {
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
     const pageSize = 5;
@@ -25,7 +25,9 @@ function PurchaseProduct({ selectedYear, selectedMonth }) {
 
                 const uniqueProducts = raw.filter(
                     (item, index, self) =>
-                        index === self.findIndex((t) => t.productId === item.productId)
+                        index === self.findIndex((t) =>
+                            t.buyId === item.buyId
+                        )
                 );
 
                 const filtered = uniqueProducts.filter((p) => {
@@ -39,6 +41,7 @@ function PurchaseProduct({ selectedYear, selectedMonth }) {
 
                 const cardData = filtered.map(product => {
                     return {
+                        buyId: product.buyId,
                         productId: product.productId,
                         productName: product.productName,
                         productDescription: product.productDescription,
@@ -52,13 +55,15 @@ function PurchaseProduct({ selectedYear, selectedMonth }) {
                     };
                 });
 
+                console.log("니놈의 값은? ", cardData);
+
                 setProducts(cardData);
                 setPage(1);
             })
             .catch((err) => {
                 console.error("구매 상품 데이터 로딩 실패:", err);
             })
-            .finally(()=>{
+            .finally(() => {
                 setIsLoading(false) //로딩 끝
             })
     }, [selectedYear, selectedMonth]);
@@ -109,10 +114,13 @@ function PurchaseProduct({ selectedYear, selectedMonth }) {
                                 <div className="card-content-left">
                                     <p><strong className="item-label">상품명</strong><span>{p.productName}</span></p>
                                     <p><strong className="item-label">구매수량</strong><span>{p.buyQty}</span></p>
-                                    <p><strong className="item-label">상품설명</strong><span className="description-text">{p.productDescription}</span></p>
+                                    <p><strong className="item-label">상품설명</strong><span
+                                        className="description-text">{p.productDescription}</span></p>
                                 </div>
                                 <div className="card-content-right">
-                                    <p><strong className="item-label">구매금액</strong><span>{Number(p.buyTotalPrice).toLocaleString()}원</span></p>
+                                    <p><strong
+                                        className="item-label">구매금액</strong><span>{Number(p.buyTotalPrice).toLocaleString()}원</span>
+                                    </p>
                                     <p><strong className="item-label">구매일자</strong><span>{p.createdDate}</span></p>
                                     <p><strong className="item-label">출하예정일</strong><span>{p.buyDeliveryDate}</span></p>
                                 </div>
