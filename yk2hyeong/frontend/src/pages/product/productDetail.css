@@ -10,3 +10,10 @@
 .ant-tabs ant-tabs-top ant-tabs-card css-pjilya {
   margin-top: 40px !important;
 }
+
+.btn.btn-primary.btn-sm {
+  background-color: #e5402d !important;
+  border-color: #e5402d !important;
+  color: white !important;
+  margin-top: 4px !important;
+}

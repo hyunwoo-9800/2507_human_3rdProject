@@ -7,7 +7,6 @@ import ProductDetailTab from '../../components/product/ProductDetailTab'
 import PriceChartTab from '../../components/product/PriceChartTab'
 import ProductNoticeTab from '../../components/product/ProductNoticeTab'
 import DeliveryInfoTab from '../../components/product/DeliveryInfoTab'
-import CustomModal from '../../components/common/CustomModal'
 import './productDetail.css'
 import '../../components/product/productTabs.css'
 import dayjs from 'dayjs'
@@ -51,17 +50,17 @@ export default function ProductDetail() {
     })
 
     axios
-        .get('/auth/me')
-        .then((res) => {
-          setMemberId(res.data.memberId)
-          return axios.get(`/api/favorites?memberId=${res.data.memberId}`)
-        })
-        .then((res) => {
-          setFavoriteProductIds(res.data)
-        })
-        .catch(() => {
-          setFavoriteProductIds([])
-        })
+      .get('/auth/me')
+      .then((res) => {
+        setMemberId(res.data.memberId)
+        return axios.get(`/api/favorites?memberId=${res.data.memberId}`)
+      })
+      .then((res) => {
+        setFavoriteProductIds(res.data)
+      })
+      .catch(() => {
+        setFavoriteProductIds([])
+      })
   }, [productId])
 
   if (!product) return <div>Loading...</div>
@@ -114,110 +113,82 @@ export default function ProductDetail() {
   }
 
   return (
-      <div>
-        <CustomDetailCard
-            productName={product.productName || '스테비아 방울토마토'}
-            productCodeName={product.productCodeName || '쌀'}
-            quantity={product.productStockQty || 1}
-            shippingRegion={product.sellerCompany || '(주)천안청과'}
-            availableDate={product.productRevEnd || '2025-07-31'}
-            price={product.productUnitPrice || 10500}
-            releaseDate={getReleaseDate(product, orderType)}
-            minOrder={product.productMinQtr || 1}
-            defaultQuantity={product.productMinQtr || 1}
-            defaultOrderType={orderType}
-            images={[thumbnailImage || '/static/images/thumbnail/product_thumb_smalltomato.png']}
-            imageStyle={{
-              width: '100%',
-              objectFit: 'cover',
-              borderRadius: 8,
-              border: '1px solid #ddd',
-            }}
-            orderOptions={{
-              immediate: true,
-              reservation: true,
-              reserveRate: 30,
-            }}
-            onQuantityChange={(q) => console.log('변경된 수량:', q)}
-            onOrderTypeChange={(t) => setOrderType(t)}
-            onOrder={(info) => console.log('주문 정보:', info)}
-            isFavorite={isFavorite}
-            onFavoriteToggle={toggleFavorite}
-            productId={productId}
-            memberId={memberId}
-            favoriteProductIds={favoriteProductIds}
-            setFavoriteProductIds={setFavoriteProductIds}
-        />
+    <div>
+      <CustomDetailCard
+        productName={product.productName || '스테비아 방울토마토'}
+        productCodeName={product.productCodeName || '쌀'}
+        quantity={product.productStockQty || 1}
+        shippingRegion={product.sellerCompany || '(주)천안청과'}
+        availableDate={product.productRevEnd || '2025-07-31'}
+        price={product.productUnitPrice || 10500}
+        releaseDate={getReleaseDate(product, orderType)}
+        minOrder={product.productMinQtr || 1}
+        defaultQuantity={product.productMinQtr || 1}
+        defaultOrderType={orderType}
+        images={[thumbnailImage || '/static/images/thumbnail/product_thumb_smalltomato.png']}
+        imageStyle={{
+          width: '100%',
+          objectFit: 'cover',
+          borderRadius: 8,
+          border: '1px solid #ddd',
+        }}
+        orderOptions={{
+          immediate: true,
+          reservation: true,
+          reserveRate: 50,
+        }}
+        onQuantityChange={(q) => console.log('변경된 수량:', q)}
+        onOrderTypeChange={(t) => setOrderType(t)}
+        onOrder={(info) => console.log('주문 정보:', info)}
+        isFavorite={isFavorite}
+        onFavoriteToggle={toggleFavorite}
+        productId={productId}
+        memberId={memberId}
+        favoriteProductIds={favoriteProductIds}
+        setFavoriteProductIds={setFavoriteProductIds}
+      />
 
-        <div
-            style={{
-              marginTop: 40,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-start',
-              gap: 20,
-              width: '100%',
+      <div
+        style={{
+          marginTop: 40,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          gap: 20,
+          width: '100%',
+        }}
+      >
+        <div style={{ flex: 1 }}>
+          <CustomTabs
+            items={[
+              {
+                key: 'detail',
+                label: '상품소개',
+                children: <ProductDetailTab product={product} />,
+              },
+              {
+                key: 'price',
+                label: '시세추이',
+                children: <PriceChartTab product={product} />,
+              },
+              {
+                key: 'notice',
+                label: '상품공지',
+                children: <ProductNoticeTab product={product} memberId={memberId} />,
+              },
+              {
+                key: 'delivery',
+                label: '배송/반품정보',
+                children: <DeliveryInfoTab product={product} />,
+              },
+            ]}
+            type="card"
+            onChange={(key) => {
+              console.log('선택된 탭:', key)
             }}
-        >
-          <div style={{ flex: 1 }}>
-            <CustomTabs
-                items={[
-                  {
-                    key: 'detail',
-                    label: '상품소개',
-                    children: <ProductDetailTab product={product} />,
-                  },
-                  {
-                    key: 'price',
-                    label: '시세추이',
-                    children: <PriceChartTab product={product} />,
-                  },
-                  {
-                    key: 'notice',
-                    label: '상품공지',
-                    children: <ProductNoticeTab product={product} memberId={memberId} />,
-                  },
-                  {
-                    key: 'delivery',
-                    label: '배송/반품정보',
-                    children: <DeliveryInfoTab product={product} />,
-                  },
-                ]}
-                type="card"
-                onChange={(key) => {
-                  console.log('선택된 탭:', key)
-                }}
-            />
-          </div>
-
-          <div style={{ minWidth: 150 }}>
-            <CustomModal
-                type="warning"
-                title="상품 신고"
-                content={
-                  <div>
-                    <p>
-                      <strong>신고 사유를 선택해주세요:</strong>
-                    </p>
-                    <ul style={{ marginTop: 10, paddingLeft: 20 }}>
-                      <li>부정확한 상품 정보</li>
-                      <li>부적절한 상품 이미지</li>
-                      <li>허위 광고</li>
-                      <li>가격 조작 의심</li>
-                      <li>기타</li>
-                    </ul>
-                    <p style={{ marginTop: 15, color: '#666', fontSize: '14px' }}>
-                      신고 내용은 검토 후 처리됩니다. 신고하신 내용이 확인되면 해당 상품이 조치될 수 있습니다.
-                    </p>
-                  </div>
-                }
-                buttonLabel="신고하기"
-                buttonColor="warning"
-                buttonSize="sm"
-                successMessage="신고가 접수되었습니다. 검토 후 처리하겠습니다."
-            />
-          </div>
+          />
         </div>
       </div>
+    </div>
   )
 }
