@@ -300,7 +300,7 @@ const CustomDetailCard = ({
               alignItems: 'center',
             }}
           >
-            <div>수량 (최소구매수량 {minOrder}개)</div>
+            <div>수량 (최소구매수량 {minOrder}kg)</div>
             <div>
               <CustomInputNumber
                 value={orderQuantity}
