@@ -126,6 +126,12 @@ export default function ProductRegister() {
       return
     }
 
+    // 가격이 0원이면 등록 불가
+    if (Number(productForm.productPrice) === 0) {
+      alert('가격은 0원으로 등록할 수 없습니다.')
+      return
+    }
+
     if (!isDescriptionValid()) {
       alert('상세 설명을 입력해주세요.')
       return

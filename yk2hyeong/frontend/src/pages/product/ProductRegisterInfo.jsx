@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Input from '../../components/common/Input'
 import CustomDatePicker from '../../components/common/CustomDatePicker'
 import CustomAlert from '../../components/common/CustomAlert'
@@ -11,6 +11,7 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 dayjs.extend(isSameOrBefore)
 
 export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
+  const [showZeroPriceAlert, setShowZeroPriceAlert] = useState(false)
   const isValidDateRange = (start, end) => {
     if (!start || !end) return true
     return dayjs(start).isSameOrBefore(dayjs(end), 'day')
@@ -39,9 +40,25 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
   }
 
   const handlePriceChange = (e) => {
-    const val = e.target.value
-    if (val === '' || /^[0-9]*$/.test(val)) {
+    let val = e.target.value
+    // 숫자만 허용
+    if (/^[0-9]*$/.test(val)) {
+      // 8자리 초과 입력 시 잘라내기
+      if (val.length > 8) {
+        val = val.slice(0, 8)
+      }
+      // 99999999 초과 입력 시 자동으로 최대값으로 설정
+      if (Number(val) > 99999999) {
+        val = '99999999'
+      }
+      // 빈 값도 허용 (입력란 비우기 가능)
       setForm((prev) => ({ ...prev, productPrice: val }))
+      // 가격이 0이면 경고 상태 true, 아니면 false
+      if (val === '0') {
+        setShowZeroPriceAlert(true)
+      } else {
+        setShowZeroPriceAlert(false)
+      }
     }
   }
 
@@ -155,13 +172,18 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
 
       <div style={{ marginTop: '20px' }}>
         <Input
-          label="kg당 가격을 입력해주세요."
+          label="kg당 가격을 입력해주세요. (1원 ~ 99,999,999원)"
           name="productPrice"
           value={form.productPrice}
           onChange={handlePriceChange}
           placeholder="예) 1250"
           required
         />
+        {showZeroPriceAlert && (
+          <div style={{ color: 'red', marginLeft: '2px', marginTop: 6, fontSize: 14 }}>
+            가격은 0원으로 등록할 수 없습니다.
+          </div>
+        )}
       </div>
 
       <div style={{ marginTop: '20px' }}>
@@ -190,6 +212,11 @@ export default function ProductRegisterInfo({ form, setForm, onNext, onBack }) {
             onChange={(val) => setForm((prev) => ({ ...prev, minSaleUnit: Number(val) || 0 }))}
           />
         </div>
+        {form.minSaleUnit > form.saleQuantity && (
+          <div style={{ color: 'red', marginLeft: '13px', marginTop: 6, fontSize: 14 }}>
+            최소 판매 단위는 판매 수량보다 많을 수 없습니다.
+          </div>
+        )}
       </div>
 
       <div style={{ marginTop: '20px' }}>
