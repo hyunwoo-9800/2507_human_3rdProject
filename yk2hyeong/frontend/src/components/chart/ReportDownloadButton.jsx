@@ -17,7 +17,7 @@ const ReportDownloadButton = ({form}) => {
         setIsLoading(true);
 
         try {
-            const res = await axios.get('http://localhost:8001/report/download', {
+            const res = await axios.get('http://192.168.0.39:8001/report/download', {
                 params: {
                     lowCodeValue: form.lowCodeValue,
                     timeFrame: form.timeFrame,
