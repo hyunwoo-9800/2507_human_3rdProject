@@ -189,32 +189,34 @@ const CustomDetailCard = ({
           <div style={{ fontSize: 20, fontWeight: 'bold' }}>{productName}</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             {/* 신고하기 버튼을 별 왼쪽에 위치 */}
-            <CustomModal
-              type="warning"
-              title="상품 신고"
-              content={
-                <div>
-                  <p>
-                    <strong>신고 사유를 선택해주세요:</strong>
-                  </p>
-                  <ul style={{ marginTop: 10, paddingLeft: 20 }}>
-                    <li>부정확한 상품 정보</li>
-                    <li>부적절한 상품 이미지</li>
-                    <li>허위 광고</li>
-                    <li>가격 조작 의심</li>
-                    <li>기타</li>
-                  </ul>
-                  <p style={{ marginTop: 15, color: '#666', fontSize: '14px' }}>
-                    신고 내용은 검토 후 처리됩니다. 신고하신 내용이 확인되면 해당 상품이 조치될 수
-                    있습니다.
-                  </p>
-                </div>
-              }
-              buttonLabel="신고하기"
-              buttonColor="warning"
-              buttonSize="sm"
-              successMessage="신고가 접수되었습니다. 검토 후 처리하겠습니다."
-            />
+            {memberId && (
+              <CustomModal
+                type="warning"
+                title="상품 신고"
+                content={
+                  <div>
+                    <p>
+                      <strong>신고 사유를 선택해주세요:</strong>
+                    </p>
+                    <ul style={{ marginTop: 10, paddingLeft: 20 }}>
+                      <li>부정확한 상품 정보</li>
+                      <li>부적절한 상품 이미지</li>
+                      <li>허위 광고</li>
+                      <li>가격 조작 의심</li>
+                      <li>기타</li>
+                    </ul>
+                    <p style={{ marginTop: 15, color: '#666', fontSize: '14px' }}>
+                      신고 내용은 검토 후 처리됩니다. 신고하신 내용이 확인되면 해당 상품이 조치될 수
+                      있습니다.
+                    </p>
+                  </div>
+                }
+                buttonLabel="신고하기"
+                buttonColor="warning"
+                buttonSize="sm"
+                successMessage="신고가 접수되었습니다. 검토 후 처리하겠습니다."
+              />
+            )}
             <div
               onClick={toggleFavorite}
               style={{
@@ -363,7 +365,7 @@ const CustomDetailCard = ({
               height: '50px',
               border: 'none',
               cursor: 'pointer',
-              fontWeight: 600
+              fontWeight: 600,
             }}
           >
             {orderType === 'reservation' ? '예약하기' : '구매하기'}
