@@ -132,6 +132,12 @@ export default function ProductRegister() {
       return
     }
 
+    // 최소판매단위가 판매수량보다 크면 등록 불가
+    if (Number(productForm.minSaleUnit) > Number(productForm.saleQuantity)) {
+      alert('최소 판매 단위는 판매 수량보다 많을 수 없습니다.')
+      return
+    }
+
     if (!isDescriptionValid()) {
       alert('상세 설명을 입력해주세요.')
       return
