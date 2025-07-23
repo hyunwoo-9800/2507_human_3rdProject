@@ -74,12 +74,12 @@ export default function ProductRegisterGuide({ checked, onChangeChecked, onNext 
             <tr>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>가공품</td>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                가공식품, 반찬류, 탕류 등
+                가공식품(곶감 제외), 반찬류, 탕류 등
               </td>
             </tr>
             <tr>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>기타 금지</td>
-              <td style={{ border: '1px solid #ccc', padding: '8px' }}>씨앗, 묘목, 농약, 비료</td>
+              <td style={{ border: '1px solid #ccc', padding: '8px' }}>작물씨앗, 묘목, 농약, 비료</td>
             </tr>
             <tr>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>동물성 식품</td>
@@ -88,7 +88,7 @@ export default function ProductRegisterGuide({ checked, onChangeChecked, onNext 
             <tr>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>그 외</td>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>
-                농산물에 해당하지 않는 기타 상품
+                상품 카테고리에 없는 품목
               </td>
             </tr>
           </tbody>

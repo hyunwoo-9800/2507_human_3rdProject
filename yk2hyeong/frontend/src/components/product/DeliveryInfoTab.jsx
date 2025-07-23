@@ -23,7 +23,7 @@ export default function DeliveryInfoTab({ product }) {
           </div>
           <div className="detail-item">
             <strong>배송비:</strong>
-            <span>3,000원 (5만원 이상 구매 시 무료)</span>
+            <span>5kg 단위로 박스 분할, 박스 당 3,000원</span>
           </div>
           <div className="detail-item">
             <strong>출하 예정일:</strong>
