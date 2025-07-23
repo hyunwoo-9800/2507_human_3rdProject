@@ -78,8 +78,31 @@ function TableTab({ tabType }) {
       .then((res) => {
         console.log('불러온 데이터:', res.data)
 
-        const rawData = extractData(res.data, tabType)
-        console.log('rawData: ', rawData)
+        let rawData = extractData(res.data, tabType)
+
+        // 상품관리일 때만 상품별 images 배열 가공
+        if (tabType === 'products') {
+          const productMap = {}
+          rawData.forEach((item) => {
+            if (!productMap[item.productId]) {
+              productMap[item.productId] = { ...item, images: [] }
+            }
+            if (item.imageName && item.imageType) {
+              productMap[item.productId].images.push({
+                imageName: item.imageName,
+                imageType: item.imageType,
+              })
+            }
+          })
+          // 썸네일(200,400) 먼저, 상세(300) 나중에 정렬
+          Object.values(productMap).forEach((product) => {
+            product.images.sort((a, b) => {
+              const getOrder = (type) => (type === '200' || type === '400' ? 0 : 1)
+              return getOrder(a.imageType) - getOrder(b.imageType)
+            })
+          })
+          rawData = Object.values(productMap)
+        }
 
         const uniqueRawData =
           tabType === 'products'
