@@ -1,21 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import CustomPagination from '../common/CustomPagination'
+import {useNavigate} from "react-router-dom";
+import CustomLoading from "../common/CustomLoading";
 
 function WishlistProduct({ selectedYear, selectedMonth }) {
   const [products, setProducts] = useState([])
   const memberId = localStorage.getItem('memberId')
   const [page, setPage] = useState(1)
   const pageSize = 5
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     if (!memberId) {
       console.warn('로그인 정보 없음: memberId가 없습니다.')
       setProducts([])
+      setIsLoading(false) //로딩 끝 처리
       return
     }
 
     const fetchWishlistProducts = async () => {
+
+      setIsLoading(true);
+
       try {
         const favoriteRes = await axios.get(`/api/favorites?memberId=${memberId}`)
         const favoriteIds = favoriteRes.data
@@ -59,6 +68,8 @@ function WishlistProduct({ selectedYear, selectedMonth }) {
         setPage(1)
       } catch (err) {
         console.error('관심상품 불러오기 실패:', err)
+      }finally {
+        setIsLoading(false) //로딩 종료
       }
     }
 
@@ -80,6 +91,15 @@ function WishlistProduct({ selectedYear, selectedMonth }) {
 
   return (
     <div className="card-list">
+      {isLoading ? (
+          <CustomLoading size="large"/>
+          ) : products.length === 0 ? (
+          <div className="no-purchased-products">
+            <h3>관심등록한 상품이 없습니다</h3>
+            <button onClick={() => navigate("/productlist")}>상품 목록으로 이동</button>
+          </div>
+      ) : (
+          <>
       {paginatedProducts.map((item) => (
         <div className="card" key={item.productId}>
           <img
@@ -92,37 +112,45 @@ function WishlistProduct({ selectedYear, selectedMonth }) {
             }}
           />
           <div className="card-content">
-            <p>
-              <strong className="item-label">출하자</strong>
-              <span>{item.sellerCompany}</span>
-            </p>
-            <p>
-              <strong className="item-label">상품명</strong>
-              <span>{item.productName}</span>
-            </p>
-            <p>
-              <strong className="item-label">단위 당 가격</strong>
-              <span>{Number(item.productUnitPrice).toLocaleString()}원</span>
-            </p>
-            <p>
-              <strong className="item-label">최소구매수량</strong>
-              <span>{item.productMinQtr}kg</span>
-            </p>
-            <p>
-              <strong className="item-label">등록일자</strong>
-              <span>{item.createdDate}</span>
-            </p>
+            <div className="card-content-left">
+              <p>
+                <strong className="item-label">출하자</strong>
+                <span>{item.sellerCompany}</span>
+              </p>
+              <p>
+                <strong className="item-label">상품명</strong>
+                <span>{item.productName}</span>
+              </p>
+              <p>
+                <strong className="item-label">최소구매수량</strong>
+                <span>{item.productMinQtr}kg</span>
+              </p>
+            </div>
+            <div className="card-content-right">
+              <p>
+                <strong className="item-label">단위 당 가격</strong>
+                <span>{Number(item.productUnitPrice).toLocaleString()}원</span>
+              </p>
+              <p>
+                <strong className="item-label">등록일자</strong>
+                <span>{item.createdDate}</span>
+              </p>
+            </div>
           </div>
         </div>
       ))}
-      <div className="pagination-box">
-        <CustomPagination
-          defaultCurrent={page}
-          total={products.length}
-          pageSize={pageSize}
-          onChange={handlePageChange}
-        />
-      </div>
+    </>
+          )}
+      {!isLoading && products.length > 0 && (
+          <div className="pagination-box">
+            <CustomPagination
+                defaultCurrent={page}
+                total={products.length}
+                pageSize={pageSize}
+                onChange={handlePageChange}
+            />
+          </div>
+      )}
     </div>
   )
 }

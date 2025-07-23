@@ -223,12 +223,12 @@ function Notification({memberId, readStatus}) {
 
                                         const labelMap = {
                                             sellerCompany: "출하자",
+                                            deliveryDate: "배송예정일",
                                             productName: "상품명",
-                                            productUnitPrice: "단위 당 가격",
                                             createdDate: "등록일자",
                                             buyerName: "구매자",
                                             deliveryAddr: "배송지",
-                                            deliveryDate: "배송예정일",
+                                            productUnitPrice: "단위 당 가격",
                                             approvedDate: "승인날짜",
                                             rejectedReason: "거부사유",
                                             expiredDate: "만료일자"

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import CustomPagination from '../common/CustomPagination'
+import {useNavigate} from "react-router-dom";
+import CustomLoading from "../common/CustomLoading";
 
 function RegisteredProduct({ selectedYear, selectedMonth }) {
   const [products, setProducts] = useState([])
   const [page, setPage] = useState(1)
   const pageSize = 5
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
 
   useEffect(() => {
     const memberId = localStorage.getItem('memberId')
@@ -13,6 +18,9 @@ function RegisteredProduct({ selectedYear, selectedMonth }) {
       setProducts([])
       return
     }
+
+    // 로딩로딩
+    setIsLoading(true)
 
     axios
       .get(`/api/products?memberId=${memberId}`)
@@ -64,6 +72,9 @@ function RegisteredProduct({ selectedYear, selectedMonth }) {
       .catch((err) => {
         console.error('상품 데이터 로딩 실패:', err)
       })
+        .finally(()=> {
+          setIsLoading(false) //로딩 끝
+        })
   }, [selectedYear, selectedMonth])
 
   const formatDate = (dateStr) => {
@@ -87,6 +98,15 @@ function RegisteredProduct({ selectedYear, selectedMonth }) {
 
   return (
     <div className="card-list">
+      {isLoading ? (
+          <CustomLoading size="large" />
+      ) : products.length === 0 ? (
+          <div className="no-purchased-products">
+            <h3>등록한 상품이 없습니다</h3>
+            <button onClick={() => navigate("/productlist")}>상품 목록으로 이동</button>
+          </div>
+      ) : (
+          <>
       {paginatedProducts.map((p, idx) => (
         <div className="card" key={idx}>
           <img
@@ -130,14 +150,18 @@ function RegisteredProduct({ selectedYear, selectedMonth }) {
           </div>
         </div>
       ))}
-      <div className="pagination-box">
-        <CustomPagination
-          defaultCurrent={page}
-          total={products.length}
-          pageSize={pageSize}
-          onChange={handlePageChange}
-        />
-      </div>
+    </>
+  )}
+      {!isLoading && products.length > 0 && (
+          <div className="pagination-box">
+            <CustomPagination
+                defaultCurrent={page}
+                total={products.length}
+                pageSize={pageSize}
+                onChange={handlePageChange}
+            />
+          </div>
+      )}
     </div>
   )
 }
