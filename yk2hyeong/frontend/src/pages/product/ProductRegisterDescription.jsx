@@ -259,7 +259,8 @@ export default function ProductRegisterDescription({
       <div style={{ marginTop: 20 }}>
         <RequiredLabel>썸네일 사진 첨부 (1장)</RequiredLabel>
         <p style={{ color: 'red' }}>
-          !! 썸네일 사진은 업로드한 사진의 중앙이 크롭되어 등록됩니다 !!
+          !! 썸네일 사진은 업로드한 사진의 중앙이 크롭되어 등록됩니다 !!<br/>
+          권장 최소 이미지 사이즈: 600 x 600
         </p>
         <div style={{ marginLeft: 13 }}>
           <input type="file" accept="image/*" onChange={handleThumbnailChange} />
@@ -324,7 +325,8 @@ export default function ProductRegisterDescription({
       <div style={{ marginTop: 50 }}>
         <RequiredLabel>제품 상세 사진 첨부 (1~3장)</RequiredLabel>
         <p style={{ color: 'red' }}>
-          !! 미리보기에 보이는 순서대로 상품 상세 페이지에 표시됩니다 !!
+          !! 미리보기에 보이는 순서대로 상품 상세 페이지에 표시됩니다 !!<br/>
+          권장 최소 이미지 사이즈: 가로 1125
         </p>
         <div style={{ marginLeft: 13 }}>
           <input type="file" accept="image/*" multiple onChange={handleDetailImagesChange} />

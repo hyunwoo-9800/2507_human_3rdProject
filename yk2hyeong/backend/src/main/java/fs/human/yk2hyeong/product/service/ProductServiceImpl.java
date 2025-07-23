@@ -206,7 +206,7 @@ public class ProductServiceImpl implements ProductService {
             // 썸네일 270x270 (imageType 200)
             String thumb270Name = actualProductId + "_200.jpg";
             String thumb270Id = UUID.randomUUID().toString();
-            saveImageFile(thumbnail, thumb270Name, thumb270Id, "200", thumbnailDir, dto.getMemberId(), 270, 270, actualProductId);
+            saveImageFile(thumbnail, thumb270Name, thumb270Id, "200", thumbnailDir, dto.getMemberId(), 270*2, 270*2, actualProductId);
 
             // 썸네일 600x510 (imageType 400)
             String thumb610Name = actualProductId + "_400.jpg";
