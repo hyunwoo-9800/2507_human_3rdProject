@@ -4,10 +4,14 @@ import axios from 'axios'
 import MemberCustomCard from '../../components/member/MemberCustomCard'
 import Button from '../../components/common/Button'
 import './signupRoleSelect.css'
+import GuideModal from "./GuideModal";
 
 function SignupRoleSelect() {
   const navigate = useNavigate()
   const [roleMap, setRoleMap] = useState({})
+
+  //   role 상태 관리
+    const [guideType, setGuideType] = useState(null);
 
   useEffect(() => {
     axios
@@ -33,8 +37,11 @@ function SignupRoleSelect() {
   }
 
   const handleGuideClick = (type) => {
-    alert(`${type === 'seller' ? '판매자' : '구매자'} 가입 안내 팝업 뜰 예정!`)
-  }
+    setGuideType(type);
+  };
+  const handleCloseModal = () => {
+      setGuideType(null);
+  };
 
   return (
     <div className="signup-role-page">
@@ -42,7 +49,7 @@ function SignupRoleSelect() {
       <div className="signup-card-container">
         {/* 판매자 카드 */}
         <MemberCustomCard
-          image="/images/seller.png"
+          image="/static/images/seller.png"
           company="판매자 회원가입"
           productName="직접판매자, 위탁판매자, 매수판매자 대상"
           layout="column"
@@ -61,7 +68,7 @@ function SignupRoleSelect() {
 
         {/* 구매자 카드 */}
         <MemberCustomCard
-          image="/images/buyer.png"
+          image="/static/images/buyer.png"
           company="구매자 회원가입"
           productName="중도매인, 유통업체, 식자재업체, 가공업체 대상"
           layout="column"
@@ -83,6 +90,9 @@ function SignupRoleSelect() {
       <p className="signup-login-link">
         계정이 있으신가요? <a href="/login">로그인</a>
       </p>
+        {guideType && (
+            <GuideModal type={guideType} onClose={handleCloseModal}/>
+        )}
     </div>
   )
 }

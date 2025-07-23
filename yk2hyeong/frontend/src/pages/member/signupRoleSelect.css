@@ -38,3 +38,95 @@
 .signup-login-link a:hover {
   color: #003399;
 }
+
+/*guide modal css*/
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  width: 800px;
+  max-width: 90%;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  font-family: 'Pretendard', sans-serif;
+  overflow: hidden;
+  padding-top: 0px !important;
+  padding-left: 0px !important;
+  padding-right: 0px!important;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  background-color: #DFF1DD;
+  width: 100%;
+  padding: 16px 30px;
+  box-sizing: border-box;
+}
+
+.guide-modal-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #666;
+}
+
+.modal-body {
+  font-size: 15px;
+  color: #333;
+  line-height: 1.6;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.modal-body p {
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-size: 17px;
+  text-align: left;
+  margin-top: 30px;
+}
+
+.modal-body ol {
+  padding-left: 20px;
+}
+
+.modal-body li {
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.modal-footer {
+  padding: 15px 30px;
+  text-align: right;
+}
+
+.modal-footer button {
+  background-color: #18AD4E;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.modal-footer button:hover {
+  background-color: #00a43c;
+}

@@ -36,7 +36,7 @@ const CustomCard = ({
                     src={image}
                     alt="card-img"
                     style={{
-                        width: isRow ? 100 : '100%',
+                        width: isRow ? 100 : '30%',
                         objectFit: 'cover',
                         borderRadius: 4,
                         marginBottom: 12,
