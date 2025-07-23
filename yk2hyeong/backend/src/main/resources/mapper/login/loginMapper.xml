@@ -33,6 +33,7 @@
                UPDATED_DATE
         FROM TB_MEMBER
         WHERE MEMBER_EMAIL = #{memberEmail}
+          AND MEMBER_STATUS = '001'
     </select>
 
 </mapper>
