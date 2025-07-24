@@ -261,7 +261,8 @@
             receiver_id,
             is_read,
             created_id,
-            created_date
+            created_date,
+            product_id
         )
         VALUES (
                    SYS_GUID(),
@@ -270,16 +271,18 @@
                    #{receiverId},
                    'N',
                    #{createdId},
-                   SYSDATE
+                   SYSDATE,
+                   #{productId}
                )
     </insert>
 
+<!--    상품상태업데이트-->
     <update id="updateProductStatus">
         UPDATE tb_product
             SET product_status = #{status}
             WHERE product_id = #{productId}
     </update>
-
+<!--상품표시업데이트-->
     <update id="updateProductFlag">
         UPDATE tb_product
             SET product_display_flag = #{flag}
@@ -310,6 +313,12 @@
         WHERE member_id = #{memberId}
     </update>
 
+
+    <select id="getReceiverIdWithoutStatus" resultType="String">
+        SELECT SELL_MEMBER_ID as receiverId
+        FROM TB_PRODUCT
+        WHERE PRODUCT_ID = #{productId}
+    </select>
     <!-- 알림 수신자 ID 조회 -->
     <select id="getReceiverId" resultType="String">
         SELECT

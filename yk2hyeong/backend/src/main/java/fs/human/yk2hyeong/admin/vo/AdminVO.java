@@ -49,4 +49,6 @@ public class AdminVO {
     private String alarmContent;            // 알림 내용
     private String receiverId;              // 관리자 ID: 고정
 
+    private List<String> productIdList;    //상품등록승인 복수 처리
+
 }

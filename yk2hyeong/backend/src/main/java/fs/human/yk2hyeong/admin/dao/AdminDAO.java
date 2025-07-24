@@ -56,4 +56,6 @@ public interface AdminDAO {
     // 알림 수신자 ID 조회
     String getReceiverId(String productId) throws DataAccessException;
 
+    //상태 조건 없는 sell_member_id 불러와라와라왕
+    String getReceiverIdWithoutStatus(String productId);
 }
