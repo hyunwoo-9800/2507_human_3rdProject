@@ -199,6 +199,25 @@ const CustomDetailCard = ({
 
   const mergedImageStyle = { ...defaultImageStyle, ...imageStyle }
 
+  const handleReportSubmit = async () => {
+    try {
+      await axios.post('/api/report', {
+        reasonName: reportReason,
+        reportContent: reportDetail,
+        productId: productId,
+        reporterId: memberId,
+        createdId: memberId,
+      })
+      setReportOpen(false)
+      setReportDetail('')
+      setReportReason('')
+      setBanListOpen(false)
+      alert('신고가 접수되었습니다.')
+    } catch (e) {
+      alert('신고 접수 중 오류가 발생했습니다.')
+    }
+  }
+
   return (
     <div
       style={{
@@ -404,15 +423,9 @@ const CustomDetailCard = ({
                     opacity: reportReason && reportDetail.trim() ? 1 : 0.5,
                   }}
                   disabled={!(reportReason && reportDetail.trim())}
-                  onClick={() => {
-                    setReportOpen(false)
-                    setReportDetail('')
-                    setReportReason('')
-                    setBanListOpen(false) // 금지품목 안내 모달도 닫기
-                    alert('신고가 접수되었습니다.')
-                  }}
+                  onClick={handleReportSubmit}
                 >
-                  접수하기
+                  신고하기
                 </button>
               </div>
             </div>

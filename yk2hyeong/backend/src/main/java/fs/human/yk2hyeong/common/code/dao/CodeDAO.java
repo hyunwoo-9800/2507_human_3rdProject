@@ -63,4 +63,7 @@ public interface CodeDAO {
     // 상품 판매 코드(예약) 조회
     String getProductCode3() throws DataAccessException;
 
+    // LOW_CODE_NAME(신고사유명)으로 LOW_CODE_VALUE(코드값) 조회
+    String getLowCodeValueByLowCodeName(String lowCodeName);
+
 }

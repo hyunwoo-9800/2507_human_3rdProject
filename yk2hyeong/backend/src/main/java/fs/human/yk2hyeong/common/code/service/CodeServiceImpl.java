@@ -158,4 +158,9 @@ public class CodeServiceImpl implements CodeService {
 
     }
 
+    @Override
+    public String getLowCodeValueByLowCodeName(String lowCodeName) {
+        return codeDAO.getLowCodeValueByLowCodeName(lowCodeName);
+    }
+
 }
