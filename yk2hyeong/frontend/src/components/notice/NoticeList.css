@@ -1,7 +1,8 @@
 /* 전체 공지사항 영역 컨테이너 설정 */
 .notice-container {
-    max-width: 800px;   /* 최대 너비 800px */
+    max-width: 1200px;   /* 최대 너비 800px */
     margin: 40px auto;  /* 위아래 40px, 좌우 자동 가운데 정렬 */
+    padding: 0 20px;
 }
 /* 테이즐 설정 */
 .notice-table {
@@ -18,7 +19,7 @@
 }
 /* 테이블 헤더 배경색 */
 .notice-table th {
-    background-color: #f2f2f2;
+    background-color: #DFF1DD;
 }
 /* 테이블 행 마우스 오버 효과 */
 .notice-table tr:hover {
