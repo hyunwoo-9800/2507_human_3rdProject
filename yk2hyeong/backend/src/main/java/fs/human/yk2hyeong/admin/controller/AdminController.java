@@ -86,8 +86,7 @@ public class AdminController {
 
     // 알림 삭제
     @PostMapping("/report/delete")
-    public void deleteReport(@RequestParam List<String> reportId) throws Exception {
-
+    public void deleteReport(@RequestBody List<String> reportId) throws Exception {
         adminService.deleteReport(reportId);
 
     }

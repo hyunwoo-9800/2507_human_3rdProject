@@ -170,6 +170,8 @@ public class AdminServiceImpl implements AdminService {
 //    게시글 삭제
     @Override
     public void deleteReport(List<String> reportId){
+        System.out.println("🔥 deleteReport() 호출됨");
+        System.out.println("🔥 삭제할 reportId 목록: " + reportId);
 
         adminDAO.deleteReport(reportId);
 
