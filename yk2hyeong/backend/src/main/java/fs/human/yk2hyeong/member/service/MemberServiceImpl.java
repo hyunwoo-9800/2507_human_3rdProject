@@ -33,8 +33,6 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void insertMember(MemberVO vo) throws Exception {
-
-        // DAO를 통해 회원 정보를 DB에 삽입
         memberDAO.insertMember(vo);
     }
 
@@ -94,6 +92,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberVO selectByEmail(String email) throws Exception {
         return memberDAO.selectByEmail(email);
+    }
+
+    // 마지막에 가입한 회원 ID를 이메일로 조회
+    @Override
+    public String getLastInsertedMemberId(String memberEmail) throws Exception {
+        return memberDAO.getLastInsertedMemberId(memberEmail);
     }
 
     // 회원 탈퇴

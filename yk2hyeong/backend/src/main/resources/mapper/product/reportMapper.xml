@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fs.human.yk2hyeong.product.dao.ReportDAO">
+
+    <insert id="insertReport" parameterType="fs.human.yk2hyeong.product.vo.ReportVO">
+        INSERT INTO TB_REPORT (
+            REPORT_ID, REPORTER_ID, PRODUCT_ID, REASON_CODE, REPORT_CONTENT,
+            CREATED_ID, CREATED_DATE, UPDATED_ID, UPDATED_DATE
+        ) VALUES (
+            SYS_GUID(), #{reporterId}, #{productId}, #{reasonCode}, #{reportContent},
+            #{createdId}, SYSDATE, #{createdId}, SYSDATE
+        )
+    </insert>
+
+</mapper> 

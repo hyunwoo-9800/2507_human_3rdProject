@@ -80,19 +80,26 @@ public class MemberController {
             // 회원 정보 DB에 삽입
             memberService.insertMember(member);
 
+<<<<<<< HEAD
             member.setMemberCredit(30);
             memberService.insertGameMember(member);
+=======
+            // 방금 등록된 memberId 조회
+            String memberId = memberService.getLastInsertedMemberId(member.getMemberEmail());
+>>>>>>> ad8d8666ae7d26b8b170bf4b45506e9267a35ef8
 
             // 이미지 저장 (사업자 등록증)
             if (businessCertImage != null && !businessCertImage.isEmpty()) {
-                String imageId = imageService.insertImage(businessCertImage, member.getMemberId());
-                imageService.updateImageMemberId(imageId, member.getMemberId());
+                System.out.println("[DEBUG] businessCertImage: " + (businessCertImage != null ? businessCertImage.getOriginalFilename() : "null"));
+                String imageId = imageService.insertImage(businessCertImage, memberId);
+                imageService.updateImageMemberId(imageId, memberId);
             }
 
             // 이미지 저장 (통장 사본)
             if (bankBookImage != null && !bankBookImage.isEmpty()) {
-                String imageId = imageService.insertImage(bankBookImage, member.getMemberId());
-                imageService.updateImageMemberId(imageId, member.getMemberId());
+                System.out.println("[DEBUG] bankBookImage: " + (bankBookImage != null ? bankBookImage.getOriginalFilename() : "null"));
+                String imageId = imageService.insertImage(bankBookImage, memberId);
+                imageService.updateImageMemberId(imageId, memberId);
             }
 
             // 회원가입 성공 메시지 반환

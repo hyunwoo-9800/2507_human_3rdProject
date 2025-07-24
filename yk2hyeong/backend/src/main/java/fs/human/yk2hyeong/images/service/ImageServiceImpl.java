@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,28 +44,39 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public String insertImage(MultipartFile file, String memberIdOrNull) throws Exception {
-
+        System.out.println("[DEBUG] insertImage 진입: " + (file != null ? file.getOriginalFilename() : "null"));
         try {
 
             // 이미지 고유 ID(UUID) 생성
             String uuid = UUID.randomUUID().toString();
             String originalName = file.getOriginalFilename();                 // 원본 파일 이름
             String newFileName = uuid + "_" + originalName;                   // 새로운 파일 이름 생성
-            String saveDir = "C:/yk2hyeong/member_images";                    // 이미지 저장 경로
+            String saveDir = "images/memberimages";                    // DB에 저장할 상대 경로
 
-            // 저장 경로가 없다면 디렉토리 생성
-            Files.createDirectories(Paths.get(saveDir));
+            // 1. 백엔드 static 폴더에 바로 저장
+            String backendImageDir = System.getProperty("user.dir") + "/src/main/resources/static/images/memberimages/";
+            File backendDir = new File(backendImageDir);
+            if (!backendDir.exists()) backendDir.mkdirs();
+            File backendDestFile = new File(backendImageDir, newFileName);
+            file.transferTo(backendDestFile);
 
-            // 파일을 지정된 경로에 저장
-            Path savePath = Paths.get(saveDir, newFileName);
-            file.transferTo(savePath);
+            // 2. 프론트엔드 public 폴더로 복사
+            try {
+                String frontendImageDir = System.getProperty("user.dir").replace("backend", "frontend") + "/public/static/images/memberimages/";
+                File frontendDir = new File(frontendImageDir);
+                if (!frontendDir.exists()) frontendDir.mkdirs();
+                File frontendDestFile = new File(frontendImageDir, newFileName);
+                java.nio.file.Files.copy(backendDestFile.toPath(), frontendDestFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                System.err.println("[WARN] 프론트엔드 public 폴더 복사 실패: " + e.getMessage());
+            }
 
             // 이미지 타입을 코드에서 조회
             String imgType = codeDAO.getImageLowCodeValue();
 
             // 이미지 정보 객체 생성 및 설정
             ImageVO image = new ImageVO();
-            image.setImagePath(saveDir);                                    // 저장 경로
+            image.setImagePath(saveDir);                                    // 저장 경로 (DB에는 상대경로)
             image.setImageName(newFileName);                                // 새로운 파일 이름
             image.setImageType(imgType);                                    // 이미지 타입
             image.setMemberId(memberIdOrNull);                              // 회원 ID (회원과 관련 없다면 null)

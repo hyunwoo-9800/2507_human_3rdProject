@@ -63,7 +63,7 @@ function TableTab({ tabType }) {
   const deleteApiMap = {
     products: '/api/products/reject',
     member: '/api/member/reject',
-    report: '/api/report/resolve',
+    report: '/api/report/delete',
   }
 
   useEffect(() => {
@@ -162,8 +162,9 @@ function TableTab({ tabType }) {
     const selectedIds = item
       .filter((i) => i.checked)
       .map((i) =>
-        tabType === 'products' ? i.productId : tabType === 'report' ? i.productId : i.memberId
+        tabType === 'products' ? i.productId : tabType === 'report' ? i.reportId : i.memberId
       )
+    console.log("삭제할 ID 목록 >>>", selectedIds);
 
     if (selectedIds.length === 0) {
       alert('삭제할 항목을 선택하세요.')

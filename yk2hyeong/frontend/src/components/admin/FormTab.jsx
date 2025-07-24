@@ -8,7 +8,7 @@ import UserApproveButton from "./UserApproveButton";
 function FormTab({tabType}){
     const [selectItem, setSelectItem] = useState(null);
     const [item, setItem] = useState([]);
-
+    const selectedItems = item.filter(i => i.checked);
     const idKey = tabType === 'product' ? 'productId' : 'memberId';
 
     useEffect(() => {
@@ -112,7 +112,7 @@ function FormTab({tabType}){
             </div>
             <div className="form-button-group">
                 {tabType ==='product' ? (
-                    <ButtonGroup tabType={tabType} selectItem={selectItem}/>
+                    <ButtonGroup tabType={tabType} selectedItems={selectedItems}/>
                 ):(
                     <UserApproveButton user={selectItem}/>
                 )}

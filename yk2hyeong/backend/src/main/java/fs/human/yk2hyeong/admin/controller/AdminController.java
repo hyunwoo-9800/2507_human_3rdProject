@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Collections;
 import java.util.List;
 
 // 관리자 페이지 컨트롤러
@@ -42,10 +43,15 @@ public class AdminController {
     // 미승인 회원 조회
     @GetMapping("/member/pending")
     public List<AdminVO> getPendingMember() throws Exception {
+<<<<<<< HEAD
         
         // System.out.println("[GameController] getPendingMember() 호출됨");
+=======
+
+        // System.out.println("[AdminController] getPendingMember() 호출됨");
+>>>>>>> ad8d8666ae7d26b8b170bf4b45506e9267a35ef8
         return adminService.getPendingMember();
-        
+
     }
 
     // 신고 목록 조회
@@ -85,8 +91,7 @@ public class AdminController {
 
     // 알림 삭제
     @PostMapping("/report/delete")
-    public void deleteReport(@RequestParam List<String> reportId) throws Exception {
-
+    public void deleteReport(@RequestBody List<String> reportId) throws Exception {
         adminService.deleteReport(reportId);
 
     }
@@ -94,7 +99,16 @@ public class AdminController {
     // 회원가입승인, 거부
     @PostMapping("/alarm/reject")
     public ResponseEntity<String> insertAlarm(@RequestBody AdminVO adminVO) throws Exception {
+        List<String> productId = adminVO.getProductIdList();
+        String alarmType = codeService.getRejectAlarmCode(); // 거부 코드
+        String rejectCode = codeService.getRejectAlarmCode(); // 상태코드로도 사용
+        String displayOff = codeService.getNotDisplayProduct();
+        String createdId = adminVO.getCreatedId() != null ? adminVO.getCreatedId() : "SYSTEM";
+        String alarmContent = (adminVO.getAlarmContent() == null || adminVO.getAlarmContent().isEmpty())
+                ? " "
+                : adminVO.getAlarmContent();
 
+<<<<<<< HEAD
         // System.out.println("[GameController] insertAlarm 호출");
 
         try {
@@ -149,54 +163,142 @@ public class AdminController {
             // e.printStackTrace(); 보안 상 사용하면 안됨
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("처리 실패");
 
+=======
+        if (productId == null || productId.isEmpty()) {
+            return ResponseEntity.badRequest().body("상품 ID가 없습니다.");
+>>>>>>> ad8d8666ae7d26b8b170bf4b45506e9267a35ef8
         }
-        
+
+        for (String id : productId) {
+            // 상품 상태 업데이트
+            adminService.updateProductStatus(id, rejectCode);
+            adminService.updateProductFlag(id, displayOff);
+
+            // 수신자 조회
+            String receiverId = adminDAO.getReceiverIdWithoutStatus(id);
+
+            // 알림 insert용 VO 구성
+            AdminVO vo = new AdminVO();
+            vo.setProductId(id);
+            vo.setProductIdList(List.of(id));
+            vo.setAlarmType(alarmType);
+            vo.setAlarmContent(alarmContent);
+            vo.setCreatedId(createdId);
+
+            adminService.insertAlarm(vo);
+        }
+
+        return ResponseEntity.ok("상품 거부 처리 및 알림 완료");
+//        List<String> productId = adminVO.getProductIdList();
+//        String alarmType = codeService.getRejectAlarmCode();        // 승인 거부 코드
+//        String alarmContent = (adminVO.getAlarmContent() == null || adminVO.getAlarmContent().isEmpty())?" ":adminVO.getAlarmContent();           // 알림 내용
+//        String createdId = adminVO.getCreatedId() != null ? adminVO.getCreatedId() : "SYSTEM";
+//
+//        // System.out.println("[AdminController] insertAlarm 호출");
+//
+//        try {
+//
+//            // adminVO.setAlarmId(UUID.randomUUID().toString()); 오라클에서 처리함
+//
+//            /* if (adminVO.getReceiverId() == null) {
+//                adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
+//                adminVO.setReceiverId("SYSTEM");
+//            } */
+//
+//            if (adminVO.getCreatedId() == null) {
+//                adminVO.setCreatedId("SYSTEM");
+//            }
+//
+//
+//            // 알림 수신자 ID 조회
+//            String receiverId = adminDAO.getReceiverId(adminVO.getProductId());
+//
+//            if (adminVO.getAlarmContent() == null || adminVO.getAlarmContent().equals("")) {
+//                adminVO.setAlarmContent(" ");
+//            } else {
+//                adminVO.setAlarmContent(alarmContent);
+//            }
+//            adminVO.setReceiverId(receiverId);
+//            adminVO.setAlarmType(alarmType);
+//
+//            // 알림 등록
+//            adminService.insertAlarm(adminVO);
+//
+//            // 상태 업데이트 (거부: D4539D86D99B43B68BCAF17EA011E67B)
+//            if (adminVO.getProductId() != null && !adminVO.getProductId().isEmpty()) {
+//                String rejectCode = codeService.getRejectAlarmCode();
+//                // adminService.updateProductStatus(adminVO.getProductId(), "D4539D86D99B43B68BCAF17EA011E67B");
+//                adminService.updateProductStatus(adminVO.getProductId(), rejectCode);
+//            }
+//            return ResponseEntity.ok("알림 및 상품 상태 업데이트 완료");
+//        } catch (Exception e) {
+//            // e.printStackTrace(); 보안 상 사용하면 안됨
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("처리 실패");
+//        }
     }
 
     // 회원가입승인, 승인
     @PostMapping("/alarm/approve")
     public ResponseEntity<String> approveProduct(@RequestBody AdminVO adminVO) throws Exception {
+        try {
+            List<String> productId = adminVO.getProductIdList();
+            System.out.println(">>>> 받은 productIdList: " + adminVO.getProductIdList());
+            System.out.println("productId 클래스: " + productId.getClass().getName());
+            System.out.println("리스트 사이즈: " + productId.size());
+            // 알림 코드
+            String appCodeProduct = codeService.getApprovalAlarmCodeProduct();
 
+<<<<<<< HEAD
         // System.out.println("[GameController] approveProduct 호출");
+=======
+            // 표시 코드
+            String displayProduct = codeService.getDisplayProduct();
+            String createdId = adminVO.getCreatedId() != null ? adminVO.getCreatedId() : "SYSTEM";
+>>>>>>> ad8d8666ae7d26b8b170bf4b45506e9267a35ef8
 
-        // 알림 코드
-        String appCodeProduct = codeService.getApprovalAlarmCodeProduct();
-        
-        // 표시 코드
-        String displayProduct = codeService.getDisplayProduct();
+            if (productId == null || productId.isEmpty()) {
+                return ResponseEntity.badRequest().body("상품 ID가 없습니다.");
+            }
+            for (String id : productId) {
+                try {
+                    System.out.println("→ 쿼리용 productId: [" + id + "]");
 
-        // adminService.updateProductStatus(adminVO.getProductId(), "E79E6C1F58604795AD30CCDDD37115FF");
-        // adminService.updateProductFlag(adminVO.getProductId(), "B57FCB1CA009426E9D3EF7FC335F7DCA");
+                    adminService.updateProductStatus(id, appCodeProduct);
+                    adminService.updateProductFlag(id, displayProduct);
 
-        adminService.updateProductStatus(adminVO.getProductId(), appCodeProduct);
-        adminService.updateProductFlag(adminVO.getProductId(), displayProduct);
+                    String alarmType = codeService.getApprovalAlarmCode();
+                    String receiverId = adminDAO.getReceiverIdWithoutStatus(id);
+                    if (receiverId == null || receiverId.isEmpty()) {
+                        System.out.println("receiverId가 null → SYSTEM으로 대체");
+                        receiverId = "29E46778F8E3430D9C560B84E4861786";
+                    }
 
-        /* if (adminVO.getAlarmId() == null || adminVO.getAlarmId().isEmpty()) {
+                    AdminVO vo = new AdminVO();
+                    vo.setProductId(id);
+                    vo.setProductIdList(Collections.singletonList(id));
+                    vo.setAlarmType(alarmType);
+                    vo.setAlarmContent(" ");
+                    vo.setReceiverId(receiverId);
+                    vo.setCreatedId(createdId);
 
-            adminVO.setAlarmId(UUID.randomUUID().toString());
-
-        }  오라클에서 처리함 */
-
-        // 알림 승인 코드
-        String alarmType = codeService.getApprovalAlarmCode();
-
-        // 알림 수신자 ID 조회
-        String receiverId = adminDAO.getReceiverId(adminVO.getProductId());
-
-        adminVO.setAlarmType(alarmType);
-        adminVO.setAlarmContent(" ");                              // DB에는 NULL을 넣지 않도록 수정(공백으로 수정)
-        adminVO.setReceiverId(receiverId);                         // 관리자 UUID도 변경될 수 있으니 SYSTEM 고정
-        adminVO.setCreatedId("SYSTEM");
-
-//        adminVO.setAlarmType("011");
-//        adminVO.setAlarmContent(null);
-//        adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
-//        adminVO.setCreatedId("SYSTEM");
-
-        adminService.insertAlarm(adminVO);
+                    System.out.println("🚀 최종 VO 상태: " + vo);
+                    adminService.insertAlarm(vo);
+                } catch (Exception e) {
+                    System.out.println("[예외 발생] productId = " + id);
+                    e.printStackTrace();
+                }
+            }
 
         return ResponseEntity.ok("상품 승인 및 알림 전송 완료");
+    }catch(
+    Exception e)
+
+    {
+        System.out.println("🔥🔥🔥 VO 매핑 또는 내부 처리 실패");
+        e.printStackTrace();
+        return ResponseEntity.status(500).body("VO 파싱 실패: " + e.getMessage());
     }
+}
 
     // 상품관리 삭제버튼
     @PostMapping("/products/reject")

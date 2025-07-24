@@ -268,4 +268,11 @@
             AND A.LOW_CODE_VALUE = '001'
     </select>
 
+    <!-- LOW_CODE_NAME(신고사유명)으로 LOW_CODE_VALUE(코드값) 조회 -->
+    <select id="getLowCodeValueByLowCodeName" resultType="string">
+        SELECT LOW_CODE_VALUE
+        FROM TB_CODE_DETAIL
+        WHERE LOW_CODE_NAME = #{lowCodeName}
+    </select>
+
 </mapper>

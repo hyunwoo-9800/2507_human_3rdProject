@@ -3,12 +3,14 @@ import CustomModal from "../common/CustomModal";
 import Button from "../common/Button";
 import axios from "axios";
 
-function ButtonGroup({selectItem}) {
+function ButtonGroup({selectedItems}) {
     const [reason, setReason] = useState("");
-    const productId = selectItem?.productId;
+    const productId = selectedItems.map(item => item.productId);
 
     const handleRegister = async () => {
-        if (!productId) {
+        console.log("productIdList >>>", productId);
+
+        if (productId.length === 0) {
             alert("선택된 상품이 없습니다!");
             return;
         }
@@ -16,9 +18,11 @@ function ButtonGroup({selectItem}) {
         try {
             // 승인 처리 API 호출 (DB 업데이트 + 알림 삽입)
             await axios.post("/api/alarm/approve", {
-                productId: productId,
+                productIdList: productId,
+                alarmType: "011",
+                alarmContent: " ",
+                createdId: "SYSTEM"
             });
-
             alert("승인 처리 완료!");
         } catch (err) {
             console.error("승인 요청 실패:", err);
@@ -31,19 +35,19 @@ function ButtonGroup({selectItem}) {
             alert("거부 사유를 입력해주세요!");
             return;
         }
+        if (productId.length === 0) {
+            alert("선택된 상품이 없습니다!");
+            return;
+        }
 
         try {
             await sendAlarm({
                 // type: '012',
                 content: reason,
-                productId: productId ?? "",  // 없으면 빈 문자열로
+                productId
             });
-            console.log("product_id: ",productId);
-            if(!productId){
-                alert("선택된 상품이 없습니다")
-                return;
-            }
-            setReason(""); // 성공 시 초기화
+            alert("상품 거부 처리가 완료되었습니다!");
+            setReason("");
         } catch (err) {
             alert("알림 전송에 실패했습니다!");
         }
@@ -54,13 +58,13 @@ function ButtonGroup({selectItem}) {
     };
 
     //알림 전송 함수(승인/거부 공통)
-    const sendAlarm = async({type, content}) => {
+    const sendAlarm = async({productId, content}) => {
         try{
             const response = await axios.post('/api/alarm/reject',{
                 // alarmType: type,
                 alarmContent: content,
                 // receiverId: '29E46778F8E3430D9C560B84E4861786',
-                productId: productId,
+                productIdList: productId,
             });
             console.log("알림 전송 성공: ", response.data);
         }catch (err){

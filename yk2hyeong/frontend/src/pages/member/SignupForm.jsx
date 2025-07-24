@@ -112,10 +112,10 @@ function SignupForm({ role }) {
 
     // 이름 입력 시 특수문자, 숫자 제거
     if (name === 'memberName') {
-      const filtered = value.replace(/[^a-zA-Z가-힣\s]/g, '')
-      setForm({ ...form, [name]: filtered })
+      setForm({ ...form, [name]: value })
 
-      if (value !== filtered) {
+      // 유효성 메시지만 표시 (입력값은 그대로 둠)
+      if (/[^a-zA-Z가-힣\s]/.test(value)) {
         setNameMessage('이름은 영문 또는 한글만 입력 가능합니다.')
         setIsNameValid(false)
       } else {
@@ -276,6 +276,26 @@ function SignupForm({ role }) {
   // 회원가입 제출 처리
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    // 유효성 검사 추가
+    if (!form.memberName || !isNameValid) {
+      alert('이름을 올바르게 입력해주세요.')
+      return
+    }
+    if (!form.memberPwd || !isPasswordValid) {
+      alert('비밀번호를 올바르게 입력해주세요.')
+      return
+    }
+    if (!form.memberEmail || !isEmailAvailable) {
+      alert('이메일을 올바르게 입력해주세요.')
+      return
+    }
+    if (!isVerified) {
+      alert('이메일 인증을 완료해주세요.')
+      return
+    }
+    // (필요시 추가 유효성 검사: 전화번호, 주소 등)
+
     const formData = new FormData()
     formData.append('member', new Blob([JSON.stringify(form)], { type: 'application/json' }))
     if (businessCertFile) formData.append('businessCertImage', businessCertFile)
@@ -304,7 +324,7 @@ function SignupForm({ role }) {
             name="memberEmail"
             value={form.memberEmail}
             onChange={handleChange}
-            placeholder="이메일"
+            placeholder="이메일 (중복 불가)"
             type="email"
             maxLength={50}
             required
@@ -409,7 +429,7 @@ function SignupForm({ role }) {
           name="memberTel"
           value={formatPhoneNumber(form.memberTel)}
           onChange={handleChange}
-          placeholder="연락처"
+          placeholder="연락처 (중복불가)"
           maxLength={13}
           required
         />
@@ -518,7 +538,7 @@ function SignupForm({ role }) {
 
         {/* 회원가입 버튼 */}
         <div className="signup-btn-row">
-          <Button type="button" size="md" color="secondary" onClick={() => navigate('/')}>
+          <Button type="button" size="md" color="secondary" onClick={() => navigate('/signup')}>
             취소하기
           </Button>
           <Button type="submit" size="md" color="primary">

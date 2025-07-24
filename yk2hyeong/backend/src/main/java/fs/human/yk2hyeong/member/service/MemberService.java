@@ -50,6 +50,11 @@ public interface MemberService {
     // 회원 탈퇴
     void deleteMemberById(String memberId) throws Exception;
 
+<<<<<<< HEAD
     // 게임 회원 정보 조회
     MemberVO selectByGameMem(String memberId) throws Exception;
+=======
+    // 마지막에 가입한 회원 ID를 이메일로 조회
+    String getLastInsertedMemberId(String memberEmail) throws Exception;
+>>>>>>> ad8d8666ae7d26b8b170bf4b45506e9267a35ef8
 }

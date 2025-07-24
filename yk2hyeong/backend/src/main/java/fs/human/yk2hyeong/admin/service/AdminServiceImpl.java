@@ -28,8 +28,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<ProductVO> getPendingProduct() {
 
+<<<<<<< HEAD
         // System.out.println("[GameServiceImpl] getPendingProduct 호출됨");
 
+=======
+>>>>>>> ad8d8666ae7d26b8b170bf4b45506e9267a35ef8
         List<ProductVO> list = adminDAO.selectPendingProduct();
 
         /* if (list == null) {
@@ -172,6 +175,8 @@ public class AdminServiceImpl implements AdminService {
 //    게시글 삭제
     @Override
     public void deleteReport(List<String> reportId){
+        System.out.println("🔥 deleteReport() 호출됨");
+        System.out.println("🔥 삭제할 reportId 목록: " + reportId);
 
         adminDAO.deleteReport(reportId);
 
@@ -187,6 +192,11 @@ public class AdminServiceImpl implements AdminService {
 //    회원가입승인
     @Override
     public void insertAlarm(AdminVO adminVO) {
+        System.out.println("[insertAlarm] 호출됨");
+        List<String> productIdList = adminVO.getProductIdList(); //복수 상품 처리
+        String alarmContent = adminVO.getAlarmContent() != null ? adminVO.getAlarmContent() : "";
+        String alarmType = adminVO.getAlarmType() != null ? adminVO.getAlarmType() : "012";
+        String createdId = adminVO.getCreatedId() != null ? adminVO.getCreatedId() : "SYSTEM";
 
         // System.out.println("[GameServiceImpl] insertAlarm 호출");
         // System.out.println("productId: " + adminVO.getProductId());
@@ -197,21 +207,30 @@ public class AdminServiceImpl implements AdminService {
 //            adminVO.setAlarmId(UUID.randomUUID().toString());
 //
 //        } 오라클에서 처리함
-
-        if (adminVO.getReceiverId() == null) {
-
-            // adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
-            adminVO.setReceiverId("SYSTEM");
-
+        // ✅ 단건 처리 (productId만 존재할 때)
+        if ((productIdList == null || productIdList.isEmpty()) && adminVO.getProductId() != null) {
+            System.out.println("→ 단건 알림 insert");
+            adminDAO.insertAlarm(adminVO);
+            return;
         }
 
-        if (adminVO.getCreatedId() == null) {
+        // ✅ 복수 처리
+        if (productIdList != null && !productIdList.isEmpty()) {
+            System.out.println("→ 복수 알림 insert");
+            for (String id : productIdList) {
+                System.out.println("→ 쿼리용 productId: [" + id + "]");
+                String receiverId = adminDAO.getReceiverIdWithoutStatus(id);
 
-            adminVO.setCreatedId("SYSTEM");
+                AdminVO vo = new AdminVO();
+                vo.setProductId(id);
+                vo.setReceiverId(receiverId);
+                vo.setAlarmType(alarmType);
+                vo.setAlarmContent(alarmContent);
+                vo.setCreatedId(createdId);
 
+                adminDAO.insertAlarm(vo);
+            }
         }
-
-        adminDAO.insertAlarm(adminVO); // DAO로 전달
 
     }
 
