@@ -34,7 +34,7 @@ public class AdminController {
     @GetMapping("/product/pending")
     public List<ProductVO> getPendingProduct() throws Exception {
 
-        // System.out.println("[AdminController] getPendingProduct() 호출됨");
+        // System.out.println("[GameController] getPendingProduct() 호출됨");
         return adminService.getPendingProduct();
 
     }
@@ -43,7 +43,7 @@ public class AdminController {
     @GetMapping("/member/pending")
     public List<AdminVO> getPendingMember() throws Exception {
         
-        // System.out.println("[AdminController] getPendingMember() 호출됨");
+        // System.out.println("[GameController] getPendingMember() 호출됨");
         return adminService.getPendingMember();
         
     }
@@ -52,7 +52,7 @@ public class AdminController {
     @GetMapping("/report")
     public List<AdminVO> getReport() throws Exception {
 
-        // System.out.println("[AdminController] getReport() 호출됨");
+        // System.out.println("[GameController] getReport() 호출됨");
         return adminService.getReport();
 
     }
@@ -61,7 +61,7 @@ public class AdminController {
     @GetMapping("/member")
     public List<AdminVO> getMember() throws Exception {
 
-        // System.out.println("[AdminController] getMember() 호출됨");
+        // System.out.println("[GameController] getMember() 호출됨");
         return adminService.getMember();
 
     }
@@ -95,7 +95,7 @@ public class AdminController {
     @PostMapping("/alarm/reject")
     public ResponseEntity<String> insertAlarm(@RequestBody AdminVO adminVO) throws Exception {
 
-        // System.out.println("[AdminController] insertAlarm 호출");
+        // System.out.println("[GameController] insertAlarm 호출");
 
         try {
 
@@ -157,7 +157,7 @@ public class AdminController {
     @PostMapping("/alarm/approve")
     public ResponseEntity<String> approveProduct(@RequestBody AdminVO adminVO) throws Exception {
 
-        // System.out.println("[AdminController] approveProduct 호출");
+        // System.out.println("[GameController] approveProduct 호출");
 
         // 알림 코드
         String appCodeProduct = codeService.getApprovalAlarmCodeProduct();

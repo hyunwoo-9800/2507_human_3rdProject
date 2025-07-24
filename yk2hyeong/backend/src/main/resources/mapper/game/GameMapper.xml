@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="fs.human.yk2hyeong.game.dao.GameDAO">
+
+    <!-- 크레딧 조회 -->
+    <select id="getCredit" resultType="int">
+        SELECT
+            MEMBER_CREDIT
+        FROM
+            TB_GAME_MEMBER
+        WHERE MEMBER_ID = #{memberId}
+     </select>
+
+    <!-- 크레딧 차감 -->
+    <update id="updateCredit">
+        UPDATE TB_GAME_MEMBER
+            SET MEMBER_CREDIT = MEMBER_CREDIT - 1
+        WHERE MEMBER_ID = #{memberId}
+          AND MEMBER_CREDIT >= 1
+    </update>
+
+    <!-- 게임 시 크레딧 증감 -->
+    <update id="updateCreditByAmount">
+        UPDATE TB_GAME_MEMBER
+        SET MEMBER_CREDIT = MEMBER_CREDIT + #{amount}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+    <update id="updateCreditToExact" parameterType="map">
+        UPDATE TB_GAME_MEMBER
+        SET MEMBER_CREDIT = #{credit}
+        WHERE MEMBER_ID = #{memberId}
+    </update>
+
+    <!-- 게임 스코어 저장 -->
+    <insert id="mergeScore">
+        MERGE INTO TB_GAME_SCORE tgt
+            USING (
+                SELECT
+                    #{memberId} AS MEMBER_ID,
+                    (
+                        SELECT
+                            GAME_ID
+                        FROM TB_GAME
+                            WHERE
+                                GAME_NAME = #{gameName}
+                    ) AS GAME_ID
+                FROM dual
+            ) src
+            ON (
+                    tgt.MEMBER_ID = src.MEMBER_ID
+                    AND tgt.GAME_ID = src.GAME_ID
+                )
+            WHEN MATCHED THEN
+                UPDATE SET
+                    CURRENT_SCORE = #{currentScore},
+                    BEST_SCORE = CASE
+                                     WHEN #{currentScore} > BEST_SCORE THEN #{currentScore}
+                                     ELSE BEST_SCORE
+                        END,
+                    UPDATED_ID = #{memberId},
+                    UPDATED_DATE = SYSDATE
+            WHEN NOT MATCHED THEN
+                INSERT (
+                        MEMBER_ID, GAME_ID, BEST_SCORE, CURRENT_SCORE,
+                        CREATED_ID, CREATED_DATE, UPDATED_ID, UPDATED_DATE
+                    )
+                    VALUES (
+                               #{memberId},
+                               (SELECT GAME_ID FROM TB_GAME WHERE GAME_NAME = #{gameName}),
+                               #{currentScore}, #{currentScore},
+                               #{memberId}, SYSDATE, #{memberId}, SYSDATE
+                            )
+    </insert>
+
+
+</mapper>

@@ -80,6 +80,9 @@ public class MemberController {
             // 회원 정보 DB에 삽입
             memberService.insertMember(member);
 
+            member.setMemberCredit(30);
+            memberService.insertGameMember(member);
+
             // 이미지 저장 (사업자 등록증)
             if (businessCertImage != null && !businessCertImage.isEmpty()) {
                 String imageId = imageService.insertImage(businessCertImage, member.getMemberId());
@@ -297,6 +300,18 @@ public class MemberController {
                     .body(Map.of("error", "회원탈퇴 중 오류 발생"));
 
         }
+
+    }
+
+    // 게임 회원 정보 조회
+    @GetMapping("/gameLogin")
+    public ResponseEntity<?> selectByGameMem(@RequestParam String memberId) throws Exception {
+
+        // 정보 조회
+        MemberVO user = memberService.selectByGameMem(memberId);
+
+        // 정보 전달
+        return ResponseEntity.ok(user);
 
     }
 

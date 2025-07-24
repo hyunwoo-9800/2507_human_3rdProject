@@ -29,6 +29,7 @@ public class MemberVO {
     private String memberDetailAddr;        // 상세 주소
     private String memberBankCode;          // 은행명
     private String memberAccountNum;        // 계좌번호
+    private int memberCredit;               // 크레딧
 
     // 권한 및 상태
     private String memberRole;              // 회원 역할 (SELLER / BUYER 등)

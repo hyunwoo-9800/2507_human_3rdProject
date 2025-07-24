@@ -38,6 +38,13 @@ public class MemberServiceImpl implements MemberService {
         memberDAO.insertMember(vo);
     }
 
+    @Override
+    public void insertGameMember(MemberVO vo) throws Exception {
+
+        // DAO를 통해 회원 정보를 DB에 삽입
+        memberDAO.insertGameMember(vo);
+    }
+
     /**
      * 이메일 중복 확인 메서드
      *
@@ -94,6 +101,14 @@ public class MemberServiceImpl implements MemberService {
     public void deleteMemberById(String memberId) throws Exception {
 
         memberDAO.deleteMemberById(memberId);
+
+    }
+
+    // 게임 회원 정보 조회
+    @Override
+    public MemberVO selectByGameMem(String memberId) throws Exception {
+
+       return memberDAO.selectByGameMem(memberId);
 
     }
 

@@ -126,5 +126,47 @@
         WHERE MEMBER_ID = #{memberId}
     </update>
 
+    <!-- 회원 등록 -->
+    <insert id="insertGameMember">
+        <selectKey keyProperty="memberId" order="BEFORE" resultType="string">
+            SELECT
+                MEMBER_ID
+            FROM
+                TB_MEMBER
+            ORDER BY
+                CREATED_DATE DESC
+            FETCH FIRST 1 ROWS ONLY
+        </selectKey>
+
+        INSERT INTO TB_GAME_MEMBER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            MEMBER_ID,
+            MEMBER_CREDIT,
+            CREATED_ID,
+            CREATED_DATE,
+            UPDATED_ID,
+            UPDATED_DATE
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            #{memberId},
+            #{memberCredit},
+            #{createdId},
+            SYSDATE,
+            #{updatedId},
+            SYSDATE
+        </trim>
+    </insert>
+
+    <!-- 게임 회원 정보 조회 -->
+    <select id="selectByGameMem" resultType="fs.human.yk2hyeong.member.vo.MemberVO">
+        SELECT
+            B.MEMBER_NAME,
+            A.MEMBER_CREDIT
+        FROM
+            TB_GAME_MEMBER A
+                LEFT JOIN TB_MEMBER B
+                          ON A.MEMBER_ID = B.MEMBER_ID
+        WHERE B.MEMBER_ID = #{memberId}
+    </select>
 
 </mapper>

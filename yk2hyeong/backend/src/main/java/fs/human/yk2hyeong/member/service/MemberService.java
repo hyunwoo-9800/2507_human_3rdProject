@@ -25,6 +25,7 @@ public interface MemberService {
      * @throws Exception DB 처리 중 발생할 수 있는 예외 처리
      */
     void insertMember(MemberVO vo) throws Exception;
+    void insertGameMember(MemberVO vo) throws Exception;
 
     /**
      * 이메일 중복 확인 메서드
@@ -48,4 +49,7 @@ public interface MemberService {
 
     // 회원 탈퇴
     void deleteMemberById(String memberId) throws Exception;
+
+    // 게임 회원 정보 조회
+    MemberVO selectByGameMem(String memberId) throws Exception;
 }

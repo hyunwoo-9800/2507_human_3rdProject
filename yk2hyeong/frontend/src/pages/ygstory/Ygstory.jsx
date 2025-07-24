@@ -1,21 +1,32 @@
 import React, { useEffect } from 'react';
+import axios from 'axios';
 
 const Ygstory = () => {
 
     useEffect(() => {
-        // 컴포넌트가 마운트되면 바로 /ygstory/html/index.html로 이동
-        window.location.href = '/ygstory/html/index.html';
+
+        const memberId = localStorage.getItem('memberId');
+
+        // 게임 로그인 처리
+        axios.get(`/member/gameLogin?memberId=${memberId}`)
+            .then((res) => {
+
+                const member = res.data;
+
+                alert('게임 로그인 완료!');
+                window.location.href =
+                    `/ygstory/html/index.html?memberId=${memberId}` +
+                    `&memberName=${encodeURIComponent(member.memberName)}` +
+                    `&memberCredit=${member.memberCredit}`;
+
+            })
+            .catch(() => {
+                alert('게임 로그인 실패');
+                window.location.href = '/';
+            });
     }, []);
 
-    return (
-        <div>
-            <h1>영근 이야기</h1>
-            {/* Spring Boot의 static 리소스로 직접 접근 */}
-            <a href="/ygstory/html/index.html" target="_blank" rel="noopener noreferrer">
-                영근 이야기 이동
-            </a>
-        </div>
-    );
+    return <></>;
 };
 
 export default Ygstory;

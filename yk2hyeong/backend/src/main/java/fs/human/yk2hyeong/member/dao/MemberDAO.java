@@ -27,6 +27,7 @@ public interface MemberDAO {
      * @throws DataAccessException DB 접근 중 발생할 수 있는 예외 처리
      */
     void insertMember(MemberVO vo) throws DataAccessException;
+    void insertGameMember(MemberVO vo) throws DataAccessException;
 
     /**
      * 이메일 중복 확인 메서드
@@ -52,6 +53,9 @@ public interface MemberDAO {
 
     // 회원 탈퇴
     void deleteMemberById(String memberId) throws DataAccessException;
+
+    // 게임 회원 정보 조회
+    MemberVO selectByGameMem(String memberId) throws DataAccessException;
 
 
 }

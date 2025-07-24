@@ -3,21 +3,7 @@ let deck = [];
 
 function createDeck() {
   const suits = ["♠", "♥", "♦", "♣"];
-  const values = [
-    "A",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "J",
-    "Q",
-    "K",
-  ];
+  const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
   deck = [];
   for (const suit of suits) {
     for (const value of values) {
@@ -42,7 +28,6 @@ function drawCard() {
   return deck.pop();
 }
 
-// 카드 값 계산 함수 (블랙잭 규칙에 맞게)
 function getCardValue(card) {
   const value = card.slice(0, -1);
   if (value === "A") return 11;
@@ -50,7 +35,6 @@ function getCardValue(card) {
   return parseInt(value);
 }
 
-// 점수 계산 함수 (A는 1 혹은 11로 처리)
 function calculateScore(cards) {
   let score = 0;
   let aceCount = 0;
@@ -66,23 +50,19 @@ function calculateScore(cards) {
   return score;
 }
 
-// 카드 DOM 생성 (색상 클래스 포함)
 function renderCard(card) {
   const cardDiv = document.createElement("div");
   cardDiv.classList.add("card");
-
   const suit = card.slice(-1);
   if (suit === "♥" || suit === "♦") {
     cardDiv.classList.add("red");
   } else {
     cardDiv.classList.add("black");
   }
-
   cardDiv.textContent = card;
   return cardDiv;
 }
 
-// 핸드 및 UI 업데이트 (딜러 두번째 카드 숨기기 옵션 포함)
 function updateHands(hideDealerSecondCard = true) {
   const playerCardsDiv = document.getElementById("player-cards");
   const dealerCardsDiv = document.getElementById("dealer-cards");
@@ -90,42 +70,30 @@ function updateHands(hideDealerSecondCard = true) {
   const dealerTotalSpan = document.getElementById("dealer-total");
 
   playerCardsDiv.innerHTML = "";
-  playerCards.forEach((card) => {
-    playerCardsDiv.appendChild(renderCard(card));
-  });
+  playerCards.forEach(card => playerCardsDiv.appendChild(renderCard(card)));
 
   dealerCardsDiv.innerHTML = "";
   if (hideDealerSecondCard && dealerCards.length > 1) {
-    // 첫 번째 카드만 공개, 두 번째 카드는 뒷면 표시
     dealerCardsDiv.appendChild(renderCard(dealerCards[0]));
-
     const cardBack = document.createElement("div");
     cardBack.classList.add("card", "card-back");
     cardBack.textContent = "?";
     dealerCardsDiv.appendChild(cardBack);
-
-    // 딜러 합계는 첫 카드 값만 표시
-    const visibleScore = getCardValue(dealerCards[0]);
-    dealerTotalSpan.textContent = visibleScore;
+    dealerTotalSpan.textContent = getCardValue(dealerCards[0]);
   } else {
-    // 딜러 카드 전부 공개
-    dealerCards.forEach((card) => {
-      dealerCardsDiv.appendChild(renderCard(card));
-    });
+    dealerCards.forEach(card => dealerCardsDiv.appendChild(renderCard(card)));
     dealerTotalSpan.textContent = dealerScore;
   }
 
   playerTotalSpan.textContent = playerScore;
 }
 
-// 상태 메시지 업데이트 함수 (색상 인자 추가, 기본 검정)
 function updateStatus(message, color = "black") {
   const statusDiv = document.getElementById("status");
   statusDiv.textContent = message;
   statusDiv.style.color = color;
 }
 
-// 버튼 활성화/비활성화 제어
 function setButtons(start, hit, doubleDown, stand) {
   document.getElementById("start-btn").disabled = !start;
   document.getElementById("hit-btn").disabled = !hit;
@@ -133,14 +101,11 @@ function setButtons(start, hit, doubleDown, stand) {
   document.getElementById("stand-btn").disabled = !stand;
 }
 
-// 메시지 표시 함수
 function showCreditChangeMessage(buttonId, msg) {
   const messageDiv = document.getElementById(buttonId + "-credit-change");
   if (!messageDiv) return;
-
   messageDiv.textContent = msg;
   messageDiv.style.opacity = "1";
-
   setTimeout(() => {
     messageDiv.style.opacity = "0";
     messageDiv.textContent = "";
@@ -150,37 +115,43 @@ function showCreditChangeMessage(buttonId, msg) {
 function endRound(result, isDoubleDown = false) {
   let message = "";
   let color = "black";
+  let score = 0;
 
   if (result === "player_bust") {
     message = "버스트! 당신이 졌습니다.";
     color = "red";
-  } else if (result === "dealer_bust") {
+    score = 0;
+
+  } else if (result === "dealer_bust" || result === "player_win") {
     const creditWon = isDoubleDown ? DOUBLE_WIN_CREDIT : WIN_CREDIT;
-    message = "딜러가 버스트! 당신이 이겼습니다! + " + creditWon + " 크레딧";
+    message = `당신이 이겼습니다! + ${creditWon} 크레딧`;
     color = "green";
     credits += creditWon;
-  } else if (result === "player_win") {
-    const creditWon = isDoubleDown ? DOUBLE_WIN_CREDIT : WIN_CREDIT;
-    message = "당신이 이겼습니다! + " + creditWon + " 크레딧";
-    color = "green";
-    credits += creditWon;
+    score = creditWon;
+
   } else if (result === "dealer_win") {
     message = "딜러가 이겼습니다.";
     color = "red";
+    score = 0;
+
   } else if (result === "tie") {
     const creditReturn = isDoubleDown ? BET_CREDIT * 2 : TIE_CREDIT;
-    message = "무승부입니다. + " + creditReturn + " 크레딧 (반환)";
+    message = `무승부입니다. + ${creditReturn} 크레딧 (반환)`;
     color = "green";
     credits += creditReturn;
+    score = creditReturn;
   }
 
+  // 화면과 로컬 저장소에 반영
   updateStatus(message, color);
   updateCredits();
   setButtons(true, false, false, false);
   gameInProgress = false;
+  saveScore(score);
+  syncCreditToDB();
+
 }
 
-// 크레딧 업데이트 UI
 function updateCredits() {
   document.getElementById("credits").textContent = credits;
   document.getElementById("bet-credit").textContent = BET_CREDIT;
@@ -189,14 +160,12 @@ function updateCredits() {
   document.getElementById("double-win-credit").textContent = DOUBLE_WIN_CREDIT;
 }
 
-// 딜러 턴 자동 처리
 function dealerTurn(isDoubleDown = false) {
   while (dealerScore < 17) {
     dealerCards.push(drawCard());
     dealerScore = calculateScore(dealerCards);
     updateHands(false);
   }
-
   if (dealerScore > 21) {
     endRound("dealer_bust", isDoubleDown);
   } else if (dealerScore > playerScore) {
@@ -212,93 +181,149 @@ function playerHit() {
   playerCards.push(drawCard());
   playerScore = calculateScore(playerCards);
   updateHands();
-
-  if (playerScore > 21) {
-    endRound("player_bust");
-  }
+  if (playerScore > 21) endRound("player_bust");
 }
 
 function playerStand(isDoubleDown = false) {
-  // 딜러 숨겨진 카드 공개하며 화면 업데이트
   updateHands(false);
-
-  // 딜러 점수 다시 계산 (안전하게)
   dealerScore = calculateScore(dealerCards);
-
-  // 딜러 턴 진행
   dealerTurn(isDoubleDown);
 }
 
-// 더블 다운 함수 수정 예시 (일부 발췌)
 function playerDoubleDown() {
   if (credits < BET_CREDIT) {
     alert("크레딧이 부족합니다.");
     return;
   }
-
   credits -= BET_CREDIT;
   updateCredits();
-
   showCreditChangeMessage("double", `-${BET_CREDIT}`);
-
   playerCards.push(drawCard());
   playerScore = calculateScore(playerCards);
   updateHands();
-
   if (playerScore > 21) {
     endRound("player_bust", true);
   } else {
-    // 더블다운 후 바로 스탠드 처리
     playerStand(true);
   }
 }
 
-// 게임 시작 함수
-// 게임 시작 함수 수정 예시 (일부 발췌)
 function startGame() {
   if (credits < BET_CREDIT) {
     alert("크레딧이 부족합니다.");
     return;
   }
-
   credits -= BET_CREDIT;
   updateCredits();
-
   showCreditChangeMessage("start", `-${BET_CREDIT}`);
-
   gameInProgress = true;
   updateStatus("게임 진행 중...");
-
   createDeck();
   shuffleDeck();
-
   playerCards = [drawCard(), drawCard()];
   dealerCards = [drawCard(), drawCard()];
-
   playerScore = calculateScore(playerCards);
   dealerScore = calculateScore(dealerCards);
-
   updateHands();
-
-  // 버튼 상태: 시작 불가, 히트 가능, 더블 다운 가능, 스탠드 가능
   setButtons(false, true, true, true);
 }
 
-// 변수 초기값 및 이벤트 리스너 세팅
+function saveScore(score) {
+  const memberId = localStorage.getItem("memberId");
+  const gameName = "블랙잭";
+  fetch("/api/game/record", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ memberId, gameName, currentScore: score })
+  })
+      .then(res => res.text())
+      .then(msg => console.log("점수 저장 완료:", msg))
+      .catch(err => console.error("점수 저장 실패:", err));
+}
+
+function updateCreditInDB(amount) {
+  const memberId = localStorage.getItem("memberId");
+
+  fetch("/api/game/updateCredit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ memberId, amount })
+  })
+      .then(res => res.json())
+      .then(data => {
+        credits = data.updatedCredit;
+        localStorage.setItem("memberCredit", credits);
+        updateCredits(); // 화면 반영
+      })
+      .catch(err => console.error("크레딧 DB 반영 실패:", err));
+}
+
+function syncCreditToDB() {
+  const memberId = localStorage.getItem("memberId");
+
+  fetch("/api/game/syncCredit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      memberId,
+      credit: credits
+    })
+  })
+      .then(res => res.text())
+      .then(msg => console.log("크레딧 동기화 완료:", msg))
+      .catch(err => console.error("크레딧 동기화 실패:", err));
+}
+
+document.getElementById("backToMainBtn").addEventListener("click", () => {
+  const memberId = localStorage.getItem("memberId");
+  if (!memberId) {
+    alert("로그인 정보가 없습니다.");
+    window.location.href = "/";
+    return;
+  }
+  fetch(`/member/gameLogin?memberId=${memberId}`)
+      .then(res => res.json())
+      .then(user => {
+        localStorage.setItem("memberCredit", user.memberCredit);
+        localStorage.setItem("memberName", user.memberName);
+        localStorage.setItem("memberRole", user.memberRole);
+        window.location.href = `/ygstory/html/index.html` +
+            `?memberId=${user.memberId}` +
+            `&memberName=${encodeURIComponent(user.memberName)}` +
+            `&memberCredit=${user.memberCredit}` +
+            `&memberRole=${user.memberRole}`;
+      })
+      .catch(() => {
+        alert("크레딧 정보를 불러오는 데 실패했습니다.");
+        window.location.href = "/";
+      });
+});
+
+function getCurrentCredit() {
+  return parseInt(document.getElementById("credits").innerText, 10) || 0;
+}
+
+function updateCredit(newCredit) {
+  document.getElementById("credits").innerText = newCredit;
+  localStorage.setItem("memberCredit", newCredit.toString());
+}
+
 const BET_CREDIT = 5;
-const WIN_CREDIT = BET_CREDIT * 2;
-const TIE_CREDIT = BET_CREDIT;
-const DOUBLE_WIN_CREDIT = BET_CREDIT * 4; // 더블다운 승리 시 4배 지급
+const WIN_CREDIT = 10;
+const TIE_CREDIT = 5;
+const DOUBLE_WIN_CREDIT = 20;
 
-let credits = 30;
+let credits = parseInt(localStorage.getItem("memberCredit")) || 0;
 let gameInProgress = false;
-
 let playerCards = [];
 let dealerCards = [];
 let playerScore = 0;
 let dealerScore = 0;
 
-// 버튼 이벤트 연결
+updateCredits();
+setButtons(true, false, false, false);
+updateStatus("게임을 시작하려면 [시작] 버튼을 누르세요.");
+
 document.getElementById("start-btn").addEventListener("click", startGame);
 document.getElementById("hit-btn").addEventListener("click", () => {
   if (gameInProgress) playerHit();
@@ -309,8 +334,19 @@ document.getElementById("double-btn").addEventListener("click", () => {
 document.getElementById("stand-btn").addEventListener("click", () => {
   if (gameInProgress) playerStand();
 });
+function updateCreditInDB(amount) {
+  const memberId = localStorage.getItem("memberId");
 
-// 초기 화면 세팅
-updateCredits();
-setButtons(true, false, false, false);
-updateStatus("게임을 시작하려면 [시작] 버튼을 누르세요.");
+  fetch("/api/game/updateCredit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ memberId, amount })
+  })
+      .then(res => res.json())
+      .then(data => {
+        credits = data.updatedCredit;
+        localStorage.setItem("memberCredit", credits);
+        updateCredits(); // 화면 반영
+      })
+      .catch(err => console.error("크레딧 DB 반영 실패:", err));
+}

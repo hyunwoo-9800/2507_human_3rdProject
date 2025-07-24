@@ -28,17 +28,17 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<ProductVO> getPendingProduct() {
 
-        // System.out.println("[AdminServiceImpl] getPendingProduct 호출됨");
+        // System.out.println("[GameServiceImpl] getPendingProduct 호출됨");
 
         List<ProductVO> list = adminDAO.selectPendingProduct();
 
         /* if (list == null) {
 
-            System.out.println("[AdminServiceImpl] DAO에서 null 반환됨");
+            System.out.println("[GameServiceImpl] DAO에서 null 반환됨");
 
         } else {
 
-            System.out.println("[AdminServiceImpl] 조회된 상품 개수: " + list.size());
+            System.out.println("[GameServiceImpl] 조회된 상품 개수: " + list.size());
 
             for (ProductVO item : list) {
 
@@ -62,18 +62,18 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<AdminVO> getPendingMember() {
 
-        // System.out.println("[AdminServiceImpl] getPendingMember 호출됨");
+        // System.out.println("[GameServiceImpl] getPendingMember 호출됨");
 
         List<AdminVO> list = adminDAO.selectPendingMember();
 
         if (list == null || list.isEmpty()) {
 
-            // System.out.println("[AdminServiceImpl] DAO에서 null 반환됨");
+            // System.out.println("[GameServiceImpl] DAO에서 null 반환됨");
             return Collections.emptyList();
 
         } else {
 
-            // System.out.println("[AdminServiceImpl] 조회된 유저 수: " + list.size());
+            // System.out.println("[GameServiceImpl] 조회된 유저 수: " + list.size());
 
             for (AdminVO item : list) {
 
@@ -95,19 +95,19 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<AdminVO> getReport() {
 
-        // System.out.println("[AdminServiceImpl] getReport 호출됨");
+        // System.out.println("[GameServiceImpl] getReport 호출됨");
 
         List<AdminVO> list = adminDAO.selectReport();
 
         /* if (list == null) {
 
-            System.out.println("[AdminServiceImpl] DAO에서 null 반환됨");
+            System.out.println("[GameServiceImpl] DAO에서 null 반환됨");
 
         } else {
 
-            System.out.println("[AdminServiceImpl] 조회된 신고 수: " + list.size());
+            System.out.println("[GameServiceImpl] 조회된 신고 수: " + list.size());
 
-            for (AdminVO item : list) {
+            for (GameVO item : list) {
 
                 System.out.println("신고자명: " + item.getReporterName());
 
@@ -128,18 +128,18 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<AdminVO> getMember() {
 
-        // System.out.println("[AdminServiceImpl] getMember 호출됨");
+        // System.out.println("[GameServiceImpl] getMember 호출됨");
 
         List<AdminVO> list = adminDAO.selectMember();
         /* if (list == null) {
 
-             System.out.println("[AdminServiceImpl] DAO에서 null 반환됨");
+             System.out.println("[GameServiceImpl] DAO에서 null 반환됨");
 
         } else {
 
-             System.out.println("[AdminServiceImpl] 조회된 멤버 수: " + list.size());
+             System.out.println("[GameServiceImpl] 조회된 멤버 수: " + list.size());
 
-            for (AdminVO item : list) {
+            for (GameVO item : list) {
 
                 System.out.println("멤버명: " + item.getMemberName());
 
@@ -163,7 +163,7 @@ public class AdminServiceImpl implements AdminService {
 
         List<ProductImageVO> images = adminDAO.getProductImages(productId);
 
-        // System.out.println("[AdminServiceImpl] 조회된 이미지 개수: " + images.size());
+        // System.out.println("[GameServiceImpl] 조회된 이미지 개수: " + images.size());
 
         return adminDAO.getProductImages(productId);
 
@@ -188,7 +188,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void insertAlarm(AdminVO adminVO) {
 
-        // System.out.println("[AdminServiceImpl] insertAlarm 호출");
+        // System.out.println("[GameServiceImpl] insertAlarm 호출");
         // System.out.println("productId: " + adminVO.getProductId());
 
         // UUID, 관리자 ID 등 보완
