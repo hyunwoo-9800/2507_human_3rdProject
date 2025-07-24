@@ -63,11 +63,11 @@ export default function Home() {
         <div>
             <CustomCarousel
                 items={[
-                    '/static/images/banner_tomato.png',
-                    '/static/images/banner_potato.png',
-                    '/static/images/banner_weed.png',
-                    '/static/images/banner_poppy.png',
-                    '/static/images/banner_opium.png',
+                    {image: '/static/images/banner_1.png', link: 'https://www.korea.kr/news/policyNewsView.do?newsId=156670035'},
+                    {image: '/static/images/banner_2.png', link: 'https://www.geoje.go.kr/board/view.geoje?boardId=BBS_0000008&contentsSid=13478&dataSid=306170244&menuCd=DOM_000008902001001000&paging=ok&startPage=1&utm_source=chatgpt.com'},
+                    {image: '/static/images/banner_3.png'},
+                    {image: '/static/images/banner_4.png', link: 'https://www.bizinfo.go.kr/web/lay1/bbs/S1T122C127/AX/210/view.do?eventInfoId=EVEN_000000000066793&utm_source=chatgpt.com'},
+                    {image: '/static/images/banner_5.png', link: 'https://www.krei.re.kr/krei/page/53?cmd=view&biblioId=542351&pageIndex=1'},
                 ]}
                 height="300px"
             />

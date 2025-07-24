@@ -65,7 +65,34 @@ function TableTab({ tabType }) {
     member: '/api/member/reject',
     report: '/api/report/delete',
   }
-
+  const refineProductData = (rawData) => {
+    const productMap = {}
+    rawData.forEach((item) => {
+      if (!productMap[item.productId]) {
+        productMap[item.productId] = { ...item, images: [] }
+      }
+      if (item.imageName && item.imageType) {
+        productMap[item.productId].images.push({
+          imageName: item.imageName,
+          imageType: item.imageType,
+        })
+      }
+    })
+    // 썸네일(200,400) 먼저, 상세(300) 나중에 정렬
+    Object.values(productMap).forEach((product) => {
+      product.images.sort((a, b) => {
+        const getOrder = (type) => (type === '200' || type === '400' ? 0 : 1)
+        return getOrder(a.imageType) - getOrder(b.imageType)
+      })
+    })
+    return Object.values(productMap)
+    // rawData = Object.values(productMap)
+  }
+  const handleClick = async () => {
+    const res = await axios.get('/api/products')
+    const refined = refineProductData(res.data)
+    setItem(refined.map((p, index) => ({ ...p, checked: false })))
+  }
   useEffect(() => {
     setItem([]) //이전 데이터 초기화
     setSelectItem(null) // 선택한 항목 초기화
@@ -79,29 +106,9 @@ function TableTab({ tabType }) {
         console.log('불러온 데이터:', res.data)
 
         let rawData = extractData(res.data, tabType)
-
         // 상품관리일 때만 상품별 images 배열 가공
         if (tabType === 'products') {
-          const productMap = {}
-          rawData.forEach((item) => {
-            if (!productMap[item.productId]) {
-              productMap[item.productId] = { ...item, images: [] }
-            }
-            if (item.imageName && item.imageType) {
-              productMap[item.productId].images.push({
-                imageName: item.imageName,
-                imageType: item.imageType,
-              })
-            }
-          })
-          // 썸네일(200,400) 먼저, 상세(300) 나중에 정렬
-          Object.values(productMap).forEach((product) => {
-            product.images.sort((a, b) => {
-              const getOrder = (type) => (type === '200' || type === '400' ? 0 : 1)
-              return getOrder(a.imageType) - getOrder(b.imageType)
-            })
-          })
-          rawData = Object.values(productMap)
+          rawData = refineProductData(rawData)
         }
 
         const uniqueRawData =
@@ -164,7 +171,6 @@ function TableTab({ tabType }) {
       .map((i) =>
         tabType === 'products' ? i.productId : tabType === 'report' ? i.reportId : i.memberId
       )
-    console.log("삭제할 ID 목록 >>>", selectedIds);
 
     if (selectedIds.length === 0) {
       alert('삭제할 항목을 선택하세요.')
@@ -182,11 +188,11 @@ function TableTab({ tabType }) {
         return axios.get(apiMap[tabType]) // 목록 새로고침
       })
       .then((res) => {
-        console.log(
-          '삭제 후 받은 데이터:',
-          res.data.map((i) => i.productId)
-        )
-        const withCheckbox = res.data.map((p, index) => ({
+        let rawData = res.data
+        if (tabType === 'products') {
+          rawData = refineProductData(res.data)  // <-- 상품일 때 정제
+        }
+        const withCheckbox = rawData.map((p, index) => ({
           ...p,
           checked: false,
           postNum: tabType === 'report' ? index + 1 : undefined,

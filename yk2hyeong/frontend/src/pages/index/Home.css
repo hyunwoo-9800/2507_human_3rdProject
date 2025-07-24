@@ -154,9 +154,9 @@
     line-height: 40px;
 }
 .trendy-price-caution{
-    font-size: 11px !important;
+    font-size: 9px !important;
     display: flex;
-    text-indent: 10px;
+    padding-left: 15px;
 }
 
 .trendy-price-content {

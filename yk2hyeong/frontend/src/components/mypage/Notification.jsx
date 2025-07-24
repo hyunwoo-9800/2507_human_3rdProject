@@ -44,7 +44,7 @@ function Notification({memberId, readStatus}) {
         },
         reported: {
             icon: "fa-triangle-exclamation",
-            label: "신고누적",
+            label: "판매중단",
             class: "status-reported"
         },
         expired: {
@@ -56,7 +56,7 @@ function Notification({memberId, readStatus}) {
     // 상태별 들어가는 내용 구별
     const columnsByStatus = {
         purchased: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate'],
-        sold: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate', 'buyerName', 'deliveryAddr', 'deliveryDate'],
+        sold: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate', 'buyerName', 'deliveryDate','deliveryAddr'],
         approved: ['sellerCompany', 'approvedDate', 'productUnitPrice', 'createdDate', 'productName'],
         rejected: ['sellerCompany', 'productUnitPrice', 'productName', 'createdDate', 'rejectedReason'],
         reported: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate'],
@@ -115,7 +115,7 @@ function Notification({memberId, readStatus}) {
                         setModalConfig({
                             type: "error",
                             title: "오류 발생",
-                            content: `해당 상품은 승인거부되었습니다. 거부사유: ${item.alarmContent || "사유없음"}`,
+                            content: `해당 상품은 승인거부되었습니다. <br/>거부사유: ${item.alarmContent || "사유없음"}`,
                             buttonLabel: "확인",
                             showCancel: false,
                             showOnMount: true
@@ -188,6 +188,7 @@ function Notification({memberId, readStatus}) {
                                     {item.status === "reported" && (
                                         <div className="report-row">
                                             <h3 className="reported-message">상품이 숨김처리 되었습니다.</h3>
+                                            <h3 className="reported-message">신고 사유: </h3>
                                         </div>
                                     )}
 

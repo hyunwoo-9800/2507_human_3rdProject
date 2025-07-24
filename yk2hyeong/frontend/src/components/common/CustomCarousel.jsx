@@ -67,7 +67,36 @@ const CustomCarousel = ({
                                     }}
                                 />
                             ) : (
-                                item
+                                item.link ? (
+                                    <a
+                                        href={item.link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{ width: '100%', height: '100%' }}
+                                    >
+                                        <img
+                                            src={item.image}
+                                            alt={`배너${index + 1}`}
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                                display: 'block',
+                                            }}
+                                        />
+                                    </a>
+                                ) : (
+                                    <img
+                                        src={item.image}
+                                        alt={`배너${index + 1}`}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            objectFit: 'cover',
+                                            display: 'block',
+                                        }}
+                                    />
+                                )
                             )}
                         </div>
                     </div>
