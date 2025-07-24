@@ -408,6 +408,7 @@ const CustomDetailCard = ({
                     setReportOpen(false)
                     setReportDetail('')
                     setReportReason('')
+                    setBanListOpen(false) // 금지품목 안내 모달도 닫기
                     alert('신고가 접수되었습니다.')
                   }}
                 >
