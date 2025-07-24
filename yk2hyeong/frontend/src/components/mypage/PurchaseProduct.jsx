@@ -100,7 +100,12 @@ function PurchaseProduct({selectedYear, selectedMonth}) {
             ) : (
                 <>
                     {paginatedProducts.map((p, idx) => (
-                        <div className="card" key={idx}>
+                        <div
+                            className="card"
+                            key={idx}
+                            onClick={() => navigate(`/product/${p.productId}`)}
+                            style={{ cursor: 'pointer' }}
+                        >
                             <img
                                 src={getImageSrc(p.imageName)}
                                 alt="product"

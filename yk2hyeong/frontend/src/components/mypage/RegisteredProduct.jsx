@@ -54,6 +54,7 @@ function RegisteredProduct({ selectedYear, selectedMonth }) {
 
         const cardData = filtered.map((product) => {
           return {
+            productId: product.productId,
             sellerCompany: product.sellerCompany,
             productName: product.productName,
             productDescription: product.productDescription,
@@ -108,7 +109,13 @@ function RegisteredProduct({ selectedYear, selectedMonth }) {
       ) : (
           <>
       {paginatedProducts.map((p, idx) => (
-        <div className="card" key={idx}>
+        <div
+          className="card"
+          key={idx}
+          onClick={() => navigate(`/product/${p.productId}`)}
+          style={{ cursor: 'pointer' }}
+        >
+
           <img
             src={getImageSrc(p)}
             alt="product"

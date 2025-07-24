@@ -1,35 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import CustomPagination from '../common/CustomPagination'
-import {useNavigate} from "react-router-dom";
-import CustomLoading from "../common/CustomLoading";
+import { useNavigate } from 'react-router-dom'
+import CustomLoading from '../common/CustomLoading'
+import { FaStar, FaRegStar } from 'react-icons/fa' // 별 아이콘 사용
 
 function WishlistProduct({ selectedYear, selectedMonth }) {
   const [products, setProducts] = useState([])
+  const [favoriteProductIds, setFavoriteProductIds] = useState([])
   const memberId = localStorage.getItem('memberId')
   const [page, setPage] = useState(1)
   const pageSize = 5
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     if (!memberId) {
       console.warn('로그인 정보 없음: memberId가 없습니다.')
       setProducts([])
-      setIsLoading(false) //로딩 끝 처리
+      setIsLoading(false)
       return
     }
 
     const fetchWishlistProducts = async () => {
-
-      setIsLoading(true);
-
+      setIsLoading(true)
       try {
         const favoriteRes = await axios.get(`/api/favorites?memberId=${memberId}`)
-        const favoriteIds = favoriteRes.data
+        const favoriteIds = favoriteRes.data || []
+        setFavoriteProductIds(favoriteIds)
 
-        if (!favoriteIds || favoriteIds.length === 0) {
+        if (favoriteIds.length === 0) {
           setProducts([])
           return
         }
@@ -37,15 +37,15 @@ function WishlistProduct({ selectedYear, selectedMonth }) {
         const productRes = await axios.get('/api/products')
         const allProducts = productRes.data
 
-        const matchedProducts = allProducts.filter((p) => favoriteIds.includes(p.productId))
+        const matchedProducts = allProducts.filter((p) =>
+            favoriteIds.includes(p.productId)
+        )
 
-        // productId별로 그룹핑하여 썸네일(200) 우선 선택
         const productMap = new Map()
         matchedProducts.forEach((p) => {
           if (!productMap.has(p.productId)) {
             productMap.set(p.productId, p)
           } else {
-            // 이미 있는 상품이면, 썸네일(200)을 우선적으로 선택
             const existing = productMap.get(p.productId)
             if (p.imageType === '200' && existing.imageType !== '200') {
               productMap.set(p.productId, p)
@@ -68,13 +68,28 @@ function WishlistProduct({ selectedYear, selectedMonth }) {
         setPage(1)
       } catch (err) {
         console.error('관심상품 불러오기 실패:', err)
-      }finally {
-        setIsLoading(false) //로딩 종료
+      } finally {
+        setIsLoading(false)
       }
     }
 
     fetchWishlistProducts()
   }, [memberId, selectedYear, selectedMonth])
+
+  const toggleFavorite = async (productId) => {
+    try {
+      await axios.delete('/api/favorites', {
+        data: { memberId, productId },
+      })
+      const newFavs = favoriteProductIds.filter((id) => id !== productId)
+      setFavoriteProductIds(newFavs)
+      setProducts(products.filter((p) => p.productId !== productId))
+      alert('관심상품에서 삭제되었습니다!')
+    } catch (err) {
+      console.error('즐겨찾기 삭제 실패:', err)
+      alert('즐겨찾기 삭제 중 오류가 발생했습니다.')
+    }
+  }
 
   const getImageSrc = (product) => {
     if (product.imagePath && product.imageName) {
@@ -90,68 +105,109 @@ function WishlistProduct({ selectedYear, selectedMonth }) {
   const paginatedProducts = products.slice((page - 1) * pageSize, page * pageSize)
 
   return (
-    <div className="card-list">
-      {isLoading ? (
-          <CustomLoading size="large"/>
-          ) : products.length === 0 ? (
-          <div className="no-purchased-products">
-            <h3>관심등록한 상품이 없습니다</h3>
-            <button onClick={() => navigate("/productlist")}>상품 목록으로 이동</button>
-          </div>
-      ) : (
-          <>
-      {paginatedProducts.map((item) => (
-        <div className="card" key={item.productId}>
-          <img
-            src={getImageSrc(item)}
-            alt="product"
-            onError={(e) => {
-              if (e.target.src.includes('no-image.png')) return
-              e.target.onerror = null
-              e.target.src = '/static/images/thumbnail/no-image.png'
-            }}
-          />
-          <div className="card-content">
-            <div className="card-content-left">
-              <p>
-                <strong className="item-label">출하자</strong>
-                <span>{item.sellerCompany}</span>
-              </p>
-              <p>
-                <strong className="item-label">상품명</strong>
-                <span>{item.productName}</span>
-              </p>
-              <p>
-                <strong className="item-label">최소구매수량</strong>
-                <span>{item.productMinQtr}kg</span>
-              </p>
+      <div className="card-list">
+        {isLoading ? (
+            <CustomLoading size="large" />
+        ) : products.length === 0 ? (
+            <div className="no-purchased-products">
+              <h3>관심등록한 상품이 없습니다</h3>
+              <button onClick={() => navigate('/productlist')}>상품 목록으로 이동</button>
             </div>
-            <div className="card-content-right">
-              <p>
-                <strong className="item-label">단위 당 가격</strong>
-                <span>{Number(item.productUnitPrice).toLocaleString()}원</span>
-              </p>
-              <p>
-                <strong className="item-label">등록일자</strong>
-                <span>{item.createdDate}</span>
-              </p>
+        ) : (
+            <div>
+              {paginatedProducts.map((item) => (
+                  <div
+                      className="card"
+                      key={item.productId}
+                      onClick={() => navigate(`/product/${item.productId}`)}
+                      style={{ cursor: 'pointer', position: 'relative' }}
+                  >
+                    {/* 별 아이콘 */}
+                    {favoriteProductIds.includes(item.productId) ? (
+                        <FaStar
+                            style={{
+                              position: 'absolute',
+                              top: 8,
+                              right: 8,
+                              color: '#ffc107',
+                              fontSize: 22,
+                              zIndex: 2,
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              toggleFavorite(item.productId)
+                            }}
+                        />
+                    ) : (
+                        <FaRegStar
+                            style={{
+                              position: 'absolute',
+                              top: 8,
+                              right: 8,
+                              color: '#ccc',
+                              fontSize: 22,
+                              zIndex: 2,
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              toggleFavorite(item.productId)
+                            }}
+                        />
+                    )}
+
+                    {/* 상품 이미지 */}
+                    <img
+                        src={getImageSrc(item)}
+                        alt="product"
+                        onError={(e) => {
+                          if (e.target.src.includes('no-image.png')) return
+                          e.target.onerror = null
+                          e.target.src = '/static/images/thumbnail/no-image.png'
+                        }}
+                    />
+
+                    <div className="card-content">
+                      <div className="card-content-left">
+                        <p>
+                          <strong className="item-label">출하자</strong>
+                          <span>{item.sellerCompany}</span>
+                        </p>
+                        <p>
+                          <strong className="item-label">상품명</strong>
+                          <span>{item.productName}</span>
+                        </p>
+                        <p>
+                          <strong className="item-label">최소구매수량</strong>
+                          <span>{item.productMinQtr}kg</span>
+                        </p>
+                      </div>
+                      <div className="card-content-right">
+                        <p>
+                          <strong className="item-label">단위 당 가격</strong>
+                          <span>{Number(item.productUnitPrice).toLocaleString()}원</span>
+                        </p>
+                        <p>
+                          <strong className="item-label">등록일자</strong>
+                          <span>{item.createdDate}</span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+              ))}
             </div>
-          </div>
-        </div>
-      ))}
-    </>
-          )}
-      {!isLoading && products.length > 0 && (
-          <div className="pagination-box">
-            <CustomPagination
-                defaultCurrent={page}
-                total={products.length}
-                pageSize={pageSize}
-                onChange={handlePageChange}
-            />
-          </div>
-      )}
-    </div>
+        )}
+
+        {!isLoading && products.length > 0 && (
+            <div className="pagination-box">
+              <CustomPagination
+                  defaultCurrent={page}
+                  total={products.length}
+                  pageSize={pageSize}
+                  onChange={handlePageChange}
+              />
+            </div>
+        )}
+      </div>
   )
 }
 
