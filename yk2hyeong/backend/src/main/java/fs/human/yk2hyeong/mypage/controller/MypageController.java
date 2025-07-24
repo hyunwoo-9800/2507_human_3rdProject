@@ -42,4 +42,12 @@ public class MypageController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("알림 읽음");
         }
     }
+
+    //    알림탭 알림삭제 이벤트
+    @DeleteMapping("/notification/{alarmId}")
+    public ResponseEntity<?> deleteNotification(@PathVariable String alarmId) {
+        mypageService.deleteNotification(alarmId);
+        return ResponseEntity.ok().build();
+    }
+
 }

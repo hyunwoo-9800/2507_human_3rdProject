@@ -18,10 +18,11 @@
 .intro-right h1{
     font-size: 45px;
 }
-.site-title {
-    font-size: 32px;
+.siteInfo-title {
+    font-size: 28px;
     font-weight: bold;
     color: #1a1a1a;
+    margin-top: 30px;
     margin-bottom: 1px;
 }
 

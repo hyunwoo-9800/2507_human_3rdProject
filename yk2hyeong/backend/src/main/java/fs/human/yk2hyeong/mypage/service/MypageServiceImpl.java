@@ -3,6 +3,7 @@ import fs.human.yk2hyeong.mypage.dao.MypageDAO;
 import fs.human.yk2hyeong.mypage.vo.MypageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,5 +32,12 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public void updateIsRead(String alarmId){
         mypageDAO.updateIsRead(alarmId);
+    }
+
+//    마이페이지 알림 삭제
+    @Transactional
+    @Override
+    public void deleteNotification(String alarmId){
+        mypageDAO.deleteNotification(alarmId);
     }
 }

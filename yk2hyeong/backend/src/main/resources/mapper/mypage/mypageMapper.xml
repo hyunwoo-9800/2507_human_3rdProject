@@ -144,4 +144,10 @@
         SET IS_READ = 'Y'
         WHERE ALARM_ID = #{alarmId}
     </update>
+
+    <delete id="deleteNotification" parameterType="string">
+        DELETE FROM TB_ALARM
+        WHERE ALARM_ID = #{alarmId}
+    </delete>
+
 </mapper>

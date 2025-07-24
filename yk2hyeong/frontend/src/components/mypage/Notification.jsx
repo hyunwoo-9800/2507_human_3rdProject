@@ -115,7 +115,7 @@ function Notification({memberId, readStatus}) {
                         setModalConfig({
                             type: "error",
                             title: "오류 발생",
-                            content: `해당 상품은 승인거부되었습니다. <br/>거부사유: ${item.alarmContent || "사유없음"}`,
+                            content: `해당 상품은 승인거부되었습니다. 거부사유: ${item.alarmContent || "사유없음"}`,
                             buttonLabel: "확인",
                             showCancel: false,
                             showOnMount: true
@@ -150,6 +150,20 @@ function Notification({memberId, readStatus}) {
             .catch(err => {
                 console.log("알림 읽음 처리 실패:",err);
             });
+    };
+    // 알림삭제버튼
+    const handleDeleteAlarm = async (alarmId) => {
+        const confirmDelete = window.confirm("정말 이 알림을 삭제하시겠습니까?");
+        if (!confirmDelete) return;
+
+        try {
+            await axios.delete(`/api/mypage/notification/${alarmId}`);
+            setNotifications((prev) => prev.filter((n) => n.alarmId !== alarmId));
+            alert("알림이 삭제되었습니다.");
+        } catch (err) {
+            console.error("알림 삭제 실패:", err);
+            alert("삭제 중 오류가 발생했습니다.");
+        }
     };
 
 
@@ -197,8 +211,6 @@ function Notification({memberId, readStatus}) {
                                         let value = "";
 
                                         if (item.status === "sold") {
-                                            console.log("알림 항목:", item);
-                                            console.log("현재 status:", item.status);
                                             const extra = soldExtraData.find(e => e.productId === item.productId);
                                             if (extra) {
                                                 if (colKey === "deliveryAddr") {
@@ -248,7 +260,7 @@ function Notification({memberId, readStatus}) {
                                         return (
                                             <p key={idx}>
                                                 <strong className="item-label">{labelMap[colKey]}</strong>
-                                                <span>{value}</span>
+                                                <span className="item-value">{value}</span>
                                             </p>
                                         );
                                     })}
@@ -257,7 +269,9 @@ function Notification({memberId, readStatus}) {
                                 <i
                                     className="fa-solid fa-xmark"
                                     id="delete-btn"
-                                    onClick={(e) => {e.stopPropagation();}}
+                                    onClick={(e) => {e.stopPropagation();
+                                    handleDeleteAlarm(item.alarmId);
+                                    }}
                                 >
                                 </i>
                             </div>

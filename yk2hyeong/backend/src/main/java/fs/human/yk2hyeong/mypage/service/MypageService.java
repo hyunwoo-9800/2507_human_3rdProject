@@ -13,4 +13,6 @@ public interface MypageService {
 
 //    알림탭 카드 읽음
     void updateIsRead(String alarmId);
+
+    void deleteNotification(String alarmId);
 }

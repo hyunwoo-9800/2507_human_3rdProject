@@ -2,6 +2,7 @@ package fs.human.yk2hyeong.common.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -30,6 +31,8 @@ public class WebSecurityConfig {
                 .httpBasic(basic -> basic.disable())            // HTTP Basic 인증 비활성화
                 .authorizeHttpRequests(auth -> auth
 
+                        // DELETE 메서드 허용 (alarm 삭제용)
+                        .requestMatchers(HttpMethod.DELETE, "/api/mypage/notification/**").permitAll()
                         .requestMatchers("/",           // 홈
                                 "/index.html",          // 루트 HTML
                                 "/static/**",           // 정적 리소스
