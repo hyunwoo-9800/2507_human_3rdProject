@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,23 +53,23 @@ public class ImageServiceImpl implements ImageService {
             String newFileName = uuid + "_" + originalName;                   // 새로운 파일 이름 생성
             String saveDir = "images/memberimages";                    // DB에 저장할 상대 경로
 
-            // 실제 저장 경로 (두 곳)
-            String frontendPath = "yk2hyeong/frontend/public/static/images/memberimages";
-            String backendPath = "yk2hyeong/backend/src/main/resources/static/images/memberimages";
-            System.out.println("[DEBUG] frontendPath: " + frontendPath);
-            System.out.println("[DEBUG] backendPath: " + backendPath);
+            // 1. 백엔드 static 폴더에 바로 저장
+            String backendImageDir = System.getProperty("user.dir") + "/src/main/resources/static/images/memberimages/";
+            File backendDir = new File(backendImageDir);
+            if (!backendDir.exists()) backendDir.mkdirs();
+            File backendDestFile = new File(backendImageDir, newFileName);
+            file.transferTo(backendDestFile);
 
-            // 디렉토리 생성
-            Files.createDirectories(Paths.get(frontendPath));
-            Files.createDirectories(Paths.get(backendPath));
-
-            // 파일을 프론트엔드 경로에 저장
-            Path frontendSavePath = Paths.get(frontendPath, newFileName);
-            file.transferTo(frontendSavePath);
-
-            // 백엔드 경로로 복사
-            Path backendSavePath = Paths.get(backendPath, newFileName);
-            Files.copy(frontendSavePath, backendSavePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            // 2. 프론트엔드 public 폴더로 복사
+            try {
+                String frontendImageDir = System.getProperty("user.dir").replace("backend", "frontend") + "/public/static/images/memberimages/";
+                File frontendDir = new File(frontendImageDir);
+                if (!frontendDir.exists()) frontendDir.mkdirs();
+                File frontendDestFile = new File(frontendImageDir, newFileName);
+                java.nio.file.Files.copy(backendDestFile.toPath(), frontendDestFile.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                System.err.println("[WARN] 프론트엔드 public 폴더 복사 실패: " + e.getMessage());
+            }
 
             // 이미지 타입을 코드에서 조회
             String imgType = codeDAO.getImageLowCodeValue();
