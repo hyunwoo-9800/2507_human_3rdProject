@@ -19,7 +19,7 @@ export default function ProductRegisterGuide({ checked, onChangeChecked, onNext 
       <p>상품 등록 시 유의사항</p>
       <ol style={{ marginBottom: '32px' }}>
         <li style={{ marginBottom: '8px' }}>
-          <strong>상품명은 중복 없이 명확하게 작성</strong>해 주세요. (예: "2024년 햇고구마 10kg")
+          <strong>상품명은 명확하게 작성</strong>해 주세요. (예: "2025년 천안산 호두 10kg")
         </li>
         <li style={{ marginBottom: '8px' }}>
           <strong>상품 이미지는 1장 이상 등록</strong>해야 하며, 실제 상품과 동일해야 합니다.
@@ -46,7 +46,7 @@ export default function ProductRegisterGuide({ checked, onChangeChecked, onNext 
         <li style={{ marginBottom: '8px' }}>
           등록된 상품 정보가 사실과 다를 경우, 거래 제한 및 판매 중지 조치가 있을 수 있습니다.
         </li>
-        <li style={{ marginBottom: '8px' }}>예약상품의 경우 예약금의 비율은 기본 50%입니다.</li>
+        <li style={{ marginBottom: '8px' }}>예약상품의 경우 예약금의 비율은 50%입니다.</li>
       </ol>
 
       <div>
@@ -79,11 +79,17 @@ export default function ProductRegisterGuide({ checked, onChangeChecked, onNext 
             </tr>
             <tr>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>기타 금지</td>
-              <td style={{ border: '1px solid #ccc', padding: '8px' }}>작물씨앗, 묘목, 농약, 비료</td>
+              <td style={{ border: '1px solid #ccc', padding: '8px' }}>
+                작물씨앗, 묘목, 농약, 비료
+              </td>
             </tr>
             <tr>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>동물성 식품</td>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>고기, 생선, 계란, 유제품</td>
+            </tr>
+            <tr>
+              <td style={{ border: '1px solid #ccc', padding: '8px' }}>동물</td>
+              <td style={{ border: '1px solid #ccc', padding: '8px' }}>동물, 생명체 등</td>
             </tr>
             <tr>
               <td style={{ border: '1px solid #ccc', padding: '8px' }}>그 외</td>
