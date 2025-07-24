@@ -52,13 +52,15 @@ const CustomDetailCard = ({
     { label: '기타', value: '기타' },
   ]
 
+  // 신고 모달: left 100px, top 200px
   const [reportModalPos, setReportModalPos] = useState({
-    x: window.innerWidth / 2 - 170,
-    y: window.innerHeight / 2 - 160,
+    x: 100,
+    y: 200,
   })
+  // 금지 품목 모달: left 750px, top 250px
   const [banModalPos, setBanModalPos] = useState({
-    x: window.innerWidth / 2 + 220,
-    y: window.innerHeight / 2 - 130,
+    x: 750,
+    y: 250,
   })
   const [dragging, setDragging] = useState(null) // { type: 'report'|'ban', offsetX, offsetY }
   const modalRefs = { report: useRef(null), ban: useRef(null) }
