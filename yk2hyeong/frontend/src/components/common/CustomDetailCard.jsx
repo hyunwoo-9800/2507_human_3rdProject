@@ -3,7 +3,7 @@ import CustomInputNumber from './CustomInputNumber'
 import { StarFilled, StarOutlined } from '@ant-design/icons'
 import CustomRadio from './CustomRadio'
 import axios from 'axios'
-import CustomModal from './CustomModal'
+// CustomModal import 제거
 
 const CustomDetailCard = ({
   productName = '',
@@ -41,6 +41,16 @@ const CustomDetailCard = ({
 
   const [orderQuantity, setOrderQuantity] = useState(defaultQuantity)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
+  const [isReportOpen, setReportOpen] = useState(false)
+  const [isBanListOpen, setBanListOpen] = useState(false)
+  const [reportReason, setReportReason] = useState('')
+  const reportOptions = [
+    { label: '부정확한 상품 정보/이미지', value: '부정확한 상품 정보/이미지' },
+    { label: '스팸 혹은 중복 게시물', value: '스팸 혹은 중복 게시물' },
+    { label: '금지 품목 등록', value: '금지 품목 등록' },
+    { label: '허위 광고', value: '허위 광고' },
+    { label: '기타', value: '기타' },
+  ]
 
   // 수량 경계값 동기화
   useEffect(() => {
@@ -190,32 +200,21 @@ const CustomDetailCard = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             {/* 신고하기 버튼을 별 왼쪽에 위치 */}
             {memberId && (
-              <CustomModal
-                type="warning"
-                title="상품 신고"
-                content={
-                  <div>
-                    <p>
-                      <strong>신고 사유를 선택해주세요:</strong>
-                    </p>
-                    <ul style={{ marginTop: 10, paddingLeft: 20 }}>
-                      <li>부정확한 상품 정보</li>
-                      <li>부적절한 상품 이미지</li>
-                      <li>허위 광고</li>
-                      <li>가격 조작 의심</li>
-                      <li>기타</li>
-                    </ul>
-                    <p style={{ marginTop: 15, color: '#666', fontSize: '14px' }}>
-                      신고 내용은 검토 후 처리됩니다. 신고하신 내용이 확인되면 해당 상품이 조치될 수
-                      있습니다.
-                    </p>
-                  </div>
-                }
-                buttonLabel="신고하기"
-                buttonColor="warning"
-                buttonSize="sm"
-                successMessage="신고가 접수되었습니다. 검토 후 처리하겠습니다."
-              />
+              <button
+                style={{
+                  backgroundColor: '#E5402E',
+                  color: 'white',
+                  border: '1px solid #E5402E',
+                  borderRadius: 4,
+                  padding: '4px 10px',
+                  fontSize: 14,
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                }}
+                onClick={() => setReportOpen(true)}
+              >
+                신고하기
+              </button>
             )}
             <div
               onClick={toggleFavorite}
@@ -232,6 +231,143 @@ const CustomDetailCard = ({
             </div>
           </div>
         </div>
+
+        {/* 신고 모달 */}
+        {isReportOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              background: '#fffbe6',
+              border: '2px solid #ffe58f',
+              borderRadius: 12,
+              boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+              zIndex: 1001,
+              minWidth: 340,
+              padding: 32,
+              minHeight: 320,
+            }}
+          >
+            {/* 닫기 버튼 오른쪽 상단 */}
+            <button
+              style={{
+                position: 'absolute',
+                top: 12,
+                right: 16,
+                background: 'none',
+                border: 'none',
+                fontSize: 30,
+                color: 'black',
+                cursor: 'pointer',
+                fontWeight: 700,
+              }}
+              onClick={() => setReportOpen(false)}
+              aria-label="신고 모달 닫기"
+            >
+              ×
+            </button>
+            <div style={{ fontWeight: 700, fontSize: 20, marginBottom: 16, color: '#d48806' }}>
+              상품 신고
+            </div>
+            <div>
+              <p>
+                <span
+                  style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+                  onClick={() => setBanListOpen(true)}
+                >
+                  금지 품목 확인하기
+                </span>
+              </p>
+              <p>
+                <strong>신고 사유를 선택해주세요:</strong>
+              </p>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 10,
+                  alignItems: 'flex-start',
+                }}
+              >
+                {reportOptions.map((option) => (
+                  <label
+                    key={option.value}
+                    style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: 4 }}
+                  >
+                    <input
+                      type="radio"
+                      name="reportReason"
+                      value={option.value}
+                      checked={reportReason === option.value}
+                      onChange={() => setReportReason(option.value)}
+                      style={{ marginRight: 4 }}
+                    />
+                    {option.label}
+                  </label>
+                ))}
+              </div>
+              <p style={{ marginTop: 15, color: '#666', fontSize: '14px' }}>
+                신고 내용은 검토 후 처리됩니다. 신고하신 내용이 확인되면 해당 상품이 조치될 수
+                있습니다.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* 금지 품목 모달 (신고 모달 오른쪽에 위치) */}
+        {isBanListOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              top: '50%',
+              left: 'calc(50% + 220px)',
+              transform: 'translate(-50%, -50%)',
+              background: '#e6f7ff',
+              border: '2px solid #91d5ff',
+              borderRadius: 12,
+              boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+              zIndex: 1002,
+              minWidth: 320,
+              padding: 32,
+              minHeight: 260,
+            }}
+          >
+            {/* 닫기 버튼 오른쪽 상단 */}
+            <button
+              style={{
+                position: 'absolute',
+                top: 12,
+                right: 16,
+                background: 'none',
+                border: 'none',
+                fontSize: 30,
+                color: 'black',
+                cursor: 'pointer',
+                fontWeight: 700,
+              }}
+              onClick={() => setBanListOpen(false)}
+              aria-label="금지 품목 모달 닫기"
+            >
+              ×
+            </button>
+            <div style={{ fontWeight: 700, fontSize: 20, marginBottom: 16, color: '#1890ff' }}>
+              금지 품목 안내
+            </div>
+            <ul style={{ marginTop: 10, paddingLeft: 20 }}>
+              <li>반찬류, 탕류 등 가공식품(곶감 제외)</li>
+              <li>작물씨앗, 묘목, 농약, 비료</li>
+              <li>고기, 생선, 계란, 유제품 등 동물성 식품</li>
+              <li>동물, 생명체</li>
+              <li>그 외 상품 카테고리에 없는 품목</li>
+            </ul>
+            <p style={{ marginTop: 15, color: '#666', fontSize: '14px' }}>
+              위 품목은 등록 및 판매가 금지되어 있습니다.
+              <br /> 위반 시 상품이 삭제될 수 있습니다.
+            </p>
+          </div>
+        )}
 
         <div style={{ width: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
