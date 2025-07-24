@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import CustomInputNumber from './CustomInputNumber'
 import { StarFilled, StarOutlined } from '@ant-design/icons'
 import CustomRadio from './CustomRadio'
@@ -52,6 +52,17 @@ const CustomDetailCard = ({
     { label: '기타', value: '기타' },
   ]
 
+  const [reportModalPos, setReportModalPos] = useState({
+    x: window.innerWidth / 2 - 170,
+    y: window.innerHeight / 2 - 160,
+  })
+  const [banModalPos, setBanModalPos] = useState({
+    x: window.innerWidth / 2 + 220,
+    y: window.innerHeight / 2 - 130,
+  })
+  const [dragging, setDragging] = useState(null) // { type: 'report'|'ban', offsetX, offsetY }
+  const modalRefs = { report: useRef(null), ban: useRef(null) }
+
   // 수량 경계값 동기화
   useEffect(() => {
     setOrderQuantity((q) => {
@@ -61,6 +72,36 @@ const CustomDetailCard = ({
       return next
     })
   }, [minOrder, quantity])
+
+  // 드래그 이벤트 핸들러
+  const handleMouseDown = (type, e) => {
+    const modalRect = modalRefs[type].current.getBoundingClientRect()
+    setDragging({
+      type,
+      offsetX: e.clientX - modalRect.left,
+      offsetY: e.clientY - modalRect.top,
+    })
+  }
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!dragging) return
+      if (dragging.type === 'report') {
+        setReportModalPos({ x: e.clientX - dragging.offsetX, y: e.clientY - dragging.offsetY })
+      } else if (dragging.type === 'ban') {
+        setBanModalPos({ x: e.clientX - dragging.offsetX, y: e.clientY - dragging.offsetY })
+      }
+    }
+    const handleMouseUp = () => setDragging(null)
+    if (dragging) {
+      window.addEventListener('mousemove', handleMouseMove)
+      window.addEventListener('mouseup', handleMouseUp)
+    }
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [dragging])
 
   const handleOrderTypeChange = (value) => {
     setOrderType(value)
@@ -235,11 +276,11 @@ const CustomDetailCard = ({
         {/* 신고 모달 */}
         {isReportOpen && (
           <div
+            ref={modalRefs.report}
             style={{
               position: 'fixed',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              left: reportModalPos.x,
+              top: reportModalPos.y,
               background: '#fffbe6',
               border: '2px solid #ffe58f',
               borderRadius: 12,
@@ -248,28 +289,39 @@ const CustomDetailCard = ({
               minWidth: 340,
               padding: 32,
               minHeight: 320,
+              cursor: dragging && dragging.type === 'report' ? 'move' : 'default',
             }}
           >
-            {/* 닫기 버튼 오른쪽 상단 */}
-            <button
+            {/* 드래그 핸들러: 제목줄 */}
+            <div
               style={{
-                position: 'absolute',
-                top: 12,
-                right: 16,
-                background: 'none',
-                border: 'none',
-                fontSize: 30,
-                color: 'black',
-                cursor: 'pointer',
                 fontWeight: 700,
+                fontSize: 20,
+                marginBottom: 16,
+                color: '#d48806',
+                cursor: 'move',
+                userSelect: 'none',
               }}
-              onClick={() => setReportOpen(false)}
-              aria-label="신고 모달 닫기"
+              onMouseDown={(e) => handleMouseDown('report', e)}
             >
-              ×
-            </button>
-            <div style={{ fontWeight: 700, fontSize: 20, marginBottom: 16, color: '#d48806' }}>
               상품 신고
+              <button
+                style={{
+                  position: 'absolute',
+                  top: 12,
+                  right: 16,
+                  background: 'none',
+                  border: 'none',
+                  fontSize: 30,
+                  color: 'black',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                }}
+                onClick={() => setReportOpen(false)}
+                aria-label="신고 모달 닫기"
+              >
+                ×
+              </button>
             </div>
             <div>
               <p>
@@ -319,11 +371,11 @@ const CustomDetailCard = ({
         {/* 금지 품목 모달 (신고 모달 오른쪽에 위치) */}
         {isBanListOpen && (
           <div
+            ref={modalRefs.ban}
             style={{
               position: 'fixed',
-              top: '50%',
-              left: 'calc(50% + 220px)',
-              transform: 'translate(-50%, -50%)',
+              left: banModalPos.x,
+              top: banModalPos.y,
               background: '#e6f7ff',
               border: '2px solid #91d5ff',
               borderRadius: 12,
@@ -332,28 +384,39 @@ const CustomDetailCard = ({
               minWidth: 320,
               padding: 32,
               minHeight: 260,
+              cursor: dragging && dragging.type === 'ban' ? 'move' : 'default',
             }}
           >
-            {/* 닫기 버튼 오른쪽 상단 */}
-            <button
+            {/* 드래그 핸들러: 제목줄 */}
+            <div
               style={{
-                position: 'absolute',
-                top: 12,
-                right: 16,
-                background: 'none',
-                border: 'none',
-                fontSize: 30,
-                color: 'black',
-                cursor: 'pointer',
                 fontWeight: 700,
+                fontSize: 20,
+                marginBottom: 16,
+                color: '#1890ff',
+                cursor: 'move',
+                userSelect: 'none',
               }}
-              onClick={() => setBanListOpen(false)}
-              aria-label="금지 품목 모달 닫기"
+              onMouseDown={(e) => handleMouseDown('ban', e)}
             >
-              ×
-            </button>
-            <div style={{ fontWeight: 700, fontSize: 20, marginBottom: 16, color: '#1890ff' }}>
               금지 품목 안내
+              <button
+                style={{
+                  position: 'absolute',
+                  top: 12,
+                  right: 16,
+                  background: 'none',
+                  border: 'none',
+                  fontSize: 30,
+                  color: 'black',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                }}
+                onClick={() => setBanListOpen(false)}
+                aria-label="금지 품목 모달 닫기"
+              >
+                ×
+              </button>
             </div>
             <ul style={{ marginTop: 10, paddingLeft: 20 }}>
               <li>반찬류, 탕류 등 가공식품(곶감 제외)</li>
