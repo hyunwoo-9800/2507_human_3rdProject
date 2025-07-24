@@ -44,6 +44,7 @@ const CustomDetailCard = ({
   const [isReportOpen, setReportOpen] = useState(false)
   const [isBanListOpen, setBanListOpen] = useState(false)
   const [reportReason, setReportReason] = useState('')
+  const [reportDetail, setReportDetail] = useState('')
   const reportOptions = [
     { label: '부정확한 상품 정보/이미지', value: '부정확한 상품 정보/이미지' },
     { label: '스팸 혹은 중복 게시물', value: '스팸 혹은 중복 게시물' },
@@ -319,7 +320,11 @@ const CustomDetailCard = ({
                   cursor: 'pointer',
                   fontWeight: 700,
                 }}
-                onClick={() => setReportOpen(false)}
+                onClick={() => {
+                  setReportOpen(false)
+                  setReportDetail('')
+                  setReportReason('')
+                }}
                 aria-label="신고 모달 닫기"
               >
                 ×
@@ -362,10 +367,53 @@ const CustomDetailCard = ({
                   </label>
                 ))}
               </div>
-              <p style={{ marginTop: 15, color: '#666', fontSize: '14px' }}>
-                신고 내용은 검토 후 처리됩니다. 신고하신 내용이 확인되면 해당 상품이 조치될 수
-                있습니다.
+
+              <textarea
+                value={reportDetail}
+                onChange={(e) => setReportDetail(e.target.value)}
+                rows={4}
+                style={{
+                  width: '98%',
+                  borderRadius: 6,
+                  border: '1px solid #ccc',
+                  padding: 10,
+                  fontSize: 15,
+                  marginTop: 16,
+                  marginBottom: 4,
+                  resize: 'vertical',
+                }}
+                placeholder="내용이 충분하지 않을 경우 사실 확인이 어려울 수 있습니다."
+              />
+              <p style={{ marginTop: 10, color: '#666', fontSize: '14px', marginBottom: 32 }}>
+                - 신고 내용은 검토 후 처리됩니다. <br />- 신고 내용이 사실과 다르거나 허위인 경우,
+                이용 제재를 받을 수 있습니다. <br />- 신고자의 정보 및 신고 내용은 안전하게 보호되며
+                외부에 공개되지 않습니다.
               </p>
+              {/* 접수하기 버튼 안내문 아래 오른쪽 정렬 */}
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <button
+                  style={{
+                    background: '#E5402E',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: 6,
+                    padding: '8px 32px',
+                    fontWeight: 700,
+                    fontSize: 16,
+                    cursor: reportReason && reportDetail.trim() ? 'pointer' : 'not-allowed',
+                    opacity: reportReason && reportDetail.trim() ? 1 : 0.5,
+                  }}
+                  disabled={!(reportReason && reportDetail.trim())}
+                  onClick={() => {
+                    setReportOpen(false)
+                    setReportDetail('')
+                    setReportReason('')
+                    alert('신고가 접수되었습니다.')
+                  }}
+                >
+                  접수하기
+                </button>
+              </div>
             </div>
           </div>
         )}
