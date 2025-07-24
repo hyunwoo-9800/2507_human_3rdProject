@@ -48,7 +48,7 @@ public interface AdminDAO {
     void updateMemberStatus(@Param("memberId") String memberId, @Param("status") String status) throws DataAccessException;
 
     // 회원가입승인
-    void updateMemberStatusToApprove(String memberId) throws DataAccessException;
+    void updateMemberStatusToApprove(@Param("memberId")String memberId, @Param("status")String status) throws DataAccessException;
 
     // 회원등록승인 이미지 다운받기
     List<String> selectMemberImageUrls(String memberId) throws DataAccessException;

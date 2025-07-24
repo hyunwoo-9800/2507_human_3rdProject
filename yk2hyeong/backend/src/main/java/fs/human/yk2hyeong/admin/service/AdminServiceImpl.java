@@ -286,10 +286,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     // 회원가입승인
-    public void approveMember(String memberId) {
-
-        adminDAO.updateMemberStatusToApprove(memberId);
-
+    public void approveMember(List<String> memberIds) {
+        for (String memberId : memberIds){
+            adminDAO.updateMemberStatusToApprove(memberId,"001");
+        }
     }
 
     // 알림 수신자 ID 조회

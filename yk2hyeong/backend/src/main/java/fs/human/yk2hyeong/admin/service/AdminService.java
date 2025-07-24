@@ -42,7 +42,7 @@ public interface AdminService {
     // 신고관리 신고삭제는 상품관리 상품삭제랑 기능 동일해서 재사용
 
     // 회원가입승인
-    void approveMember(String memberId) throws Exception;
+    void approveMember(List<String> memberIds) throws Exception;
 
     // 알림 수신자 ID 조회
     String getReceiverId(String productId) throws Exception;

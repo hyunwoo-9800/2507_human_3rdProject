@@ -307,9 +307,9 @@
     </update>
 
     <!-- 회원가입승인 -->
-    <update id="updateMemberStatusToApprove" parameterType="string">
+    <update id="updateMemberStatusToApprove" parameterType="map">
         UPDATE tb_member
-        SET member_status = '001'
+        SET member_status = #{status}
         WHERE member_id = #{memberId}
     </update>
 

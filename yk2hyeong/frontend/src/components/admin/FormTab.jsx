@@ -11,6 +11,8 @@ function FormTab({tabType}){
     const selectedItems = item.filter(i => i.checked);
     const idKey = tabType === 'product' ? 'productId' : 'memberId';
 
+    console.log("📦 selectedItems (즉시 출력):", selectedItems);
+
     useEffect(() => {
         setItem([]);
         setSelectItem(null);
@@ -27,6 +29,9 @@ function FormTab({tabType}){
                 console.error("데이터 불러오기 실패:", err);
             });
     }, [tabType]);
+    useEffect(() => {
+        console.log("🧪 selectedItems 상태:", selectedItems);
+    }, [selectedItems]);
 
     const handleSelectAll = (e) => {
         const checked = e.target.checked;
@@ -40,10 +45,9 @@ function FormTab({tabType}){
             const updated = prev.map(item =>
                 item[idKey] === id ? { ...item, checked: !item.checked } : item
             );
-
+            console.log("🧪 handleItemCheck 이후 item:", updated);
             const selected = updated.find(item => item[idKey] === id);
             setSelectItem({ ...selected }); // ← 여기 추가!
-
             return updated;
         });
     };
@@ -86,8 +90,13 @@ function FormTab({tabType}){
                             return (
                                 <tr
                                     key={rowId}
-                                    onClick={() => handleRowClick(row)}
-                                    style={{ cursor: "pointer" }}
+                                    onClick={(e) => {
+                                        // 클릭된 게 체크박스면 무시
+                                        if (e.target.type === 'checkbox') return;
+                                        handleRowClick(row);
+                                    }}
+                                    style={{ cursor: "pointer" }
+                                    }
                                 >
                                     <td>{tabType === 'product' ? row.productName : row.memberName}</td>
                                     <td onClick={(e) => e.stopPropagation()}>
@@ -114,7 +123,7 @@ function FormTab({tabType}){
                 {tabType ==='product' ? (
                     <ButtonGroup tabType={tabType} selectedItems={selectedItems}/>
                 ):(
-                    <UserApproveButton user={selectItem}/>
+                    <UserApproveButton user={selectedItems}/>
                 )}
             </div>
         </div>

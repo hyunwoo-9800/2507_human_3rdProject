@@ -328,10 +328,13 @@ public class AdminController {
     }
 
     // 회원가입 승인
-    @PutMapping("/member/{memberId}/approve")
-    public ResponseEntity<?> approveMember(@PathVariable String memberId) throws Exception {
+    @PutMapping("/member/approve")
+    public ResponseEntity<?> approveMember(@RequestBody List<String> memberIds) throws Exception {
+        if (memberIds == null || memberIds.isEmpty()) {
+            return ResponseEntity.badRequest().body("회원 ID 목록이 비어 있습니다");
+        }
 
-        adminService.approveMember(memberId);
+        adminService.approveMember(memberIds);
         return ResponseEntity.ok().build();
 
     }
