@@ -22,6 +22,7 @@ import ProductDetail from "./pages/product/ProductDetail";
 import ProductRegister from "./pages/product/ProductRegister";
 import SiteInfo from "./pages/about/SiteInfo";
 import PaymentSuccessPage from "./pages/product/PaymentSuccessPage";
+import Ygstory from "./pages/ygstory/Ygstory";
 
 export default function AppRouter() {
     return (
@@ -96,6 +97,8 @@ export default function AppRouter() {
             <Route path="/EditMember" element={<EditMember/>}/>
 
             <Route path="/payment/success" element={<PaymentSuccessPage/>}/>
+
+            <Route path="/ygstory" element={<Ygstory/>}/>
 
             {/*<Route path="/payment/fail" element={<PaymentFailPage/>}/>*/}
 

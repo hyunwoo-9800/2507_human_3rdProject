@@ -36,86 +36,115 @@ repositories {
 
 // 프로젝트 의존성
 dependencies {
-
 	// 핵심기능
-	implementation 'org.springframework.boot:spring-boot-starter-web' 				// 웹 관련 기본 의존성
-	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4' 		// MyBatis 기본 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
 
 	// 개발 편의
-	compileOnly 'org.projectlombok:lombok' 											// Lombok 의존성
-	annotationProcessor 'org.projectlombok:lombok' 									// Lombok 어노테이션 처리기
-	developmentOnly 'org.springframework.boot:spring-boot-devtools' 				// 개발 중에만 필요한 도구들
-	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16' 			// JDBC 로그 출력
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
 	// 비밀번호 암호화
-	implementation 'org.springframework.boot:spring-boot-starter-security' 			// 보안 관련 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	// 데이터베이스 드라이버
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11' 									// Oracle DB 드라이버
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 
 	// WAS 설정(WAS 배포 시)
-	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat' 			// 톰캣 제공 런타임
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 
 	// 테스트 관련
-	testImplementation 'org.springframework.boot:spring-boot-starter-test' 			// Spring Boot 테스트
-	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4' // MyBatis 테스트
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher' 					// JUnit 런처
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	// JWT 관련 라이브러리
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' 								// JSON 직렬화/역직렬화용 (Jackson)
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	// 메일 관련 의존성
-	implementation 'org.springframework.boot:spring-boot-starter-mail' 				// 이메일 발송 기능
+	// 메일 관련
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+	// WebFlux
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
-	// 이미지 리사이징 (썸네일 생성 등)
+	// 이미지 리사이징
 	implementation 'net.coobird:thumbnailator:0.4.20'
 	implementation 'commons-fileupload:commons-fileupload:1.5'
-
-
 }
 
+// JUnit 설정
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// React 빌드 task 추가
+// React 빌드
 task buildReact(type: Exec) {
 	workingDir "$projectDir/../frontend"
 	def yarnCommand = System.getProperty("os.name").toLowerCase().contains("windows") ? "yarn.cmd" : "yarn"
 	commandLine yarnCommand, "run", "build"
 }
 
-// React 이미지 자동 복사
+// React 이미지 복사 (public/static/images/** → Spring static/)
 task copyReactImages(type: Copy) {
-	from "$rootDir/frontend/public/static/images/**" // React 빌드 폴더의 images 폴더 전체를(하위 폴더까지)
-	into "$projectDir/src/main/resources/static" // Spring 프로젝트의 static 폴더로 복사
+	from "$rootDir/frontend/public/static/images"
+	into "$projectDir/src/main/resources/static/images"
 }
 
-// 프론트엔드 정적 파일 빌드 결과 복사
+// React 빌드 결과 복사 (build/ → Spring static/)
 task copyFrontend(type: Copy) {
 	from("$projectDir/../frontend/build") {
-		exclude "images/**" // images 폴더 제외
+		exclude "images/**"
 	}
-	into "$projectDir/src/main/resources/static" // Spring static 폴더로 복사
+	into "$projectDir/src/main/resources/static"
 	includeEmptyDirs = false
-	// static 폴더 구조 평면화
-	eachFile { fileCopyDetails ->
-		if (fileCopyDetails.path.startsWith('static/')) {
-			fileCopyDetails.path = fileCopyDetails.path.substring(7) // 'static/' 제거
+
+	// static/ 경로 평탄화
+	eachFile { file ->
+		if (file.path.startsWith('static/')) {
+			file.path = file.path.substring(7)
 		}
 	}
 }
 
-// 의존성 명시
-copyReactImages.mustRunAfter buildReact // React 빌드 후 이미지 복사 실행
-copyFrontend.mustRunAfter copyReactImages // 이미지 복사 후 정적 파일 복사 실행
+// Easter egg 복사 (ygstory → Spring static/)
+task copyYgstory(type: Copy) {
 
-bootRun.dependsOn buildReact // Spring Boot 실행 전에 React 빌드를 수행
-bootRun.dependsOn copyReactImages // React 이미지 복사 후 Spring Boot 실행
-bootRun.dependsOn copyFrontend // 정적 파일 복사 후 Spring Boot 실행
+	from("$projectDir/../ygstory/") {
 
-processResources.dependsOn(copyFrontend) // 리소스 처리 전에 프론트엔드 복사
+		// html 폴더 내 index.html을 static/ygstory/로 복사
+		include '**/*'
+
+	}
+
+	into "$projectDir/src/main/resources/static/ygstory"
+	includeEmptyDirs = false
+}
+
+// 리소스 처리 전 실행될 전체 복사 태스크
+task prepareStaticResources {
+	dependsOn buildReact
+	dependsOn copyReactImages
+	dependsOn copyFrontend
+	dependsOn copyYgstory
+}
+
+// build 전에 복사 태스크 실행되도록 연결
+tasks.named('build') {
+	dependsOn prepareStaticResources
+}
+
+// 리소스 처리 전에도 복사하도록 설정 (개발 서버용 대비)
+tasks.named('processResources') {
+	dependsOn prepareStaticResources
+}
+
+// 실행 순서 명확하게 지정
+copyReactImages.mustRunAfter buildReact
+copyFrontend.mustRunAfter copyReactImages
+copyYgstory.mustRunAfter copyFrontend
+
+bootRun.dependsOn prepareStaticResources
