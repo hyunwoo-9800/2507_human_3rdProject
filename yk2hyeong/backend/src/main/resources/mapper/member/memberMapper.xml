@@ -14,12 +14,10 @@
     </select>
 
     <!-- 회원 등록 -->
-    <insert id="insertMember">
-
+    <insert id="insertMember" parameterType="fs.human.yk2hyeong.member.vo.MemberVO" useGeneratedKeys="false" keyProperty="memberId">
         <selectKey keyProperty="memberId" order="BEFORE" resultType="string">
             SELECT SYS_GUID() FROM DUAL
         </selectKey>
-
         INSERT INTO TB_MEMBER
         <trim prefix="(" suffix=")" suffixOverrides=",">
             MEMBER_ID,
@@ -41,7 +39,7 @@
             UPDATED_DATE
         </trim>
         <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
-            sys_guid(),
+            #{memberId},
             #{memberEmail},
             #{memberPwd},
             #{memberName},
@@ -125,6 +123,15 @@
             SET MEMBER_STATUS = '003'
         WHERE MEMBER_ID = #{memberId}
     </update>
+
+    <!-- 마지막에 삽입된 멤버 ID 조회 -->
+    <select id="getLastInsertedMemberId" resultType="string">
+        SELECT MEMBER_ID
+        FROM TB_MEMBER
+        WHERE MEMBER_EMAIL = #{memberEmail}
+        ORDER BY CREATED_DATE DESC
+        FETCH FIRST 1 ROWS ONLY
+    </select>
 
 
 </mapper>

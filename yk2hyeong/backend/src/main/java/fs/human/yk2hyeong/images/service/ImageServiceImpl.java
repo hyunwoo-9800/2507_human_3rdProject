@@ -43,28 +43,39 @@ public class ImageServiceImpl implements ImageService {
      */
     @Override
     public String insertImage(MultipartFile file, String memberIdOrNull) throws Exception {
-
+        System.out.println("[DEBUG] insertImage 진입: " + (file != null ? file.getOriginalFilename() : "null"));
         try {
 
             // 이미지 고유 ID(UUID) 생성
             String uuid = UUID.randomUUID().toString();
             String originalName = file.getOriginalFilename();                 // 원본 파일 이름
             String newFileName = uuid + "_" + originalName;                   // 새로운 파일 이름 생성
-            String saveDir = "C:/yk2hyeong/member_images";                    // 이미지 저장 경로
+            String saveDir = "images/memberimages";                    // DB에 저장할 상대 경로
 
-            // 저장 경로가 없다면 디렉토리 생성
-            Files.createDirectories(Paths.get(saveDir));
+            // 실제 저장 경로 (두 곳)
+            String frontendPath = "yk2hyeong/frontend/public/static/images/memberimages";
+            String backendPath = "yk2hyeong/backend/src/main/resources/static/images/memberimages";
+            System.out.println("[DEBUG] frontendPath: " + frontendPath);
+            System.out.println("[DEBUG] backendPath: " + backendPath);
 
-            // 파일을 지정된 경로에 저장
-            Path savePath = Paths.get(saveDir, newFileName);
-            file.transferTo(savePath);
+            // 디렉토리 생성
+            Files.createDirectories(Paths.get(frontendPath));
+            Files.createDirectories(Paths.get(backendPath));
+
+            // 파일을 프론트엔드 경로에 저장
+            Path frontendSavePath = Paths.get(frontendPath, newFileName);
+            file.transferTo(frontendSavePath);
+
+            // 백엔드 경로로 복사
+            Path backendSavePath = Paths.get(backendPath, newFileName);
+            Files.copy(frontendSavePath, backendSavePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 
             // 이미지 타입을 코드에서 조회
             String imgType = codeDAO.getImageLowCodeValue();
 
             // 이미지 정보 객체 생성 및 설정
             ImageVO image = new ImageVO();
-            image.setImagePath(saveDir);                                    // 저장 경로
+            image.setImagePath(saveDir);                                    // 저장 경로 (DB에는 상대경로)
             image.setImageName(newFileName);                                // 새로운 파일 이름
             image.setImageType(imgType);                                    // 이미지 타입
             image.setMemberId(memberIdOrNull);                              // 회원 ID (회원과 관련 없다면 null)

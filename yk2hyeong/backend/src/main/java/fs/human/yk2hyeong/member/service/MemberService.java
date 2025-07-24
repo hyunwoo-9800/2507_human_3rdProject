@@ -48,4 +48,7 @@ public interface MemberService {
 
     // 회원 탈퇴
     void deleteMemberById(String memberId) throws Exception;
+
+    // 마지막에 가입한 회원 ID를 이메일로 조회
+    String getLastInsertedMemberId(String memberEmail) throws Exception;
 }
