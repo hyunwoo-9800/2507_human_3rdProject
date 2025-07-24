@@ -33,5 +33,4 @@
         ORDER BY "POPULAR" DESC
             FETCH FIRST 4 ROWS ONLY
     </select>
-
 </mapper>

@@ -1,5 +1,6 @@
 package fs.human.yk2hyeong.notice.controller;
 
+import fs.human.yk2hyeong.index.vo.IndexVO;
 import fs.human.yk2hyeong.notice.service.NoticeService;
 import fs.human.yk2hyeong.notice.vo.NoticeVO;
 import lombok.RequiredArgsConstructor;
@@ -146,6 +147,11 @@ public class NoticeController {
 
         }
 
+    }
+    //footer 공지사항
+    @GetMapping("/latest")
+    public NoticeVO getLatestNotice() {
+        return noticeService.getLatestNotice();
     }
 
 }

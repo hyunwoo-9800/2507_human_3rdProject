@@ -1,5 +1,6 @@
 package fs.human.yk2hyeong.notice.service;
 
+import fs.human.yk2hyeong.index.vo.IndexVO;
 import fs.human.yk2hyeong.notice.vo.NoticeVO;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public interface NoticeService {
 
     // 공지사항 삭제
     void deleteNotice(String noticeId) throws Exception;
+
+    //footer 공지사항
+    NoticeVO getLatestNotice();
 
 }
 

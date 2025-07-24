@@ -1,5 +1,6 @@
 package fs.human.yk2hyeong.notice.service;
 
+import fs.human.yk2hyeong.index.vo.IndexVO;
 import fs.human.yk2hyeong.notice.dao.NoticeDAO;
 import fs.human.yk2hyeong.notice.vo.NoticeVO;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,12 @@ public class NoticeServiceImpl implements NoticeService {
         noticeDAO.deleteNotice(noticeId);
 
     }
-
+    //footer 공지사항
+    @Override
+    public NoticeVO getLatestNotice() {
+        List<NoticeVO> noticeList = noticeDAO.selectLatestNotice(); // List로 받아오더라도
+        return noticeList.isEmpty() ? null : noticeList.get(0);
+    }
 }
 
 

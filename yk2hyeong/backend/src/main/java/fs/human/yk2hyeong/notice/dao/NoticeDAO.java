@@ -1,5 +1,6 @@
 package fs.human.yk2hyeong.notice.dao;
 
+import fs.human.yk2hyeong.index.vo.IndexVO;
 import fs.human.yk2hyeong.notice.vo.NoticeVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.dao.DataAccessException;
@@ -24,5 +25,8 @@ public interface NoticeDAO {
 
     // 공지사항 삭제
     void deleteNotice(String noticeId) throws DataAccessException;
+
+    //footer 공지사항
+    List<NoticeVO> selectLatestNotice() throws DataAccessException;
 
 }

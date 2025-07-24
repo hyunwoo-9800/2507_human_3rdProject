@@ -1,17 +1,30 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import "./footer.css";
 import { Link } from "react-router-dom";
 import CustomFloatButton from "./CustomFloatButton";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRobot } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 export default function Footer() {
+    const [latestNotice, setLatestNotice] = useState(null);
+    const navigate = useNavigate();
+    useEffect(() => {
+        axios.get('/notice/latest')
+            .then(res => setLatestNotice(res.data))
+            .catch(err => console.error('공지사항 불러오기 실패:', err));
+    }, []);
     return (
         <footer className="footer-container">
             <div className="footer-left">
-                <div className="notice-box">
+                <div className="notice-box" onClick={()=> {
+                    if (latestNotice){
+                        navigate(`/notice/${latestNotice.noticeId}`);
+                }
+                }} style={{cursor: 'pointer'}}>
                     <h4>공지사항</h4>
-                    <p>공지사항 상품 픽업 시 배송수수료 결제 관련 안내입니다.</p>
+                    <p>{latestNotice?.noticeTitle || '공지사항이 없습니다.'}</p>
                 </div>
                 <div className="footer-info">
                     [250704] 충청남도 천안시 동남구 대흥로 215 7층 <br />

@@ -77,5 +77,12 @@
         WHERE
             NOTICE_ID = #{noticeId}
     </delete>
-
+    <!--    footer 가장 최신 공지사항 하나만 가져옵시두-->
+    <select id="selectLatestNotice" resultType="fs.human.yk2hyeong.notice.vo.NoticeVO">
+        SELECT NOTICE_TITLE AS noticeTitle,
+               NOTICE_ID AS noticeId
+        FROM TB_NOTICE
+        ORDER BY CREATED_DATE DESC
+        FETCH FIRST 1 ROWS ONLY
+    </select>
 </mapper>

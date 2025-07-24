@@ -10,4 +10,7 @@ public class IndexVO {
     private String popular;        // 인기상품
     private String productName;    // 상품명
 
+    private String noticeId;
+    private String noticeTitle;
+
 }

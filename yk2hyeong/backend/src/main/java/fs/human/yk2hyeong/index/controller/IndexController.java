@@ -2,6 +2,7 @@ package fs.human.yk2hyeong.index.controller;
 
 import fs.human.yk2hyeong.index.service.IndexService;
 import fs.human.yk2hyeong.index.vo.IndexVO;
+import fs.human.yk2hyeong.notice.controller.NoticeController;
 import fs.human.yk2hyeong.notice.service.NoticeService;
 import fs.human.yk2hyeong.notice.vo.NoticeVO;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.List;
 public class IndexController {
 
     private final IndexService indexService;
+
 
     // 메인화면 공지사항 표출용
     @GetMapping("/notice")
