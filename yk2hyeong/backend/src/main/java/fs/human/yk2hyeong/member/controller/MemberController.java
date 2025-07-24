@@ -80,13 +80,12 @@ public class MemberController {
             // 회원 정보 DB에 삽입
             memberService.insertMember(member);
 
-<<<<<<< HEAD
             member.setMemberCredit(30);
             memberService.insertGameMember(member);
-=======
+
             // 방금 등록된 memberId 조회
             String memberId = memberService.getLastInsertedMemberId(member.getMemberEmail());
->>>>>>> ad8d8666ae7d26b8b170bf4b45506e9267a35ef8
+
 
             // 이미지 저장 (사업자 등록증)
             if (businessCertImage != null && !businessCertImage.isEmpty()) {

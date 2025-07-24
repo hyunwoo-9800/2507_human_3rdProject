@@ -124,7 +124,6 @@
         WHERE MEMBER_ID = #{memberId}
     </update>
 
-<<<<<<< HEAD
     <!-- 회원 등록 -->
     <insert id="insertGameMember">
         <selectKey keyProperty="memberId" order="BEFORE" resultType="string">
@@ -167,7 +166,7 @@
                           ON A.MEMBER_ID = B.MEMBER_ID
         WHERE B.MEMBER_ID = #{memberId}
     </select>
-=======
+
     <!-- 마지막에 삽입된 멤버 ID 조회 -->
     <select id="getLastInsertedMemberId" resultType="string">
         SELECT MEMBER_ID
@@ -176,7 +175,5 @@
         ORDER BY CREATED_DATE DESC
         FETCH FIRST 1 ROWS ONLY
     </select>
-
->>>>>>> ad8d8666ae7d26b8b170bf4b45506e9267a35ef8
 
 </mapper>

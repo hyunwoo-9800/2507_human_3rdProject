@@ -28,11 +28,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<ProductVO> getPendingProduct() {
 
-<<<<<<< HEAD
-        // System.out.println("[GameServiceImpl] getPendingProduct 호출됨");
-
-=======
->>>>>>> ad8d8666ae7d26b8b170bf4b45506e9267a35ef8
         List<ProductVO> list = adminDAO.selectPendingProduct();
 
         /* if (list == null) {
