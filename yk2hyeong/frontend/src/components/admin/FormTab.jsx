@@ -11,7 +11,6 @@ function FormTab({tabType}){
     const selectedItems = item.filter(i => i.checked);
     const idKey = tabType === 'product' ? 'productId' : 'memberId';
 
-    console.log("📦 selectedItems (즉시 출력):", selectedItems);
 
     useEffect(() => {
         setItem([]);
@@ -30,7 +29,6 @@ function FormTab({tabType}){
             });
     }, [tabType]);
     useEffect(() => {
-        console.log("🧪 selectedItems 상태:", selectedItems);
     }, [selectedItems]);
 
     const handleSelectAll = (e) => {
@@ -45,7 +43,6 @@ function FormTab({tabType}){
             const updated = prev.map(item =>
                 item[idKey] === id ? { ...item, checked: !item.checked } : item
             );
-            console.log("🧪 handleItemCheck 이후 item:", updated);
             const selected = updated.find(item => item[idKey] === id);
             setSelectItem({ ...selected }); // ← 여기 추가!
             return updated;
