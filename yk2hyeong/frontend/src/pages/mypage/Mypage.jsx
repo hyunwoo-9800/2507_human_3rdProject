@@ -8,6 +8,7 @@ import WishlistProduct from "../../components/mypage/WishlistProduct";
 import SelectGroup from "../../components/mypage/SelectGroup";
 import RadioGroup from "../../components/mypage/RadioGroup";
 import "./Mypage.css";
+import {useLogin} from "../login/LoginContext";
 
 function Mypage() {
     const [menuTab, setMenuTab] = useState("regist");
@@ -15,7 +16,10 @@ function Mypage() {
     const [selectedMonth, setSelectedMonth] = useState("total");
 
     const [readStatus, setReadStatus] = useState("total");
-    const memberId = localStorage.getItem("memberId");
+
+    // 로그인 사용자
+    const {loginMember, isLoading} = useLogin();
+    const memberId = loginMember.memberId;
 
     return (
         <div>

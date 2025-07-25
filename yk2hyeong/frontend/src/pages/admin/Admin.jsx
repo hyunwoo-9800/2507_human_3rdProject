@@ -4,6 +4,7 @@ import AdminContent from "../../components/admin/AdminContent";
 import './Admin.css';
 import CustomSidebarMenu from '../../components/common/CustomSidebarMenu';
 import { AppstoreOutlined, MailOutlined } from '@ant-design/icons';
+import {useLogin} from "../login/LoginContext";
 
 const menuItems = [
     {
@@ -38,16 +39,23 @@ const Admin = () => {
     const [activeItem, setActiveItem] = useState("상품등록승인");
     const navigate = useNavigate();
 
+    // 관리자 권한
+    const {loginMember, isLoading} = useLogin();
+    const isAdmin = loginMember?.memberRole === '001';
+
     // 관리자페이지 관리자만 접근 가능
     useEffect(() => {
-        const role = localStorage.getItem("memberRole");
-        if(role !== "001"){
+
+        if(!isAdmin){
+
             alert("관리자만 접근 가능한 페이지입니다.");
             navigate("/", {replace:true});
+
         }
+
     }, []);
 
-    // ✅ 상위 메뉴 선택 방지 (선택적으로 적용)
+    // 상위 메뉴 선택 방지 (선택적으로 적용)
     const handleMenuSelect = (label) => {
         const allSubLabels = menuItems.flatMap(item =>
             item.children ? item.children.map(child => child.label) : []

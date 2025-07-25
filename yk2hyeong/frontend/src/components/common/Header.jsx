@@ -6,7 +6,9 @@ import CustomDropdown from '../../components/common/CustomDropdown';
 import './header.css';
 
 export default function Header() {
+    // 관리자 권한
     const { loginMember, logout, isLoading } = useLogin();
+    const isAdmin = loginMember?.memberRole === '001';
 
     if (isLoading) {
         return <CustomLoading size="small" />;
@@ -47,7 +49,7 @@ export default function Header() {
                 {loginMember ? (
                     <>
                         <CustomDropdown userName={loginMember.memberName}>
-                            {loginMember.memberRole === '001' ? (
+                            {isAdmin ? (
                                 <Link to="/admin" className="dropdown-item" style={dropdownItemStyle}>
                                     관리자페이지
                                 </Link>
