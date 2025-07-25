@@ -72,3 +72,54 @@
 :where(.ant-float-btn-default) .ant-float-btn-body {
   background-color: #dff0dd !important;
 }
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-12px);
+  }
+  40% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(-12px);
+  }
+  80% {
+    transform: translateY(0);
+  }
+}
+
+.bounce-anim {
+  animation: bounce 2.4s;
+}
+
+.chatbot-tooltip {
+  position: absolute;
+  right: 110%; /* 버튼의 왼쪽 */
+  bottom: 80%; /* 버튼의 상단 쪽 */
+  background: #222;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 15px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  opacity: 0.95;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.chatbot-tooltip::after {
+  content: '';
+  position: absolute;
+  right: -7px; /* 꼬리의 위치: 말풍선 오른쪽 끝 */
+  top: 70%; /* 꼬리의 세로 위치: 말풍선 아래쪽 */
+  transform: translateY(-50%);
+  border-width: 8px 0 8px 12px;
+  border-style: solid;
+  border-color: transparent transparent transparent #222;
+}
