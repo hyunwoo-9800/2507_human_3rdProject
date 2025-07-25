@@ -74,8 +74,43 @@ function NoticeForm() {
                               placeholder="내용을 입력하세요."></textarea>
                 </div>
                 <div className="form-actions">
-                    <Button color="primary" size="sm" type="submit">등록</Button>
-                    <Button color="success" size="sm" onClick={() => navigate("/notice")}>취소</Button>
+                    <button
+                        type="button"
+                        style={{
+                            backgroundColor: '#f3b30b',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '8px',
+                            padding: '8px 16px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            fontSize: '18px',
+                            transition: 'background 0.2s',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#c49009')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f3b30b')}
+                        onClick={() => navigate("/notice")}
+                    >
+                        취소
+                    </button>
+                    <button
+                        type="submit"
+                        style={{
+                            backgroundColor: '#28a745',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '8px',
+                            padding: '8px 16px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            fontSize: '18px',
+                            transition: 'background 0.2s',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#218838')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#28a745')}
+                    >
+                        등록
+                    </button>
                 </div>
             </form>
         </div>
