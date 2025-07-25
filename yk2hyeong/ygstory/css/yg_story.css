@@ -33,7 +33,6 @@
   letter-spacing: 3px;
   text-transform: uppercase;
   line-height: 1;
-  padding: 0 0.3em;
 }
 
 /* 기본 텍스트 */
@@ -281,4 +280,249 @@
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -1px 0px inset;
   background-color: #171717;
   transform: rotateY(180deg);
+}
+
+/* games-container가 내용만큼 늘어나도록 */
+.games-container.on-main {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* 카지노 분위기: 어두운 배경, 금색 포인트, 카드/게임 강조 */
+
+/* 전체 배경 및 폰트 */
+body {
+  background: #18121a;
+  color: #fffbe7;
+  font-family: "Segoe UI", "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 헤더 */
+.page-header {
+  background: linear-gradient(90deg, #2d1e3a 0%, #1a0e23 100%);
+  padding: 18px 0 10px 0;
+  border-bottom: 2px solid gold;
+  box-shadow: 0 2px 12px #0008;
+}
+
+.site-logo span {
+  font-size: 2em;
+  color: gold;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px #000;
+}
+
+/* 네비게이션 */
+.header-navbar {
+  margin-bottom: 10px;
+}
+.header-top-nav {
+  display: flex;
+  gap: 18px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.header-navbar-link {
+  color: gold;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  background: #2d1e3a;
+  transition: background 0.2s, color 0.2s;
+}
+.header-navbar-link:hover {
+  background: gold;
+  color: #2d1e3a;
+}
+
+/* 게임 리스트 */
+.games-container.on-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: flex-start;
+  background: #23162b;
+  border-radius: 18px;
+  padding: 32px 24px 24px 24px;
+  margin: 0 auto;
+  box-shadow: 0 4px 32px #000a;
+}
+
+.games-title {
+  width: 100%;
+  font-size: 2.2em;
+  color: gold;
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px #000;
+}
+
+/* 각 게임 카드 */
+.game {
+  background: #2d1e3a;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px #0007;
+  width: 180px;
+  padding: 16px 10px 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.18s, box-shadow 0.18s;
+  position: relative;
+}
+.game:hover {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 8px 32px gold;
+  z-index: 2;
+}
+.game-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.game-link .play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.25s;
+  min-width: 90px;
+  font-size: 1.1em;
+}
+.game-link::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(20, 10, 30, 0.55);
+  opacity: 0;
+  border-radius: 10px;
+  transition: opacity 0.25s;
+  z-index: 1;
+}
+.game:hover .game-link::after {
+  opacity: 1;
+}
+.game:hover .game-link .play-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+.game-shadow {
+  display: none;
+}
+.game img {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 12px #000a;
+  background: #fff1;
+}
+.game span {
+  color: #fffbe7;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* 바로가기 버튼 */
+.play-btn {
+  background: gold;
+  color: #2d1e3a;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  text-decoration: none;
+  font-size: 1.1em;
+  box-shadow: 0 2px 8px #0006;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+/* .play-btn:hover {
+  background: #fffbe7;
+  color: #bfa100;
+} */
+
+/* 즐겨찾기 별 */
+.fave-star {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  background: url("https://cdn-icons-png.flaticon.com/512/616/616489.png")
+    no-repeat center/contain;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.fave-star:hover {
+  opacity: 1;
+}
+
+/* 사이드바 */
+.site-sidebar {
+  background: #1a0e23;
+  border-radius: 14px;
+  padding: 18px 14px;
+  color: #fffbe7;
+  min-width: 220px;
+  box-shadow: 0 2px 12px #0007;
+}
+.site-sidebar.sidebar-right {
+  background: #1a0e23;
+  border-radius: 14px;
+  padding: 18px 14px;
+  color: #fffbe7;
+  min-width: 220px;
+  box-shadow: 0 2px 12px #0007;
+  margin-left: 24px;
+}
+@media (max-width: 1100px) {
+  .site-sidebar.sidebar-right {
+    display: none;
+  }
+}
+.dev-list-box {
+  margin-top: 18px;
+}
+.dev-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 크레딧, 유저 정보 */
+#username-box,
+#totalCredit {
+  font-size: 1.1em;
+  color: gold;
+  font-weight: bold;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 4px #000;
+}
+
+.games-title,
+h2 {
+  margin-top: 0;
+  margin-bottom: 0;
 }
