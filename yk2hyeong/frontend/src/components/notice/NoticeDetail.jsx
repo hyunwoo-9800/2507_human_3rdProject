@@ -4,26 +4,23 @@ import axios from "axios";
 import Button from "../common/Button";
 import "./NoticeDetail.css";
 import CustomLoading from "../common/CustomLoading";
-import {useLogin} from "../../pages/login/LoginContext";
+import { useLogin } from "../../pages/login/LoginContext";
 
 function NoticeDetail() {
-
-    // URL 파라미터에서 공지사항 ID 추출
     const { id } = useParams();
-    // 공지사항 데이터 상태 관리
     const [notice, setNotice] = useState(null);
-    // 페이지 이동을 위한 navigate 훅 사용
     const navigate = useNavigate();
 
-    // 관리자 권한
-    const {loginMember, isLoading} = useLogin();
-    const isAdmin = loginMember?.memberRole === '001';
+    const { loginMember, isLoading } = useLogin();
+    const isAdmin = loginMember?.memberRole === "001";
 
-    // 페이지 마운트 및 ID 변경 시 데이터 요청
     useEffect(() => {
-        axios.get(`/notice/${id}`)
-            .then(res => setNotice(res.data))// 데이터 저장
-            .catch(err => console.error("공지사항 조회 실패:", err));
+        axios
+            .get(`/notice/detail/${id}`, {
+                withCredentials: true, // ✅ 쿠키 인증 요청
+            })
+            .then((res) => setNotice(res.data))
+            .catch((err) => console.error("공지사항 조회 실패:", err));
     }, [id]);
 
     if (isLoading || !notice) {
@@ -34,7 +31,6 @@ function NoticeDetail() {
         );
     }
 
-    // 데이터 렌더링
     return (
         <div className="notice-detail-container">
             <div className="notice-detail-title">
@@ -43,11 +39,21 @@ function NoticeDetail() {
                     작성일 : {new Date(notice.createdDate).toLocaleDateString()}
                 </span>
             </div>
+
             <div className="notice-detail-box">{notice.noticeContent}</div>
+
             <div className="notice-detail-actions">
-                <Button color="primary" size="sm" onClick={() => navigate("/notice")}>목록으로</Button>
+                <Button color="primary" size="sm" onClick={() => navigate("/notice")}>
+                    목록으로
+                </Button>
                 {isAdmin && (
-                    <Button color="success" size="sm" onClick={() => navigate(`/notice/edit/${id}`)}>수정하기</Button>
+                    <Button
+                        color="success"
+                        size="sm"
+                        onClick={() => navigate(`/notice/edit/${id}`)}
+                    >
+                        수정하기
+                    </Button>
                 )}
             </div>
         </div>

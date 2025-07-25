@@ -43,13 +43,13 @@ export default function AppRouter() {
             <Route path="/notice" element={<NoticePage/>}/>
 
             {/* 공지사항 상세 페이지 (동적 경로 사용) */}
-            <Route path="/notice/:id" element={<NoticeDetail/>}/>
+            <Route path="/notice/:id" element={<NoticeDetail />} />
 
             {/* 공지사항 작성 페이지 */}
-            <Route path="/notice/write" element={<NoticeForm/>}/>
+            <Route path="/notice/write" element={<NoticeForm />} />
 
             {/* 공지사항 수정 페이지 (동적 경로 사용) */}
-            <Route path="/notice/edit/:id" element={<NoticeEdit/>}/>
+            <Route path="/notice/edit/:id" element={<NoticeEdit />} />
 
             {/* CSS 컴포넌트 모음 페이지 */}
             <Route path="/css" element={<ComponentCollection/>}/>

@@ -17,6 +17,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/go")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class LoginController {
 
 
@@ -48,7 +49,7 @@ public class LoginController {
         String token = jwtUtil.createToken(email);
 
         // HttpOnly 쿠키 설정
-        ResponseCookie cookie = ResponseCookie.from("token", token)
+        ResponseCookie cookie = ResponseCookie.from("accessToken", token)
                 .httpOnly(true)
                 .secure(false) // HTTPS 환경에서는 true로 설정
                 .path("/")

@@ -39,12 +39,12 @@ function NoticeForm() {
         }
 
         try {
-            await axios.post("/notice", {
-                noticeId: uuidv4(),     //uuid로 noticeId 생성
+            await axios.post("/notice/reg", {
                 noticeTitle: title,
                 noticeContent: content,
                 createdId: writerId,
-            });
+            }
+            );
             alert("공지사항이 등록되었습니다.");
             navigate("/notice");
         } catch (error) {

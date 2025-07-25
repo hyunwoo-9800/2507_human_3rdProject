@@ -49,7 +49,7 @@ function NoticeList() {
 
         try {
             for (const id of selectedIds) {
-                await axios.delete(`/notice/${id}`);
+                await axios.delete(`/notice/delete/${id}`);
             }
             alert("공지사항이 삭제되었습니다.");
             setSelectedIds([]);

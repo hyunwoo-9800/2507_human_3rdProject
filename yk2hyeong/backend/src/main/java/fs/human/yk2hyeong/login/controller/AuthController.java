@@ -38,7 +38,7 @@ public class AuthController {
      * @throws Exception 예외 발생 시
      */
     @GetMapping("/me")
-    public ResponseEntity<?> getLoginMember(@CookieValue(name = "token", required = false) String token) throws Exception {
+    public ResponseEntity<?> getLoginMember(@CookieValue(name = "accessToken", required = false) String token) throws Exception {
         // 토큰이 없거나 유효하지 않은 경우, 로그인되지 않았다고 응답
         if (token == null || !jwtUtil.validateToken(token)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -68,7 +68,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
         // 쿠키 삭제 (maxAge=0)
-        ResponseCookie cookie = ResponseCookie.from("token", "")
+        ResponseCookie cookie = ResponseCookie.from("accessToken", "")
                 .httpOnly(true)
                 .secure(false) // HTTPS 환경에서는 true
                 .path("/")

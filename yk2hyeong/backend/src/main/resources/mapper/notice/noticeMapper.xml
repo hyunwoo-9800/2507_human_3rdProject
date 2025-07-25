@@ -10,17 +10,19 @@
     <select id="getAllNotices" resultType="fs.human.yk2hyeong.notice.vo.NoticeVO">
         <![CDATA[
         SELECT
-            NOTICE_ID       AS noticeId,
-            ROW_NUMBER() OVER(ORDER BY CREATED_DATE DESC) AS BNO,
-            NOTICE_TITLE    AS noticeTitle,
-            NOTICE_CONTENT  AS noticeContent,
-            WRITER_ID       AS writerId,
-            CREATED_ID      AS createdId,
-            CREATED_DATE    AS createdDate,
-            UPDATED_ID      AS updatedId,
-            UPDATED_DATE    AS updatedDate
-        FROM TB_NOTICE
-        ORDER BY CREATED_DATE DESC
+            A.NOTICE_ID       AS noticeId,
+            ROW_NUMBER() OVER(ORDER BY A.CREATED_DATE DESC) AS BNO,
+            A.NOTICE_TITLE    AS noticeTitle,
+            A.NOTICE_CONTENT  AS noticeContent,
+            B.MEMBER_NAME     AS writerId,
+            A.CREATED_ID      AS createdId,
+            A.CREATED_DATE    AS createdDate,
+            A.UPDATED_ID      AS updatedId,
+            A.UPDATED_DATE    AS updatedDate
+        FROM TB_NOTICE A
+                 LEFT JOIN TB_MEMBER B
+                 ON A.WRITER_ID = B.MEMBER_ID
+        ORDER BY A.CREATED_DATE DESC
         ]]>
     </select>
 
@@ -50,7 +52,7 @@
             CREATED_ID,
             CREATED_DATE
             ) VALUES (
-            #{noticeId},
+            SYS_GUID(),
             #{noticeTitle},
             #{noticeContent},
             #{writerId},

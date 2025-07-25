@@ -9,51 +9,58 @@ import CustomLoading from "../common/CustomLoading";
 function NoticeEdit() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [writerId, setWriterId] = useState("admin");
 
     const navigate = useNavigate();
     const { id } = useParams();
 
     const { loginMember, isLoading } = useLogin();
     const isAdmin = loginMember?.memberRole === "001";
+    const writerId = loginMember?.memberId || "";
 
-    // ✅ useEffect는 항상 최상단에
+    // 기존 공지사항 불러오기
     useEffect(() => {
-        if (!isAdmin) return; // 관리자가 아닐 경우 데이터 요청 안 함
+        if (isLoading || !isAdmin) return;
 
         axios
-            .get(`/notice/${id}`)
+            .get(`/notice/detail/${id}`, {
+                withCredentials: true,
+            })
             .then((res) => {
                 setTitle(res.data.noticeTitle);
                 setContent(res.data.noticeContent);
-                setWriterId(res.data.writerId || "admin");
             })
-            .catch((err) => console.error("공지사항 불러오기 실패", err));
-    }, [id, isAdmin]);
+            .catch((err) => console.error("공지사항 불러오기 실패:", err));
+    }, [id, isLoading, isAdmin]);
 
     if (isLoading) {
         return <CustomLoading />;
     }
 
     if (!isAdmin) {
-        return null; // 비관리자 접근 차단
+        return <div>관리자 권한이 없습니다.</div>;
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            await axios.put(`/notice/${id}`, {
-                noticeTitle: title,
-                noticeContent: content,
-                writerId: writerId,
-                updatedId: writerId,
-            });
+            await axios.put(
+                `/notice/edit/${id}`,
+                {
+                    noticeTitle: title,
+                    noticeContent: content,
+                    writerId: writerId,
+                    updatedId: writerId,
+                },
+                {
+                    withCredentials: true,
+                }
+            );
             alert("공지사항이 수정되었습니다.");
             navigate("/notice");
         } catch (err) {
-            console.error("수정 실패:", err);
-            alert("수정 실패");
+            console.error("공지사항 수정 실패:", err);
+            alert("수정 중 오류가 발생했습니다.");
         }
     };
 
@@ -79,7 +86,11 @@ function NoticeEdit() {
                     />
                 </div>
                 <div className="form-actions">
-                    <Button color="primary" size="sm" onClick={() => navigate("/notice")}>
+                    <Button
+                        color="primary"
+                        size="sm"
+                        onClick={() => navigate("/notice")}
+                    >
                         목록으로
                     </Button>
                     <Button color="success" size="sm" type="submit">
