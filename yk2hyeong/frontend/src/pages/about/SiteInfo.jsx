@@ -7,8 +7,8 @@ import './SiteInfo.css';
 
 function SiteInfo(){
     return(
-        <div>
-            <h1 className="siteInfo-title">사이트 소개</h1>
+        <div style={{margin:'40px 0'}}>
+            <h2>사이트 소개</h2>
 
             <SiteIntroduction/>
             <KeyFeatures/>
