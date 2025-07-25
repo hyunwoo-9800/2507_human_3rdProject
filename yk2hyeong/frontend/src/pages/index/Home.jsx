@@ -60,7 +60,7 @@ export default function Home() {
     }, [isKonamiEntered, navigate]);
 
     return (
-        <div>
+        <div style={{marginTop:'3px'}}>
             <CustomCarousel
                 items={[
                     {image: '/static/images/banner_1.png', link: 'https://www.korea.kr/news/policyNewsView.do?newsId=156670035'},
