@@ -38,9 +38,9 @@ export default function Header() {
                     <Link to="/siteinfo" className="nav-item">
                         사이트소개
                     </Link>
-                    <Link to="/admin" className="nav-item">
-                        (임시) 관리자페이지
-                    </Link>
+                    {/*<Link to="/admin" className="nav-item">*/}
+                    {/*    (임시) 관리자페이지*/}
+                    {/*</Link>*/}
                 </nav>
             </div>
 
