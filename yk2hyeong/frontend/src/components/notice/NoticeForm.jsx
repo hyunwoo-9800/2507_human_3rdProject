@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Button from "../common/Button";
 import "./NoticeForm.css";
-import { v4 as uuidv4 } from "uuid";
+import {v4 as uuidv4} from "uuid";
+import useAuth from "../utils/useAuth";
 
 function NoticeForm() {
 
@@ -14,15 +15,16 @@ function NoticeForm() {
 
     const navigate = useNavigate();
 
-    // 로컬스토리지에서 memberRole 값을 가져옴 (권한 체크용)
-    const memberRole = localStorage.getItem("memberRole") || "";
+    // 관리자 권한
+    const {auth, loading} = useAuth();
+    const isAdmin = auth?.memberRole === '001';
 
     // 폼 제출 핸들러
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // 관리자 권한 확인
-        if (memberRole !== '001') {
+        if (!isAdmin) {
             alert("관리자 권한이 없습니다.");
             return;
         }
@@ -32,9 +34,7 @@ function NoticeForm() {
                 noticeId: uuidv4(),     //uuid로 noticeId 생성
                 noticeTitle: title,
                 noticeContent: content,
-                writerId: writerId,
                 createdId: writerId,
-                memberRole: memberRole      // 관리자 권한 전달
             });
             alert("공지사항이 등록되었습니다.");
             navigate("/notice");
@@ -45,7 +45,9 @@ function NoticeForm() {
     };
 
     // 권한 없는 사용자는 폼을 아예 렌더링하지 않음
-    if (memberRole !== '001') return null;
+    if (!isAdmin) {
+        return null
+    };
 
     return (
         <div className="notice-form-container">
@@ -53,11 +55,13 @@ function NoticeForm() {
             <form onSubmit={handleSubmit} className="notice-form">
                 <div className="form-group">
                     <label>제목</label>
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required placeholder="제목을 입력하세요." />
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required
+                           placeholder="제목을 입력하세요."/>
                 </div>
                 <div className="form-group">
                     <label>내용</label>
-                    <textarea value={content} onChange={(e) => setContent(e.target.value)} required placeholder="내용을 입력하세요."></textarea>
+                    <textarea value={content} onChange={(e) => setContent(e.target.value)} required
+                              placeholder="내용을 입력하세요."></textarea>
                 </div>
                 <div className="form-actions">
                     <Button color="primary" size="sm" type="submit">등록</Button>

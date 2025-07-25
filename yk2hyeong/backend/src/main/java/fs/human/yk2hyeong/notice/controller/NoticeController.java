@@ -1,11 +1,13 @@
 package fs.human.yk2hyeong.notice.controller;
 
 import fs.human.yk2hyeong.index.vo.IndexVO;
+import fs.human.yk2hyeong.member.vo.MemberVO;
 import fs.human.yk2hyeong.notice.service.NoticeService;
 import fs.human.yk2hyeong.notice.vo.NoticeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -63,23 +65,25 @@ public class NoticeController {
 
     // 공지사항 등록 API
     @PostMapping
-    public ResponseEntity<?> insertNotice(@RequestBody Map<String, Object> params) {
+    public ResponseEntity<?> insertNotice(
+            @AuthenticationPrincipal MemberVO member,
+            @RequestBody Map<String, Object> params) {
+
+        if (member == null || !"001".equals(member.getMemberRole())) {
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자 권한이 필요합니다.");
+
+        }
 
         try {
-
-            String memberRole = (String) params.get("memberRole");  // 권한 확인
-
-            if (!"001".equals(memberRole)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");   // 관리자 아니면 거절
-            }
 
             // VO 객체 생성 및 값 세팅
             NoticeVO vo = new NoticeVO();
             vo.setNoticeId((String) params.get("noticeId"));
             vo.setNoticeTitle((String) params.get("noticeTitle"));
             vo.setNoticeContent((String) params.get("noticeContent"));
-            vo.setWriterId((String) params.get("writerId"));
-            vo.setCreatedId((String) params.get("createdId"));
+            vo.setWriterId(member.getMemberId());
+            vo.setCreatedId(member.getMemberId());
 
             // 서비스로 전달
             noticeService.insertNotice(vo);
@@ -96,12 +100,15 @@ public class NoticeController {
 
     // 공지사항 수정 API
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateNotice(@PathVariable("id") String noticeId, @RequestBody Map<String, Object> params) {
+    public ResponseEntity<?> updateNotice(
+            @PathVariable("id") String noticeId,
+            @AuthenticationPrincipal MemberVO member,
+            @RequestBody Map<String, Object> params) {
 
-        String memberRole = (String) params.get("memberRole");
+        if (member == null || !"001".equals(member.getMemberRole())) {
 
-        if (!"001".equals(memberRole)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자 권한이 필요합니다.");
+
         }
 
         try {
@@ -110,8 +117,8 @@ public class NoticeController {
             vo.setNoticeId(noticeId);   // URL로 받은 ID 우선 사용
             vo.setNoticeTitle((String) params.get("noticeTitle"));
             vo.setNoticeContent((String) params.get("noticeContent"));
-            vo.setWriterId((String) params.get("writerId"));
-            vo.setUpdatedId((String) params.get("updatedId"));
+            vo.setWriterId(member.getMemberId());
+            vo.setUpdatedId(member.getMemberId());
 
             noticeService.updateNotice(vo);
             return ResponseEntity.ok("공지사항이 수정되었습니다.");
@@ -127,12 +134,14 @@ public class NoticeController {
 
     // 공지사항 삭제 API
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteNotice(@PathVariable("id") String noticeId, @RequestBody Map<String, Object> params) {
+    public ResponseEntity<?> deleteNotice(
+            @PathVariable("id") String noticeId,
+            @AuthenticationPrincipal MemberVO member) {
 
-        String memberRole = (String) params.get("memberRole");
+        if (member == null || !"001".equals(member.getMemberRole())) {
 
-        if (!"001".equals(memberRole)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자 권한이 필요합니다.");
+
         }
 
         try {

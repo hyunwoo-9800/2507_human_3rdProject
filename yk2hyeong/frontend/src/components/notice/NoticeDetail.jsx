@@ -4,6 +4,7 @@ import axios from "axios";
 import Button from "../common/Button";
 import "./NoticeDetail.css";
 import CustomLoading from "../common/CustomLoading";
+import useAuth from "../utils/useAuth";
 
 function NoticeDetail() {
 
@@ -13,8 +14,10 @@ function NoticeDetail() {
     const [notice, setNotice] = useState(null);
     // 페이지 이동을 위한 navigate 훅 사용
     const navigate = useNavigate();
-    // 권한 값 가져오기 (로컬스토리지 사용)
-    const memberRole = localStorage.getItem("memberRole") || "";
+
+    // 관리자 권한
+    const {auth, loading} = useAuth();
+    const isAdmin = auth?.memberRole === '001';
 
     // 페이지 마운트 및 ID 변경 시 데이터 요청
     useEffect(() => {
@@ -43,7 +46,7 @@ function NoticeDetail() {
             <div className="notice-detail-box">{notice.noticeContent}</div>
             <div className="notice-detail-actions">
                 <Button color="primary" size="sm" onClick={() => navigate("/notice")}>목록으로</Button>
-                {memberRole === '001' && (
+                {isAdmin && (
                     <Button color="success" size="sm" onClick={() => navigate(`/notice/edit/${id}`)}>수정하기</Button>
                 )}
             </div>

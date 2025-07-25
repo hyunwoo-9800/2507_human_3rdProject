@@ -19,12 +19,8 @@ function LoginPage() {
       // 서버로 로그인 요청
       const response = await axios.post('/go/login', { email, password }, { withCredentials: true })
       if (response.status === 200) {
-        setLoginMember(response.data) // 로그인 상태 업데이트
 
-        // 관리자 권한 확인 및 버튼 노출을 위해 memberRole 값을 LocalStorage에 저장
-        // NoticeList 등에서 LocalStorage.getItem("memberRole")을 기준으로 조건 체크함
-        localStorage.setItem('memberRole', response.data.memberRole || '')
-        localStorage.setItem("memberId", response.data.memberId || '');
+        setLoginMember(response.data) // 로그인 상태 업데이트
 
         alert('로그인 성공!')
         navigate('/') // 홈으로 리디렉션
