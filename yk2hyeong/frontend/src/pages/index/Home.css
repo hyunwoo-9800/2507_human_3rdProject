@@ -83,10 +83,10 @@
     padding: 0;
 }
 .left-content{
-    width: 50%;
+    width: 56%;
 }
 .right-content{
-    width: 50%;
+    width: 40%;
 }
 .left-content,
 .rignt-content{
@@ -154,7 +154,7 @@
     line-height: 40px;
 }
 .trendy-price-caution{
-    font-size: 9px !important;
+    font-size: 11px !important;
     display: flex;
     padding-left: 15px;
 }
@@ -204,7 +204,7 @@
 
 /*오른쪽 카드*/
 .rignt-content{
-    width: 45%;
+    width: 40%;
     display: flex;
     flex-direction: column;
     gap: 30px;
