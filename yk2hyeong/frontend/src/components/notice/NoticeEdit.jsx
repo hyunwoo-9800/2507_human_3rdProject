@@ -86,16 +86,43 @@ function NoticeEdit() {
                     />
                 </div>
                 <div className="form-actions">
-                    <Button
-                        color="primary"
-                        size="sm"
+                    <button
+                        type="submit"
+                        style={{
+                            backgroundColor: '#f3b30b',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '8px',
+                            padding: '8px 16px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            fontSize: '18px',
+                            transition: 'background 0.2s',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#c49009')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#f3b30b')}
+                    >
+                        수정
+                    </button>
+                    <button
+                        type="button"
+                        style={{
+                            backgroundColor: '#28a745',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '8px',
+                            padding: '8px 16px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            fontSize: '18px',
+                            transition: 'background 0.2s',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#218838')}
+                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#28a745')}
                         onClick={() => navigate("/notice")}
                     >
                         목록으로
-                    </Button>
-                    <Button color="success" size="sm" type="submit">
-                        수정
-                    </Button>
+                    </button>
                 </div>
             </form>
         </div>
