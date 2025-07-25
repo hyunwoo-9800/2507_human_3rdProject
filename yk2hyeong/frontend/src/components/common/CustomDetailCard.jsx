@@ -39,6 +39,7 @@ const CustomDetailCard = ({
     return ''
   })
 
+  const [inputValue, setInputValue] = useState(defaultQuantity)
   const [orderQuantity, setOrderQuantity] = useState(defaultQuantity)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [isReportOpen, setReportOpen] = useState(false)
@@ -72,13 +73,19 @@ const CustomDetailCard = ({
     '스팸 혹은 중복 게시물': '002',
     '금지 품목 등록': '003',
     '허위 광고': '004',
-    '기타': '005',
+    기타: '005',
   }
 
   // 수량 경계값 동기화
   useEffect(() => {
     setOrderQuantity((q) => {
       let next = q
+      if (next < minOrder) next = minOrder
+      if (next > quantity) next = quantity
+      return next
+    })
+    setInputValue((v) => {
+      let next = v
       if (next < minOrder) next = minOrder
       if (next > quantity) next = quantity
       return next
@@ -120,14 +127,29 @@ const CustomDetailCard = ({
     onOrderTypeChange(value)
   }
 
-  const handleQuantityChange = (value) => {
-    if (value === null || value === undefined || isNaN(value)) {
-      setOrderQuantity(minOrder)
-      onQuantityChange(minOrder)
+  const [showQuantityWarning, setShowQuantityWarning] = useState(false)
+
+  const handleInputChange = (value) => {
+    setInputValue(value)
+    if (value > quantity) {
+      setShowQuantityWarning(true)
     } else {
-      setOrderQuantity(value)
-      onQuantityChange(value)
+      setShowQuantityWarning(false)
     }
+  }
+
+  const handleInputBlur = () => {
+    let finalValue = inputValue
+    if (inputValue > quantity) {
+      finalValue = quantity
+      setShowQuantityWarning(false)
+    }
+    if (finalValue < minOrder) {
+      finalValue = minOrder
+    }
+    setOrderQuantity(finalValue)
+    onQuantityChange(finalValue)
+    setInputValue(finalValue)
   }
 
   const toggleFavorite = async () => {
@@ -191,8 +213,10 @@ const CustomDetailCard = ({
     }
   }
 
-  const totalPrice = price * orderQuantity
-  const reservePrice = Math.floor((totalPrice * (orderOptions.reserveRate || 30)) / 100)
+  // 금액 계산 시 inputValue 사용
+  const calcQty = typeof inputValue === 'number' && inputValue > 0 ? inputValue : minOrder
+  const totalPrice = price * calcQty
+  const reservePrice = Math.floor((totalPrice * (orderOptions.reserveRate || 50)) / 100)
 
   const radioOptions = []
   if (orderOptions.immediate) radioOptions.push({ label: '즉시 구매', value: 'immediate' })
@@ -543,7 +567,7 @@ const CustomDetailCard = ({
             <span>{releaseDate}</span>
           </div>
         </div>
-        <hr style={{ margin: '20px 0', width: '100%' }} />
+        <hr style={{ margin: '10px 0', width: '100%' }} />
 
         <div style={{ width: '100%', textAlign: 'center' }}>
           <CustomRadio
@@ -577,15 +601,30 @@ const CustomDetailCard = ({
             }}
           >
             <div>수량 (최소구매수량 {minOrder}kg)</div>
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <CustomInputNumber
-                value={orderQuantity}
+                value={inputValue}
                 min={minOrder}
-                max={quantity}
+                max={999999}
                 step={1}
-                onChange={handleQuantityChange}
+                onChange={handleInputChange}
+                onBlur={handleInputBlur}
               />
+              <span style={{ marginLeft: 4 }}>kg</span>
             </div>
+          </div>
+          <div
+            style={{
+              minHeight: 22, // 경고문구 한 줄 높이(적당히 조절)
+              color: showQuantityWarning ? 'red' : 'transparent',
+              fontSize: 14,
+              marginTop: 4,
+              textAlign: 'right',
+              width: '100%',
+              transition: 'color 0.2s',
+            }}
+          >
+            남은수량이 {quantity}kg입니다.
           </div>
 
           <div style={{ width: '100%' }}>
@@ -616,7 +655,7 @@ const CustomDetailCard = ({
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 width: '100%',
-                marginBottom: 20,
+                marginBottom: 10,
               }}
             >
               <span>총금액</span>
