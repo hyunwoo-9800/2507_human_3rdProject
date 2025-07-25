@@ -125,7 +125,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div>
+    <div style={{margin:'40px 0'}}>
       <CustomDetailCard
         productName={product.productName || '스테비아 방울토마토'}
         productCodeName={product.productCodeName || '쌀'}
