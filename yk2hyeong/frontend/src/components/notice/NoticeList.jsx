@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Button from "../common/Button";
 import CustomPagination from "../common/CustomPagination";
 import "./NoticeList.css";
-import useAuth from "../utils/useAuth";
+import {useLogin} from "../../pages/login/LoginContext";
+import CustomLoading from "../common/CustomLoading";
 
 function NoticeList() {
     const [noticeList, setNoticeList] = useState([]);
@@ -14,12 +15,16 @@ function NoticeList() {
     const navigate = useNavigate();
 
     // 관리자 권한
-    const {auth, loading} = useAuth();
-    const isAdmin = auth?.memberRole === '001';
+    const {loginMember, isLoading} = useLogin();
+    const isAdmin = loginMember?.memberRole === '001';
 
     useEffect(() => {
         fetchNotices()
     }, []);
+
+    if (isLoading) {
+        return <CustomLoading></CustomLoading>;
+    };
 
     const fetchNotices = () => {
         axios.get("/notice/all")

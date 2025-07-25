@@ -4,7 +4,7 @@ import axios from "axios";
 import Button from "../common/Button";
 import "./NoticeDetail.css";
 import CustomLoading from "../common/CustomLoading";
-import useAuth from "../utils/useAuth";
+import {useLogin} from "../../pages/login/LoginContext";
 
 function NoticeDetail() {
 
@@ -16,8 +16,8 @@ function NoticeDetail() {
     const navigate = useNavigate();
 
     // 관리자 권한
-    const {auth, loading} = useAuth();
-    const isAdmin = auth?.memberRole === '001';
+    const {loginMember, isLoading} = useLogin();
+    const isAdmin = loginMember?.memberRole === '001';
 
     // 페이지 마운트 및 ID 변경 시 데이터 요청
     useEffect(() => {
@@ -26,13 +26,13 @@ function NoticeDetail() {
             .catch(err => console.error("공지사항 조회 실패:", err));
     }, [id]);
 
-    // 데이터 로딩 중 표시
-    if (!notice) return (
-        <div className="notice-detail-container">
-            <CustomLoading size="large" />
-        </div>
-    );
-
+    if (isLoading || !notice) {
+        return (
+            <div className="notice-detail-container">
+                <CustomLoading size="large" />
+            </div>
+        );
+    }
 
     // 데이터 렌더링
     return (

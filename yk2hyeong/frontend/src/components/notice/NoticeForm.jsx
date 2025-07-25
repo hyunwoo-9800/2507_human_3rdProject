@@ -4,7 +4,8 @@ import {useNavigate} from "react-router-dom";
 import Button from "../common/Button";
 import "./NoticeForm.css";
 import {v4 as uuidv4} from "uuid";
-import useAuth from "../utils/useAuth";
+import {useLogin} from "../../pages/login/LoginContext";
+import CustomLoading from "../common/CustomLoading";
 
 function NoticeForm() {
 
@@ -16,15 +17,23 @@ function NoticeForm() {
     const navigate = useNavigate();
 
     // 관리자 권한
-    const {auth, loading} = useAuth();
-    const isAdmin = auth?.memberRole === '001';
+    const {loginMember, isLoading} = useLogin();
+    const isAdmin = loginMember?.memberRole === '001';
+
+    if (isLoading) {
+        return <CustomLoading></CustomLoading>;
+    };
+
+    if (!isAdmin) {
+        return null
+    };
 
     // 폼 제출 핸들러
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // 관리자 권한 확인
-        if (!isAdmin) {
+        if (!loginMember) {
             alert("관리자 권한이 없습니다.");
             return;
         }
@@ -45,9 +54,10 @@ function NoticeForm() {
     };
 
     // 권한 없는 사용자는 폼을 아예 렌더링하지 않음
-    if (!isAdmin) {
+    if (!loginMember) {
         return null
-    };
+    }
+    ;
 
     return (
         <div className="notice-form-container">
