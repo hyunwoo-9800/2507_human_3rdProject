@@ -33,47 +33,51 @@ function LoginPage() {
   }
 
   return (
-    <div className="login-container">
-      <h2>로그인</h2>
-      <form onSubmit={handleLogin}>
-        <Input
-          type="email"
-          className="login-input"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="이메일"
-          required
-        />
-
-        <Input
-          type="password"
-          className="login-input"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="비밀번호"
-          required
-        />
-
-        <div className="login-button-wrapper">
-          <Button className="secondary" size="md" onClick={() => navigate(-1)}>
-            뒤로가기
-          </Button>
-
-          <Button className="secondary" size="md" type="submit">
-            로그인
-          </Button>
+      <div className="login-wrapper">
+        <div className="back-link">
+          <button className="login-back-btn" onClick={() => navigate(-1)}>
+            ＜ 뒤로가기
+          </button>
         </div>
-      </form>
+        <div className="login-container">
+          <h2>로그인</h2>
+          <form onSubmit={handleLogin}>
+            <Input
+                type="email"
+                className="login-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일"
+                required
+            />
 
-      <div>
-        <p>
-          <a href="/findId">아이디를 잊으셨나요?</a> | <a href="/findPwd">비밀번호를 잊으셨나요?</a>
-        </p>
-        <p>
-          아직 계정이 없으신가요? <a href="/signup">회원가입</a>
-        </p>
+            <Input
+                type="password"
+                className="login-input"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호"
+                required
+            />
+
+            <div className="login-button-wrapper">
+
+              <Button className="secondary" size="md" type="submit">
+                로그인
+              </Button>
+            </div>
+          </form>
+
+          <div>
+            <p>
+              <a href="/findId">아이디를 잊으셨나요?</a> | <a href="/findPwd">비밀번호를 잊으셨나요?</a>
+            </p>
+            <p>
+              아직 계정이 없으신가요? <a href="/signup">회원가입</a>
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
   )
 }
 

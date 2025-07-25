@@ -32,46 +32,47 @@ function FindId() {
   }
 
   return (
-    <div className="find-id-container">
-      <h2>아이디 찾기</h2>
-      <form onSubmit={handleFindId}>
-        <Input
-          type="text"
-          className="find-id-input"
-          value={memberName}
-          onChange={(e) => setMemberName(e.target.value)}
-          placeholder="이름"
-          required
-        />
-
-        <Input
-          type="text"
-          className="find-id-input"
-          value={memberTel}
-          onChange={(e) => setMemberTel(e.target.value)}
-          placeholder="전화번호"
-          required
-        />
-
-        <Button className="secondary" size="md" type="submit">
-          아이디 찾기
-        </Button>
-      </form>
-
-      {idFound && (
-        <div className="found-id">
-          <p>찾은 아이디(이메일): {idFound}</p>
+      <div className="find-id-wrapper">
+        <div className="back-link">
+          <button className="login-back-btn" onClick={() => window.history.back()}>
+            ＜ 뒤로가기
+          </button>
         </div>
-      )}
+        <div className="find-id-container">
+          <h2>아이디 찾기</h2>
+          <form onSubmit={handleFindId}>
+            <Input
+                type="text"
+                className="find-id-input"
+                value={memberName}
+                onChange={(e) => setMemberName(e.target.value)}
+                placeholder="이름"
+                required
+            />
 
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+            <Input
+                type="text"
+                className="find-id-input"
+                value={memberTel}
+                onChange={(e) => setMemberTel(e.target.value)}
+                placeholder="전화번호"
+                required
+            />
 
-      <div className="back-link">
-        <Button className="secondary" size="md" onClick={() => window.history.back()}>
-          뒤로가기
-        </Button>
+            <Button className="secondary" size="md" type="submit">
+              아이디 찾기
+            </Button>
+          </form>
+
+          {idFound && (
+              <div className="found-id">
+                <p>찾은 아이디(이메일): {idFound}</p>
+              </div>
+          )}
+
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </div>
       </div>
-    </div>
   )
 }
 

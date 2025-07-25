@@ -126,72 +126,74 @@ function FindPasswordPage() {
   }, [newPassword])
 
   return (
-    <div className="find-password-container">
-      <h2>비밀번호 찾기</h2>
-
-      {/* 이메일 입력 폼 */}
-      <form onSubmit={handleSendCode}>
-        <Input
-          type="email"
-          name="memberEmail"
-          value={memberEmail}
-          onChange={(e) => setMemberEmail(e.target.value)}
-          placeholder="가입한 이메일 주소를 입력하세요"
-          required
-        />
-        <Button
-          className="secondary"
-          size="md"
-          type="submit"
-          disabled={isSendingCode || resendCountdown > 0}
-        >
-          {resendCountdown > 0 ? `다시 요청 (${resendCountdown}s)` : '인증번호 발송'}
-        </Button>
-      </form>
-
-      {/* 인증번호 입력 폼 */}
-      {codeSent && !isVerified && (
-        <form onSubmit={handleVerifyCode}>
-          <Input
-            value={userInputCode}
-            onChange={(e) => setUserInputCode(e.target.value)}
-            placeholder="인증번호를 입력하세요"
-            required
-          />
-          <Button className="secondary" size="md" type="submit">
-            인증 확인
-          </Button>
-        </form>
-      )}
-
-      {/* 인증 성공 후 비밀번호 재설정 안내 */}
-      {isVerified && (
-        <div>
-          <p>인증이 완료되었습니다! 비밀번호를 재설정해주세요.</p>
-          <Input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="새 비밀번호"
-            required
-          />
-          <p>{passwordHint}</p> {/* 비밀번호 힌트 표시 */}
-          <Button className="secondary" size="md" onClick={handleResetPassword}>
-            비밀번호 재설정
-          </Button>
+      <div className="find-id-wrapper">
+        <div className="back-link">
+          <button className="login-back-btn" onClick={() => navigate(-1)}>
+            ＜ 뒤로가기
+          </button>
         </div>
-      )}
+        <div className="find-id-container">
+          <h2>비밀번호 찾기</h2>
 
-      {/* 오류 메시지 */}
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+          {/* 이메일 입력 폼 */}
+          <form onSubmit={handleSendCode}>
+            <Input
+                type="email"
+                name="memberEmail"
+                value={memberEmail}
+                className="find-id-input"
+                onChange={(e) => setMemberEmail(e.target.value)}
+                placeholder="가입한 이메일 주소를 입력하세요"
+                required
+            />
+            <Button
+                className="secondary password-btn"
+                size="md"
+                type="submit"
+                disabled={isSendingCode || resendCountdown > 0}
+            >
+              {resendCountdown > 0 ? `다시 요청 (${resendCountdown}s)` : '인증번호 발송'}
+            </Button>
+          </form>
 
-      {/* 뒤로가기 버튼 */}
-      <div className="back-link">
-        <Button className="secondary" size="md" onClick={() => window.history.back()}>
-          뒤로가기
-        </Button>
+          {/* 인증번호 입력 폼 */}
+          {codeSent && !isVerified && (
+              <form onSubmit={handleVerifyCode}>
+                <Input
+                    value={userInputCode}
+                    onChange={(e) => setUserInputCode(e.target.value)}
+                    placeholder="인증번호를 입력하세요"
+                    required
+                />
+                <Button className="secondary find-id-input" size="md" type="submit">
+                  인증 확인
+                </Button>
+              </form>
+          )}
+
+          {/* 인증 성공 후 비밀번호 재설정 안내 */}
+          {isVerified && (
+              <div>
+                <p>인증이 완료되었습니다! 비밀번호를 재설정해주세요.</p>
+                <Input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="새 비밀번호"
+                    required
+                />
+                <p>{passwordHint}</p> {/* 비밀번호 힌트 표시 */}
+                <Button className="secondary" size="md" onClick={handleResetPassword}>
+                  비밀번호 재설정
+                </Button>
+              </div>
+          )}
+
+          {/* 오류 메시지 */}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+        </div>
       </div>
-    </div>
+
   )
 }
 

@@ -319,16 +319,31 @@ function SignupForm({ role }) {
       <form onSubmit={handleSubmit} className="signup-form">
         {/* 이메일 입력 */}
         <div className="input-group">
-          <label className="input-label">이메일</label>
-          <Input
-            name="memberEmail"
-            value={form.memberEmail}
-            onChange={handleChange}
-            placeholder="이메일 (중복 불가)"
-            type="email"
-            maxLength={50}
-            required
-          />
+          <label className="input-label email-label">이메일</label>
+          <div className="email-input">
+            <Input
+                name="memberEmail"
+                className="member-email-input"
+                value={form.memberEmail}
+                onChange={handleChange}
+                placeholder="이메일 (중복 불가)"
+                type="email"
+                maxLength={50}
+                required
+            />
+            {/* 인증번호 발송 버튼 */}
+            <div className="email-input-btn-wrapper">
+              <Button
+                  type="button"
+                  size="sm"
+                  onClick={requestCode}
+                  style={{backgroundColor:'#18AD4E'}}
+                  disabled={!isEmailAvailable || resendCountdown > 0}
+              >
+                {resendCountdown > 0 ? `다시 요청 (${resendCountdown}s)` : '인증번호 발송'}
+              </Button>
+            </div>
+          </div>
           {emailMessage && (
             <div
               style={{
@@ -341,30 +356,18 @@ function SignupForm({ role }) {
             </div>
           )}
         </div>
-
-        {/* 인증번호 발송 버튼 */}
-        <div className="email-input-btn-wrapper">
-          <Button
-            type="button"
-            size="sm"
-            onClick={requestCode}
-            disabled={!isEmailAvailable || resendCountdown > 0}
-          >
-            {resendCountdown > 0 ? `다시 요청 (${resendCountdown}s)` : '인증번호 발송'}
-          </Button>
-        </div>
-
         {/* 인증번호 입력 */}
         {showCodeInput && !isVerified && (
           <div className="email-code-section">
             <Input
               placeholder="인증번호 입력"
+              className="email-write-input"
               value={userInputCode}
               onChange={(e) => setUserInputCode(e.target.value)}
               size="sm"
               maxLength={6}
             />
-            <Button type="button" size="sm" onClick={verifyCode}>
+            <Button type="button" style={{backgroundColor:'#18AD4E'}} size="sm" onClick={verifyCode}>
               인증 확인
             </Button>
             {codeExpireCountdown > 0 ? (

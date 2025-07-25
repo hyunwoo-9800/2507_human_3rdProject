@@ -15,7 +15,6 @@
 /* input 그룹 정렬 */
 .input-group {
   display: flex;
-  flex-direction: column;
   margin-bottom: 15px;
 }
 
@@ -25,7 +24,13 @@
   margin-bottom: 8px;
   font-size: 14px;
 }
-
+.email-label{
+  display: flex;
+  flex-direction: column;
+}
+.email-write-input{
+  margin-top: 12px !important;
+}
 /* input 필드 공통 */
 .input {
   padding: 10px 12px;
@@ -34,6 +39,19 @@
   border-radius: 6px;
   width: 100%;
   box-sizing: border-box;
+}
+.email-input{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+}
+.member-email-input {
+  flex: 8;
+}
+.email-input .email-input-btn-wrapper {
+  white-space: nowrap;
+  flex: 2;
 }
 
 /* select 같은 커스텀 UI도 폭 일치 */
