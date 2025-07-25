@@ -69,7 +69,7 @@ function NoticeList() {
 
   return (
     <div className="notice-container">
-      <div className="notice-title" style={{backgroundColor:"none !important"}}>
+      <div className="notice-title" style={{ backgroundColor: 'none !important' }}>
         <h2>공지사항</h2>
       </div>
 
@@ -79,8 +79,8 @@ function NoticeList() {
             <th style={{ width: '8%' }}>번호</th>
             <th style={{ width: isAdmin ? '48%' : '62%' }}>제목</th>
             <th style={{ width: '15%' }}>작성자</th>
-            <th style={{ width: '15%' }}>작성일</th>
-            {isAdmin && <th style={{ width: '14%' }}>선택</th>}
+            <th style={{ width: '12%' }}>작성일</th>
+            {isAdmin && <th style={{ width: '8%' }}>선택</th>}
           </tr>
         </thead>
         <tbody>
@@ -120,7 +120,7 @@ function NoticeList() {
               </td>
               <td
                 style={{
-                  width: '15%',
+                  width: '12%',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
@@ -129,7 +129,7 @@ function NoticeList() {
                 {new Date(notice.createdDate).toLocaleDateString()}
               </td>
               {isAdmin && (
-                <td style={{ width: '14%' }}>
+                <td style={{ width: '8%' }}>
                   <input
                     type="checkbox"
                     checked={selectedIds.includes(notice.noticeId)}
@@ -153,12 +153,46 @@ function NoticeList() {
 
       {isAdmin && (
         <div className="button-group">
-          <Button color="primary" size="sm" onClick={() => navigate('/notice/write')}>
-            글쓰기
-          </Button>
-          <Button color="error" size="sm" onClick={handleDeleteSelected}>
+          <button
+            type="button"
+            style={{
+              backgroundColor: '#ff4e52',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '8px 16px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              fontSize: '18px',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#d03441')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#ff4e52')}
+            onClick={handleDeleteSelected}
+          >
             삭제하기
-          </Button>
+          </button>
+
+          <button
+            type="button"
+            style={{
+
+              backgroundColor: '#28a745',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '8px 16px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              fontSize: '18px',
+              transition: 'background 0.2s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#218838')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#28a745')}
+            onClick={() => navigate('/notice/write')}
+          >
+            글쓰기
+          </button>
         </div>
       )}
     </div>
