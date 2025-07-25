@@ -16,7 +16,7 @@
   --border-right: 6px;
   --text-stroke-color: rgba(255, 255, 255, 0.6);
   --animation-color: #37ff8b;
-  --fs-size: 1.2em; /* 🔽 크기 줄임 */
+  --fs-size: 36px; /* 🔽 크기 줄임 */
   font-size: var(--fs-size);
   font-family: "Arial";
   letter-spacing: 3px;
@@ -293,7 +293,7 @@
 
 /* 전체 배경 및 폰트 */
 body {
-  background: #18121a;
+  background: black;
   color: #fffbe7;
   font-family: "Segoe UI", "Arial", sans-serif;
   margin: 0;
@@ -345,10 +345,9 @@ body {
 .games-container.on-main {
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
+  gap: 58px;
   justify-content: flex-start;
-  background: #23162b;
-  border-radius: 18px;
+  background: #000000;
   padding: 32px 24px 24px 24px;
   margin: 0 auto;
   box-shadow: 0 4px 32px #000a;
@@ -365,7 +364,7 @@ body {
 
 /* 각 게임 카드 */
 .game {
-  background: #2d1e3a;
+  background: #353336;
   border-radius: 14px;
   box-shadow: 0 2px 12px #0007;
   width: 180px;
@@ -525,4 +524,54 @@ body {
 h2 {
   margin-top: 0;
   margin-bottom: 0;
+}
+
+/* 코딩이 힘들 땐 */
+.catch-phrase-text {
+  color: gold;
+  font-weight: bold;
+  text-shadow: 0 0 8px #fff200, 0 0 16px #ffd700, 0 0 32px #ffec8b,
+    0 0 48px #ffd700;
+  animation: neon-flash 0.5s infinite alternate;
+}
+
+@keyframes neon-flash {
+  0% {
+    text-shadow: 0 0 8px #fff200, 0 0 16px #ffd700, 0 0 32px #ffec8b,
+      0 0 48px #ffd700;
+    color: gold;
+  }
+  60% {
+    text-shadow: 0 0 24px #fff200, 0 0 48px #ffd700, 0 0 64px #ffec8b,
+      0 0 96px #ffd700;
+    color: #fffbe7;
+  }
+  100% {
+    text-shadow: 0 0 8px #fff200, 0 0 16px #ffd700, 0 0 32px #ffec8b,
+      0 0 48px #ffd700;
+    color: gold;
+  }
+}
+
+/* 1등 */
+tr.winner td {
+  animation: winner-glow 1.2s infinite alternate;
+  color: gold;
+  font-weight: bold;
+  text-shadow: 0 0 6px #fff200, 0 0 12px #ffd700, 0 0 24px #ffec8b;
+}
+
+@keyframes winner-glow {
+  0% {
+    color: gold;
+    text-shadow: 0 0 6px #fff200, 0 0 12px #ffd700, 0 0 24px #ffec8b;
+  }
+  60% {
+    color: #fffbe7;
+    text-shadow: 0 0 18px #fff200, 0 0 36px #ffd700, 0 0 48px #ffec8b;
+  }
+  100% {
+    color: gold;
+    text-shadow: 0 0 6px #fff200, 0 0 12px #ffd700, 0 0 24px #ffec8b;
+  }
 }
