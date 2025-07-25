@@ -61,6 +61,8 @@
                 LEFT JOIN TB_IMAGES img
                             ON p.PRODUCT_ID = img.PRODUCT_ID -- 이미지 테이블 조인
 
+        WHERE PRODUCT_REV_END >= SYSDATE
+
         ORDER BY p.CREATED_DATE DESC
     </select>
 

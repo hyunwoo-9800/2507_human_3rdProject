@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import './ProductList.css'
 import CustomLoading from '../../components/common/CustomLoading'
 import CustomPagination from '../../components/common/CustomPagination'
+import {useLogin} from "../login/LoginContext";
 
 export default function ProductList() {
   const [products, setProducts] = useState([])
@@ -56,25 +57,16 @@ export default function ProductList() {
   }
 
   // 로그인된 사용자 정보 조회
-  const fetchMe = async () => {
-    try {
-      const res = await axios.get('/auth/me')
-      setMemberId(res.data.memberId)
-      return res.data.memberId
-    } catch (error) {
-      console.error('로그인 정보 불러오기 실패:', error)
-      return null
-    }
-  }
+  const {loginMember, isLoading} = useLogin();
 
   // 즐겨찾기 목록 불러오기
   const fetchFavorites = async (id) => {
     try {
       const res = await axios.get(`/api/favorites?memberId=${id}`)
       setFavoriteProductIds(res.data)
-      console.log('✅ [웹 콘솔] 즐겨찾기 목록 불러오기 성공:', res.data)
+
     } catch (error) {
-      console.error('❌ 즐겨찾기 목록 불러오기 실패:', error)
+
     }
   }
 
@@ -82,11 +74,14 @@ export default function ProductList() {
 
   // 컴포넌트 최초 마운트 시 데이터 로딩
   useEffect(() => {
-    fetchProducts()
-    fetchMe().then((id) => {
-      if (id) fetchFavorites(id)
-    })
-  }, [])
+    const fetchData = async () => {
+      await fetchProducts();
+      if (loginMember?.memberId) {
+        await fetchFavorites(loginMember.memberId);
+      }
+    };
+    fetchData();
+  }, [loginMember]);
 
   // 즐겨찾기 토글 (등록 또는 삭제)
   const toggleFavorite = async (productId) => {
@@ -104,19 +99,16 @@ export default function ProductList() {
         const newFavs = [...favoriteProductIds, productId]
         setFavoriteProductIds(newFavs)
         alert('관심상품에 등록되었습니다!')
-        console.log(`✅ [즐겨찾기 등록 완료] productId: ${productId}`)
-        console.log('📌 현재 즐겨찾기 목록:', newFavs)
+
       } else {
         // 즐겨찾기 삭제
         await axios.delete('/api/favorites', { data: { memberId, productId } })
         const newFavs = favoriteProductIds.filter((id) => id !== productId)
         setFavoriteProductIds(newFavs)
         alert('관심상품에서 삭제되었습니다!')
-        console.log(`🗑️ [즐겨찾기 삭제 완료] productId: ${productId}`)
-        console.log('📌 현재 즐겨찾기 목록:', newFavs)
+
       }
     } catch (error) {
-      console.error('❌ 즐겨찾기 토글 실패:', error)
       alert('즐겨찾기 중 문제가 발생했습니다.')
     }
   }
