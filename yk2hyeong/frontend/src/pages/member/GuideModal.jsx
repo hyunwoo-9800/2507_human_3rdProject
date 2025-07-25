@@ -29,9 +29,9 @@ function GuideModal({ type, onClose }) {
                     )}
                 </div>
 
-                <div className="modal-footer">
-                    <button onClick={onClose}>닫기</button>
-                </div>
+                {/*<div className="modal-footer">*/}
+                {/*    <button onClick={onClose}>닫기</button>*/}
+                {/*</div>*/}
             </div>
         </div>
     );

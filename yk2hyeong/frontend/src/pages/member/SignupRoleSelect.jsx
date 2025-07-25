@@ -4,14 +4,20 @@ import axios from 'axios'
 import MemberCustomCard from '../../components/member/MemberCustomCard'
 import Button from '../../components/common/Button'
 import './signupRoleSelect.css'
-import GuideModal from "./GuideModal";
+import GuideModal from './GuideModal'
 
 function SignupRoleSelect() {
   const navigate = useNavigate()
   const [roleMap, setRoleMap] = useState({})
 
   //   role 상태 관리
-    const [guideType, setGuideType] = useState(null);
+  const [guideType, setGuideType] = useState(null)
+
+  // 버튼 hover 상태 관리
+  const [sellerGuideHover, setSellerGuideHover] = useState(false)
+  const [sellerSignupHover, setSellerSignupHover] = useState(false)
+  const [buyerGuideHover, setBuyerGuideHover] = useState(false)
+  const [buyerSignupHover, setBuyerSignupHover] = useState(false)
 
   useEffect(() => {
     axios
@@ -37,11 +43,11 @@ function SignupRoleSelect() {
   }
 
   const handleGuideClick = (type) => {
-    setGuideType(type);
-  };
+    setGuideType(type)
+  }
   const handleCloseModal = () => {
-      setGuideType(null);
-  };
+    setGuideType(null)
+  }
 
   return (
     <div className="signup-role-page">
@@ -56,12 +62,46 @@ function SignupRoleSelect() {
           width={500}
           footer={
             <div className="signup-btn-group">
-              <Button size="sm" onClick={() => handleGuideClick('seller')}>
+              <button
+                type="button"
+                className="signup-guide-btn"
+                style={{
+                  backgroundColor: sellerGuideHover ? '#1878c9' : '#1d8ff8',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '8px 16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={() => setSellerGuideHover(true)}
+                onMouseLeave={() => setSellerGuideHover(false)}
+                onClick={() => handleGuideClick('seller')}
+              >
                 가입안내
-              </Button>
-              <Button size="sm" color="success" onClick={() => handleSignupClick('seller')}>
+              </button>
+              <button
+                type="button"
+                className="signup-signup-btn"
+                style={{
+                  backgroundColor: sellerSignupHover ? '#218838' : '#28a745',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '8px 16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={() => setSellerSignupHover(true)}
+                onMouseLeave={() => setSellerSignupHover(false)}
+                onClick={() => handleSignupClick('seller')}
+              >
                 회원가입
-              </Button>
+              </button>
             </div>
           }
         />
@@ -75,12 +115,46 @@ function SignupRoleSelect() {
           width={500}
           footer={
             <div className="signup-btn-group">
-              <Button size="sm" onClick={() => handleGuideClick('buyer')}>
+              <button
+                type="button"
+                className="signup-guide-btn"
+                style={{
+                  backgroundColor: buyerGuideHover ? '#1878c9' : '#1d8ff8',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '8px 16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={() => setBuyerGuideHover(true)}
+                onMouseLeave={() => setBuyerGuideHover(false)}
+                onClick={() => handleGuideClick('buyer')}
+              >
                 가입안내
-              </Button>
-              <Button size="sm" color="success" onClick={() => handleSignupClick('buyer')}>
+              </button>
+              <button
+                type="button"
+                className="signup-signup-btn"
+                style={{
+                  backgroundColor: buyerSignupHover ? '#218838' : '#28a745',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '8px 16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={() => setBuyerSignupHover(true)}
+                onMouseLeave={() => setBuyerSignupHover(false)}
+                onClick={() => handleSignupClick('buyer')}
+              >
                 회원가입
-              </Button>
+              </button>
             </div>
           }
         />
@@ -90,9 +164,7 @@ function SignupRoleSelect() {
       <p className="signup-login-link">
         계정이 있으신가요? <a href="/login">로그인</a>
       </p>
-        {guideType && (
-            <GuideModal type={guideType} onClose={handleCloseModal}/>
-        )}
+      {guideType && <GuideModal type={guideType} onClose={handleCloseModal} />}
     </div>
   )
 }
