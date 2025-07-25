@@ -66,6 +66,15 @@ const CustomDetailCard = ({
   const [dragging, setDragging] = useState(null) // { type: 'report'|'ban', offsetX, offsetY }
   const modalRefs = { report: useRef(null), ban: useRef(null) }
 
+  //reasonCode 추가
+  const reasonCodeMap = {
+    '부정확한 상품 정보/이미지': '001',
+    '스팸 혹은 중복 게시물': '002',
+    '금지 품목 등록': '003',
+    '허위 광고': '004',
+    '기타': '005',
+  }
+
   // 수량 경계값 동기화
   useEffect(() => {
     setOrderQuantity((q) => {
@@ -200,8 +209,10 @@ const CustomDetailCard = ({
   const mergedImageStyle = { ...defaultImageStyle, ...imageStyle }
 
   const handleReportSubmit = async () => {
+    const reasonCode = reasonCodeMap[reportReason] || '005' // 매핑 실패 시 기본
     try {
       await axios.post('/api/report', {
+        reasonCode,
         reasonName: reportReason,
         reportContent: reportDetail,
         productId: productId,

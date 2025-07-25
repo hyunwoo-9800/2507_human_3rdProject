@@ -14,6 +14,7 @@ public class ReportController {
 
     @PostMapping("/report")
     public ResponseEntity<?> insertReport(@RequestBody ReportVO reportVO) {
+        System.out.println("[Controller] reasonCode = " + reportVO.getReasonCode());
         reportService.insertReport(reportVO);
         return ResponseEntity.ok().build();
     }
