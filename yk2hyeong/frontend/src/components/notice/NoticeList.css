@@ -2,7 +2,6 @@
 .notice-container {
   max-width: 1200px; /* 최대 너비 800px */
   margin: 40px auto; /* 위아래 40px, 좌우 자동 가운데 정렬 */
-  padding: 0 20px;
 }
 /* 테이즐 설정 */
 .notice-table {
@@ -56,3 +55,4 @@
   gap: 10px; /* 버튼 사이 간격 */
   margin-top: 20px; /* 위쪽 여백 */
 }
+

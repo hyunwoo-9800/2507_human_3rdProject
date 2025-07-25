@@ -231,7 +231,7 @@ export default function ProductList() {
   })
 
   return (
-    <div>
+    <div style={{margin:'40px 0'}}>
       <h2>온라인 상품 목록</h2>
       {loading ? (
         <CustomLoading size="large" />

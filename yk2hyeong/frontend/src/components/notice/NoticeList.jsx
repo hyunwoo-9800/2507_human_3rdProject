@@ -69,7 +69,7 @@ function NoticeList() {
 
   return (
     <div className="notice-container">
-      <div className="notice-header">
+      <div className="notice-title" style={{backgroundColor:"none !important"}}>
         <h2>공지사항</h2>
       </div>
 
