@@ -19,6 +19,9 @@ public interface ProductDAO {
     //memberId로 상품 목록 조회
     List<ProductVO> selectProductsByMemberId(@Param("memberId")String memberId) throws DataAccessException;
 
+    //productId로 상품 목록 조회
+    List<ProductVO> getProductsByIds(@Param("productIds") List<String> productIds);
+
     // 즐겨찾기 등록/삭제/조회
     void insertFavorite(String memberId, String productId) throws DataAccessException;
     void deleteFavorite(String memberId, String productId) throws DataAccessException;

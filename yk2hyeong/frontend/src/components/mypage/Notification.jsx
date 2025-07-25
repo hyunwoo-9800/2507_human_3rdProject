@@ -66,20 +66,24 @@ function Notification({memberId, readStatus}) {
     console.log("🧪 전체 products:", products);
     console.log("🧪 전체 notifications:", notifications);
     useEffect(() => {
-        const memberId = localStorage.getItem("memberId");
         if (!memberId) return;
 
         // 알림 불러오기
         axios.get(`/api/mypage/notification?memberId=${memberId}`)
             .then(res => {
                 console.log("알림 전체 데이터:", res.data);
-                if (Array.isArray(res.data)) setNotifications(res.data);
-            }).catch(err => console.error("알림 오류:", err));
+                const notiList = res.data || [];
+                setNotifications(notiList);
 
-        // 모든 상품 정보 (공통)
-        axios.get(`/api/products?memberId=all`)
-            .then(res => setProducts(res.data))
-            .catch(err => console.error("상품 오류:", err));
+                const productIds = notiList.map(n => n.productId).filter(Boolean);
+
+                //해당되는 productId만 조회
+                if(productIds.length > 0){
+                    axios.post('/api/products/by-ids', productIds)
+                        .then(res => setProducts(res.data))
+                        .catch(err => console.error("상품 오류:", err));
+                }
+            }).catch(err => console.error("알림 오류:", err));
 
         // 판매완료일 경우 추가 정보
         axios.get(`/api/mypage/sold-notification?memberId=${memberId}`)

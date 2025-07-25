@@ -77,6 +77,11 @@ public class ProductServiceImpl implements ProductService {
         return productDAO.getAllProducts();
 
     }
+    //productId로 상품조회
+    @Override
+    public List<ProductVO> getProductsByIds(List<String> productIds) {
+        return productDAO.getProductsByIds(productIds);
+    }
 
     // 즐겨찾기 등록
     @Override

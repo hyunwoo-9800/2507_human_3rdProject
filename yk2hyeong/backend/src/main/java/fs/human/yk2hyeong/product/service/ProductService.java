@@ -16,6 +16,9 @@ public interface ProductService {
     // memberId로 상품 목록 조회
     List<ProductVO> getProductsByMemberId(String memberId) throws Exception;
 
+    //productId로 상품 목록 조회
+    List<ProductVO> getProductsByIds(List<String> productIds);
+
     // 즐겨찾기 등록
     void insertFavorite(String memberId, String productId) throws Exception;
 

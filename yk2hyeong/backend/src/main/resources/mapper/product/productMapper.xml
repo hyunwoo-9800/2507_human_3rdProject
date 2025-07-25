@@ -208,4 +208,13 @@
             )
     </insert>
 
+<!--    상품 id로 데이터 가져오기-->
+    <select id="getProductsByIds" parameterType="list" resultType="fs.human.yk2hyeong.product.vo.ProductVO">
+        SELECT *
+        FROM TB_PRODUCT
+        WHERE PRODUCT_ID IN
+        <foreach item="id" collection="productIds" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 </mapper>

@@ -39,6 +39,12 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
+    //상품목록 ID로 조회
+    @PostMapping("/products/by-ids")
+    public List<ProductVO> getProductsByIds(@RequestBody List<String> productIds){
+        return productService.getProductsByIds(productIds);
+    }
+
     // 즐겨찾기 등록
     @PostMapping("/favorites")
     public ResponseEntity<String> insertFavorite(@RequestBody Map<String, String> payload) throws Exception {

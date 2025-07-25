@@ -15,6 +15,7 @@ function Mypage() {
     const [selectedMonth, setSelectedMonth] = useState("total");
 
     const [readStatus, setReadStatus] = useState("total");
+    const memberId = localStorage.getItem("memberId");
 
     return (
         <div>
@@ -67,7 +68,7 @@ function Mypage() {
                             selectedMonth={selectedMonth}
                         />
                     )}
-                    {menuTab === "notification" && <Notification readStatus={readStatus}/>}
+                    {menuTab === "notification" && <Notification memberId={memberId} readStatus={readStatus}/>}
                 </div>
             </main>
         </div>
