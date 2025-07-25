@@ -74,6 +74,17 @@ export default function ProductDetail() {
     }
   }
 
+  // 상품 판매 타입에 따라 orderOptions 동적 생성
+  let orderOptions = { immediate: false, reservation: false, reserveRate: 50 }
+  if (product.productSellType === '즉시/예약') {
+    orderOptions.immediate = true
+    orderOptions.reservation = true
+  } else if (product.productSellType === '즉시 구매 상품') {
+    orderOptions.immediate = true
+  } else if (product.productSellType === '예약 상품') {
+    orderOptions.reservation = true
+  }
+
   function getReleaseDate(product, orderType) {
     if (orderType === 'reservation') {
       if (product.productRevEnd) {
@@ -133,11 +144,7 @@ export default function ProductDetail() {
           borderRadius: 8,
           border: '1px solid #ddd',
         }}
-        orderOptions={{
-          immediate: true,
-          reservation: true,
-          reserveRate: 50,
-        }}
+        orderOptions={orderOptions}
         onQuantityChange={(q) => console.log('변경된 수량:', q)}
         onOrderTypeChange={(t) => setOrderType(t)}
         onOrder={(info) => console.log('주문 정보:', info)}
