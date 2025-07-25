@@ -31,6 +31,6 @@
             A.PRODUCT_ID,
             B.PRODUCT_NAME
         ORDER BY "POPULAR" DESC
-            FETCH FIRST 4 ROWS ONLY
+            FETCH FIRST 5 ROWS ONLY
     </select>
 </mapper>

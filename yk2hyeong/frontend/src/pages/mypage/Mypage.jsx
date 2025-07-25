@@ -26,17 +26,17 @@ function Mypage() {
             <main>
                 <div className="menu-bar">
                     <button
-                        className="regist-product"
-                        onClick={() => setMenuTab("regist")}>등록한 상품</button>
+                        className={`regist-product ${menuTab === 'regist' ? 'clicked' : ''}`}
+                        onClick={() => setMenuTab('regist')}>등록한 상품</button>
                     <button
-                        className="purchase-product"
-                        onClick={() => setMenuTab("purchase")}>구매한 상품</button>
+                        className={`purchase-product ${menuTab === 'purchase' ? 'clicked' : ''}`}
+                        onClick={() => setMenuTab('purchase')}>구매한 상품</button>
                     <button
-                        className="wishlist-product"
-                        onClick={() => setMenuTab("wishlist")}>관심 상품</button>
+                        className={`wishlist-product ${menuTab === 'wishlist' ? 'clicked' : ''}`}
+                        onClick={() => setMenuTab('wishlist')}>관심 상품</button>
                     <button
-                        className="notification"
-                        onClick={() => setMenuTab("notification")}>알림</button>
+                        className={`notification ${menuTab === 'notification' ? 'clicked' : ''}`}
+                        onClick={() => setMenuTab('notification')}>알림</button>
                 </div>
 
                 {menuTab === "notification" ? (
