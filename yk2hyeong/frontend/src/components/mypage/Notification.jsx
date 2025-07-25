@@ -63,7 +63,8 @@ function Notification({memberId, readStatus}) {
         expired: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate', 'expiredDate'],
     };
 
-
+    console.log("🧪 전체 products:", products);
+    console.log("🧪 전체 notifications:", notifications);
     useEffect(() => {
         const memberId = localStorage.getItem("memberId");
         if (!memberId) return;
@@ -76,7 +77,7 @@ function Notification({memberId, readStatus}) {
             }).catch(err => console.error("알림 오류:", err));
 
         // 모든 상품 정보 (공통)
-        axios.get(`/api/products?memberId=${memberId}`)
+        axios.get(`/api/products?memberId=all`)
             .then(res => setProducts(res.data))
             .catch(err => console.error("상품 오류:", err));
 
@@ -220,7 +221,9 @@ function Notification({memberId, readStatus}) {
                                                 }
                                             }
                                         } else {
+                                            console.log("🔍 현재 item.productId:", item.productId);
                                             const product = products.find(p => p.productId === item.productId);
+                                            console.log("🔍 해당 product:", product);
                                             if (product) {
                                                 if (colKey === "approvedDate" || colKey === "expiredDate") {
                                                     value = item.createdDate?.split(" ")[0];

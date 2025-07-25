@@ -32,7 +32,7 @@ public class ProductController {
     @GetMapping("/products")
     public List<ProductVO> getAllProducts(@RequestParam(required = false) String memberId) throws Exception {
 
-        if(memberId != null && !memberId.isEmpty()){
+        if(memberId != null && !memberId.isEmpty() && !"all".equals(memberId)){
             return productService.getProductsByMemberId(memberId);
         }
 
