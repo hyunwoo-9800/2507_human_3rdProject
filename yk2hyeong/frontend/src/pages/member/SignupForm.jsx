@@ -320,28 +320,50 @@ function SignupForm({ role }) {
         {/* 이메일 입력 */}
         <div className="input-group">
           <label className="input-label email-label">이메일</label>
-          <div className="email-input">
+          <div
+            className="email-input"
+            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
             <Input
-                name="memberEmail"
-                className="member-email-input"
-                value={form.memberEmail}
-                onChange={handleChange}
-                placeholder="이메일 (중복 불가)"
-                type="email"
-                maxLength={50}
-                required
+              name="memberEmail"
+              className="member-email-input"
+              value={form.memberEmail}
+              onChange={handleChange}
+              placeholder="이메일 (중복 불가)"
+              type="email"
+              maxLength={50}
+              required
+              style={{
+                height: '40px',
+                fontSize: '16px',
+                flex: 1,
+                minWidth: 0,
+              }}
             />
             {/* 인증번호 발송 버튼 */}
             <div className="email-input-btn-wrapper">
-              <Button
-                  type="button"
-                  size="sm"
-                  onClick={requestCode}
-                  style={{backgroundColor:'#18AD4E'}}
-                  disabled={!isEmailAvailable || resendCountdown > 0}
+              <button
+                type="button"
+                style={{
+                  backgroundColor: '#28a745',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '0 16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  fontSize: '16px',
+                  height: '40px',
+                  transition: 'background 0.2s',
+                  marginBottom:'15px'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#218838')}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#28a745')}
+                onClick={requestCode}
+                disabled={!isEmailAvailable || resendCountdown > 0}
               >
                 {resendCountdown > 0 ? `다시 요청 (${resendCountdown}s)` : '인증번호 발송'}
-              </Button>
+              </button>
             </div>
           </div>
           {emailMessage && (
@@ -350,6 +372,7 @@ function SignupForm({ role }) {
                 color: isEmailAvailable ? 'green' : 'red',
                 fontSize: '12px',
                 marginTop: '4px',
+                marginLeft: '8px'
               }}
             >
               {emailMessage}
@@ -358,7 +381,10 @@ function SignupForm({ role }) {
         </div>
         {/* 인증번호 입력 */}
         {showCodeInput && !isVerified && (
-          <div className="email-code-section">
+          <div
+            className="email-code-section"
+            style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}
+          >
             <Input
               placeholder="인증번호 입력"
               className="email-write-input"
@@ -366,17 +392,43 @@ function SignupForm({ role }) {
               onChange={(e) => setUserInputCode(e.target.value)}
               size="sm"
               maxLength={6}
+              style={{
+                height: '40px',
+                fontSize: '16px',
+                flex: 1,
+                minWidth: 0,
+              }}
             />
-            <Button type="button" style={{backgroundColor:'#18AD4E'}} size="sm" onClick={verifyCode}>
+            <button
+              type="button"
+              style={{
+                backgroundColor: '#28a745',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '0 16px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                fontSize: '16px',
+                height: '40px',
+                transition: 'background 0.2s',
+                marginTop:'10px'
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#218838')}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#28a745')}
+              onClick={verifyCode}
+            >
               인증 확인
-            </Button>
+            </button>
             {codeExpireCountdown > 0 ? (
-              <span style={{ fontSize: '12px', color: '#555' }}>
+              <span style={{ fontSize: '12px', color: '#555', marginLeft: '8px', marginTop:'8px' }}>
                 남은 시간: {Math.floor(codeExpireCountdown / 60)}:
                 {(codeExpireCountdown % 60).toString().padStart(2, '0')}
               </span>
             ) : (
-              <span style={{ fontSize: '12px', color: 'red' }}>인증번호가 만료되었습니다.</span>
+              <span style={{ fontSize: '12px', color: 'red', marginLeft: '8px', marginBottom:'25px' }}>
+                인증번호가 만료되었습니다.
+              </span>
             )}
           </div>
         )}
