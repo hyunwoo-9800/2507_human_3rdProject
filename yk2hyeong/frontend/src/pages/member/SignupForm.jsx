@@ -199,7 +199,7 @@ function SignupForm({ role }) {
         setShowCodeInput(true)
       })
       .catch(() => {
-        alert('메일 발송 실패')
+        alert('메일 발송에 실패하였습니다. 잠시 후 다시 시도해주세요.')
         setResendCountdown(0)
         setCodeExpireCountdown(0)
         setCodeExpired(true)
@@ -261,11 +261,11 @@ function SignupForm({ role }) {
         params: { email: form.memberEmail, code: userInputCode },
       })
       .then(() => {
-        alert('인증 성공!')
+        alert('인증이 완료되었습니다!')
         setIsVerified(true)
         setShowCodeInput(false)
       })
-      .catch(() => alert('인증 실패!'))
+      .catch(() => alert('인증에 실패하였습니다. 인증번호를 다시 확인해주세요.'))
   }
 
   // 은행 선택 처리
@@ -305,11 +305,11 @@ function SignupForm({ role }) {
       await axios.post('/member/signup', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
-      alert('회원가입 성공')
+      alert('회원가입에 성공하였습니다. 반갑습니다!')
       navigate('/')
     } catch (err) {
       console.error(err)
-      alert('회원가입 실패')
+      alert('회원가입에 실패하였습니다. 다시 시도해주세요.')
     }
   }
 
@@ -433,7 +433,7 @@ function SignupForm({ role }) {
           </div>
         )}
 
-        {isVerified && <p style={{ fontSize: '12px', color: 'green' }}>인증 완료되었습니다.</p>}
+        {isVerified && <p style={{ fontSize: '12px', color: 'green', marginLeft: '8px', marginBottom:'25px' }}>인증 완료되었습니다.</p>}
 
         {/* 비밀번호, 이름, 전화번호 등의 필드 */}
         <Input
