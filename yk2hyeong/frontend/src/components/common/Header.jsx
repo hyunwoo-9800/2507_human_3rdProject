@@ -6,7 +6,6 @@ import CustomDropdown from '../../components/common/CustomDropdown';
 import './header.css';
 
 export default function Header() {
-    // 관리자 권한
     const { loginMember, logout, isLoading } = useLogin();
     const isAdmin = loginMember?.memberRole === '001';
 
@@ -38,9 +37,6 @@ export default function Header() {
                     <Link to="/siteinfo" className="nav-item">
                         사이트소개
                     </Link>
-                    {/*<Link to="/admin" className="nav-item">*/}
-                    {/*    (임시) 관리자페이지*/}
-                    {/*</Link>*/}
                 </nav>
             </div>
 
@@ -65,7 +61,14 @@ export default function Header() {
                                 type="button"
                                 className="dropdown-item"
                                 onClick={logout}
-                                style={{ ...dropdownItemStyle, background: 'none', border: 'none', width: '100%', cursor: 'pointer', textAlign: 'left' }}
+                                style={{
+                                    ...dropdownItemStyle,
+                                    background: 'none',
+                                    border: 'none',
+                                    width: '100%',
+                                    cursor: 'pointer',
+                                    textAlign: 'left'
+                                }}
                             >
                                 로그아웃
                             </button>
