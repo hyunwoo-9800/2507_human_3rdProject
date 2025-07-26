@@ -68,7 +68,8 @@ public class SecurityConfig {
                                 "/notice/reg",                   // 등록
                                 "/notice/edit/**",               // 수정
                                 "/notice/delete/**",             // 삭제
-                                "/auth/me").authenticated()      // 로그인 상태 확인용
+                                "/auth/me",
+                                "/api/mypage/**").authenticated()      // 로그인 상태 확인용
                                              .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter.class)

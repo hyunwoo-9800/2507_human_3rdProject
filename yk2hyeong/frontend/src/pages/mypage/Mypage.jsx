@@ -19,6 +19,7 @@ function Mypage() {
 
     // 로그인 사용자
     const {loginMember, isLoading} = useLogin();
+    if (!loginMember) return <div>로그인 정보를 불러오는 중입니다...</div>;
     const memberId = loginMember.memberId;
 
     return (

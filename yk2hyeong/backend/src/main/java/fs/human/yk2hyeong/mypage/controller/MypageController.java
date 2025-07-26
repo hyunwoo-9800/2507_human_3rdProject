@@ -1,10 +1,12 @@
 package fs.human.yk2hyeong.mypage.controller;
 
+import fs.human.yk2hyeong.member.vo.MemberVO;
 import fs.human.yk2hyeong.mypage.service.MypageService;
 import fs.human.yk2hyeong.mypage.vo.MypageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +24,12 @@ public class MypageController {
     }
 
     @GetMapping("/notification")
-    public ResponseEntity<List<MypageVO>> getNotification(@RequestParam("memberId") String receiverId) {
-        List<MypageVO> notification = mypageService.selectNotification(receiverId);
+    public ResponseEntity<List<MypageVO>> getNotification(Authentication authentication) {
+
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+        List<MypageVO> notification = mypageService.selectNotification(loginMember.getMemberId());
         return ResponseEntity.ok(notification);
+
     }
     @GetMapping("/sold-notification")
     public ResponseEntity<List<MypageVO>> getSoldNotification(@RequestParam("memberId") String memberId) {
