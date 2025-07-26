@@ -66,6 +66,28 @@ function UserForm({ user }) {
         createdDate: user.createdDate || '',
         memberFileUrls: user.memberFileUrls || [],
       })
+    } else {
+      // user가 null이면 폼을 초기화
+      setForm({
+        memberId: '',
+        memberEmail: '',
+        memberPwd: '',
+        memberName: '',
+        memberBname: '',
+        memberBnum: '',
+        memberShipperName: '',
+        memberTel: '',
+        memberAddr: '',
+        memberDetailAddr: '',
+        memberBankCode: '',
+        memberAccountNum: '',
+        memberRole: '',
+        memberStatus: '',
+        createdDate: '',
+        businessFileUrl: '',
+        bankFileUrl: '',
+        memberFileUrls: [],
+      })
     }
   }, [user])
   return (
