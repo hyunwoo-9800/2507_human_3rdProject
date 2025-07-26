@@ -39,7 +39,7 @@ public interface MemberService {
      */
     boolean isEmailExist(String email) throws Exception;
 
-    String findEmail(String memberName, String memberTel) throws Exception;
+    MemberVO findEmail(String memberName, String memberTel) throws Exception;
 
     void updatePassword(@Param("email") String email, @Param("newPassword") String newPassword) throws Exception;
 

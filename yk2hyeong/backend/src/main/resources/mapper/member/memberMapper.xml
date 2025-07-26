@@ -60,9 +60,10 @@
     </insert>
 
     <!-- 아이디 찾기 -->
-    <select id="findEmail" resultType="String">
+    <select id="findEmail" resultType="fs.human.yk2hyeong.member.vo.MemberVO">
         SELECT
-            MEMBER_EMAIL
+            MEMBER_EMAIL,
+            MEMBER_STATUS
         FROM
             TB_MEMBER
         WHERE MEMBER_NAME = #{memberName}

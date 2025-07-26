@@ -10,7 +10,7 @@ function LoginPage() {
   const [email, setEmail] = useState('') // 이메일 상태
   const [password, setPassword] = useState('') // 비밀번호 상태
   const navigate = useNavigate() // 페이지 이동 함수
-  const { setLoginMember } = useLogin() // 로그인 상태 업데이트 함수
+  const { loginMember, setLoginMember } = useLogin() // 로그인 상태 업데이트 함수
 
   // 로그인 요청 처리
   const handleLogin = async (e) => {
@@ -20,9 +20,10 @@ function LoginPage() {
       const response = await axios.post('/go/login', { email, password }, { withCredentials: true })
       if (response.status === 200) {
 
-        setLoginMember(response.data) // 로그인 상태 업데이트
+        const member = response.data
+        setLoginMember(member) // 로그인 상태 업데이트
 
-        alert('로그인 성공!')
+        alert(member.memberName + '님 환영합니다!')
         navigate('/') // 홈으로 리디렉션
       }
     } catch (error) {

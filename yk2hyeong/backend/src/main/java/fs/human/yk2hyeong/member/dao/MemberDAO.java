@@ -43,7 +43,7 @@ public interface MemberDAO {
      */
     int isEmailExist(String memberEmail) throws DataAccessException;
 
-    String findEmail(String memberName, String memberTel) throws DataAccessException;
+    MemberVO findEmail(String memberName, String memberTel) throws DataAccessException;
 
     void updatePassword(@Param("email") String email, @Param("newPassword") String newPassword) throws DataAccessException;
 

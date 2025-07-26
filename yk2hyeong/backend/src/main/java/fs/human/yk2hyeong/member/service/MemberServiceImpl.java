@@ -62,17 +62,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public String findEmail(String memberName, String memberTel) throws Exception {
+    public MemberVO findEmail(String memberName, String memberTel) throws Exception {
 
-        String email = memberDAO.findEmail(memberName, memberTel);
+        MemberVO vo = memberDAO.findEmail(memberName, memberTel);
 
-        if (email == null) {
-
-            throw new Exception("해당 정보로 아이디를 찾을 수 없습니다.");
-
-        }
-
-        return email;
+        return vo;
 
     }
 

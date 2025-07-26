@@ -145,20 +145,20 @@ public class MemberController {
      * @param email 인증번호를 발송할 이메일
      * @return 성공 시 200 OK 응답
      */
-//    @PostMapping("/send-code")
-//    public ResponseEntity<?> sendCode(@RequestParam String email) {
-//
-//        mailService.sendCode(email); // 인증번호 발송
-//        return ResponseEntity.ok().build();
-//
-//    } 시연시에는 이거 쓸것
+    @PostMapping("/send-code")
+    public ResponseEntity<?> sendCode(@RequestParam String email) {
+
+        mailService.sendCode(email); // 인증번호 발송
+        return ResponseEntity.ok().build();
+
+    }
 
     // 개발 테스트용
-    @PostMapping("/send-code")
+   /* @PostMapping("/send-code")
     public ResponseEntity<Map<String, String>> sendCode(@RequestParam String email) {
         String code = mailService.sendCode(email);  // 인증번호 반환 받기
         return ResponseEntity.ok(Map.of("code", code));  // 테스트용 응답
-    }
+    }*/
 
     /**
      * 인증번호 확인 API
@@ -182,16 +182,44 @@ public class MemberController {
             @RequestParam String memberName, @RequestParam String memberTel) throws Exception {
 
         // 예시: DB에서 이름과 전화번호로 아이디 찾기
-        String email = memberService.findEmail(memberName, memberTel);
+        MemberVO vo = memberService.findEmail(memberName, memberTel);
 
-        if (email != null) {
+        if (vo == null) {
 
-            return ResponseEntity.ok(Map.of("email", email)); // 아이디(이메일) 반환
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("status", "404", "message", "일치하는 회원 정보가 없습니다."));
+        }
 
-        } else {
+        String email = vo.getMemberEmail();
+        String memberStatus = vo.getMemberStatus();
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("email", ""));
+        switch (memberStatus) {
 
+            case "001": // 활성
+                return ResponseEntity.ok(Map.of(
+                        "status", "200",
+                        "email", email,
+                        "message", "정상적으로 아이디를 찾았습니다."));
+
+            case "002": // 휴면
+                return ResponseEntity.status(HttpStatus.LOCKED).body(Map.of(
+                        "status", "locked",
+                        "message", "해당 계정은 현재 휴면 상태입니다. 관리자에게 문의하세요."));
+
+            case "003": // 탈퇴
+                return ResponseEntity.status(HttpStatus.GONE).body(Map.of(
+                        "status", "withdrawn",
+                        "message", "해당 계정은 탈퇴된 상태입니다."));
+
+            case "004": // 미승인
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                        "status", "unauthorized",
+                        "message", "해당 계정은 아직 승인이 완료되지 않았습니다."));
+
+            default:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                        "status", "unknown",
+                        "message", "알 수 없는 상태입니다."));
         }
 
     }

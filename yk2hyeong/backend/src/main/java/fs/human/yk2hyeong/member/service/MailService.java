@@ -40,7 +40,7 @@ public class MailService {
      *
      * @param email 인증번호를 발송할 이메일 주소
      */
- /*   public void sendCode(String email) {
+    public void sendCode(String email) {
         String code = generateCode(); // 6자리 인증번호 생성
         codeStorage.put(email, new CodeData(code)); // 이메일과 인증번호, 발송 시각 저장
 
@@ -59,10 +59,10 @@ public class MailService {
 
         mailSender.send(message); // 메일 발송
         
-    } 시연 시에는 이거 쓸것 */ 
+    }
     
     // 개발 테스트용
-    public String sendCode(String email) {
+    /*public String sendCode(String email) {
 
         String code = generateCode(); // 6자리 인증번호 생성
         codeStorage.put(email, new CodeData(code)); // 이메일과 인증번호, 발송 시각 저장
@@ -83,7 +83,7 @@ public class MailService {
 
         return code;
 
-    }
+    }*/
 
     public void sendPasswordResetCode(String email) {
         String code = generateCode(); // 6자리 인증번호 생성
