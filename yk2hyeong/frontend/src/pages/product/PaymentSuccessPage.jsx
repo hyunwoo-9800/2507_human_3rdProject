@@ -32,7 +32,8 @@ const PaymentSuccessPage = () => {
         })
             .then(() => {
                 alert('결제가 성공적으로 처리되었습니다!')
-                navigate(`/product/${productId}`)
+                //navigate(`/product/${productId}`)
+                navigate(`/mypage`)
             })
             .catch(() => {
                 alert('결제 처리 중 오류가 발생했습니다.')

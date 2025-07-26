@@ -25,7 +25,7 @@ function RegisteredProduct({ selectedYear, selectedMonth }) {
     setIsLoading(true);
 
     axios
-        .get(`/api/products?memberId=${memberId}`)
+        .get('/api/products/myPage')
         .then((res) => {
           const raw = res.data;
 
