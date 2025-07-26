@@ -11,7 +11,7 @@ app = FastAPI()
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 실제 배포시에는 프론트 주소로 바꿔줘야 해
+    allow_origins=["*"],  # 실제 배포시에는 프론트 주소
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
