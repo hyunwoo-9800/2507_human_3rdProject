@@ -53,7 +53,6 @@ public class ProductController {
     @PostMapping("/products/by-ids")
     public List<ProductVO> getProductsByIds(@RequestBody Map<String, List<String>> request) {
 
-        System.out.println("💬 productIds 요청 들어옴: " + request.get("productIds"));
         List<String> productIds = request.get("productIds");
         return productService.getProductsByIds(productIds);
 

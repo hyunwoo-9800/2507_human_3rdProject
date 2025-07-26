@@ -79,14 +79,12 @@ function Notification({memberId, readStatus}) {
 
                 //해당되는 productId만 조회
                 if(productIds.length > 0) {
-                    console.log("🔍 요청된 productIds:", productIds);
                     axios.post('/api/products/by-ids', {
 
                         productIds: productIds
 
                         })
                         .then(res => {
-                            console.log("✅ 응답 받은 products:", res.data);
                             setProducts(res.data);
                             })
                         .catch(err => console.error("상품 오류:", err));
