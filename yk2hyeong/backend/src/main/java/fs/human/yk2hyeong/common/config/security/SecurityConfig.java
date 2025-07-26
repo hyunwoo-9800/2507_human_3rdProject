@@ -63,14 +63,16 @@ public class SecurityConfig {
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth.requestMatchers(
+                                        "/api/products/**"     // 이건 인증 없이도 접근 가능
+                                ).permitAll()
                         .requestMatchers(
-                                "/notice/reg",                   // 등록
-                                "/notice/edit/**",               // 수정
-                                "/notice/delete/**",             // 삭제
-                                "/auth/me",
-                                "/api/mypage/**").authenticated()      // 로그인 상태 확인용
-                                             .anyRequest().permitAll()
+                                        "/notice/reg",                       // 공지사항 등록
+                                        "/notice/edit/**",                           // 공지사항 수정
+                                        "/notice/delete/**",                        // 공지사항 삭제
+                                        "/auth/me",
+                                        "/api/mypage/**").authenticated()      // 로그인 상태 확인용
+                                .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter.class)
                 .build();
