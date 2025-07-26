@@ -31,11 +31,14 @@ export default function ProductList() {
   const fetchProducts = async () => {
     setLoading(true)
     try {
-      const response = await axios.get('/api/products')
+      const response = await axios.get('/api/products', {
+        params: loginMember ? { memberId: loginMember.memberId } : {}
+      })
       const filtered = response.data.filter((p) => p.imageType !== '003')
 
       // productId별로 그룹핑하여 썸네일(200) 우선 선택
       const productMap = new Map()
+
       filtered.forEach((p) => {
         if (!productMap.has(p.productId)) {
           productMap.set(p.productId, p)
@@ -85,6 +88,9 @@ export default function ProductList() {
 
   // 즐겨찾기 토글 (등록 또는 삭제)
   const toggleFavorite = async (productId) => {
+
+      const memberId = loginMember?.memberId;
+
     if (!memberId) {
       alert('로그인이 필요합니다.')
       return

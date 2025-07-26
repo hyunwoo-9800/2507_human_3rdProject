@@ -1,6 +1,7 @@
 package fs.human.yk2hyeong.product.controller;
 
 import fs.human.yk2hyeong.admin.service.AdminService;
+import fs.human.yk2hyeong.member.vo.MemberVO;
 import fs.human.yk2hyeong.product.service.ProductService;
 import fs.human.yk2hyeong.product.service.ProductNoticeService;
 import fs.human.yk2hyeong.product.vo.*;
@@ -9,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class ProductController {
 
     private final ProductService productService;
@@ -30,13 +33,10 @@ public class ProductController {
 
     // 상품 목록 조회
     @GetMapping("/products")
-    public List<ProductVO> getAllProducts(@RequestParam(required = false) String memberId) throws Exception {
-
-        if(memberId != null && !memberId.isEmpty() && !"all".equals(memberId)){
-            return productService.getProductsByMemberId(memberId);
-        }
+    public List<ProductVO> getAllProducts() throws Exception {
 
         return productService.getAllProducts();
+
     }
 
     //상품목록 ID로 조회
@@ -47,9 +47,12 @@ public class ProductController {
 
     // 즐겨찾기 등록
     @PostMapping("/favorites")
-    public ResponseEntity<String> insertFavorite(@RequestBody Map<String, String> payload) throws Exception {
+    public ResponseEntity<String> insertFavorite(
+            @RequestBody Map<String, String> payload,
+            Authentication authentication) throws Exception {
 
-        String memberId = payload.get("memberId");
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+        String memberId = loginMember.getMemberId();
         String productId = payload.get("productId");
 
         productService.insertFavorite(memberId, productId);
@@ -66,9 +69,13 @@ public class ProductController {
 
     // 즐겨찾기 삭제
     @DeleteMapping("/favorites")
-    public ResponseEntity<String> deleteFavorite(@RequestBody Map<String, String> payload) throws Exception {
+    public ResponseEntity<String> deleteFavorite(
+            @RequestBody Map<String, String> payload,
+            Authentication authentication) throws Exception {
 
-        String memberId = payload.get("memberId");
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+
+        String memberId = loginMember.getMemberId();
         String productId = payload.get("productId");
         productService.deleteFavorite(memberId, productId);
 
@@ -84,7 +91,11 @@ public class ProductController {
 
     // 즐겨찾기된 productId 목록 반환
     @GetMapping("/favorites")
-    public ResponseEntity<List<String>> getFavorites(@RequestParam String memberId) throws Exception {
+    public ResponseEntity<List<String>> getFavorites(Authentication authentication) throws Exception {
+
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+
+        String memberId = loginMember.getMemberId();
 
         List<String> favorites = productService.getFavoriteProductIds(memberId);
         return ResponseEntity.ok(favorites);
@@ -111,9 +122,9 @@ public class ProductController {
             @RequestParam int minSaleUnit,
             @RequestParam String descriptionText,
             @RequestParam String memberId,
-
             @RequestPart MultipartFile thumbnail,
-            @RequestPart(required = false) List<MultipartFile> detailImages
+            @RequestPart(required = false) List<MultipartFile> detailImages,
+            Authentication authentication
     ) throws Exception {
         // 현재 실행 경로 및 저장 경로 출력
         String basePath = System.getProperty("user.dir");
@@ -141,6 +152,7 @@ public class ProductController {
             }
         }
 
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
         ProductRegisterDTO dto = new ProductRegisterDTO();
         dto.setProductName(productName);
         dto.setStartDate(LocalDate.parse(startDate));
@@ -150,10 +162,21 @@ public class ProductController {
         dto.setOrderType(orderType);
         dto.setSaleQuantity(saleQuantity);
         dto.setMinSaleUnit(minSaleUnit);
-        dto.setDescriptionText(descriptionText);
-        dto.setMemberId(memberId);
+        if (descriptionText.equals("") || descriptionText == null) {
+
+            dto.setDescriptionText(" ");
+
+        } else {
+
+            dto.setDescriptionText(descriptionText);
+
+        }
+
+        dto.setMemberId(loginMember.getMemberId());
+        // dto.setMemberId(memberId);
         dto.setThumbnail(thumbnail);
         dto.setDetailImages(detailImages);
+
 
         productService.registerProduct(dto);
 
@@ -174,8 +197,12 @@ public class ProductController {
     public ResponseEntity<?> createProductNotice(
             @PathVariable String productId,
             @RequestBody Map<String, String> body,
-            @RequestHeader("memberid") String memberId
+            // @RequestHeader("memberid") String memberId,
+            Authentication authentication
     ) {
+
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+        String memberId = loginMember.getMemberId();
 
         ProductNoticeVO notice = new ProductNoticeVO();
         notice.setProductId(productId);
@@ -196,8 +223,12 @@ public class ProductController {
             @PathVariable String productId,
             @PathVariable String noticeId,
             @RequestBody Map<String, String> body,
-            @RequestHeader("memberid") String memberId
+            // @RequestHeader("memberid") String memberId,
+            Authentication authentication
     ) {
+
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+        String memberId = loginMember.getMemberId();
 
         ProductNoticeVO notice = new ProductNoticeVO();
 
@@ -219,9 +250,11 @@ public class ProductController {
     public ResponseEntity<?> deleteProductNotice(
             @PathVariable String productId,
             @PathVariable String noticeId,
-            @RequestHeader("memberid") String memberId
+            Authentication authentication
+            // @RequestHeader("memberid") String memberId
     ) {
-
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+        String memberId = loginMember.getMemberId();
         productNoticeService.deleteNotice(noticeId, memberId);
 
         return ResponseEntity.ok().build();

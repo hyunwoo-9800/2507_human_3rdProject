@@ -13,13 +13,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/mypage")
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class MypageController {
 
     @Autowired
     private MypageService mypageService;
 
     @GetMapping("/purchased")
-    public List<MypageVO> getPurchasedProducts(@RequestParam("memberId") String memberId) {
+    public List<MypageVO> getPurchasedProducts(Authentication authentication) {
+
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+        String memberId = loginMember.getMemberId();
         return mypageService.getPurchasedProducts(memberId);
     }
 
@@ -32,8 +36,13 @@ public class MypageController {
 
     }
     @GetMapping("/sold-notification")
-    public ResponseEntity<List<MypageVO>> getSoldNotification(@RequestParam("memberId") String memberId) {
+    public ResponseEntity<List<MypageVO>> getSoldNotification(Authentication authentication) {
+
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+        String memberId = loginMember.getMemberId();
+
         List<MypageVO> list = mypageService.selectSoldNotification(memberId);
+
         return ResponseEntity.ok(list);
     }
 
