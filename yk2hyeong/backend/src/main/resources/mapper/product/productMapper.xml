@@ -210,13 +210,35 @@
             )
     </insert>
 
-<!--    상품 id로 데이터 가져오기-->
+    <!-- 상품 id로 데이터 가져오기-->
     <select id="getProductsByIds" parameterType="list" resultType="fs.human.yk2hyeong.product.vo.ProductVO">
-        SELECT *
-        FROM TB_PRODUCT
-        WHERE PRODUCT_ID IN
+        SELECT
+            A.PRODUCT_ID,
+            A.PRODUCT_CODE,
+            A.PRODUCT_NAME,
+            A.PRODUCT_DESCRIPTION,
+            A.PRODUCT_STOCK_QTY,
+            A.PRODUCT_UNIT_PRICE,
+            A.SELL_MEMBER_ID,
+            B.MEMBER_NAME AS sellerCompany,
+            A.PRODUCT_TYPE,
+            A.PRODUCT_MIN_QTR,
+            A.PRODUCT_REV_START,
+            A.PRODUCT_REV_END,
+            A.PRODUCT_DISPLAY_FLAG,
+            A.PRODUCT_STATUS,
+            A.CREATED_ID,
+            A.CREATED_DATE,
+            A.UPDATED_ID,
+            A.UPDATED_DATE
+        FROM
+            TB_PRODUCT A
+                LEFT JOIN TB_MEMBER B
+                ON A.SELL_MEMBER_ID = B.MEMBER_ID
+        WHERE A.PRODUCT_ID IN
         <foreach item="id" collection="productIds" open="(" separator="," close=")">
             #{id}
         </foreach>
     </select>
+
 </mapper>

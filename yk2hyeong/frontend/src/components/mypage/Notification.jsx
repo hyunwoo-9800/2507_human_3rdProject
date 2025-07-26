@@ -63,24 +63,32 @@ function Notification({memberId, readStatus}) {
         expired: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate', 'expiredDate'],
     };
 
-    console.log("🧪 전체 products:", products);
-    console.log("🧪 전체 notifications:", notifications);
+//     console.log("🧪 전체 products:", products);
+//     console.log("🧪 전체 notifications:", notifications);
     useEffect(() => {
         if (!memberId) return;
 
         // 알림 불러오기
         axios.get(`/api/mypage/notification?memberId=${memberId}`)
             .then(res => {
-                console.log("알림 전체 데이터:", res.data);
+                // console.log("알림 전체 데이터:", res.data);
                 const notiList = res.data || [];
                 setNotifications(notiList);
 
                 const productIds = notiList.map(n => n.productId).filter(Boolean);
 
                 //해당되는 productId만 조회
-                if(productIds.length > 0){
-                    axios.post('/api/products/by-ids', productIds)
-                        .then(res => setProducts(res.data))
+                if(productIds.length > 0) {
+                    console.log("🔍 요청된 productIds:", productIds);
+                    axios.post('/api/products/by-ids', {
+
+                        productIds: productIds
+
+                        })
+                        .then(res => {
+                            console.log("✅ 응답 받은 products:", res.data);
+                            setProducts(res.data);
+                            })
                         .catch(err => console.error("상품 오류:", err));
                 }
             }).catch(err => console.error("알림 오류:", err));
@@ -225,9 +233,9 @@ function Notification({memberId, readStatus}) {
                                                 }
                                             }
                                         } else {
-                                            console.log("🔍 현재 item.productId:", item.productId);
+                                            // console.log("🔍 현재 item.productId:", item.productId);
                                             const product = products.find(p => p.productId === item.productId);
-                                            console.log("🔍 해당 product:", product);
+                                            // console.log("🔍 해당 product:", product);
                                             if (product) {
                                                 if (colKey === "approvedDate" || colKey === "expiredDate") {
                                                     value = item.createdDate?.split(" ")[0];

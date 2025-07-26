@@ -17,7 +17,7 @@ public interface ProductDAO {
     List<ProductVO> getAllProducts();
 
     //memberId로 상품 목록 조회
-    List<ProductVO> selectProductsByMemberId(@Param("memberId")String memberId) throws DataAccessException;
+    List<ProductVO> selectProductsByMemberId(String memberId) throws DataAccessException;
 
     //productId로 상품 목록 조회
     List<ProductVO> getProductsByIds(@Param("productIds") List<String> productIds);

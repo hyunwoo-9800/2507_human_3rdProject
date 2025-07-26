@@ -31,18 +31,32 @@ public class ProductController {
     private final AdminService adminService;
     private final ProductNoticeService productNoticeService;
 
-    // 상품 목록 조회
+    // 상품 목록 조회(전체 상품 목록)
     @GetMapping("/products")
     public List<ProductVO> getAllProducts() throws Exception {
 
         return productService.getAllProducts();
 
     }
+    
+    // 상품 목록 조회(본인이 등록한 상품 목록)
+    @GetMapping("/products/myPage")
+    public List<ProductVO> getMyProducts(Authentication authentication) throws Exception {
+
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+        String memberId = loginMember.getMemberId();
+        return productService.selectProductsByMemberId(memberId);
+
+    }
 
     //상품목록 ID로 조회
     @PostMapping("/products/by-ids")
-    public List<ProductVO> getProductsByIds(@RequestBody List<String> productIds){
+    public List<ProductVO> getProductsByIds(@RequestBody Map<String, List<String>> request) {
+
+        System.out.println("💬 productIds 요청 들어옴: " + request.get("productIds"));
+        List<String> productIds = request.get("productIds");
         return productService.getProductsByIds(productIds);
+
     }
 
     // 즐겨찾기 등록

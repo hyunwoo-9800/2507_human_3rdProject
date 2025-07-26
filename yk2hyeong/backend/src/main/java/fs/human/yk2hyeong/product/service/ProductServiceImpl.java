@@ -311,7 +311,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductVO> getProductsByMemberId(String memberId) {
+    public List<ProductVO> selectProductsByMemberId(String memberId) {
 
         return productDAO.selectProductsByMemberId(memberId);
 

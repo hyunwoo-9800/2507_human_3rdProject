@@ -14,7 +14,7 @@ public interface ProductService {
     List<ProductVO> getAllProducts() throws Exception;
 
     // memberId로 상품 목록 조회
-    List<ProductVO> getProductsByMemberId(String memberId) throws Exception;
+    List<ProductVO> selectProductsByMemberId(String memberId) throws Exception;
 
     //productId로 상품 목록 조회
     List<ProductVO> getProductsByIds(List<String> productIds);
