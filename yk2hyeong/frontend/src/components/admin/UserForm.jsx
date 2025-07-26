@@ -122,7 +122,7 @@ function UserForm({ user }) {
             onClick={() => {
               form.memberFileUrls.forEach((url) => {
                 const filename = url.split('/').pop() // 파일명만 추출
-                const apiUrl = `${window.location.origin}/api/image/${filename}`
+                const apiUrl = `${window.location.origin}/static/images/memberimages/${filename}`
                 window.open(apiUrl, '_blank')
               })
             }}
