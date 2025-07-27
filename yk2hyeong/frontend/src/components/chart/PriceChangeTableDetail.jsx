@@ -3,7 +3,7 @@ import axios from 'axios'
 import CustomTable from '../../components/common/CustomTable'
 import CustomPagination from '../../components/common/CustomPagination'
 
-const PriceChangeTable = ({ limit = null }) => {
+const PriceChangeTableDetail = ({ limit = null }) => {
   const [tableData, setTableData] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [todayDate, setTodayDate] = useState('')
@@ -44,14 +44,14 @@ const PriceChangeTable = ({ limit = null }) => {
       width: 120,
     },
     {
-      title: `${yesterdayDate || '그제'} 평균가 (원)`,
+      title: `${yesterdayDate || '그제'} 평균가 (kg당 원)`,
       dataIndex: 'yesterdayPrice',
       key: 'yesterdayPrice',
       render: (price) => price?.toLocaleString(),
       width: 140,
     },
     {
-      title: `${todayDate || '어제'} 평균가 (원)`,
+      title: `${todayDate || '어제'} 평균가 (kg당 원)`,
       dataIndex: 'todayPrice',
       key: 'todayPrice',
       render: (price) => price?.toLocaleString(),
@@ -73,6 +73,13 @@ const PriceChangeTable = ({ limit = null }) => {
         )
       },
       width: 140,
+    },
+    {
+      title: '평년가 (kg당 원, 3년 평균)',
+      dataIndex: 'yearAvg',
+      key: 'yearAvg',
+      render: (price) => price?.toLocaleString(),
+      width: 130,
     },
   ]
 
@@ -110,4 +117,4 @@ const PriceChangeTable = ({ limit = null }) => {
   )
 }
 
-export default PriceChangeTable
+export default PriceChangeTableDetail

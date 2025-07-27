@@ -3,7 +3,7 @@ import CustomSelect from '../../components/common/CustomSelect'
 import CustomRadio from '../../components/common/CustomRadio'
 import ForecastChart from '../../components/chart/ForecastChart'
 import DividerLine from '../../components/chart/DividerLine'
-import PriceChangeTable from '../../components/chart/PriceChangeTable'
+import PriceChangeTableDetail from '../../components/chart/PriceChangeTableDetail'
 import axios from 'axios'
 import ReportDownloadButton from '../../components/chart/ReportDownloadButton'
 
@@ -161,7 +161,8 @@ const PriceChartPage = () => {
 
             <h2 style={{fontSize:'22px'}}>등락율</h2>
 
-            <PriceChangeTable />
+            <PriceChangeTableDetail/>
+
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ package fs.human.yk2hyeong.chart.dao;
 
 import fs.human.yk2hyeong.chart.vo.ChartVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.dao.DataAccessException;
 
 import java.sql.Date;
@@ -13,7 +14,7 @@ public interface chartDAO {
 
     // 주간 데이터
     List<ChartVO> getUnitPriceWeek(String itemCode) throws DataAccessException;
-    
+
     // 월간 데이터
     List<ChartVO> getUnitPriceMonth(String itemCode) throws DataAccessException;
 
@@ -30,6 +31,7 @@ public interface chartDAO {
     List<ChartVO> getUnitPriceYearPredictor(String itemCode) throws DataAccessException;
 
     // 시세 등략율
-    List<ChartVO> dailyPriceDiff(Date yesterday, Date today) throws DataAccessException;
+    List<ChartVO> dailyPriceDiff(@Param("yesterday") Date yesterday,
+                                 @Param("today") Date today) throws DataAccessException;
 
 }

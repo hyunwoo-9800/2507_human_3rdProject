@@ -21,13 +21,18 @@ public class ChartVO {
     private String lowCodeName;     // 하위 코드 명 (코드 그룹 내 실제 표시명)
     
     // 예측 데이터 저장용
-    private int predictedUnitPrice;      // 예측 시세
+    private int predictedUnitPrice;     // 예측 시세
     private Date predictDate;           // 예측 날짜
     
     // 시세추이 등락율 계산용
-    private int yesterdayPrice;         // 어제 가격
-    private int todayPrice;             // 오늘 가격
-    
+    private int yesterdayPrice;        // 어제 가격
+    private int todayPrice;            // 오늘 가격
+    private int priceDiff;             // 등락액
+    private double priceDiffPercent;    // 등락율
+    private double yearAvg;             // 평년 가격
+    private Date toDay;                 // 오늘 날짜
+    private Date yesterDay;             // 어제 날짜
+
     private String createdId;       // 등록자 ID (로그인 사용자 ID)
     private Date createdDate;       // 등록일시 (기본값 SYSDATE)
     private String updatedId;       // 수정자 ID (로그인 사용자 ID)
