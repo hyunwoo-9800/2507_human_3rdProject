@@ -477,7 +477,7 @@ export default function ProductRegisterDescription({
                     <div style={{ width: '100%' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span>단가:</span>
-                        <span>{productUnitPrice.toLocaleString()}원</span>
+                        <span>{productUnitPrice.toLocaleString()}원 / kg</span>
                       </div>
                     </div>
                     <div style={{ color: 'red', fontWeight: 'bold', width: '100%' }}>
@@ -521,7 +521,7 @@ export default function ProductRegisterDescription({
                           alignItems: 'center',
                         }}
                       >
-                        <div>수량 (최소구매수량 {productMinQtr}개)</div>
+                        <div>수량 (최소구매수량 {productMinQtr}kg)</div>
                         <div>
                           <CustomInputNumber
                             defaultValue={productMinQtr}
@@ -531,6 +531,7 @@ export default function ProductRegisterDescription({
                             value={orderQuantity}
                             onChange={(value) => setOrderQuantity(value)}
                           />
+                          <span style={{marginLeft: 4}}>kg</span>
                         </div>
                       </div>
 
@@ -548,9 +549,9 @@ export default function ProductRegisterDescription({
                             visibility: orderType === 'reservation' ? 'visible' : 'hidden',
                           }}
                         >
-                          <span>예약금액 (30%)</span>
+                          <span>예약금액 (50%)</span>
                           <span>
-                            {Math.floor(productUnitPrice * orderQuantity * 0.3).toLocaleString()}원
+                            {Math.floor(productUnitPrice * orderQuantity * 0.5).toLocaleString()}원
                           </span>
                         </div>
 

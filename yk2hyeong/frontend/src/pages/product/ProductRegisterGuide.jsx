@@ -19,7 +19,7 @@ export default function ProductRegisterGuide({ checked, onChangeChecked, onNext 
       <p>상품 등록 시 유의사항</p>
       <ol style={{ marginBottom: '32px' }}>
         <li style={{ marginBottom: '8px' }}>
-          <strong>상품명은 명확하게 작성</strong>해 주세요. (예: "2025년 천안산 호두 10kg")
+          <strong>상품명은 명확하게 작성</strong>해 주세요. (예: "2025년 천안산 호두")
         </li>
         <li style={{ marginBottom: '8px' }}>
           <strong>상품 이미지는 1장 이상 등록</strong>해야 하며, 실제 상품과 동일해야 합니다.
