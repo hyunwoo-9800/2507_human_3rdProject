@@ -21,7 +21,6 @@ function ProductImgList({ images }) {
       })
     }
   }
-  console.log('images 전체 확인:', images)
   return (
     <div className="image-scroll-wrapper">
       <button type="button" onClick={scrollLeft}>

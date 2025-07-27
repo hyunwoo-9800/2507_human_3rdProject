@@ -55,7 +55,7 @@ function FormTab({ tabType }) {
     })
   }
 
-  // ✅ tr 클릭 시 체크박스도 같이 토글되도록
+  // tr 클릭 시 체크박스도 같이 토글되도록
   const handleRowClick = (clickedItem) => {
     const updatedChecked = !clickedItem.checked
     setSelectItem({ ...clickedItem, checked: updatedChecked }) // <- checked 값 반영

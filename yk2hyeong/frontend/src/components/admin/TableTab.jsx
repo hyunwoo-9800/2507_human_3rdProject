@@ -124,7 +124,6 @@ function TableTab({ tabType }) {
           checked: false,
           postNum: tabType === 'report' ? index + 1 : undefined,
         }))
-
         console.log('최종 withCheckbox:', withCheckbox)
         setItem(withCheckbox)
       })
@@ -336,7 +335,7 @@ function TableTab({ tabType }) {
         />
       </div>
       <Button color="error" onClick={handleDelete} className="delete-btn">
-        삭제
+        {tabType === 'member' ? '탈퇴' : '삭제'}
       </Button>
 
       {/*상품관리일때만 열리는 상세모달창*/}

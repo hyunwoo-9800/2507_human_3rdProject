@@ -107,23 +107,10 @@ public class AdminController {
         String alarmContent = (adminVO.getAlarmContent() == null || adminVO.getAlarmContent().isEmpty())
                 ? " "
                 : adminVO.getAlarmContent();
-
-
-        // System.out.println("[GameController] insertAlarm 호출");
-
         try {
-
-            // adminVO.setAlarmId(UUID.randomUUID().toString()); 오라클에서 처리함
-
-            /* if (adminVO.getReceiverId() == null) {
-                adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
-                adminVO.setReceiverId("SYSTEM");
-            } */
-
             if (adminVO.getCreatedId() == null) {
                 adminVO.setCreatedId("SYSTEM");
             }
-
             alarmType = codeService.getRejectAlarmCode();        // 승인 거부 코드
             alarmContent = adminVO.getAlarmContent();            // 알림 내용
 
@@ -131,52 +118,30 @@ public class AdminController {
             String receiverId = adminDAO.getReceiverId(adminVO.getProductId());
 
             if (adminVO.getAlarmContent() == null || adminVO.getAlarmContent().equals("")) {
-
                 adminVO.setAlarmContent(" ");
-
             } else {
-
                 adminVO.setAlarmContent(alarmContent);
-
             }
-
             adminVO.setReceiverId(receiverId);
             adminVO.setAlarmType(alarmType);
-
             // 알림 등록
             adminService.insertAlarm(adminVO);
-
             // 상태 업데이트 (거부: D4539D86D99B43B68BCAF17EA011E67B)
             if (adminVO.getProductId() != null && !adminVO.getProductId().isEmpty()) {
-
                 rejectCode = codeService.getRejectAlarmCode();
-
-                // adminService.updateProductStatus(adminVO.getProductId(), "D4539D86D99B43B68BCAF17EA011E67B");
                 adminService.updateProductStatus(adminVO.getProductId(), rejectCode);
-
             }
-
             return ResponseEntity.ok("알림 및 상품 상태 업데이트 완료");
-
         } catch (Exception e) {
-
-            // e.printStackTrace(); 보안 상 사용하면 안됨
-            // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("처리 실패");
-
-
             if (productId == null || productId.isEmpty()) {
                 return ResponseEntity.badRequest().body("상품 ID가 없습니다.");
-
             }
-
             for (String id : productId) {
                 // 상품 상태 업데이트
                 adminService.updateProductStatus(id, rejectCode);
                 adminService.updateProductFlag(id, displayOff);
-
                 // 수신자 조회
                 String receiverId = adminDAO.getReceiverIdWithoutStatus(id);
-
                 // 알림 insert용 VO 구성
                 AdminVO vo = new AdminVO();
                 vo.setProductId(id);
@@ -184,57 +149,9 @@ public class AdminController {
                 vo.setAlarmType(alarmType);
                 vo.setAlarmContent(alarmContent);
                 vo.setCreatedId(createdId);
-
                 adminService.insertAlarm(vo);
             }
-
             return ResponseEntity.ok("상품 거부 처리 및 알림 완료");
-//        List<String> productId = adminVO.getProductIdList();
-//        String alarmType = codeService.getRejectAlarmCode();        // 승인 거부 코드
-//        String alarmContent = (adminVO.getAlarmContent() == null || adminVO.getAlarmContent().isEmpty())?" ":adminVO.getAlarmContent();           // 알림 내용
-//        String createdId = adminVO.getCreatedId() != null ? adminVO.getCreatedId() : "SYSTEM";
-//
-//        // System.out.println("[AdminController] insertAlarm 호출");
-//
-//        try {
-//
-//            // adminVO.setAlarmId(UUID.randomUUID().toString()); 오라클에서 처리함
-//
-//            /* if (adminVO.getReceiverId() == null) {
-//                adminVO.setReceiverId("29E46778F8E3430D9C560B84E4861786");
-//                adminVO.setReceiverId("SYSTEM");
-//            } */
-//
-//            if (adminVO.getCreatedId() == null) {
-//                adminVO.setCreatedId("SYSTEM");
-//            }
-//
-//
-//            // 알림 수신자 ID 조회
-//            String receiverId = adminDAO.getReceiverId(adminVO.getProductId());
-//
-//            if (adminVO.getAlarmContent() == null || adminVO.getAlarmContent().equals("")) {
-//                adminVO.setAlarmContent(" ");
-//            } else {
-//                adminVO.setAlarmContent(alarmContent);
-//            }
-//            adminVO.setReceiverId(receiverId);
-//            adminVO.setAlarmType(alarmType);
-//
-//            // 알림 등록
-//            adminService.insertAlarm(adminVO);
-//
-//            // 상태 업데이트 (거부: D4539D86D99B43B68BCAF17EA011E67B)
-//            if (adminVO.getProductId() != null && !adminVO.getProductId().isEmpty()) {
-//                String rejectCode = codeService.getRejectAlarmCode();
-//                // adminService.updateProductStatus(adminVO.getProductId(), "D4539D86D99B43B68BCAF17EA011E67B");
-//                adminService.updateProductStatus(adminVO.getProductId(), rejectCode);
-//            }
-//            return ResponseEntity.ok("알림 및 상품 상태 업데이트 완료");
-//        } catch (Exception e) {
-//            // e.printStackTrace(); 보안 상 사용하면 안됨
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("처리 실패");
-//        }
         }
     }
     // 회원가입승인, 승인
@@ -342,38 +259,23 @@ public class AdminController {
     @GetMapping("/image/{filename:.+}")
     public ResponseEntity<byte[]> getImage(@PathVariable String filename) throws Exception {
         try {
-            
             // 1. 실제 로컬 경로 구성 (경로는 그대로 유지)
             File file = new File("C:/yk2hyeong/member_images/" + filename);
-
             if (!file.exists()) {
-                
                 return ResponseEntity.notFound().build();
-                
             }
-
             // 2. 파일을 byte로 읽기
             byte[] imageBytes = Files.readAllBytes(file.toPath());
-
             // 3. MIME 타입 자동 판별
             String mimeType = Files.probeContentType(file.toPath());
-            
             if (mimeType == null) {
-                
                 mimeType = "application/octet-stream"; // 기본값
-                
             }
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.parseMediaType(mimeType));
-
             return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
-            
         } catch (IOException e) {
-            
-            // e.printStackTrace(); 보안 상 사용하면 안됨
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            
         }
         
     }

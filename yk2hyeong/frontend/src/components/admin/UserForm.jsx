@@ -125,7 +125,7 @@ function UserForm({ user }) {
         <input type="text" value={form.memberBnum} readOnly />
       </label>
       <label>
-        <span>은행코드:</span>
+        <span>은행명:</span>
         <input type="text" value={form.memberBankCode} readOnly />
       </label>
       <label>
@@ -133,6 +133,7 @@ function UserForm({ user }) {
         <input type="text" value={form.memberAccountNum} readOnly />
       </label>
       <label>
+
         <span>등록일:</span>
         <input type="text" value={form.createdDate} readOnly />
       </label>

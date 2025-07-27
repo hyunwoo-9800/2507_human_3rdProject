@@ -30,22 +30,6 @@ public class AdminServiceImpl implements AdminService {
 
         List<ProductVO> list = adminDAO.selectPendingProduct();
 
-        /* if (list == null) {
-
-            System.out.println("[GameServiceImpl] DAO에서 null 반환됨");
-
-        } else {
-
-            System.out.println("[GameServiceImpl] 조회된 상품 개수: " + list.size());
-
-            for (ProductVO item : list) {
-
-                System.out.println("상품명: " + item.getProductName());
-
-            }
-
-        } */
-
         // 리스트가 없을 경우 빈 리스트 반환
         if (list == null || list.isEmpty()) {
 
@@ -59,24 +43,14 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<AdminVO> getPendingMember() {
-
-        // System.out.println("[GameServiceImpl] getPendingMember 호출됨");
-
         List<AdminVO> list = adminDAO.selectPendingMember();
 
         if (list == null || list.isEmpty()) {
-
-            // System.out.println("[GameServiceImpl] DAO에서 null 반환됨");
             return Collections.emptyList();
 
         } else {
 
-            // System.out.println("[GameServiceImpl] 조회된 유저 수: " + list.size());
-
             for (AdminVO item : list) {
-
-                // System.out.println("상품명: " + item.getMemberName());
-
                 //이미지 리스트 조회해서 세팅 추가
                 List<String> imageUrls = adminDAO.selectMemberImageUrls(item.getMemberId());
                 item.setMemberFileUrls(imageUrls);
@@ -93,26 +67,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<AdminVO> getReport() {
 
-        // System.out.println("[GameServiceImpl] getReport 호출됨");
-
         List<AdminVO> list = adminDAO.selectReport();
-
-        /* if (list == null) {
-
-            System.out.println("[GameServiceImpl] DAO에서 null 반환됨");
-
-        } else {
-
-            System.out.println("[GameServiceImpl] 조회된 신고 수: " + list.size());
-
-            for (GameVO item : list) {
-
-                System.out.println("신고자명: " + item.getReporterName());
-
-            }
-
-        } */
-
         if (list == null || list.isEmpty()) {
 
             return Collections.emptyList();
@@ -126,24 +81,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public List<AdminVO> getMember() {
 
-        // System.out.println("[GameServiceImpl] getMember 호출됨");
-
         List<AdminVO> list = adminDAO.selectMember();
-        /* if (list == null) {
-
-             System.out.println("[GameServiceImpl] DAO에서 null 반환됨");
-
-        } else {
-
-             System.out.println("[GameServiceImpl] 조회된 멤버 수: " + list.size());
-
-            for (GameVO item : list) {
-
-                System.out.println("멤버명: " + item.getMemberName());
-
-            }
-
-        } */
 
         if (list == null || list.isEmpty()) {
 
@@ -170,8 +108,6 @@ public class AdminServiceImpl implements AdminService {
 //    게시글 삭제
     @Override
     public void deleteReport(List<String> reportId){
-        System.out.println("🔥 deleteReport() 호출됨");
-        System.out.println("🔥 삭제할 reportId 목록: " + reportId);
 
         adminDAO.deleteReport(reportId);
 
@@ -193,23 +129,14 @@ public class AdminServiceImpl implements AdminService {
         String alarmType = adminVO.getAlarmType() != null ? adminVO.getAlarmType() : "012";
         String createdId = adminVO.getCreatedId() != null ? adminVO.getCreatedId() : "SYSTEM";
 
-        // System.out.println("[GameServiceImpl] insertAlarm 호출");
-        // System.out.println("productId: " + adminVO.getProductId());
-
-        // UUID, 관리자 ID 등 보완
-//        if (adminVO.getAlarmId() == null || adminVO.getAlarmId().isEmpty()) {
-//
-//            adminVO.setAlarmId(UUID.randomUUID().toString());
-//
-//        } 오라클에서 처리함
-        // ✅ 단건 처리 (productId만 존재할 때)
+        // 단건 처리 (productId만 존재할 때)
         if ((productIdList == null || productIdList.isEmpty()) && adminVO.getProductId() != null) {
             System.out.println("→ 단건 알림 insert");
             adminDAO.insertAlarm(adminVO);
             return;
         }
 
-        // ✅ 복수 처리
+        // 복수 처리
         if (productIdList != null && !productIdList.isEmpty()) {
             System.out.println("→ 복수 알림 insert");
             for (String id : productIdList) {
@@ -251,23 +178,13 @@ public class AdminServiceImpl implements AdminService {
 
     String productEnd = codeDAO.getEndProduct();
     String productNotDisplay = codeDAO.getNotDisplayProduct();
-
         for (String productId : productIds) {
-
             adminDAO.updateProductStatusFlag(
                     productId,
                     productEnd,
                     productNotDisplay
             );
-
-//            adminDAO.updateProductStatusFlag(
-//                    productId,
-//                    "6524D569917E4468B4B4323E4355E0B8",
-//                    "C64A2EE83FBB4B0B9681227F31401EE0"
-//            );
-
         }
-
     }
 
     // 회원 가입 거부
