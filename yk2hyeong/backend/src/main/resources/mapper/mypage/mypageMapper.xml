@@ -40,27 +40,39 @@
         FROM
             TB_PRODUCT_BUY PB
                 LEFT JOIN TB_PRODUCT P
-                          ON PB.PRODUCT_ID = P.PRODUCT_ID
+                    ON PB.PRODUCT_ID = P.PRODUCT_ID
                 LEFT JOIN TB_IMAGES I
-                          ON P.PRODUCT_ID = I.PRODUCT_ID
-                              AND I.IMAGE_TYPE = '200'
+                    ON P.PRODUCT_ID = I.PRODUCT_ID
+                    AND I.IMAGE_TYPE = '200'
         WHERE
             pb.MEMBER_ID = #{memberId}
-        GROUP BY
-            PB.BUY_ID,
-            PB.PRODUCT_ID,
-            PB.MEMBER_ID,
-            PB.BUY_QTY,
-            PB.BUY_UNIT_PRICE,
-            PB.BUY_TOTAL_PRICE,
-            PB.BUY_DELIVERY_DATE,
-            PB.CREATED_DATE,
-            P.PRODUCT_NAME,
-            P.PRODUCT_DESCRIPTION,
-            P.PRODUCT_UNIT_PRICE,
-            P.PRODUCT_MIN_QTR,
-            P.SELL_MEMBER_ID,
-            I.IMAGE_NAME
+
+        UNION ALL
+
+        SELECT
+            PR.REV_ID AS ID,
+            PR.PRODUCT_ID AS PRODUCTID,
+            PR.MEMBER_ID AS MEMBERID,
+            PR.REV_QTY AS QTY,
+            PR.REV_UNIT_PRICE AS UNITPRICE,
+            PR.REV_TOTAL_PRICE AS TOTALPRICE,
+            PR.REV_DELIVERY_DATE AS DELIVERYDATE,
+            PR.CREATED_DATE AS CREATEDDATE,
+            P.PRODUCT_NAME AS PRODUCTNAME,
+            P.PRODUCT_DESCRIPTION AS PRODUCTDESCRIPTION,
+            P.PRODUCT_UNIT_PRICE AS PRODUCTUNITPRICE,
+            P.PRODUCT_MIN_QTR AS PRODUCTMINQTR,
+            P.SELL_MEMBER_ID AS SELLMEMBERID,
+            I.IMAGE_NAME AS IMAGENAME
+        FROM
+            TB_PRODUCT_RESERVATION PR
+                LEFT JOIN TB_PRODUCT P
+                    ON PR.PRODUCT_ID = P.PRODUCT_ID
+                LEFT JOIN TB_IMAGES I
+                    ON P.PRODUCT_ID = I.PRODUCT_ID
+                    AND I.IMAGE_TYPE = '200'
+        WHERE
+            PR.MEMBER_ID = #{memberId}
     </select>
 
 <!--    알람탭 데이터 불러오기-->
@@ -101,7 +113,7 @@
                 LEFT JOIN TB_IMAGES I ON P.PRODUCT_ID = I.PRODUCT_ID AND I.IMAGE_TYPE = '200'
         WHERE
             C.TOP_CODE_NAME in('STATUS','REV_STATUS')
-          AND A.RECEIVER_ID = '859F269C84304C909EF5DCD36638BA13'
+          AND A.RECEIVER_ID = #{memberId}
         ORDER BY A.CREATED_DATE DESC
     </select>
 
