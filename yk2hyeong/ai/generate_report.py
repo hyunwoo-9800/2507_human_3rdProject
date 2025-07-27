@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, text
 import os
 from datetime import date, timedelta
 
-# DB 연결 (Oracle + SQLAlchemy)
+# DB 연결
 engine = create_engine("oracle+cx_oracle://yh:0000@116.36.205.25:1521/?service_name=XEPDB1")
 
 # 기간별 시작일 계산
@@ -16,7 +16,7 @@ def get_start_date(time_frame):
     elif time_frame == "year":
         return today - timedelta(days=365 * 5)
     else:
-        return today - timedelta(days=365 * 10)  # 기본: 10년치
+        return today - timedelta(days=365 * 10)
 
 # 엑셀 리포트 생성 함수
 def generate_excel_report(low_code_value, time_frame):
@@ -37,7 +37,7 @@ def generate_excel_report(low_code_value, time_frame):
         filename = f"시세리포트({safe_name})_{time_frame}_{today_str}.xlsx"
         filepath = os.path.join("reports", filename)
         os.makedirs("reports", exist_ok=True)
-            
+
         # 1. 과거 시세
         df_past = pd.read_sql(f"""
             SELECT TO_CHAR(RECORDED_DATE, 'YYYY-MM-DD') AS 날짜,
@@ -58,60 +58,78 @@ def generate_excel_report(low_code_value, time_frame):
             FROM TB_PRICE_PREDICTION
             WHERE LOW_CODE_VALUE = :low_code_value
             ORDER BY PREDICT_DATE
-        """, conn, params={
-            "low_code_value": low_code_value
-        })
+        """, conn, params={"low_code_value": low_code_value})
 
         # 3. 등락률
-
-        # 가장 최근 날짜 2개 가져오기
         recent_dates = pd.read_sql("""
             SELECT DISTINCT TRUNC(RECORDED_DATE) AS dt
             FROM TB_PRICE_API_HISTORY
             ORDER BY dt DESC
             FETCH FIRST 2 ROWS ONLY
         """, conn)
-        
-        print(recent_dates.columns)
 
         if len(recent_dates) < 2:
             print("등락률 계산 불가: 시세 날짜 부족")
-            df_diff = pd.DataFrame([{"품목명": "-", "어제 가격": "-", "그제 가격": "-", "등락률": "-"}])
+            df_diff = pd.DataFrame([{
+                "품목명": "-", "어제가격": "-", "오늘가격": "-", "가격차이": "-",
+                "등락률": "-", "최근3년평균": "-", "품목수": "-"
+            }])
         else:
+            today = recent_dates.loc[0, 'dt']
+            yesterday = recent_dates.loc[1, 'dt']
 
-            yesterday = recent_dates.loc[0, 'dt']
-            day_before = recent_dates.loc[1, 'dt']
-            
-            df_diff = pd.read_sql(f"""
+            df_diff = pd.read_sql(text("""
                 SELECT
                     C.LOW_CODE_NAME AS 품목명,
-                    ROUND(AVG(B.RECORDED_UNIT_PRICE), 2) AS "어제 가격",
-                    ROUND(AVG(A.RECORDED_UNIT_PRICE), 2) AS "그제 가격",
+                    ROUND(AVG(A.RECORDED_UNIT_PRICE), 2) AS 어제가격,
+                    ROUND(AVG(B.RECORDED_UNIT_PRICE), 2) AS 오늘가격,
+                    ROUND(AVG(B.RECORDED_UNIT_PRICE) - AVG(A.RECORDED_UNIT_PRICE), 2) AS 가격차이,
                     ROUND(
-                        (AVG(B.RECORDED_UNIT_PRICE) - AVG(A.RECORDED_UNIT_PRICE))
-                        / NULLIF(AVG(A.RECORDED_UNIT_PRICE), 0) * 100,
-                        2
-                    ) AS "등락률"
-                FROM TB_PRICE_API_HISTORY A
-                JOIN TB_PRICE_API_HISTORY B
-                    ON A.LOW_CODE_VALUE = B.LOW_CODE_VALUE
-                JOIN TB_CODE_DETAIL C
-                    ON A.LOW_CODE_VALUE = C.LOW_CODE_VALUE
+                        CASE
+                            WHEN AVG(A.RECORDED_UNIT_PRICE) = 0 THEN 0
+                            ELSE (AVG(B.RECORDED_UNIT_PRICE) - AVG(A.RECORDED_UNIT_PRICE)) / AVG(A.RECORDED_UNIT_PRICE) * 100
+                        END, 2
+                    ) AS 등락률,
+                    F.YEAR_AVG AS 최근3년평균,
+                    COUNT(E.PRODUCT_ID) AS 품목수
+                FROM
+                    TB_PRICE_API_HISTORY A
+                    LEFT JOIN TB_PRICE_API_HISTORY B
+                        ON A.LOW_CODE_VALUE = B.LOW_CODE_VALUE
+                    LEFT JOIN TB_CODE_DETAIL C
+                        ON A.LOW_CODE_VALUE = C.LOW_CODE_VALUE
+                    LEFT JOIN TB_CODE D
+                        ON C.CODE_ID = D.CODE_ID
+                    LEFT JOIN TB_PRODUCT E
+                        ON C.DETAIL_CODE_ID = E.PRODUCT_CODE
+                    LEFT JOIN (
+                        SELECT
+                            H.LOW_CODE_VALUE,
+                            AVG(H.RECORDED_UNIT_PRICE) AS YEAR_AVG
+                        FROM
+                            TB_PRICE_API_HISTORY H
+                        WHERE
+                            TO_CHAR(H.RECORDED_DATE, 'MM-DD') = TO_CHAR(SYSDATE, 'MM-DD')
+                            AND H.RECORDED_DATE BETWEEN ADD_MONTHS(SYSDATE, -36) AND SYSDATE
+                        GROUP BY
+                            H.LOW_CODE_VALUE
+                    ) F ON A.LOW_CODE_VALUE = F.LOW_CODE_VALUE
                 WHERE
-                    TRUNC(A.RECORDED_DATE) = TO_DATE(:day_before, 'YYYY-MM-DD')
-                    AND TRUNC(B.RECORDED_DATE) = TO_DATE(:yesterday, 'YYYY-MM-DD')
+                    TRUNC(A.RECORDED_DATE) = TO_DATE(:yesterday, 'YYYY-MM-DD')
+                    AND TRUNC(B.RECORDED_DATE) = TO_DATE(:today, 'YYYY-MM-DD')
+                    AND D.TOP_CODE_NAME = 'CAT'
+                    AND E.PRODUCT_UNIT_PRICE <> 0
                     AND A.RECORDED_UNIT_PRICE <> 0
                     AND B.RECORDED_UNIT_PRICE <> 0
-                    AND C.MID_CODE_VALUE <> ' '
-                GROUP BY C.LOW_CODE_NAME
-                ORDER BY "등락률" DESC NULLS LAST
-            """, conn, params={
-                "day_before": day_before.strftime('%Y-%m-%d'),
+                GROUP BY
+                    C.LOW_CODE_NAME, F.YEAR_AVG
+                ORDER BY 품목수 DESC
+            """), conn, params={
+                "today": today.strftime('%Y-%m-%d'),
                 "yesterday": yesterday.strftime('%Y-%m-%d')
-                
             })
 
-    # Excel 저장
+    # 엑셀 저장
     with pd.ExcelWriter(filepath, engine='openpyxl') as writer:
         df_past.to_excel(writer, sheet_name=f"{safe_name}_과거 시세", index=False)
         df_pred.to_excel(writer, sheet_name=f"{safe_name}_예측 시세", index=False)
