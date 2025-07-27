@@ -66,20 +66,14 @@ public class NoticeController {
         try {
 
             NoticeVO notice = noticeService.getNoticeById(noticeId);
-
             if (notice == null) {
-
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 공지사항이 존재하지 않습니다.");
-
             }
-
             return ResponseEntity.ok(notice);
 
         } catch (Exception e) {
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("공지사항 조회 중 오류 발생");
-
         }
 
     }
@@ -90,11 +84,9 @@ public class NoticeController {
             @PathVariable("id") String noticeId,
             @AuthenticationPrincipal MemberVO member,
             @RequestBody Map<String, Object> params) {
-
         if (member == null || !"001".equals(member.getMemberRole())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("관리자 권한이 필요합니다.");
         }
-
         try {
             NoticeVO vo = new NoticeVO();
             vo.setNoticeId(noticeId);

@@ -245,6 +245,7 @@ function EditMember() {
                         onChange={handleBankSelect}
                         options={bankOptions}
                         value={form.memberBankCode}
+                        disabled={true}
                     />
                 </div>
                 <Input
