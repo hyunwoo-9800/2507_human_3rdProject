@@ -150,4 +150,15 @@
         WHERE ALARM_ID = #{alarmId}
     </delete>
 
+    <!-- 읽지 않은 알림 개수 조회 -->
+    <select id="getUnreadNotificationCount" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_ALARM A
+        JOIN TB_CODE_DETAIL D ON A.ALARM_TYPE = D.DETAIL_CODE_ID
+        JOIN TB_CODE C ON D.CODE_ID = C.CODE_ID
+        WHERE C.TOP_CODE_NAME = 'STATUS'
+          AND A.RECEIVER_ID = #{memberId}
+          AND A.IS_READ = 'N'
+    </select>
+
 </mapper>

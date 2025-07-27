@@ -19,4 +19,7 @@ public interface MypageDAO {
 
 //    마이페이지 알림 삭제
     void deleteNotification(@Param("alarmId") String alarmId);
+
+    // 읽지 않은 알림 개수 조회
+    int getUnreadNotificationCount(@Param("memberId") String memberId);
 }

@@ -15,4 +15,6 @@ public interface MypageService {
     void updateIsRead(String alarmId);
 
     void deleteNotification(String alarmId);
+
+    int getUnreadNotificationCount(String memberId);
 }

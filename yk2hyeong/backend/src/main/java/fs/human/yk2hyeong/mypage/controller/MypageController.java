@@ -64,4 +64,12 @@ public class MypageController {
         return ResponseEntity.ok().build();
     }
 
+    // 읽지 않은 알림 개수 조회
+    @GetMapping("/notification/unread-count")
+    public ResponseEntity<Integer> getUnreadNotificationCount(Authentication authentication) {
+        MemberVO loginMember = (MemberVO) authentication.getPrincipal();
+        int count = mypageService.getUnreadNotificationCount(loginMember.getMemberId());
+        return ResponseEntity.ok(count);
+    }
+
 }

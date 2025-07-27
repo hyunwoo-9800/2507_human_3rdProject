@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import { Dropdown, Button, Space } from 'antd';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import { DownOutlined, UserOutlined } from '@ant-design/icons'
+import { Dropdown, Button, Space } from 'antd'
+import PropTypes from 'prop-types'
 
-export default function CustomDropdown({ userName, children }) {
+export default function CustomDropdown({ userName, children, unreadCount = 0 }) {
   const [isVisible, setIsVisible] = useState(false)
 
   const handleVisibleChange = (flag) => {
@@ -36,6 +36,7 @@ export default function CustomDropdown({ userName, children }) {
       >
         <Button className="custom-dropdown-btn">
           <span id="custom-dropdown-username">{userName}</span>
+          {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
           <DownOutlined />
         </Button>
       </Dropdown>

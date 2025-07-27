@@ -40,4 +40,10 @@ public class MypageServiceImpl implements MypageService {
     public void deleteNotification(String alarmId){
         mypageDAO.deleteNotification(alarmId);
     }
+
+    // 읽지 않은 알림 개수 조회
+    @Override
+    public int getUnreadNotificationCount(String memberId) {
+        return mypageDAO.getUnreadNotificationCount(memberId);
+    }
 }

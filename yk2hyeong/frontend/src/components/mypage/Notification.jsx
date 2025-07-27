@@ -122,6 +122,10 @@ function Notification({ memberId, readStatus }) {
         setNotifications((prev) =>
           prev.map((noti) => (noti.alarmId === item.alarmId ? { ...noti, isRead: 'Y' } : noti))
         )
+        // 헤더의 알림 개수 업데이트
+        if (window.updateNotificationCount) {
+          window.updateNotificationCount()
+        }
         //     상태별 동작 분기
         switch (item.status) {
           case 'purchased':
@@ -182,6 +186,10 @@ function Notification({ memberId, readStatus }) {
       await axios.delete(`/api/mypage/notification/${alarmId}`)
       setNotifications((prev) => prev.filter((n) => n.alarmId !== alarmId))
       alert('알림이 삭제되었습니다.')
+      // 헤더의 알림 개수 업데이트
+      if (window.updateNotificationCount) {
+        window.updateNotificationCount()
+      }
     } catch (err) {
       console.error('알림 삭제 실패:', err)
       alert('삭제 중 오류가 발생했습니다.')
