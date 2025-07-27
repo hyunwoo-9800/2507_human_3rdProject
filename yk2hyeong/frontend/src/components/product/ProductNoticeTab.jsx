@@ -206,7 +206,7 @@ export default function ProductNoticeTab({ product, memberId }) {
               maxLength={100}
               required
               size="md"
-              style={{ width: 1100, fontSize: 16 }}
+              style={{ width: 1100, fontSize: 16, marginLeft: '14px' }}
             />
           </div>
           <div style={{ marginBottom: 8 }}>
@@ -221,36 +221,37 @@ export default function ProductNoticeTab({ product, memberId }) {
               placeholder="공지 내용을 입력하세요"
             />
           </div>
-          <button
-            type="submit"
-            style={{
-              marginRight: 8,
-              padding: '6px 16px',
-              fontSize: 16,
-              backgroundColor: formType === 'create' ? '#04a43c' : '#ffdd1a',
-              color: formType === 'create' ? '#fff' : '#222',
-              border: 'none',
-              borderRadius: 4,
-              cursor: 'pointer',
-            }}
-          >
-            {formType === 'create' ? '등록' : '수정'}
-          </button>
-          <button
-            type="button"
-            onClick={closeForm}
-            style={{
-              padding: '6px 16px',
-              fontSize: 16,
-              backgroundColor: '#f82833',
-              color: '#fff',
-              border: 'none',
-              borderRadius: 4,
-              cursor: 'pointer',
-            }}
-          >
-            취소
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+            <button
+              type="button"
+              onClick={closeForm}
+              style={{
+                padding: '6px 16px',
+                fontSize: 16,
+                backgroundColor: '#f82833',
+                color: '#fff',
+                border: 'none',
+                borderRadius: 4,
+                cursor: 'pointer',
+              }}
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              style={{
+                padding: '6px 16px',
+                fontSize: 16,
+                backgroundColor: formType === 'create' ? '#04a43c' : '#ffdd1a',
+                color: formType === 'create' ? '#fff' : '#222',
+                border: 'none',
+                borderRadius: 4,
+                cursor: 'pointer',
+              }}
+            >
+              {formType === 'create' ? '등록' : '수정'}
+            </button>
+          </div>
         </form>
       )}
 
