@@ -576,7 +576,7 @@ const CustomDetailCard = ({
                 <div style={{width: '100%'}}>
                     <div style={{display: 'flex', justifyContent: 'space-between'}}>
                         <span>단가:</span>
-                        <span>{price.toLocaleString()}원</span>
+                        <span>{price.toLocaleString()}원 / kg</span>
                     </div>
                 </div>
                 <div style={{color: 'red', fontWeight: 'bold', width: '100%'}}>

@@ -96,7 +96,7 @@ const CustomCard = ({
             marginTop: 8,
           }}
         >
-          <div style={{ fontSize: 20, fontWeight: 'bold' }}>{price.toLocaleString()}원</div>
+          <div style={{ fontSize: 20, fontWeight: 'bold' }}>{price.toLocaleString()}원 / kg</div>
           <div>
             {immediatePurchase && (
               <span
