@@ -272,7 +272,7 @@ export default function ProductRegister() {
                   transition: 'all 0.2s ease-in-out',
                 }}
               >
-                최종 등록하기
+                최종 접수하기
               </button>
             </div>
           </>

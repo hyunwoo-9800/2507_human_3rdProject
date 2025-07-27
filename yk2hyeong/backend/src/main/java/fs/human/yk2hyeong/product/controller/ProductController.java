@@ -193,7 +193,7 @@ public class ProductController {
 
         productService.registerProduct(dto);
 
-        return ResponseEntity.ok("상품 등록 성공");
+        return ResponseEntity.ok("상품이 접수되었습니다! 관리자의 승인 후 상품리스트에 등록됩니다.");
 
     }
 
