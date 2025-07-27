@@ -11,7 +11,7 @@ function ProductForm({ product }) {
     productUnitPrice: '',
     sellMemberId: '',
     productType: '',
-    productMinQty: '',
+    productMinQtr: '',
     productRevEnd: '',
     productRevStart: '',
     createdId: '',
@@ -46,7 +46,7 @@ function ProductForm({ product }) {
         productUnitPrice: '',
         sellMemberId: '',
         productType: '',
-        productMinQty: '',
+        productMinQtr: '',
         productRevEnd: '',
         productRevStart: '',
         createdId: '',
@@ -81,7 +81,7 @@ function ProductForm({ product }) {
       </label>
       <label>
         <span>최소 주문 수량:</span>
-        <input type="number" value={form.productMinQty} readOnly />
+        <input type="number" value={form.productMinQtr} readOnly />
       </label>
       <label>
         <span>예약 시작일:</span>

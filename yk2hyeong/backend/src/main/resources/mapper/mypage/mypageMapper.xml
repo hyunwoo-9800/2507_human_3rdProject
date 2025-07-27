@@ -90,6 +90,7 @@
                 WHEN '010' THEN 'reported'
                 WHEN '011' THEN 'approved'
                 WHEN '012' THEN 'rejected'
+                WHEN '001' THEN 'reserved'
                 ELSE 'unknown'
                 END AS STATUS
         FROM
@@ -99,8 +100,8 @@
                 LEFT JOIN TB_PRODUCT P ON A.PRODUCT_ID = P.PRODUCT_ID
                 LEFT JOIN TB_IMAGES I ON P.PRODUCT_ID = I.PRODUCT_ID AND I.IMAGE_TYPE = '200'
         WHERE
-            C.TOP_CODE_NAME = 'STATUS'
-          AND A.RECEIVER_ID = #{receiverId}
+            C.TOP_CODE_NAME in('STATUS','REV_STATUS')
+          AND A.RECEIVER_ID = '859F269C84304C909EF5DCD36638BA13'
         ORDER BY A.CREATED_DATE DESC
     </select>
 

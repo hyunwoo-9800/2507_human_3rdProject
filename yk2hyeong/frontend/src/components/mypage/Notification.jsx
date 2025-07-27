@@ -52,6 +52,11 @@ function Notification({ memberId, readStatus }) {
       label: '거래만료',
       class: 'status-expired',
     },
+    reserved: {
+      icon: 'fa-clock',
+      label: '예약완료',
+      class: 'status-reserved',
+    }
   }
   // 상태별 들어가는 내용 구별
   const columnsByStatus = {
@@ -69,6 +74,7 @@ function Notification({ memberId, readStatus }) {
     rejected: ['sellerCompany', 'productUnitPrice', 'productName', 'createdDate', 'rejectedReason'],
     reported: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate'],
     expired: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate', 'expiredDate'],
+    reserved: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate'],
   }
 
   //     console.log("🧪 전체 products:", products);
@@ -131,6 +137,7 @@ function Notification({ memberId, readStatus }) {
           case 'purchased':
           case 'sold':
           case 'approved':
+          case 'reserved' :
             navigate(`/product/${item.productId}`)
             break
           case 'rejected':
