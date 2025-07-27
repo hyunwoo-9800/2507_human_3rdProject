@@ -220,7 +220,7 @@
             A.PRODUCT_STOCK_QTY,
             A.PRODUCT_UNIT_PRICE,
             A.SELL_MEMBER_ID,
-            B.MEMBER_NAME AS sellerCompany,
+            B.MEMBER_BNAME AS sellerCompany,
             A.PRODUCT_TYPE,
             A.PRODUCT_MIN_QTR,
             A.PRODUCT_REV_START,

@@ -1,322 +1,319 @@
-*{
-    box-sizing: border-box;
+* {
+  box-sizing: border-box;
 }
-main{
-    margin-left: 50px;
-    margin-right: 50px;
+main {
+  margin-left: 50px;
+  margin-right: 50px;
 }
-.menu-bar{
-    display: flex;
-    width: 100%;
-    min-height: 60px;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 50px;
-    margin-top: 100px;
+.menu-bar {
+  display: flex;
+  width: 100%;
+  min-height: 60px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  margin-top: 100px;
 }
-.menu-bar button{
-    flex: 1;
-    border: none;
-    background: none;
-    outline: none;
-    font-size: 20px;
-    transition: transform 0.2s ease, background-color 0.4s ease, color 0.4s ease;
+.menu-bar button {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 20px;
+  transition: transform 0.2s ease, background-color 0.4s ease, color 0.4s ease;
 }
-.menu-bar button:hover{
-    color: #1c9b4a;
+.menu-bar button:hover {
+  color: #1c9b4a;
 }
-.menu-bar button.clicked{
-    background-color: #D0F0C0 !important;
-    color: #1c9b4a !important;
+.menu-bar button.clicked {
+  background-color: #d0f0c0 !important;
+  color: #1c9b4a !important;
 }
 
-.regist-product{
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
+.regist-product {
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
 }
-.notification{
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
+.notification {
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
 }
 /* 셀렉트그룹 */
-.select-group{
-    width: 250px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-left: 20px;
-    margin-top: 50px;
+.select-group {
+  width: 250px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-left: 20px;
+  margin-top: 50px;
 }
-.year-select{
-    width: 45%;
-    height: 30px;
-    border-radius: 50px;
-    text-indent: 15px;
-    font-size: 16px;
+.year-select {
+  width: 45%;
+  height: 30px;
+  border-radius: 50px;
+  text-indent: 15px;
+  font-size: 16px;
 }
-.month-select{
-    width: 45%;
-    height: 30px;
-    border-radius: 50px;
-    text-indent: 15px;
-    font-size: 16px;
+.month-select {
+  width: 45%;
+  height: 30px;
+  border-radius: 50px;
+  text-indent: 15px;
+  font-size: 16px;
 }
-.radio-group{
-    width: 250px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-left: 20px;
-    margin-top: 50px;
+.radio-group {
+  width: 250px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-left: 20px;
+  margin-top: 50px;
 }
 /* card */
 .card-list {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    margin-top: 60px;
-    margin-bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
 
 .card {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: #fdfdfd;
-    border-radius: 12px;
-    padding: 16px 24px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-    width: 90%;
-    /*max-width: 800px;*/
-    margin: 0 auto;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #fdfdfd;
+  border-radius: 12px;
+  padding: 16px 24px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  width: 90%;
+  /*max-width: 800px;*/
+  margin: 0 auto;
+  gap: 20px;
 }
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
 }
-.card.clicked{
-    border: 2px solid #00a43c;
-    background-color: #fbfdfa;
+.card.clicked {
+  border: 2px solid #00a43c;
+  background-color: #fbfdfa;
 }
 
 .card img {
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
-    object-fit: cover;
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .card-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 60px;
 }
 /*상품설명은 1줄 이상 넘어가면 잘리도록*/
 .description-text {
-    display: inline-block;
-    max-width: 300px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    vertical-align: bottom;
+  display: inline-block;
+  max-width: 300px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
 }
-
 
 /* 왼쪽 텍스트 그룹 */
 .card-content-left,
 .card-content-right {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
 }
-.card-content-left{
-    padding-left: 30px;
-    border-left: 1px solid #b6b6b6;
+.card-content-left {
+  padding-left: 30px;
+  border-left: 1px solid #b6b6b6;
 }
 
 .card-content span {
-    margin-left: 6px;
-    color: #333;
+  margin-left: 6px;
+  color: #333;
 }
 
 .item-label {
-    font-weight: bold;
-    color: #444;
+  font-weight: bold;
+  color: #444;
 }
 /* notification 카드 추가 css */
-#delete-btn{
-    font-size: 40px;
-    margin-left: auto;
-    align-self: flex-start;
-    margin-right: 30px;
-    margin-top: 30px;
+#delete-btn {
+  font-size: 40px;
+  margin-left: auto;
+  align-self: flex-start;
+  margin-right: 30px;
+  margin-top: 30px;
 }
 
 /*구매한 상품 탭*/
 .no-purchased-products {
-    text-align: center;
-    margin-top: 40px;
-    margin-bottom: 100px;
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 100px;
 }
 .no-purchased-products button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #66bb6a;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.2s ease, background-color 0.3s ease;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #66bb6a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
 }
-.no-purchased-products button:hover{
-    background-color: #4e9152;
+.no-purchased-products button:hover {
+  background-color: #4e9152;
 }
-
 
 /*페이지네이션*/
-.pagination-box{
-    display: flex;
-    justify-content: center;
-    align-content: center;
+.pagination-box {
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
-
-
 
 /*알림탭 카드*/
 .noti-card {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 16px 24px;
-    border-radius: 12px;
-    background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    width: 90%;
-    /*max-width: 700px;*/
-    margin: 0 auto;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  /*max-width: 700px;*/
+  margin: 0 auto;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
-.noti-card:hover{
-    transform: translateY(-4px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
+.noti-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.35);
 }
 
 /* ✅ 수정된 클래스명 반영 */
 .img-container {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    flex-shrink: 0;
-    overflow: hidden;
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
 .img-container img {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
 }
 
 /* 오버레이: 이미지 전체 덮고 중앙 정렬 */
 .product-img-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 10px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    pointer-events: none;
-    z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .product-img-overlay i {
-    color: #4adb5a;
-    font-size: 18px;
+  color: #4adb5a;
+  font-size: 18px;
 }
 
 .noti-card-content {
-    display: flex;
-    flex-wrap: wrap;
-    flex: 1;
-    gap: 6px 20px;
-    font-size: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1;
+  gap: 6px 20px;
+  font-size: 14px;
 }
 
 .noti-card-content p {
-    margin: 4px 0;
-    min-width: 45%;
+  margin: 4px 0;
+  min-width: 45%;
 }
 
 .item-label {
-    font-weight: bold;
-    color: #333;
-    margin-right: 6px;
+  font-weight: bold;
+  color: #333;
+  margin-right: 6px;
 }
 
 .noti-card-content span {
-    color: #555;
+  color: #555;
 }
 
 #delete-btn {
-    position: absolute;
-    top: -5px;
-    right: 0px;
-    font-size: 20px;
-    cursor: pointer;
-    color: #333;
-    transition: transform 0.2s ease;
+  position: absolute;
+  top: -5px;
+  right: 0px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  transition: transform 0.2s ease;
 }
 
 #delete-btn:hover {
-    transform: scale(1.2);
-    color: #e4402e;
+  transform: scale(1.2);
+  color: #e4402e;
 }
 
-.status-rejected i, .status-reported i{
-    color: #e4402e;
+.status-rejected i,
+.status-reported i {
+  color: #e4402e;
 }
-.status-expired i{
-    color: #ffb922;
+.status-expired i {
+  color: #ffb922;
 }
 .reported-message {
-    color: #e4402e;
-    font-weight: bold;
-    font-size: 14px;
-    margin: 0 0 4px 0;
+  color: #e4402e;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0 0 4px 0;
 }
-.report-row{
-    flex-basis: 100%;
+.report-row {
+  flex-basis: 100%;
 }
 .rejected-reason span {
-    color: #e4402e;
-    font-weight: bold;
+  color: #e4402e;
+  font-weight: bold;
 }
 .reject {
-    color: #e4402e;
-    font-weight: bold;
+  color: #e4402e;
+  font-weight: bold;
 }
 .noti-card.read {
-    opacity: 0.6;
-    background-color: #f5f5f5;
-    border: 2px solid #519877;
+  opacity: 0.6;
+  background-color: #f5f5f5;
+  border: 2px solid #519877;
 }
-
