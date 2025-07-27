@@ -75,39 +75,41 @@ def generate_excel_report(low_code_value, time_frame):
         print(recent_dates.columns)
 
         if len(recent_dates) < 2:
-            raise Exception("최근 시세 날짜가 2개 이상 존재하지 않아 등락률 계산이 불가능합니다.")
+            print("등락률 계산 불가: 시세 날짜 부족")
+            df_diff = pd.DataFrame([{"품목명": "-", "어제 가격": "-", "그제 가격": "-", "등락률": "-"}])
+        else:
 
-        yesterday = recent_dates.loc[0, 'dt']
-        day_before = recent_dates.loc[1, 'dt']
-        
-        df_diff = pd.read_sql(f"""
-            SELECT
-                C.LOW_CODE_NAME AS 품목명,
-                ROUND(AVG(B.RECORDED_UNIT_PRICE), 2) AS "어제 가격",
-                ROUND(AVG(A.RECORDED_UNIT_PRICE), 2) AS "그제 가격",
-                ROUND(
-                    (AVG(B.RECORDED_UNIT_PRICE) - AVG(A.RECORDED_UNIT_PRICE))
-                    / NULLIF(AVG(A.RECORDED_UNIT_PRICE), 0) * 100,
-                    2
-                ) AS "등락률"
-            FROM TB_PRICE_API_HISTORY A
-            JOIN TB_PRICE_API_HISTORY B
-                ON A.LOW_CODE_VALUE = B.LOW_CODE_VALUE
-            JOIN TB_CODE_DETAIL C
-                ON A.LOW_CODE_VALUE = C.LOW_CODE_VALUE
-            WHERE
-                TRUNC(A.RECORDED_DATE) = TO_DATE(:day_before, 'YYYY-MM-DD')
-                AND TRUNC(B.RECORDED_DATE) = TO_DATE(:yesterday, 'YYYY-MM-DD')
-                AND A.RECORDED_UNIT_PRICE <> 0
-                AND B.RECORDED_UNIT_PRICE <> 0
-                AND C.MID_CODE_VALUE <> ' '
-            GROUP BY C.LOW_CODE_NAME
-            ORDER BY "등락률" DESC NULLS LAST
-        """, conn, params={
-            "day_before": day_before.strftime('%Y-%m-%d'),
-            "yesterday": yesterday.strftime('%Y-%m-%d')
+            yesterday = recent_dates.loc[0, 'dt']
+            day_before = recent_dates.loc[1, 'dt']
             
-        })
+            df_diff = pd.read_sql(f"""
+                SELECT
+                    C.LOW_CODE_NAME AS 품목명,
+                    ROUND(AVG(B.RECORDED_UNIT_PRICE), 2) AS "어제 가격",
+                    ROUND(AVG(A.RECORDED_UNIT_PRICE), 2) AS "그제 가격",
+                    ROUND(
+                        (AVG(B.RECORDED_UNIT_PRICE) - AVG(A.RECORDED_UNIT_PRICE))
+                        / NULLIF(AVG(A.RECORDED_UNIT_PRICE), 0) * 100,
+                        2
+                    ) AS "등락률"
+                FROM TB_PRICE_API_HISTORY A
+                JOIN TB_PRICE_API_HISTORY B
+                    ON A.LOW_CODE_VALUE = B.LOW_CODE_VALUE
+                JOIN TB_CODE_DETAIL C
+                    ON A.LOW_CODE_VALUE = C.LOW_CODE_VALUE
+                WHERE
+                    TRUNC(A.RECORDED_DATE) = TO_DATE(:day_before, 'YYYY-MM-DD')
+                    AND TRUNC(B.RECORDED_DATE) = TO_DATE(:yesterday, 'YYYY-MM-DD')
+                    AND A.RECORDED_UNIT_PRICE <> 0
+                    AND B.RECORDED_UNIT_PRICE <> 0
+                    AND C.MID_CODE_VALUE <> ' '
+                GROUP BY C.LOW_CODE_NAME
+                ORDER BY "등락률" DESC NULLS LAST
+            """, conn, params={
+                "day_before": day_before.strftime('%Y-%m-%d'),
+                "yesterday": yesterday.strftime('%Y-%m-%d')
+                
+            })
 
     # Excel 저장
     with pd.ExcelWriter(filepath, engine='openpyxl') as writer:

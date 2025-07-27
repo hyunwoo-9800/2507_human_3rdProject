@@ -11,7 +11,7 @@ app = FastAPI()
 # CORS 설정
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 실제 배포시에는 프론트 주소
+    allow_origins=["http://localhost:8080"],  # 실제 배포시에는 프론트 주소
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,7 +29,6 @@ def download_report(lowCodeValue: str, timeFrame: str):
         filename=filename,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         headers={
-            "Access-Control-Allow-Origin": "*",
             "Content-Disposition": f"attachment; filename*=UTF-8''{encoded_filename}"
         }
     )
