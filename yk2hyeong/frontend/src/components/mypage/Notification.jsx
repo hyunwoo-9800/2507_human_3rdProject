@@ -4,7 +4,7 @@ import CustomPagination from '../common/CustomPagination'
 import { useNavigate } from 'react-router-dom'
 import CustomModal from '../common/CustomModal'
 
-function Notification({ memberId, readStatus }) {
+function Notification({ readStatus }) {
   const [notifications, setNotifications] = useState([])
   const [page, setPage] = useState(1)
   const pageSize = 5
@@ -56,7 +56,7 @@ function Notification({ memberId, readStatus }) {
       icon: 'fa-clock',
       label: '예약완료',
       class: 'status-reserved',
-    }
+    },
   }
   // 상태별 들어가는 내용 구별
   const columnsByStatus = {
@@ -74,17 +74,22 @@ function Notification({ memberId, readStatus }) {
     rejected: ['sellerCompany', 'productUnitPrice', 'productName', 'createdDate', 'rejectedReason'],
     reported: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate'],
     expired: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate', 'expiredDate'],
-    reserved: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate'],
+    reserved: [
+      'sellerCompany',
+      'productName',
+      'productUnitPrice',
+      'productCodeName',
+      'reservationDate',
+      'deliveryDate',
+    ],
   }
 
   //     console.log("🧪 전체 products:", products);
   //     console.log("🧪 전체 notifications:", notifications);
   useEffect(() => {
-    if (!memberId) return
-
     // 알림 불러오기
     axios
-      .get(`/api/mypage/notification?memberId=${memberId}`)
+      .get(`/api/mypage/notification`)
       .then((res) => {
         // console.log("알림 전체 데이터:", res.data);
         const notiList = res.data || []
@@ -108,10 +113,10 @@ function Notification({ memberId, readStatus }) {
 
     // 판매완료일 경우 추가 정보
     axios
-      .get(`/api/mypage/sold-notification?memberId=${memberId}`)
+      .get(`/api/mypage/sold-notification`)
       .then((res) => setSoldExtraData(res.data))
       .catch((err) => console.error('sold 알림 오류:', err))
-  }, [memberId])
+  }, [])
   // 페이지네이션
   const paginatedNotifications = filterNotifications.slice((page - 1) * pageSize, page * pageSize)
   const handlePageChange = (newPage) => {
@@ -137,7 +142,7 @@ function Notification({ memberId, readStatus }) {
           case 'purchased':
           case 'sold':
           case 'approved':
-          case 'reserved' :
+          case 'reserved':
             navigate(`/product/${item.productId}`)
             break
           case 'rejected':
@@ -268,6 +273,12 @@ function Notification({ memberId, readStatus }) {
                           value = item.createdDate?.split(' ')[0]
                         } else if (colKey === 'rejectedReason') {
                           value = item.alarmContent
+                        } else if (colKey === 'reservationDate') {
+                          value = item.reservationDate?.split(' ')[0] || '-'
+                        } else if (colKey === 'deliveryDate' && item.status === 'reserved') {
+                          value = item.deliveryDate?.split(' ')[0] || '-'
+                        } else if (colKey === 'productCodeName') {
+                          value = product[colKey] || '-'
                         } else {
                           value = product[colKey]
                         }
@@ -287,6 +298,9 @@ function Notification({ memberId, readStatus }) {
                       approvedDate: '승인날짜',
                       rejectedReason: '거부사유',
                       expiredDate: '만료일자',
+                      reservationDate: '예약일자',
+                      deliveryDate: '출하예정일',
+                      productCodeName: '카테고리',
                     }
 
                     // 거부사유 항목

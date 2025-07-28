@@ -31,7 +31,8 @@ public class MypageController {
     public ResponseEntity<List<MypageVO>> getNotification(Authentication authentication) {
 
         MemberVO loginMember = (MemberVO) authentication.getPrincipal();
-        List<MypageVO> notification = mypageService.selectNotification(loginMember.getMemberId());
+        String memberId = loginMember.getMemberId();
+        List<MypageVO> notification = mypageService.selectNotification(memberId);
         return ResponseEntity.ok(notification);
 
     }

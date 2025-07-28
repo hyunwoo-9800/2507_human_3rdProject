@@ -100,16 +100,25 @@
                 WHEN '012' THEN 'rejected'
                 WHEN '001' THEN 'reserved'
                 ELSE 'unknown'
-                END AS STATUS
+                END AS STATUS,
+            CASE 
+                WHEN D.LOW_CODE_VALUE = '001' THEN TO_CHAR(R.CREATED_DATE, 'YYYY-MM-DD')
+                ELSE NULL
+            END AS RESERVATION_DATE,
+            CASE 
+                WHEN D.LOW_CODE_VALUE = '001' THEN TO_CHAR(R.REV_DELIVERY_DATE, 'YYYY-MM-DD')
+                ELSE NULL
+            END AS DELIVERY_DATE
         FROM
             TB_ALARM A
                 JOIN TB_CODE_DETAIL D ON A.ALARM_TYPE = D.DETAIL_CODE_ID
                 JOIN TB_CODE C ON D.CODE_ID = C.CODE_ID
                 LEFT JOIN TB_PRODUCT P ON A.PRODUCT_ID = P.PRODUCT_ID
                 LEFT JOIN TB_IMAGES I ON P.PRODUCT_ID = I.PRODUCT_ID AND I.IMAGE_TYPE = '200'
+                LEFT JOIN TB_PRODUCT_RESERVATION R ON A.PRODUCT_ID = R.PRODUCT_ID AND A.RECEIVER_ID = R.MEMBER_ID
         WHERE
             C.TOP_CODE_NAME in('STATUS','REV_STATUS')
-          AND A.RECEIVER_ID = '859F269C84304C909EF5DCD36638BA13'
+          AND A.RECEIVER_ID = #{receiverId}
         ORDER BY A.CREATED_DATE DESC
     </select>
 

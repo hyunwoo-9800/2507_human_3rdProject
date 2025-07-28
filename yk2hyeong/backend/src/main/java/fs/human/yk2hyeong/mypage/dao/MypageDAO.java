@@ -10,7 +10,7 @@ import java.util.List;
 public interface MypageDAO {
     List<MypageVO> selectPurchasedProducts(String memberId);
 
-    List<MypageVO> selectNotification(String receiverId);
+    List<MypageVO> selectNotification(@Param("receiverId") String receiverId);
 
     List<MypageVO> selectSoldNotification(String receiverId);
 

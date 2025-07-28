@@ -230,11 +230,14 @@
             A.CREATED_ID,
             A.CREATED_DATE,
             A.UPDATED_ID,
-            A.UPDATED_DATE
+            A.UPDATED_DATE,
+            C.LOW_CODE_NAME AS productCodeName
         FROM
             TB_PRODUCT A
                 LEFT JOIN TB_MEMBER B
                 ON A.SELL_MEMBER_ID = B.MEMBER_ID
+                LEFT JOIN TB_CODE_DETAIL C
+                ON A.PRODUCT_CODE = C.DETAIL_CODE_ID
         WHERE A.PRODUCT_ID IN
         <foreach item="id" collection="productIds" open="(" separator="," close=")">
             #{id}

@@ -25,6 +25,7 @@ public class MypageVO {
     private String receiverId;
     private String isRead;
     private String status;
+    private String reservationDate; // 예약완료 알림용 예약일자
 
     // 판매완료(sold) 전용
     private String sellerName;
