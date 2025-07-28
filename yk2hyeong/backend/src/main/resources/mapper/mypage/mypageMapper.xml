@@ -22,57 +22,53 @@
     </resultMap>
 
     <select id="selectPurchasedProducts" resultMap="purchasedMap">
-        SELECT
-            PB.BUY_ID AS BUYID,
-            PB.PRODUCT_ID AS PRODUCTID,
-            PB.MEMBER_ID AS MEMBERID,
-            PB.BUY_QTY AS BUYQTY,
-            PB.BUY_UNIT_PRICE AS BUYUNITPRICE,
-            PB.BUY_TOTAL_PRICE AS BUYTOTALPRICE,
-            PB.BUY_DELIVERY_DATE AS BUYDELIVERYDATE,
-            PB.CREATED_DATE AS CREATEDDATE,
-            P.PRODUCT_NAME AS PRODUCTNAME,
-            P.PRODUCT_DESCRIPTION AS PRODUCTDESCRIPTION,
-            P.PRODUCT_UNIT_PRICE AS PRODUCTUNITPRICE,
-            P.PRODUCT_MIN_QTR AS PRODUCTMINQTR,
-            P.SELL_MEMBER_ID AS SELLMEMBERID,
-            I.IMAGE_NAME AS IMAGENAME
-        FROM
-            TB_PRODUCT_BUY PB
-                LEFT JOIN TB_PRODUCT P
-                    ON PB.PRODUCT_ID = P.PRODUCT_ID
-                LEFT JOIN TB_IMAGES I
-                    ON P.PRODUCT_ID = I.PRODUCT_ID
-                    AND I.IMAGE_TYPE = '200'
-        WHERE
-            pb.MEMBER_ID = #{memberId}
+        SELECT *
+        FROM (
+                 SELECT
+                     PB.BUY_ID AS BUYID,
+                     PB.PRODUCT_ID AS PRODUCTID,
+                     PB.MEMBER_ID AS MEMBERID,
+                     PB.BUY_QTY AS BUYQTY,
+                     PB.BUY_UNIT_PRICE AS BUYUNITPRICE,
+                     PB.BUY_TOTAL_PRICE AS BUYTOTALPRICE,
+                     PB.BUY_DELIVERY_DATE AS BUYDELIVERYDATE,
+                     PB.CREATED_DATE AS CREATEDDATE,
+                     P.PRODUCT_NAME AS PRODUCTNAME,
+                     P.PRODUCT_DESCRIPTION AS PRODUCTDESCRIPTION,
+                     P.PRODUCT_UNIT_PRICE AS PRODUCTUNITPRICE,
+                     P.PRODUCT_MIN_QTR AS PRODUCTMINQTR,
+                     P.SELL_MEMBER_ID AS SELLMEMBERID,
+                     I.IMAGE_NAME AS IMAGENAME,
+                     'buy' AS SOURCE
+                 FROM TB_PRODUCT_BUY PB
+                          LEFT JOIN TB_PRODUCT P ON PB.PRODUCT_ID = P.PRODUCT_ID
+                          LEFT JOIN TB_IMAGES I ON P.PRODUCT_ID = I.PRODUCT_ID AND I.IMAGE_TYPE = '200'
+                 WHERE PB.MEMBER_ID = #{memberId}
 
-        UNION ALL
+                 UNION ALL
 
-        SELECT
-            PR.REV_ID AS ID,
-            PR.PRODUCT_ID AS PRODUCTID,
-            PR.MEMBER_ID AS MEMBERID,
-            PR.REV_QTY AS QTY,
-            PR.REV_UNIT_PRICE AS UNITPRICE,
-            PR.REV_TOTAL_PRICE AS TOTALPRICE,
-            PR.REV_DELIVERY_DATE AS DELIVERYDATE,
-            PR.CREATED_DATE AS CREATEDDATE,
-            P.PRODUCT_NAME AS PRODUCTNAME,
-            P.PRODUCT_DESCRIPTION AS PRODUCTDESCRIPTION,
-            P.PRODUCT_UNIT_PRICE AS PRODUCTUNITPRICE,
-            P.PRODUCT_MIN_QTR AS PRODUCTMINQTR,
-            P.SELL_MEMBER_ID AS SELLMEMBERID,
-            I.IMAGE_NAME AS IMAGENAME
-        FROM
-            TB_PRODUCT_RESERVATION PR
-                LEFT JOIN TB_PRODUCT P
-                    ON PR.PRODUCT_ID = P.PRODUCT_ID
-                LEFT JOIN TB_IMAGES I
-                    ON P.PRODUCT_ID = I.PRODUCT_ID
-                    AND I.IMAGE_TYPE = '200'
-        WHERE
-            PR.MEMBER_ID = #{memberId}
+                 SELECT
+                     R.REV_ID AS BUYID,
+                     R.PRODUCT_ID AS PRODUCTID,
+                     R.MEMBER_ID AS MEMBERID,
+                     R.REV_QTY AS BUYQTY,
+                     R.REV_UNIT_PRICE AS BUYUNITPRICE,
+                     R.REV_TOTAL_PRICE AS BUYTOTALPRICE,
+                     R.REV_DELIVERY_DATE AS BUYDELIVERYDATE,
+                     R.CREATED_DATE AS CREATEDDATE,
+                     P.PRODUCT_NAME AS PRODUCTNAME,
+                     P.PRODUCT_DESCRIPTION AS PRODUCTDESCRIPTION,
+                     P.PRODUCT_UNIT_PRICE AS PRODUCTUNITPRICE,
+                     P.PRODUCT_MIN_QTR AS PRODUCTMINQTR,
+                     P.SELL_MEMBER_ID AS SELLMEMBERID,
+                     I.IMAGE_NAME AS IMAGENAME,
+                     'reserve' AS SOURCE
+                 FROM TB_PRODUCT_RESERVATION R
+                          LEFT JOIN TB_PRODUCT P ON R.PRODUCT_ID = P.PRODUCT_ID
+                          LEFT JOIN TB_IMAGES I ON P.PRODUCT_ID = I.PRODUCT_ID AND I.IMAGE_TYPE = '200'
+                 WHERE R.MEMBER_ID = #{memberId}
+             ) ALL_PURCHASES
+        ORDER BY ALL_PURCHASES.CREATEDDATE DESC
     </select>
 
 <!--    알람탭 데이터 불러오기-->
@@ -113,7 +109,7 @@
                 LEFT JOIN TB_IMAGES I ON P.PRODUCT_ID = I.PRODUCT_ID AND I.IMAGE_TYPE = '200'
         WHERE
             C.TOP_CODE_NAME in('STATUS','REV_STATUS')
-          AND A.RECEIVER_ID = #{memberId}
+          AND A.RECEIVER_ID = '859F269C84304C909EF5DCD36638BA13'
         ORDER BY A.CREATED_DATE DESC
     </select>
 
