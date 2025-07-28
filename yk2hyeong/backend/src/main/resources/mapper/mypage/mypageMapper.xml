@@ -81,6 +81,9 @@
         <result property="status" column="STATUS"/>
         <result property="productId" column="PRODUCT_ID"/>
         <result property="imageName" column="IMAGE_NAME"/>
+        <result property="buyId" column="BUY_ID"/>
+        <result property="revId" column="REV_ID"/>
+        <result property="buyTotalPrice" column="BUY_TOTAL_PRICE"/>
     </resultMap>
     <select id="selectNotification" resultMap="NotificationMap">
         SELECT
@@ -108,8 +111,53 @@
             CASE 
                 WHEN D.LOW_CODE_VALUE = '001' THEN TO_CHAR(R.REV_DELIVERY_DATE, 'YYYY-MM-DD')
                 WHEN D.LOW_CODE_VALUE = '007' THEN TO_CHAR(B.BUY_DELIVERY_DATE, 'YYYY-MM-DD')
+                WHEN D.LOW_CODE_VALUE = '008' THEN 
+                    CASE 
+                        WHEN B.BUY_DELIVERY_DATE IS NOT NULL THEN TO_CHAR(B.BUY_DELIVERY_DATE, 'YYYY-MM-DD')
+                        WHEN R.REV_DELIVERY_DATE IS NOT NULL THEN TO_CHAR(R.REV_DELIVERY_DATE, 'YYYY-MM-DD')
+                        ELSE NULL
+                    END
                 ELSE NULL
-            END AS DELIVERY_DATE
+            END AS DELIVERY_DATE,
+            CASE 
+                WHEN D.LOW_CODE_VALUE = '007' THEN 
+                    CASE 
+                        WHEN B.BUY_ID IS NOT NULL THEN '즉시구매'
+                        WHEN R.REV_ID IS NOT NULL THEN '예약구매'
+                        ELSE '구매'
+                    END
+                WHEN D.LOW_CODE_VALUE = '008' THEN 
+                    CASE 
+                        WHEN B.BUY_ID IS NOT NULL THEN '즉시구매'
+                        WHEN R.REV_ID IS NOT NULL THEN '예약구매'
+                        ELSE '구매'
+                    END
+                ELSE NULL
+            END AS PURCHASE_TYPE,
+            CASE 
+                WHEN D.LOW_CODE_VALUE = '007' THEN BUYER.MEMBER_TEL
+                WHEN D.LOW_CODE_VALUE = '008' THEN BUYER2.MEMBER_TEL
+                ELSE NULL
+            END AS BUYER_TEL,
+            CASE 
+                WHEN D.LOW_CODE_VALUE = '007' THEN TO_CHAR(B.CREATED_DATE, 'YYYY-MM-DD')
+                WHEN D.LOW_CODE_VALUE = '008' THEN TO_CHAR(B2.CREATED_DATE, 'YYYY-MM-DD')
+                ELSE NULL
+            END AS BUY_DATE,
+            CASE 
+                WHEN D.LOW_CODE_VALUE = '007' THEN B.BUY_QTY
+                WHEN D.LOW_CODE_VALUE = '008' THEN B2.BUY_QTY
+                WHEN D.LOW_CODE_VALUE = '008' THEN R.REV_QTY
+                ELSE NULL
+            END AS BUY_QTY,
+            CASE 
+                WHEN D.LOW_CODE_VALUE = '007' THEN B.BUY_TOTAL_PRICE
+                WHEN D.LOW_CODE_VALUE = '008' THEN B2.BUY_TOTAL_PRICE
+                WHEN D.LOW_CODE_VALUE = '008' THEN R.REV_TOTAL_PRICE
+                ELSE NULL
+            END AS BUY_TOTAL_PRICE,
+            B2.BUY_ID,
+            R.REV_ID
         FROM
             TB_ALARM A
                 JOIN TB_CODE_DETAIL D ON A.ALARM_TYPE = D.DETAIL_CODE_ID
@@ -118,6 +166,10 @@
                 LEFT JOIN TB_IMAGES I ON P.PRODUCT_ID = I.PRODUCT_ID AND I.IMAGE_TYPE = '200'
                 LEFT JOIN TB_PRODUCT_RESERVATION R ON A.PRODUCT_ID = R.PRODUCT_ID AND A.RECEIVER_ID = R.MEMBER_ID
                 LEFT JOIN TB_PRODUCT_BUY B ON A.PRODUCT_ID = B.PRODUCT_ID AND A.RECEIVER_ID = B.MEMBER_ID
+                LEFT JOIN TB_MEMBER BUYER ON (B.MEMBER_ID = BUYER.MEMBER_ID OR R.MEMBER_ID = BUYER.MEMBER_ID)
+                LEFT JOIN TB_PRODUCT_BUY B2 ON A.PRODUCT_ID = B2.PRODUCT_ID 
+                    AND TO_CHAR(A.CREATED_DATE, 'YYYY-MM-DD HH24:MI') = TO_CHAR(B2.CREATED_DATE, 'YYYY-MM-DD HH24:MI')
+                LEFT JOIN TB_MEMBER BUYER2 ON B2.MEMBER_ID = BUYER2.MEMBER_ID
         WHERE
             C.TOP_CODE_NAME in('STATUS','REV_STATUS')
           AND A.RECEIVER_ID = #{receiverId}
@@ -135,6 +187,13 @@
         <result property="memberAddr" column="MEMBER_ADDR"/>
         <result property="memberDetailAddr" column="MEMBER_DETAIL_ADDR"/>
         <result property="deliveryDate" column="DELIVERY_DATE"/>
+        <result property="purchaseType" column="PURCHASE_TYPE"/>
+        <result property="buyerTel" column="BUYER_TEL"/>
+        <result property="buyDate" column="BUY_DATE"/>
+        <result property="buyQty" column="BUY_QTY"/>
+        <result property="productCodeName" column="PRODUCT_CODE_NAME"/>
+        <result property="buyId" column="BUY_ID"/>
+        <result property="revId" column="REV_ID"/>
     </resultMap>
     <select id="selectSoldNotification" resultMap="SoldNotificationMap">
         SELECT
@@ -142,20 +201,50 @@
             P.PRODUCT_NAME,
             P.PRODUCT_UNIT_PRICE,
             TO_CHAR(P.CREATED_DATE, 'YYYY-MM-DD') AS CREATED_DATE,
-
             SELLER.MEMBER_BNAME AS SELLER_NAME,
             BUYER.MEMBER_NAME AS BUYER_NAME,
             BUYER.MEMBER_ADDR,
             BUYER.MEMBER_DETAIL_ADDR,
-            TO_CHAR(B.BUY_DELIVERY_DATE, 'YYYY-MM-DD') AS DELIVERY_DATE
-
+            TO_CHAR(B.BUY_DELIVERY_DATE, 'YYYY-MM-DD') AS DELIVERY_DATE,
+            '즉시구매' AS PURCHASE_TYPE,
+            BUYER.MEMBER_TEL AS BUYER_TEL,
+            TO_CHAR(B.CREATED_DATE, 'YYYY-MM-DD HH24:MI') AS BUY_DATE,
+            B.BUY_QTY,
+            CD_PRODUCT.LOW_CODE_NAME AS PRODUCT_CODE_NAME,
+            B.BUY_ID
         FROM TB_PRODUCT_BUY B
                  JOIN TB_PRODUCT P ON B.PRODUCT_ID = P.PRODUCT_ID
                  JOIN TB_MEMBER SELLER ON P.SELL_MEMBER_ID = SELLER.MEMBER_ID
                  JOIN TB_MEMBER BUYER ON B.MEMBER_ID = BUYER.MEMBER_ID
-
+                 LEFT JOIN TB_CODE_DETAIL CD_PRODUCT ON P.PRODUCT_CODE = CD_PRODUCT.DETAIL_CODE_ID
         WHERE SELLER.MEMBER_ID = #{memberId}
-        ORDER BY B.BUY_DELIVERY_DATE DESC
+        
+        UNION ALL
+        
+        SELECT
+            P.PRODUCT_ID,
+            P.PRODUCT_NAME,
+            P.PRODUCT_UNIT_PRICE,
+            TO_CHAR(P.CREATED_DATE, 'YYYY-MM-DD') AS CREATED_DATE,
+            SELLER.MEMBER_BNAME AS SELLER_NAME,
+            BUYER.MEMBER_NAME AS BUYER_NAME,
+            BUYER.MEMBER_ADDR,
+            BUYER.MEMBER_DETAIL_ADDR,
+            TO_CHAR(R.REV_DELIVERY_DATE, 'YYYY-MM-DD') AS DELIVERY_DATE,
+            '예약구매' AS PURCHASE_TYPE,
+            BUYER.MEMBER_TEL AS BUYER_TEL,
+            TO_CHAR(R.CREATED_DATE, 'YYYY-MM-DD HH24:MI') AS BUY_DATE,
+            R.REV_QTY,
+            CD_PRODUCT.LOW_CODE_NAME AS PRODUCT_CODE_NAME,
+            R.REV_ID
+        FROM TB_PRODUCT_RESERVATION R
+                 JOIN TB_PRODUCT P ON R.PRODUCT_ID = P.PRODUCT_ID
+                 JOIN TB_MEMBER SELLER ON P.SELL_MEMBER_ID = SELLER.MEMBER_ID
+                 JOIN TB_MEMBER BUYER ON R.MEMBER_ID = BUYER.MEMBER_ID
+                 LEFT JOIN TB_CODE_DETAIL CD_PRODUCT ON P.PRODUCT_CODE = CD_PRODUCT.DETAIL_CODE_ID
+        WHERE SELLER.MEMBER_ID = #{memberId}
+          AND R.REV_STATUS = '002'  -- 예약완료 상태
+        ORDER BY BUY_DATE DESC
     </select>
 
 <!--    카드 읽음 처리-->

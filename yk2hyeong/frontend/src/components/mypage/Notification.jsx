@@ -14,6 +14,18 @@ function Notification({ readStatus }) {
   const [products, setProducts] = useState([])
   const [soldExtraData, setSoldExtraData] = useState([])
 
+  // 전화번호에 하이픈 추가하는 함수
+  const formatPhoneNumber = (phone) => {
+    if (!phone) return '-'
+    const cleaned = phone.replace(/\D/g, '')
+    if (cleaned.length === 11) {
+      return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3')
+    } else if (cleaned.length === 10) {
+      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')
+    }
+    return phone
+  }
+
   // 데이터 필터링
   const filterNotifications = notifications.filter((noti) => {
     if (readStatus === 'read') return noti.isRead === 'Y'
@@ -69,11 +81,12 @@ function Notification({ readStatus }) {
       'deliveryDate',
     ],
     sold: [
-      'sellerCompany',
+      'purchaseType',
       'productName',
-      'productUnitPrice',
-      'createdDate',
+      'soldQuantity',
+      'buyDate',
       'buyerName',
+      'buyerTel',
       'deliveryDate',
       'deliveryAddr',
     ],
@@ -263,10 +276,34 @@ function Notification({ readStatus }) {
                     let value = ''
 
                     if (item.status === 'sold') {
-                      const extra = soldExtraData.find((e) => e.productId === item.productId)
+                      // 구매 건을 구분하기 위해 buyId 또는 revId로 매칭
+                      const extra = soldExtraData.find((e) => {
+                        // buyId가 있으면 buyId로 매칭
+                        if (item.buyId && e.buyId) {
+                          return e.buyId === item.buyId
+                        }
+                        // revId가 있으면 revId로 매칭
+                        if (item.revId && e.revId) {
+                          return e.revId === item.revId
+                        }
+                        // fallback: productId로 매칭
+                        return e.productId === item.productId
+                      })
                       if (extra) {
                         if (colKey === 'deliveryAddr') {
                           value = `${extra.memberAddr || ''} ${extra.memberDetailAddr || ''}`
+                        } else if (colKey === 'purchaseType') {
+                          value = extra.purchaseType || '-'
+                        } else if (colKey === 'buyDate') {
+                          value = extra.buyDate || '-'
+                        } else if (colKey === 'buyerTel') {
+                          value = formatPhoneNumber(extra.buyerTel)
+                        } else if (colKey === 'soldQuantity') {
+                          if (item.buyQty && item.buyTotalPrice) {
+                            value = `${item.buyQty}kg (${item.buyTotalPrice?.toLocaleString()}원)`
+                          } else {
+                            value = '-'
+                          }
                         } else {
                           value = extra[colKey]
                         }
@@ -300,7 +337,7 @@ function Notification({ readStatus }) {
 
                     const labelMap = {
                       sellerCompany: '출하자',
-                      deliveryDate: '배송예정일',
+                      deliveryDate: '출하예정일',
                       productName: '상품명',
                       createdDate: '등록일자',
                       buyerName: '구매자',
@@ -310,9 +347,11 @@ function Notification({ readStatus }) {
                       rejectedReason: '거부사유',
                       expiredDate: '만료일자',
                       reservationDate: '예약일자',
-                      deliveryDate: '출하예정일',
                       productCodeName: '카테고리',
-                      buyDate: '구매일자',
+                      buyDate: '판매일자',
+                      purchaseType: '구매유형',
+                      buyerTel: '구매자 연락처',
+                      soldQuantity: '판매수량',
                     }
 
                     // 거부사유 항목
@@ -326,9 +365,16 @@ function Notification({ readStatus }) {
                     }
 
                     return (
-                      <p key={idx}>
+                      <p key={idx} style={colKey === 'deliveryAddr' ? { minWidth: '200px' } : {}}>
                         <strong className="item-label">{labelMap[colKey]}</strong>
-                        <span className="item-value">{value}</span>
+                        <span
+                          className="item-value"
+                          style={
+                            colKey === 'purchaseType' ? { color: 'red', fontWeight: 'bold' } : {}
+                          }
+                        >
+                          {value}
+                        </span>
                       </p>
                     )
                   })}
