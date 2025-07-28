@@ -75,7 +75,7 @@ function Notification({ readStatus }) {
     purchased: [
       'sellerCompany',
       'productName',
-      'productUnitPrice',
+      'purchasedQuantity',
       'productCodeName',
       'buyDate',
       'deliveryDate',
@@ -97,7 +97,7 @@ function Notification({ readStatus }) {
     reserved: [
       'sellerCompany',
       'productName',
-      'productUnitPrice',
+      'reservedQuantity',
       'productCodeName',
       'reservationDate',
       'deliveryDate',
@@ -327,6 +327,21 @@ function Notification({ readStatus }) {
                           value = item.createdDate?.split(' ')[0] || '-'
                         } else if (colKey === 'deliveryDate' && item.status === 'purchased') {
                           value = item.deliveryDate?.split(' ')[0] || '-'
+                        } else if (colKey === 'purchasedQuantity') {
+                          if (item.buyQty && item.buyTotalPrice) {
+                            value = `${item.buyQty}kg (${item.buyTotalPrice?.toLocaleString()}원)`
+                          } else {
+                            value = '-'
+                          }
+                        } else if (colKey === 'reservedQuantity') {
+                          console.log('예약완료 데이터 확인:', item)
+                          if (item.revQty && item.revTotalPrice) {
+                            value = `${item.revQty}kg (${item.revTotalPrice?.toLocaleString()}원)`
+                          } else if (item.buyQty && item.buyTotalPrice) {
+                            value = `${item.buyQty}kg (${item.buyTotalPrice?.toLocaleString()}원)`
+                          } else {
+                            value = '-'
+                          }
                         } else {
                           value = product[colKey]
                         }
@@ -352,6 +367,8 @@ function Notification({ readStatus }) {
                       purchaseType: '구매유형',
                       buyerTel: '구매자 연락처',
                       soldQuantity: '판매수량',
+                      purchasedQuantity: '구매수량',
+                      reservedQuantity: '예약수량',
                     }
 
                     // 거부사유 항목

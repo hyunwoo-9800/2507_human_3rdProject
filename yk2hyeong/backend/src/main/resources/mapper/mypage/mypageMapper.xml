@@ -147,13 +147,13 @@
             CASE 
                 WHEN D.LOW_CODE_VALUE = '007' THEN B.BUY_QTY
                 WHEN D.LOW_CODE_VALUE = '008' THEN B2.BUY_QTY
-                WHEN D.LOW_CODE_VALUE = '008' THEN R.REV_QTY
+                WHEN D.LOW_CODE_VALUE = '001' THEN R.REV_QTY
                 ELSE NULL
             END AS BUY_QTY,
             CASE 
                 WHEN D.LOW_CODE_VALUE = '007' THEN B.BUY_TOTAL_PRICE
                 WHEN D.LOW_CODE_VALUE = '008' THEN B2.BUY_TOTAL_PRICE
-                WHEN D.LOW_CODE_VALUE = '008' THEN R.REV_TOTAL_PRICE
+                WHEN D.LOW_CODE_VALUE = '001' THEN R.REV_TOTAL_PRICE
                 ELSE NULL
             END AS BUY_TOTAL_PRICE,
             B2.BUY_ID,
