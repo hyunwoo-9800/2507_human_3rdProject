@@ -60,7 +60,14 @@ function Notification({ readStatus }) {
   }
   // 상태별 들어가는 내용 구별
   const columnsByStatus = {
-    purchased: ['sellerCompany', 'productName', 'productUnitPrice', 'createdDate'],
+    purchased: [
+      'sellerCompany',
+      'productName',
+      'productUnitPrice',
+      'productCodeName',
+      'buyDate',
+      'deliveryDate',
+    ],
     sold: [
       'sellerCompany',
       'productName',
@@ -279,6 +286,10 @@ function Notification({ readStatus }) {
                           value = item.deliveryDate?.split(' ')[0] || '-'
                         } else if (colKey === 'productCodeName') {
                           value = product[colKey] || '-'
+                        } else if (colKey === 'buyDate' && item.status === 'purchased') {
+                          value = item.createdDate?.split(' ')[0] || '-'
+                        } else if (colKey === 'deliveryDate' && item.status === 'purchased') {
+                          value = item.deliveryDate?.split(' ')[0] || '-'
                         } else {
                           value = product[colKey]
                         }
@@ -301,6 +312,7 @@ function Notification({ readStatus }) {
                       reservationDate: '예약일자',
                       deliveryDate: '출하예정일',
                       productCodeName: '카테고리',
+                      buyDate: '구매일자',
                     }
 
                     // 거부사유 항목
